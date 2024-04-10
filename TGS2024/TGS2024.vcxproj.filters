@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\SceneFile">
+      <UniqueIdentifier>{ce6410fa-ae18-4517-bac0-e1f385861692}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\PlayerFile">
+      <UniqueIdentifier>{a79fc751-6672-4d78-b287-8a11a0f1405f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\SystemFile">
+      <UniqueIdentifier>{f6c47b5b-b1ef-4468-b00b-ff52a217499d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\EnemyFile">
+      <UniqueIdentifier>{1d51929e-c160-4c6c-ad12-398e5310ad41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\EnemyFile">
+      <UniqueIdentifier>{f40034a9-880e-4ace-b9e2-c1c56d8cfc12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\SystemFile">
+      <UniqueIdentifier>{1b86ff3a-f271-42cc-a694-1bce854c181b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\PlayerFile">
+      <UniqueIdentifier>{5cca5498-0a7c-4c2b-8d80-c25350dd4e58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\SceneFile">
+      <UniqueIdentifier>{ede19924-4a21-4359-b33c-cb55480b21a4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="fps.cpp">
+      <Filter>ソース ファイル\SystemFile</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>ソース ファイル\SceneFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>ソース ファイル\SystemFile</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMainScene.cpp">
+      <Filter>ソース ファイル\SceneFile</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="fps.h">
+      <Filter>ヘッダー ファイル\SystemFile</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>ヘッダー ファイル\SceneFile</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractScene.h">
+      <Filter>ヘッダー ファイル\SceneFile</Filter>
+    </ClInclude>
+    <ClInclude Include="padinput.h">
+      <Filter>ヘッダー ファイル\SystemFile</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMainScene.h">
+      <Filter>ヘッダー ファイル\SceneFile</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
