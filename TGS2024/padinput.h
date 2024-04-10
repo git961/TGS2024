@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include "DxLib.h"
 
 #define BUTTON_NUMMAX 16

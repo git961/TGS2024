@@ -37,6 +37,9 @@
     <Filter Include="ヘッダー ファイル\SceneFile">
       <UniqueIdentifier>{ede19924-4a21-4359-b33c-cb55480b21a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\BaseFile">
+      <UniqueIdentifier>{79a129c6-5f3c-41ce-8135-a225556113e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -48,11 +51,17 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>ソース ファイル\SceneFile</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>ソース ファイル\SystemFile</Filter>
-    </ClCompile>
     <ClCompile Include="GameMainScene.cpp">
       <Filter>ソース ファイル\SceneFile</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterBase.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル\PlayerFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>ソース ファイル\EnemyFile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +79,15 @@
     </ClInclude>
     <ClInclude Include="GameMainScene.h">
       <Filter>ヘッダー ファイル\SceneFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ヘッダー ファイル\PlayerFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>ヘッダー ファイル\EnemyFile</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterBase.h">
+      <Filter>ヘッダー ファイル\BaseFile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
