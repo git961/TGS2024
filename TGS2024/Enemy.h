@@ -15,12 +15,6 @@ public:
     void Update(GameMainScene* gamemain);
     void Draw() const;
 
-    float GetEnemyX() { return x; };
-    float GetEnemyY() { return y; };
-
-    float GetEnemyWidth() { return width; };
-    float GetEnemyHeight() { return height; };
-
 
 };
 

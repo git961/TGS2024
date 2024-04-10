@@ -2,9 +2,11 @@
 #include "AbstractScene.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "AttackCheck.h"
 
 class Player;
 class Enemy;
+class AttackCheck;
 
 class GameMainScene :
     public AbstractScene
@@ -13,6 +15,8 @@ private:
 
     Player *player;
     Enemy *enemy;
+    AttackCheck *ac;
+
     bool checkhit;
 
 public:

@@ -5,7 +5,7 @@ Player::Player()
 	width = 30;
 	height = 30;
 	x = 200;
-	y = 200;
+	y = 600;
 
 }
 
@@ -15,23 +15,19 @@ Player::~Player()
 
 void Player::Update(GameMainScene* gamemain)
 {
-
+	//
 	input.InputUpdate();
 
 
 	//ÉvÉåÉCÉÑÅ[à⁄ìÆ
-	if (input.CheckBtn(XINPUT_BUTTON_DPAD_RIGHT) == TRUE) {
+	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_RIGHT) == TRUE) {
 		x+=3;
 	}
-	if (input.CheckBtn(XINPUT_BUTTON_DPAD_LEFT) == TRUE) {
+	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_LEFT) == TRUE) {
 		x-=3;
 	}
-	if (input.CheckBtn(XINPUT_BUTTON_DPAD_UP) == TRUE) {
-		y -= 3;
-	}
-	if (input.CheckBtn(XINPUT_BUTTON_DPAD_DOWN) == TRUE) {
-		y += 3;
-	}
+
+
 
 }
 

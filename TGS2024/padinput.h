@@ -9,6 +9,7 @@ private:
 
 	XINPUT_STATE getkey;
 	int Btnflg[BUTTON_NUMMAX] = { 0 };
+	int LongPressBtnflg[BUTTON_NUMMAX] = { 0 };
 	int nowBtn[BUTTON_NUMMAX] = { 0 };
 	int oldBtn[BUTTON_NUMMAX] = { 0 };
 	int Btnnum = 0;
@@ -27,6 +28,8 @@ public:
 			nowBtn[i] = getkey.Buttons[i];
 			//0か１を受け取る
 			Btnflg[i] = nowBtn[i] & ~oldBtn[i];
+			LongPressBtnflg[i] = nowBtn[i];
+			
 			//１を受け取ったら今の番号、iを受け取る
 			if (Btnflg[i] == 1) {
 				Btnnum = i;
@@ -35,6 +38,7 @@ public:
 
 	}
 
+	//一回プッシュ用
 	int CheckBtn(int getBtn) {
 		//押された瞬間のkeynum番目の値が１だったら
 		if (Btnflg[Btnnum] == 1) {
@@ -44,6 +48,18 @@ public:
 			}
 		}
 		return FALSE;
+	}
+
+	//押し続けている間用
+	int LongPressBtn(int getbtn)
+	{
+		if (LongPressBtnflg[Btnnum] == 1) {
+			//押されたボタンの番号==受け取った値だったら
+			if (Btnnum == getbtn) {
+				return TRUE;
+			}
+		}
+
 	}
 
 };

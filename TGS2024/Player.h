@@ -18,5 +18,15 @@ public:
 
     void Update(GameMainScene* gamemain);
     void Draw() const;
+
+    //プレイヤー攻撃用モーション　Pickaxe：つるはし
+    void AttackPickaxe();
 };
 
+//void Player::AttackPickaxe()
+//{
+//    if (input.CheckBtn(XINPUT_BUTTON_Y) == TRUE)
+//    {
+//        //Yおしたら攻撃
+//    }
+//}

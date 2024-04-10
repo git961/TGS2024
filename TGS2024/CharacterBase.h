@@ -18,17 +18,18 @@ protected:
 	float attack;//攻撃力
 
 	float speed;
+	bool direction;//向き　0:右 1:左
 
 	int chara_image[10];//キャラクタ画像入れる用
 
-	float width;
-	float height;
+	float width;//幅
+	float height;//高さ
 
-	float distance_x;
-	float distance_y;
+	float distance_x;//x同士の距離の計算用
+	float distance_y;//y同士の距離の計算用
 
-	float two_widths;
-	float two_heights;
+	float two_widths;//2つの幅を合わせる用
+	float two_heights;//2つの高さを合わせる用
 
 	//opponent:意味→相手
 
@@ -64,6 +65,13 @@ public:
 		}
 
 	}
+
+
+	float GetX() { return x; };
+	float GetY() { return y; };
+
+	float GetWidth() { return width; };
+	float GetHeight() { return height; };
 
 };
 

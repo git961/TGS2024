@@ -63,6 +63,9 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>ソース ファイル\EnemyFile</Filter>
     </ClCompile>
+    <ClCompile Include="AttackCheck.cpp">
+      <Filter>ソース ファイル\PlayerFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fps.h">
@@ -88,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="CharacterBase.h">
       <Filter>ヘッダー ファイル\BaseFile</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackCheck.h">
+      <Filter>ヘッダー ファイル\PlayerFile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

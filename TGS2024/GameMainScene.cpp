@@ -4,6 +4,7 @@
 GameMainScene::GameMainScene() {
 	player=new Player;
 	enemy=new Enemy;
+	ac = new AttackCheck;
 	checkhit = false;
 }
 
@@ -16,7 +17,7 @@ void GameMainScene::Update() {
 	input.InputUpdate();
 
 
-	if (player->HitCheck(enemy->GetEnemyX(), enemy->GetEnemyY(), enemy->GetEnemyWidth(), enemy->GetEnemyHeight())==true) {
+	if (player->HitCheck(enemy->GetX(), enemy->GetY(), enemy->GetWidth(), enemy->GetHeight())==true) {
 		checkhit = true;
 	}
 	else {
@@ -26,6 +27,10 @@ void GameMainScene::Update() {
 	if (player != nullptr)
 	{
 		player->Update(this);
+	}
+
+	if (ac != nullptr) {
+			ac->Update(this,player);
 	}
 
 }
@@ -46,6 +51,13 @@ void GameMainScene::Draw() const {
 		if (enemy != nullptr)
 		{
 			enemy->Draw();
+		}
+
+		if (ac != nullptr) {
+			if (ac->GetAttackFlg() == true)
+			{
+				ac->Draw();
+			}
 		}
 }
 
