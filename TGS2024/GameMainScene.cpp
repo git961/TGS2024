@@ -3,26 +3,30 @@
 
 GameMainScene::GameMainScene() {
 	player=new Player;
-	enemy=new Enemy;
+
+	enemy = new Enemy(walk);
+
 	ac = new AttackCheck;
 	checkhit = false;
 }
 
 
 GameMainScene::~GameMainScene() {
-
+	delete enemy;
 }
 
 void GameMainScene::Update() {
 	input.InputUpdate();
 	fp.fpsUpdate();
 
-	//プレイヤーが何かと当たってるかのチェック
-	if (player->HitCheck(enemy->GetX(), enemy->GetY(), enemy->GetWidth(), enemy->GetHeight())==true) {
-		checkhit = true;
-	}
-	else {
-		checkhit = false;
+	if (enemy != nullptr)
+	{
+		if (player->HitCheck(enemy->GetX(), enemy->GetY(), enemy->GetWidth(), enemy->GetHeight()) == true) {
+			checkhit = true;
+		}
+		else {
+			checkhit = false;
+		}
 	}
 
 	//つるはしが何かと当たってるかのチェック
@@ -36,6 +40,34 @@ void GameMainScene::Update() {
 	//プレイヤーの攻撃
 	if (ac != nullptr) {
 			ac->Update(this,player);
+	}
+
+	// エネミー更新処理
+	if (enemy != nullptr)
+	{
+		enemy->Update(this);
+	}
+
+#ifdef DEBUG
+	if (input.CheckBtn(XINPUT_BUTTON_A) == TRUE)
+	{
+		enemy->Damege(2);
+	}
+	if (enemy == nullptr)
+	{
+		enemy = new Enemy(walk);
+	}
+#endif // DEBUG
+
+	if (enemy != nullptr)
+	{
+		// エネミー削除処理
+		if (enemy->GetHp() <= 0)
+		{
+			delete enemy;
+			enemy = nullptr;
+		}
+
 	}
 
 }
@@ -55,7 +87,7 @@ void GameMainScene::Draw() const {
 			player->Draw();
 		}
 
-		//敵描画
+		// エネミー描画処理
 		if (enemy != nullptr)
 		{
 			enemy->Draw();
