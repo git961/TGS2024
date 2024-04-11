@@ -1,7 +1,6 @@
 #include "Enemy.h"
-#define DEBUG		// デバッグ用、消すと#ifdef DEBUGの処理がされなくなる
 
-Enemy::Enemy(float set_direction, int set_type)
+Enemy::Enemy(int set_type)
 {
 	// 中心座標
 	x = 50;
@@ -18,8 +17,19 @@ Enemy::Enemy(float set_direction, int set_type)
 
 	type = set_type;
 
+	srand(time(NULL));
+	num = rand() % 10 + 1;
+	if (num >= 5)
+	{
+		direction = true;
+	}
+	else
+	{
+		direction = false;
+	}
+
 	// 進行方法が左ならx座標と移動方向が変わる
-	if (set_direction == false)
+	if (direction == false)
 	{
 		x = 1260;
 		move_x *= -1;
@@ -46,7 +56,7 @@ void Enemy::Update(GameMainScene* gamemain)
 void Enemy::Draw() const
 {
 #ifdef DEBUG
-	DrawFormatString(0, 50, 0xffffff, "move_x : %f", move_x);
+	DrawFormatString(0, 50, 0xffffff, "hp : %f", hp);
 
 #endif // DEBUG
 

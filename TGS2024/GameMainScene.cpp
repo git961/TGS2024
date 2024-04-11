@@ -4,7 +4,7 @@
 GameMainScene::GameMainScene() {
 	player=new Player;
 
-	enemy = new Enemy(false, walk);
+	enemy = new Enemy(walk);
 
 	ac = new AttackCheck;
 	checkhit = false;
@@ -18,12 +18,14 @@ GameMainScene::~GameMainScene() {
 void GameMainScene::Update() {
 	input.InputUpdate();
 
-
-	if (player->HitCheck(enemy->GetX(), enemy->GetY(), enemy->GetWidth(), enemy->GetHeight())==true) {
-		checkhit = true;
-	}
-	else {
-		checkhit = false;
+	if (enemy != nullptr)
+	{
+		if (player->HitCheck(enemy->GetX(), enemy->GetY(), enemy->GetWidth(), enemy->GetHeight()) == true) {
+			checkhit = true;
+		}
+		else {
+			checkhit = false;
+		}
 	}
 
 	if (player != nullptr)
@@ -39,6 +41,28 @@ void GameMainScene::Update() {
 	if (enemy != nullptr)
 	{
 		enemy->Update(this);
+	}
+
+#ifdef DEBUG
+	if (input.CheckBtn(XINPUT_BUTTON_A) == TRUE)
+	{
+		enemy->Damege(2);
+	}
+	if (enemy == nullptr)
+	{
+		enemy = new Enemy(walk);
+	}
+#endif // DEBUG
+
+	if (enemy != nullptr)
+	{
+		// エネミー削除処理
+		if (enemy->GetHp() <= 0)
+		{
+			delete enemy;
+			enemy = nullptr;
+		}
+
 	}
 
 }
