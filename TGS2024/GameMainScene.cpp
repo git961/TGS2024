@@ -8,6 +8,7 @@ GameMainScene::GameMainScene() {
 
 	ac = new AttackCheck;
 	checkhit = false;
+	enemy_damage_once=false;
 }
 
 
@@ -27,9 +28,32 @@ void GameMainScene::Update() {
 		else {
 			checkhit = false;
 		}
+
+		//つるはしを振るってる時だけ
+		if (player->GetAttacking() == true)
+		{
+			//ダメージを一回だけ与える
+			if (enemy_damage_once == false)
+			{
+				//つるはしとエネミーと当たってるかのチェック
+				if (ac->HitCheck(enemy->GetX(), enemy->GetY(), enemy->GetWidth(), enemy->GetHeight()) == true) {
+					//checkhit = true;
+					enemy->Damege(1);
+					enemy_damage_once = true;
+				}
+				else {
+					//checkhit = false;
+				}
+			}
+		}
+		else
+		{
+			//プレイヤーがつるはし振ってなかったら
+			enemy_damage_once = false;
+		}
+
 	}
 
-	//つるはしが何かと当たってるかのチェック
 
 	//プレイヤー
 	if (player != nullptr)

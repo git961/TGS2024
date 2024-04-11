@@ -19,6 +19,7 @@ private:
     AttackCheck *ac;
     fps fp;
 
+    bool enemy_damage_once;
     bool checkhit;
 
 public:
