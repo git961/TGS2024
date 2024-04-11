@@ -7,7 +7,6 @@
 
 
 int color=0;
-int a=2;
 Player::Player()
 {
 	//幅と座標
@@ -17,6 +16,8 @@ Player::Player()
 	y = 400;
 
 	walk_velocity_x = 0;
+	speed = 1;
+	v_max = 2;
 
 	move_x = 0;
 	move_y = 0;
@@ -38,6 +39,7 @@ Player::Player()
 
 	//デバック用
 	y_ground = 600;
+
 }
 
 Player::~Player()
@@ -49,9 +51,9 @@ void Player::Update(GameMainScene* gamemain)
 
 	//
 	input.InputUpdate();
-	//a = input.LongPressBtn(XINPUT_BUTTON_DPAD_RIGHT);
 
-	//
+
+	//ジャンプ
 	if (input.CheckBtn(XINPUT_BUTTON_A) == TRUE)
 	{
 		jump_start_flg = true;
@@ -78,19 +80,8 @@ void Player::Update(GameMainScene* gamemain)
 	}
 	else
 	{
-
-		//攻撃中じゃなかったらプレイヤー移動
-		//右移動
-		if (input.LongPressBtn(XINPUT_BUTTON_DPAD_RIGHT) == TRUE) {
-			a = a * 0.5;
-			x += a;
-			direction = 0;
-		}
-		//左移動
-		if (input.LongPressBtn(XINPUT_BUTTON_DPAD_LEFT) == TRUE) {
-			x -= 0.2;
-			direction = 1;
-		}
+		//プレイヤーの移動処理
+		PlayerMove();
 	}
 }
 
@@ -111,6 +102,10 @@ void Player::Draw() const
 	}
 	//DrawFormatString(100, 100, 0xffffff, "Right:%d", a);
 	DrawFormatString(100, 120, 0xffffff, "btnnum: % d", input.Btnnum);
+
+	DrawFormatString(100, 150, 0xffffff, "move_x: %f",move_x);
+
+
 #endif // DEBUG
 }
 
@@ -151,4 +146,37 @@ void Player::PlayerJump()
 	//time += 0.01f;
 
 
+}
+
+void Player::PlayerMove()
+{
+
+	//攻撃中じゃなかったらプレイヤー移動
+	//右移動
+	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_RIGHT) == TRUE) {
+
+		if (move_x <= 3)
+		{
+			move_x += 1;
+		}
+
+		direction = 0;
+	}
+
+	//左移動
+	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_LEFT) == TRUE) {
+
+		if (move_x >= -3)
+		{
+			move_x -= 1;
+		}
+		direction = 1;
+	}
+
+	//右左移動してない時
+	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_RIGHT) != TRUE && input.LongPressBtn(XINPUT_BUTTON_DPAD_LEFT) != TRUE)
+	{
+		move_x *= 0.9;
+	}
+	x += move_x;
 }

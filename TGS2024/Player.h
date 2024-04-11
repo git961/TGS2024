@@ -35,6 +35,8 @@ private:
         float velocity_y;//y方向の速度
 
         float y_ground;//地面の高さデバック用
+        float v_max;//速度最大値
+
 
 public:
     Player();
@@ -46,7 +48,11 @@ public:
     //プレイヤー攻撃用モーション　Pickaxe：つるはし
     void AttackPickaxe();
 
+    //プレイヤージャンプ用
     void PlayerJump();
+
+    //プレイヤー移動用
+    void PlayerMove();
 
     bool GetAttacking() { return attacking; };
 };
