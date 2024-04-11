@@ -15,6 +15,8 @@ Player::Player()
 	x = 200;
 	y = 400;
 
+	direction = 0;
+
 	walk_velocity_x = 0;
 	speed = 1;
 	v_max = 2;
