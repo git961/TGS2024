@@ -18,6 +18,8 @@ private:
         bool walk;//true:歩いてる false:止まってる
         bool attacking;//true:攻撃中 false:攻撃してない 
 
+        bool jump;//true:ジャンプ中 false:地面にいる
+        float old_y;
 
 public:
     Player();
@@ -28,6 +30,8 @@ public:
 
     //プレイヤー攻撃用モーション　Pickaxe：つるはし
     void AttackPickaxe();
+
+    void PlayerJump();
 
     bool GetAttacking() { return attacking; };
 };

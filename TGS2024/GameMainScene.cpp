@@ -73,10 +73,6 @@ void GameMainScene::Update() {
 	}
 
 #ifdef DEBUG
-	if (input.CheckBtn(XINPUT_BUTTON_A) == TRUE)
-	{
-		enemy->Damege(2);
-	}
 	if (enemy == nullptr)
 	{
 		enemy = new Enemy(walk);
