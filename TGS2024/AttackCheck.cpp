@@ -18,12 +18,26 @@ void AttackCheck::Update(GameMainScene* gamemain,Player* player)
 	input.InputUpdate();
 	
 	//Yおしたら攻撃
-	if(input.CheckBtn(XINPUT_BUTTON_Y) == TRUE)
+	if(player->GetAttacking() == true)
     {
-		x = player->GetX();
-		y = player->GetY();
+		//プレイヤーが右を向いてたら
+		if (player->GetDirection() == 0)
+		{
+			x = player->GetX()+30;
+			y = player->GetY();
+		}
+		//プレイヤーが左を向いていたら
+		if (player->GetDirection() == 1)
+		{
+			x = player->GetX()-30;
+			y = player->GetY();
+		}
 		attack_flg = true;
-    }
+	}
+	else
+	{
+		attack_flg = false;
+	}
 
 }
 

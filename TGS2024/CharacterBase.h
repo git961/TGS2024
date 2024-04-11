@@ -73,5 +73,7 @@ public:
 	float GetWidth() { return width; };
 	float GetHeight() { return height; };
 
+	bool GetDirection() { return direction; };//ƒLƒƒƒ‰‚ÌŒü‚«‚ğ•Ô‚·@0:‰E 1:¶
+
 };
 

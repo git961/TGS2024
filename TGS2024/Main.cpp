@@ -33,7 +33,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		input.InputUpdate();
 
 		//fpsŒÅ’è
-		fp.fpsUpdate();
+		//fp.fpsUpdate();
 
 		if (input.CheckBtn(XINPUT_BUTTON_BACK) == TRUE) {
 			break;

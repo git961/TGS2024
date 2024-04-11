@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "AttackCheck.h"
+#include "fps.h"
 
 class Player;
 class Enemy;
@@ -16,6 +17,7 @@ private:
     Player *player;
     Enemy *enemy;
     AttackCheck *ac;
+    fps fp;
 
     bool checkhit;
 
