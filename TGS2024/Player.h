@@ -18,8 +18,23 @@ private:
         bool walk;//true:歩いてる false:止まってる
         bool attacking;//true:攻撃中 false:攻撃してない 
 
-        bool jump;//true:ジャンプ中 false:地面にいる
-        float old_y;
+        float walk_velocity_x;
+
+
+        bool jump_flg;//true:ジャンプ中　false:地面に居る
+        bool jump_start_flg;//ボタンが押されたら
+        
+        float jump_timer;
+        float rad;
+        float sita;
+        float pi = 3.1415f;
+
+
+        float jump_v0;//ジャンプの初速度
+        float gravity;//ジャンプの重力
+        float velocity_y;//y方向の速度
+
+        float y_ground;//地面の高さデバック用
 
 public:
     Player();
