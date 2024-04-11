@@ -3,14 +3,16 @@
 
 GameMainScene::GameMainScene() {
 	player=new Player;
-	enemy=new Enemy;
+
+	enemy = new Enemy(false, walk);
+
 	ac = new AttackCheck;
 	checkhit = false;
 }
 
 
 GameMainScene::~GameMainScene() {
-
+	delete enemy;
 }
 
 void GameMainScene::Update() {
@@ -33,6 +35,12 @@ void GameMainScene::Update() {
 			ac->Update(this,player);
 	}
 
+	// エネミー更新処理
+	if (enemy != nullptr)
+	{
+		enemy->Update(this);
+	}
+
 }
 
 void GameMainScene::Draw() const {
@@ -48,6 +56,7 @@ void GameMainScene::Draw() const {
 			player->Draw();
 		}
 
+		// エネミー描画処理
 		if (enemy != nullptr)
 		{
 			enemy->Draw();
