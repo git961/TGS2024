@@ -13,7 +13,7 @@ Enemy::Enemy(int set_type)
 	move_y = 0;			// –¢Žg—p
 	hp = 10;
 	attack = 10;
-	speed = 1;			// ‚È‚­‚Ä‚à—Ç‚¢
+	speed = 3;			// ‚È‚­‚Ä‚à—Ç‚¢
 
 	type = set_type;
 
