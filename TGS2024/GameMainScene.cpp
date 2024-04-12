@@ -81,13 +81,13 @@ void GameMainScene::Update() {
 		if (enemy[i] != nullptr)
 		{
 			enemy[i]->Update(this);
-		}
 
-		// エネミー削除処理
-		if (enemy[i]->GetHp() <= 0)
-		{
-			delete enemy[i];
-			enemy[i] = nullptr;
+			// エネミー削除処理
+			if (enemy[i]->GetHp() <= 0)
+			{
+				delete enemy[i];
+				enemy[i] = nullptr;
+			}
 		}
 	}
 

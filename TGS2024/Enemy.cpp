@@ -16,23 +16,23 @@ Enemy::Enemy(float set_x)
 	attack = 10;
 	speed = 3;			// なくても良い
 
-	srand(time(NULL));
-	num = rand() % 10 + 1;
-	if (num >= 5)
-	{
-		direction = true;
-	}
-	else
-	{
-		direction = false;
-	}
+	//srand(time(NULL));
+	//num = rand() % 10 + 1;
+	//if (num >= 5)
+	//{
+	//	direction = true;
+	//}
+	//else
+	//{
+	//	direction = false;
+	//}
 
-	// 進行方法が左ならx座標と移動方向が変わる
-	if (direction == false)
-	{
-		x = 1260;
-		move_x *= -1;
-	}
+	//// 進行方法が左ならx座標と移動方向が変わる
+	//if (direction == false)
+	//{
+	//	x = 1260;
+	//	move_x *= -1;
+	//}
 }
 
 Enemy::~Enemy()
@@ -56,7 +56,6 @@ void Enemy::Draw() const
 {
 #ifdef DEBUG
 	DrawFormatString(0, 50, 0xffffff, "hp : %f", hp);
-
 #endif // DEBUG
 
 	// 当たり判定のボックス
