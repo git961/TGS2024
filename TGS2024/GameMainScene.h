@@ -22,6 +22,9 @@ private:
     bool enemy_damage_once;
     bool checkhit;
 
+    float camera_x;
+    float camera_y;
+
 public:
     GameMainScene();
     ~GameMainScene();
@@ -29,5 +32,13 @@ public:
     void Update() override;
     void Draw() const override;
     AbstractScene* Change() override;
+
+
+    void UpdateCamera();
+
+    void CameraSetLocation(float set_x, float set_y);
+
+    float GetCameraX() { return camera_x; };
+    float GetCameraY() { return camera_y; };
 };
 

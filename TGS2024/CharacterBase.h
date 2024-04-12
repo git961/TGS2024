@@ -8,8 +8,11 @@ class CharacterBase
 {
 protected:
 
-	float x;
-	float y;
+	float x;//ローカルｘ
+	float y;//ローカルｙ
+
+	float world_x;
+	float world_y;
 	
 	float move_x;
 	float move_y;
@@ -74,6 +77,12 @@ public:
 	float GetHeight() { return height; };
 
 	bool GetDirection() { return direction; };//キャラの向きを返す　0:右 1:左
+
+	void SetLocalPosition(float set_camera_x,float set_camera_y)
+	{
+		x = world_x - set_camera_x;
+		y = world_y - set_camera_y;
+	};
 
 };
 

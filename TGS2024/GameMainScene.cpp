@@ -1,11 +1,14 @@
 ﻿#include "GameMainScene.h"
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 720
 
 
 GameMainScene::GameMainScene() {
 	player=new Player;
 
 	enemy = new Enemy(walk);
-
+	camera_x = 0;
+	camera_y = 0;
 	ac = new AttackCheck;
 	checkhit = false;
 	enemy_damage_once=false;
@@ -17,6 +20,8 @@ GameMainScene::~GameMainScene() {
 }
 
 void GameMainScene::Update() {
+
+	UpdateCamera();
 	input.InputUpdate();
 	fp.fpsUpdate();
 
@@ -58,6 +63,7 @@ void GameMainScene::Update() {
 	//プレイヤー
 	if (player != nullptr)
 	{
+		player->SetLocalPosition(camera_x, camera_y);
 		player->Update(this);
 	}
 
@@ -69,6 +75,7 @@ void GameMainScene::Update() {
 	// エネミー更新処理
 	if (enemy != nullptr)
 	{
+		enemy->SetLocalPosition(camera_x, camera_y);
 		enemy->Update(this);
 	}
 
@@ -121,6 +128,24 @@ void GameMainScene::Draw() const {
 			}
 		}
 }
+
+
+void GameMainScene::UpdateCamera()
+{
+
+	CameraSetLocation(player->GetX(), player->GetY());
+
+}
+
+void GameMainScene::CameraSetLocation(float set_x, float set_y)
+{
+
+	camera_x = set_x - (SCREEN_WIDTH / 2);
+	camera_y = set_y - (SCREEN_HEIGHT / 2);
+
+}
+
+
 
 AbstractScene* GameMainScene::Change() {
 	//if (change == TRUE) {

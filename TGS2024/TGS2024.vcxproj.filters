@@ -66,6 +66,9 @@
     <ClCompile Include="AttackCheck.cpp">
       <Filter>ソース ファイル\PlayerFile</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>ソース ファイル\SystemFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fps.h">
@@ -94,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="AttackCheck.h">
       <Filter>ヘッダー ファイル\PlayerFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>ヘッダー ファイル\SystemFile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
