@@ -15,7 +15,7 @@ class GameMainScene :
 private:
 
     Player *player;
-    Enemy *enemy;
+    Enemy **enemy;
     AttackCheck *ac;
     fps fp;
 

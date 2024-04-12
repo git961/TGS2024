@@ -1,9 +1,10 @@
 ﻿#include "Enemy.h"
 
-Enemy::Enemy(int set_type)
+Enemy::Enemy(float set_x)
 {
 	// 中心座標
-	x = 50;
+	//x = 50;
+	x = 400 + (40 * set_x);
 	y = 600;
 
 	width = 30;
@@ -14,8 +15,6 @@ Enemy::Enemy(int set_type)
 	hp = 10;
 	attack = 10;
 	speed = 3;			// なくても良い
-
-	type = set_type;
 
 	srand(time(NULL));
 	num = rand() % 10 + 1;
@@ -44,13 +43,13 @@ Enemy::~Enemy()
 void Enemy::Update(GameMainScene* gamemain)
 {
 	// 移動処理
-	x += speed * move_x;
+	//x += speed * move_x;
 
-	// 端に来たら跳ね返る、敵同士の当たり判定で使用するかも
-	if (x + width / 2 > 1280 || x - width / 2 < 0)
-	{
-		move_x *= -1;
-	}
+	//// 端に来たら跳ね返る、敵同士の当たり判定で使用するかも
+	//if (x + width / 2 > 1280 || x - width / 2 < 0)
+	//{
+	//	move_x *= -1;
+	//}
 }
 
 void Enemy::Draw() const
