@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "CharacterBase.h"
 #include "GameMainScene.h"
 #include "padinput.h"
@@ -12,17 +12,17 @@ private:
     CharacterBase charabase;
     Input input;
 
-    float atk_cnt_timer;//UŒ‚”­¶‚µ‚Ä‚©‚ç‚Æ‚ß‚é‚Ü‚Å‚ÌŠÔ‚ğƒJƒEƒ“ƒg‚·‚é—p
+    float atk_cnt_timer;//æ”»æ’ƒç™ºç”Ÿã—ã¦ã‹ã‚‰ã¨ã‚ã‚‹ã¾ã§ã®æ™‚é–“ã‚’ã‚«ã‚¦ãƒ³ãƒˆã™ã‚‹ç”¨
 
-       //ƒvƒŒƒCƒ„[‚Ìó‘Ô
-        bool walk;//true:•à‚¢‚Ä‚é false:~‚Ü‚Á‚Ä‚é
-        bool attacking;//true:UŒ‚’† false:UŒ‚‚µ‚Ä‚È‚¢ 
+       //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®çŠ¶æ…‹
+        bool walk;//true:æ­©ã„ã¦ã‚‹ false:æ­¢ã¾ã£ã¦ã‚‹
+        bool attacking;//true:æ”»æ’ƒä¸­ false:æ”»æ’ƒã—ã¦ãªã„ 
 
         float walk_velocity_x;
 
 
-        bool jump_flg;//true:ƒWƒƒƒ“ƒv’†@false:’n–Ê‚É‹‚é
-        bool jump_start_flg;//ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚ç
+        bool jump_flg;//true:ã‚¸ãƒ£ãƒ³ãƒ—ä¸­ã€€false:åœ°é¢ã«å±…ã‚‹
+        bool jump_start_flg;//ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸã‚‰
         
         float jump_timer;
         float rad;
@@ -30,12 +30,12 @@ private:
         float pi = 3.1415f;
 
 
-        float jump_v0;//ƒWƒƒƒ“ƒv‚Ì‰‘¬“x
-        float gravity;//ƒWƒƒƒ“ƒv‚Ìd—Í
-        float velocity_y;//y•ûŒü‚Ì‘¬“x
+        float jump_v0;//ã‚¸ãƒ£ãƒ³ãƒ—ã®åˆé€Ÿåº¦
+        float gravity;//ã‚¸ãƒ£ãƒ³ãƒ—ã®é‡åŠ›
+        float velocity_y;//yæ–¹å‘ã®é€Ÿåº¦
 
-        float y_ground;//’n–Ê‚Ì‚‚³ƒfƒoƒbƒN—p
-        float v_max;//‘¬“xÅ‘å’l
+        float y_ground;//åœ°é¢ã®é«˜ã•ãƒ‡ãƒãƒƒã‚¯ç”¨
+        float v_max;//é€Ÿåº¦æœ€å¤§å€¤
 
 
 public:
@@ -45,13 +45,13 @@ public:
     void Update(GameMainScene* gamemain);
     void Draw() const;
 
-    //ƒvƒŒƒCƒ„[UŒ‚—pƒ‚[ƒVƒ‡ƒ“@PickaxeF‚Â‚é‚Í‚µ
+    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æ”»æ’ƒç”¨ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã€€Pickaxeï¼šã¤ã‚‹ã¯ã—
     void AttackPickaxe();
 
-    //ƒvƒŒƒCƒ„[ƒWƒƒƒ“ƒv—p
+    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚¸ãƒ£ãƒ³ãƒ—ç”¨
     void PlayerJump();
 
-    //ƒvƒŒƒCƒ„[ˆÚ“®—p
+    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ç§»å‹•ç”¨
     void PlayerMove();
 
     bool GetAttacking() { return attacking; };
@@ -61,6 +61,6 @@ public:
 //{
 //    if (input.CheckBtn(XINPUT_BUTTON_Y) == TRUE)
 //    {
-//        //Y‚¨‚µ‚½‚çUŒ‚
+//        //YãŠã—ãŸã‚‰æ”»æ’ƒ
 //    }
 //}

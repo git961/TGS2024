@@ -1,4 +1,4 @@
-#include "GameMainScene.h"
+ï»¿#include "GameMainScene.h"
 
 
 GameMainScene::GameMainScene() {
@@ -29,13 +29,13 @@ void GameMainScene::Update() {
 			checkhit = false;
 		}
 
-		//‚Â‚é‚Í‚µ‚ðU‚é‚Á‚Ä‚éŽž‚¾‚¯
+		//ã¤ã‚‹ã¯ã—ã‚’æŒ¯ã‚‹ã£ã¦ã‚‹æ™‚ã ã‘
 		if (player->GetAttacking() == true)
 		{
-			//ƒ_ƒ[ƒW‚ðˆê‰ñ‚¾‚¯—^‚¦‚é
+			//ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸€å›žã ã‘ä¸Žãˆã‚‹
 			if (enemy_damage_once == false)
 			{
-				//‚Â‚é‚Í‚µ‚ÆƒGƒlƒ~[‚Æ“–‚½‚Á‚Ä‚é‚©‚Ìƒ`ƒFƒbƒN
+				//ã¤ã‚‹ã¯ã—ã¨ã‚¨ãƒãƒŸãƒ¼ã¨å½“ãŸã£ã¦ã‚‹ã‹ã®ãƒã‚§ãƒƒã‚¯
 				if (ac->HitCheck(enemy->GetX(), enemy->GetY(), enemy->GetWidth(), enemy->GetHeight()) == true) {
 					//checkhit = true;
 					enemy->Damege(1);
@@ -48,25 +48,25 @@ void GameMainScene::Update() {
 		}
 		else
 		{
-			//ƒvƒŒƒCƒ„[‚ª‚Â‚é‚Í‚µU‚Á‚Ä‚È‚©‚Á‚½‚ç
+			//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã¤ã‚‹ã¯ã—æŒ¯ã£ã¦ãªã‹ã£ãŸã‚‰
 			enemy_damage_once = false;
 		}
 
 	}
 
 
-	//ƒvƒŒƒCƒ„[
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 	if (player != nullptr)
 	{
 		player->Update(this);
 	}
 
-	//ƒvƒŒƒCƒ„[‚ÌUŒ‚
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ”»æ’ƒ
 	if (ac != nullptr) {
 			ac->Update(this,player);
 	}
 
-	// ƒGƒlƒ~[XVˆ—
+	// ã‚¨ãƒãƒŸãƒ¼æ›´æ–°å‡¦ç†
 	if (enemy != nullptr)
 	{
 		enemy->Update(this);
@@ -81,7 +81,7 @@ void GameMainScene::Update() {
 
 	if (enemy != nullptr)
 	{
-		// ƒGƒlƒ~[íœˆ—
+		// ã‚¨ãƒãƒŸãƒ¼å‰Šé™¤å‡¦ç†
 		if (enemy->GetHp() <= 0)
 		{
 			delete enemy;
@@ -101,19 +101,19 @@ void GameMainScene::Draw() const {
 			DrawFormatString(0, 10, 0xffffff, "hit");
 		}
 
-		//ƒvƒŒƒCƒ„[•`‰æ
+		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æç”»
 		if (player != nullptr)
 		{
 			player->Draw();
 		}
 
-		// ƒGƒlƒ~[•`‰æˆ—
+		// ã‚¨ãƒãƒŸãƒ¼æç”»å‡¦ç†
 		if (enemy != nullptr)
 		{
 			enemy->Draw();
 		}
 
-		//ƒvƒŒƒCƒ„[UŒ‚•`‰æ
+		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æ”»æ’ƒæç”»
 		if (ac != nullptr) {
 			if (ac->GetAttackFlg() == true)
 			{

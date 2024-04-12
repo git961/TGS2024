@@ -1,15 +1,15 @@
-#include "Player.h"
+ï»¿#include "Player.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 #define DEBUG
-//ƒfƒOƒŠ[‚©‚çƒ‰ƒWƒAƒ“‚É•ÏŠ·
+//ãƒ‡ã‚°ãƒªãƒ¼ã‹ã‚‰ãƒ©ã‚¸ã‚¢ãƒ³ã«å¤‰æ›
 #define DEGREE_RADIAN(_deg) (M_PI*(_deg)/180.0f)
 
 
 int color=0;
 Player::Player()
 {
-	//•‚ÆÀ•W
+	//å¹…ã¨åº§æ¨™
 	width = 30;
 	height = 30;
 	x = 200;
@@ -24,11 +24,11 @@ Player::Player()
 	move_x = 0;
 	move_y = 0;
 
-	//UŒ‚‚Ég—p•Ï”
+	//æ”»æ’ƒã«ä½¿ç”¨å¤‰æ•°
 	attacking = false;
 	atk_cnt_timer = 0;
 
-	//playerƒWƒƒƒ“ƒv—p•Ï”
+	//playerã‚¸ãƒ£ãƒ³ãƒ—ç”¨å¤‰æ•°
 	jump_start_flg = false;
 	jump_flg = false;
 
@@ -39,7 +39,7 @@ Player::Player()
 	gravity = 0.3f;
 	velocity_y = 0;
 
-	//ƒfƒoƒbƒN—p
+	//ãƒ‡ãƒãƒƒã‚¯ç”¨
 	y_ground = 600;
 
 }
@@ -55,7 +55,7 @@ void Player::Update(GameMainScene* gamemain)
 	input.InputUpdate();
 
 
-	//ƒWƒƒƒ“ƒv
+	//ã‚¸ãƒ£ãƒ³ãƒ—
 	if (input.CheckBtn(XINPUT_BUTTON_A) == TRUE)
 	{
 		jump_start_flg = true;
@@ -66,12 +66,12 @@ void Player::Update(GameMainScene* gamemain)
 		PlayerJump();
 	}
 
-	//Y‚¨‚µ‚½‚çUŒ‚
+	//YãŠã—ãŸã‚‰æ”»æ’ƒ
 	if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 	{
 		attacking = true;
 	}
-	//‰½•b‚©Œo‚Á‚½‚çUŒ‚’†ƒtƒ‰ƒO‚ğ–ß‚·H
+	//ä½•ç§’ã‹çµŒã£ãŸã‚‰æ”»æ’ƒä¸­ãƒ•ãƒ©ã‚°ã‚’æˆ»ã™ï¼Ÿ
 	if (attacking == true)
 	{
 		if (atk_cnt_timer++ > 5)
@@ -82,7 +82,7 @@ void Player::Update(GameMainScene* gamemain)
 	}
 	else
 	{
-		//ƒvƒŒƒCƒ„[‚ÌˆÚ“®ˆ—
+		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•å‡¦ç†
 		PlayerMove();
 	}
 }
@@ -95,7 +95,7 @@ void Player::Draw() const
 #ifdef DEBUG
 
 
-	////// ‰æ–Ê‚É XINPUT_STATE ‚Ì’†g‚ğ•`‰æ
+	////// ç”»é¢ã« XINPUT_STATE ã®ä¸­èº«ã‚’æç”»
 	color = GetColor(255, 255, 255);
 	for (int i = 0; i < 16; i++)
 	{
@@ -113,14 +113,14 @@ void Player::Draw() const
 
 void Player::PlayerJump()
 {
-	////‰EƒWƒƒƒ“ƒv
+	////å³ã‚¸ãƒ£ãƒ³ãƒ—
 //Zakuro_Movey = -V_zero * sinf(rad) * time + (g * time * time) / 2;
 
 
 	if (jump_flg == false)
 	{
 		jump_flg = true;
-		velocity_y = -10;//‰‘¬‚ğ—^‚¦‚é
+		velocity_y = -10;//åˆé€Ÿã‚’ä¸ãˆã‚‹
 		sita = 70;
 		rad = sita * pi / 180;
 		
@@ -141,7 +141,7 @@ void Player::PlayerJump()
 
 
 	//Old_Zakuroy = location.y;
-	////‰EƒWƒƒƒ“ƒv
+	////å³ã‚¸ãƒ£ãƒ³ãƒ—
 	//Zakuro_Movey = -V_zero * sinf(rad) * time + (g * time * time) / 2;
 	//if (location.x > 1200)location.x = Set_Zakuro_x + Zakuro_Movex;
 	//if (location.y < 320)location.y = Set_Zakuro_y + Zakuro_Movey;
@@ -153,8 +153,8 @@ void Player::PlayerJump()
 void Player::PlayerMove()
 {
 
-	//UŒ‚’†‚¶‚á‚È‚©‚Á‚½‚çƒvƒŒƒCƒ„[ˆÚ“®
-	//‰EˆÚ“®
+	//æ”»æ’ƒä¸­ã˜ã‚ƒãªã‹ã£ãŸã‚‰ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ç§»å‹•
+	//å³ç§»å‹•
 	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_RIGHT) == TRUE) {
 
 		if (move_x <= 3)
@@ -165,7 +165,7 @@ void Player::PlayerMove()
 		direction = 0;
 	}
 
-	//¶ˆÚ“®
+	//å·¦ç§»å‹•
 	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_LEFT) == TRUE) {
 
 		if (move_x >= -3)
@@ -175,7 +175,7 @@ void Player::PlayerMove()
 		direction = 1;
 	}
 
-	//‰E¶ˆÚ“®‚µ‚Ä‚È‚¢
+	//å³å·¦ç§»å‹•ã—ã¦ãªã„æ™‚
 	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_RIGHT) != TRUE && input.LongPressBtn(XINPUT_BUTTON_DPAD_LEFT) != TRUE)
 	{
 		move_x *= 0.9;

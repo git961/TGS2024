@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "CharacterBase.h"
 #include "GameMainScene.h"
 class GameMainScene;

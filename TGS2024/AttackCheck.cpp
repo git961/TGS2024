@@ -1,4 +1,4 @@
-#include "AttackCheck.h"
+ï»¿#include "AttackCheck.h"
 
 AttackCheck::AttackCheck()
 {
@@ -17,16 +17,16 @@ void AttackCheck::Update(GameMainScene* gamemain,Player* player)
 {
 	input.InputUpdate();
 	
-	//Y‚¨‚µ‚½‚çUŒ‚
+	//YãŠã—ãŸã‚‰æ”»æ’ƒ
 	if(player->GetAttacking() == true)
     {
-		//ƒvƒŒƒCƒ„[‚ª‰E‚ğŒü‚¢‚Ä‚½‚ç
+		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå³ã‚’å‘ã„ã¦ãŸã‚‰
 		if (player->GetDirection() == 0)
 		{
 			x = player->GetX()+30;
 			y = player->GetY();
 		}
-		//ƒvƒŒƒCƒ„[‚ª¶‚ğŒü‚¢‚Ä‚¢‚½‚ç
+		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå·¦ã‚’å‘ã„ã¦ã„ãŸã‚‰
 		if (player->GetDirection() == 1)
 		{
 			x = player->GetX()-30;

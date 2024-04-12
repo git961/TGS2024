@@ -1,4 +1,4 @@
-#include "DxLib.h"
+ï»¿#include "DxLib.h"
 #include "fps.h"
 #include "padinput.h"
 #include "AbstractScene.h"
@@ -6,33 +6,33 @@
 #include "GameMainScene.h"
 
 
-// ƒvƒƒOƒ‰ƒ€‚Í WinMain ‚©‚çn‚Ü‚è‚Ü‚·
+// ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ WinMain ã‹ã‚‰å§‹ã¾ã‚Šã¾ã™
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int
 	nCmdShow)
 {
-	//ƒ^ƒCƒgƒ‹‚ğvermin‚É•ÏX
-	SetMainWindowText("‚Ü‚¾ƒ^ƒCƒgƒ‹Œˆ‚Ü‚Á‚Ä‚È‚¢‚æ");
+	//ã‚¿ã‚¤ãƒˆãƒ«ã‚’verminã«å¤‰æ›´
+	SetMainWindowText("ã¾ã ã‚¿ã‚¤ãƒˆãƒ«æ±ºã¾ã£ã¦ãªã„ã‚ˆ");
 	ChangeWindowMode(TRUE);
 
-	SetGraphMode(1280, 720, 32);	//‰æ–ÊƒTƒCƒYw’è
+	SetGraphMode(1280, 720, 32);	//ç”»é¢ã‚µã‚¤ã‚ºæŒ‡å®š
 
-	if (DxLib_Init() == -1) return -1;	// DXƒ‰ƒCƒuƒ‰ƒŠ‚Ì‰Šú‰»ˆ—
+	if (DxLib_Init() == -1) return -1;	// DXãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®åˆæœŸåŒ–å‡¦ç†
 
-	SetDrawScreen(DX_SCREEN_BACK);	// •`‰ææ‰æ–Ê‚ğ— ‚É‚·‚é
+	SetDrawScreen(DX_SCREEN_BACK);	// æç”»å…ˆç”»é¢ã‚’è£ã«ã™ã‚‹
 
 	SceneManager SceneManager(dynamic_cast<AbstractScene*>(new GameMainScene));
 	Input input;
 	fps fp;
-	//ƒ‹[ƒv‘O‚ÉFPSŒv‘ª‚ğ‰Šú‰»
+	//ãƒ«ãƒ¼ãƒ—å‰ã«FPSè¨ˆæ¸¬ã‚’åˆæœŸåŒ–
 	fp.Reset_fps();
 
-	//ƒQ[ƒ€ƒ‹[ƒv
+	//ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—
 	while (ProcessMessage() != -1) {
 		SceneManager.Update();
 		SceneManager.Draw();
 		input.InputUpdate();
 
-		//fpsŒÅ’è
+		//fpså›ºå®š
 		//fp.fpsUpdate();
 
 		if (input.CheckBtn(XINPUT_BUTTON_BACK) == TRUE) {
@@ -46,7 +46,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 
 
-	DxLib_End(); // DXƒ‰ƒCƒuƒ‰ƒŠg—p‚ÌI—¹ˆ—
-	return 0; // ƒ\ƒtƒg‚ÌI—¹
+	DxLib_End(); // DXãƒ©ã‚¤ãƒ–ãƒ©ãƒªä½¿ç”¨ã®çµ‚äº†å‡¦ç†
+	return 0; // ã‚½ãƒ•ãƒˆã®çµ‚äº†
 
 }
