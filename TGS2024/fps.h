@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #ifndef FPS_H_
 #define FPS_H_
 #include"DxLib.h"
@@ -8,7 +8,7 @@ class fps
 {
 private:
 	int count;
-	//FPS‚ÌŒv‘ª‚Æ•\¦‚ğs‚¤ƒ[ƒJƒ‹•Ï”‚ÌéŒ¾
+	//FPSã®è¨ˆæ¸¬ã¨è¡¨ç¤ºã‚’è¡Œã†ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å®£è¨€
 	LONGLONG nowTime;
 	LONGLONG oldTime;
 	LONGLONG fpsCheckTime;
@@ -23,11 +23,11 @@ public:
 	fps();
 	~fps();
 
-	//ŠÖ”‚Ìƒvƒƒgƒ^ƒCƒvéŒ¾
-	void wait_fanc();//FPSŒÅ’èˆ—‚ÌŠÖ”
-	void Reset_fps();//ƒ‹[ƒv‘O‚ÉFPSŒv‘ª‚ğ‰Šú‰»‚·‚éŠÖ”
-	void Keisoku_fps();//FPS‚ÌŒv‘ª‚·‚éŠÖ”
-	void display_fps()const;//Œv‘ª‚µ‚½FPS‚ğ•\¦‚·‚éŠÖ”
+	//é–¢æ•°ã®ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
+	void wait_fanc();//FPSå›ºå®šå‡¦ç†ã®é–¢æ•°
+	void Reset_fps();//ãƒ«ãƒ¼ãƒ—å‰ã«FPSè¨ˆæ¸¬ã‚’åˆæœŸåŒ–ã™ã‚‹é–¢æ•°
+	void Keisoku_fps();//FPSã®è¨ˆæ¸¬ã™ã‚‹é–¢æ•°
+	void display_fps()const;//è¨ˆæ¸¬ã—ãŸFPSã‚’è¡¨ç¤ºã™ã‚‹é–¢æ•°
 
 	void fpsUpdate();
 };

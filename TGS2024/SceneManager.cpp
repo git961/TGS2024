@@ -1,16 +1,16 @@
-#include "SceneManager.h"
+ï»¿#include "SceneManager.h"
 #include "DxLib.h"
 
-//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 SceneManager::SceneManager() {
 	now_scene = nullptr;
 	next_scene = now_scene;
 }
 
-//ˆø”•t‚«ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+//å¼•æ•°ä»˜ãã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 SceneManager::SceneManager(AbstractScene* scene)
 {
-	//ó‚¯æ‚Á‚½ˆø”‚ğ‘ã“ü
+	//å—ã‘å–ã£ãŸå¼•æ•°ã‚’ä»£å…¥
 	now_scene = scene;
 	next_scene = now_scene;
 }
@@ -28,29 +28,29 @@ void SceneManager::Update()
 }
 
 void SceneManager::Draw() const {
-	//‰æ–Ê‚Ì‰Šú‰»
+	//ç”»é¢ã®åˆæœŸåŒ–
 	ClearDrawScreen();
 
-	//ƒV[ƒ“‚Ì•`‰æ
+	//ã‚·ãƒ¼ãƒ³ã®æç”»
 	if (now_scene != nullptr) {
 		now_scene->Draw();
 	}
 
-	//— ‰æ–Ê‚Ì“à—e‚ğ•\‰æ–Ê‚É”½‰f
+	//è£ç”»é¢ã®å†…å®¹ã‚’è¡¨ç”»é¢ã«åæ˜ 
 	ScreenFlip();
 }
 
-//‘JˆÚæ‚Ìw’è
+//é·ç§»å…ˆã®æŒ‡å®š
 AbstractScene* SceneManager::Change()
 {
 	next_scene = now_scene->Change();
 
-	//‘JˆÚæ‚ªŒ»İ‚ÌƒV[ƒ“‚Æˆá‚Á‚Ä‚¢‚½‚ç
+	//é·ç§»å…ˆãŒç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã¨é•ã£ã¦ã„ãŸã‚‰
 	if (next_scene != now_scene) {
 		delete now_scene;
 		now_scene = next_scene;
 	}
 
-	//‘JˆÚæ‚ğ•Ô‹p‚·‚é
+	//é·ç§»å…ˆã‚’è¿”å´ã™ã‚‹
 	return next_scene;
 }
