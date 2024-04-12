@@ -11,14 +11,14 @@ Player::Player()
 {
 
 	//画像読込
-	LoadDivGraph("image/pickaxe.png", 3, 3, 1, 32, 32, player_attack_img);
-	LoadDivGraph("image/player.png", 2, 2, 1, 32, 32, player_walk_img);
+	LoadDivGraph("image/pickaxe.png", 3, 3, 1, 64, 64, player_attack_img);
+	LoadDivGraph("image/player.png", 2, 2, 1, 64, 64, player_walk_img);
 	anim_cnt = 0;
 
 
 	//幅と座標
-	width = 30;
-	height = 30;
+	width = 40;
+	height = 50;
 	x = 200;
 	y = 400;
 
@@ -98,6 +98,12 @@ void Player::Update(GameMainScene* gamemain)
 
 void Player::Draw() const
 {
+
+
+	DrawBoxAA(x - width/2, y - height/2, x + width / 2, y + height / 2, 0x00ffff,true);
+	DrawCircleAA(x, y, 1, 0xff00ff, true);
+
+
 	//プレイヤー画像表示
 	switch (direction)
 	{
@@ -118,13 +124,13 @@ void Player::Draw() const
 			switch (anim_cnt)
 			{
 			case 0:
-				DrawRotaGraph(x + 30, y, 1, 0, player_attack_img[0], TRUE, FALSE);
+				DrawRotaGraph(x + 30, y-10, 1, 0, player_attack_img[0], TRUE, FALSE);
 				break;
-			case 5:
-				DrawRotaGraph(x + 30, y, 1, 0, player_attack_img[1], TRUE, FALSE);
+			case 3:
+				DrawRotaGraph(x + 30, y+5, 1, 0, player_attack_img[1], TRUE, FALSE);
 				break;
-			case 8:
-				DrawRotaGraph(x + 30, y, 1, 0, player_attack_img[2], TRUE, FALSE);
+			case 4:
+				DrawRotaGraph(x + 30, y+10, 1, 0, player_attack_img[2], TRUE, FALSE);
 				break;
 			}
 			break;
@@ -145,9 +151,6 @@ void Player::Draw() const
 			break;
 		}
 	}
-
-	//DrawBoxAA(x - width/2, y - height/2, x + width / 2, y + height / 2, 0x00ffff,true);
-	//DrawCircleAA(x, y, 1, 0xff00ff, true);
 
 #ifdef DEBUG
 
