@@ -9,6 +9,13 @@
 int color=0;
 Player::Player()
 {
+
+	//画像読込
+	LoadDivGraph("image/pickaxe.png", 3, 3, 1, 32, 32, player_attack_img);
+	LoadDivGraph("image/player.png", 2, 2, 1, 32, 32, player_walk_img);
+	anim_cnt = 0;
+
+
 	//幅と座標
 	width = 30;
 	height = 30;
@@ -74,8 +81,10 @@ void Player::Update(GameMainScene* gamemain)
 	//何秒か経ったら攻撃中フラグを戻す？
 	if (attacking == true)
 	{
-		if (atk_cnt_timer++ > 5)
+		anim_cnt++;
+		if (atk_cnt_timer++ > 8)
 		{
+			anim_cnt = 0;
 			atk_cnt_timer = 0;
 			attacking = false;
 		}
@@ -89,8 +98,56 @@ void Player::Update(GameMainScene* gamemain)
 
 void Player::Draw() const
 {
-	DrawBoxAA(x - width/2, y - height/2, x + width / 2, y + height / 2, 0x00ffff,true);
-	DrawCircleAA(x, y, 1, 0xff00ff, true);
+	//プレイヤー画像表示
+	switch (direction)
+	{
+	case 0:
+		DrawRotaGraph(x, y, 1, 0, player_walk_img[0], TRUE, FALSE);
+		break;
+	case 1:
+		DrawRotaGraph(x, y, 1, 0, player_walk_img[1], TRUE, FALSE);
+		break;
+	}
+
+	if (attacking == true)
+	{
+		switch (direction)
+		{
+		case 0:
+			//右向きだったら
+			switch (anim_cnt)
+			{
+			case 0:
+				DrawRotaGraph(x + 30, y, 1, 0, player_attack_img[0], TRUE, FALSE);
+				break;
+			case 5:
+				DrawRotaGraph(x + 30, y, 1, 0, player_attack_img[1], TRUE, FALSE);
+				break;
+			case 8:
+				DrawRotaGraph(x + 30, y, 1, 0, player_attack_img[2], TRUE, FALSE);
+				break;
+			}
+			break;
+		case 1:
+			//左向きだったら
+			switch (anim_cnt)
+			{
+			case 0:
+				DrawRotaGraph(x - 30, y, 1, 0, player_attack_img[0], TRUE, TRUE);
+				break;
+			case 5:
+				DrawRotaGraph(x - 30, y, 1, 0, player_attack_img[1], TRUE, TRUE);
+				break;
+			case 8:
+				DrawRotaGraph(x - 30, y, 1, 0, player_attack_img[2], TRUE, TRUE);
+				break;
+			}
+			break;
+		}
+	}
+
+	//DrawBoxAA(x - width/2, y - height/2, x + width / 2, y + height / 2, 0x00ffff,true);
+	//DrawCircleAA(x, y, 1, 0xff00ff, true);
 
 #ifdef DEBUG
 

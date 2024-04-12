@@ -45,8 +45,8 @@ void AttackCheck::Draw() const
 {
 	if (attack_flg == true)
 	{
-		DrawBoxAA(x - width / 2, y - height / 2, x + width / 2, y + height / 2, 0x00ffff, true);
-		DrawCircleAA(x, y, 1, 0xff00ff, true);
+		//DrawBoxAA(x - width / 2, y - height / 2, x + width / 2, y + height / 2, 0x00ffff, true);
+		//DrawCircleAA(x, y, 1, 0xff00ff, true);
 
 	}
 }
