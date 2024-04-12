@@ -1,5 +1,5 @@
-#pragma once
-#define DEBUG		// ƒfƒoƒbƒO—pAÁ‚·‚Æ#ifdef DEBUG‚Ìˆ—‚ª‚³‚ê‚È‚­‚È‚é
+ï»¿#pragma once
+#define DEBUG		// ãƒ‡ãƒãƒƒã‚°ç”¨ã€æ¶ˆã™ã¨#ifdef DEBUGã®å‡¦ç†ãŒã•ã‚Œãªããªã‚‹
 
 #include <stdlib.h>
 #include <time.h>
@@ -8,18 +8,18 @@
 
 class GameMainScene;
 
-// “G‚Ìí—Ş
+// æ•µã®ç¨®é¡
 enum EnemyType
 {
-    walk,       // •às
-    roll        // “]‚ª‚è
+    walk,       // æ­©è¡Œ
+    roll        // è»¢ãŒã‚Š
 };
 
 class Enemy : public CharacterBase
 {
 private:
-    int type;       // 0:•às@1:“]‚ª‚è
-    int num;        // ƒXƒ|[ƒ“ˆÊ’uİ’è—p
+    int type;       // 0:æ­©è¡Œã€€1:è»¢ãŒã‚Š
+    int num;        // ã‚¹ãƒãƒ¼ãƒ³ä½ç½®è¨­å®šç”¨
 
 public:
     Enemy(int set_type);
@@ -28,8 +28,8 @@ public:
     void Update(GameMainScene* gamemain);
     void Draw() const;
 
-    void Damege(int damege);                // ”íƒ_ƒ[ƒWˆ—
+    void Damege(int damege);                // è¢«ãƒ€ãƒ¡ãƒ¼ã‚¸å‡¦ç†
 
-    float GetHp() { return hp; }            // hpæ“¾
+    float GetHp() { return hp; }            // hpå–å¾—
 };
 
