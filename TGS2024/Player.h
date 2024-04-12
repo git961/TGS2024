@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "CharacterBase.h"
 #include "GameMainScene.h"
 #include "padinput.h"
@@ -12,11 +12,11 @@ private:
     CharacterBase charabase;
     Input input;
 
-    float atk_cnt_timer;//UŒ‚”­¶‚µ‚Ä‚©‚ç‚Æ‚ß‚é‚Ü‚Å‚ÌŠÔ‚ğƒJƒEƒ“ƒg‚·‚é—p
+    float atk_cnt_timer;//æ”»æ’ƒç™ºç”Ÿã—ã¦ã‹ã‚‰ã¨ã‚ã‚‹ã¾ã§ã®æ™‚é–“ã‚’ã‚«ã‚¦ãƒ³ãƒˆã™ã‚‹ç”¨
 
-       //ƒvƒŒƒCƒ„[‚Ìó‘Ô
-        bool walk;//true:•à‚¢‚Ä‚é false:~‚Ü‚Á‚Ä‚é
-        bool attacking;//true:UŒ‚’† false:UŒ‚‚µ‚Ä‚È‚¢ 
+       //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®çŠ¶æ…‹
+        bool walk;//true:æ­©ã„ã¦ã‚‹ false:æ­¢ã¾ã£ã¦ã‚‹
+        bool attacking;//true:æ”»æ’ƒä¸­ false:æ”»æ’ƒã—ã¦ãªã„ 
 
 
 public:
@@ -26,7 +26,7 @@ public:
     void Update(GameMainScene* gamemain);
     void Draw() const;
 
-    //ƒvƒŒƒCƒ„[UŒ‚—pƒ‚[ƒVƒ‡ƒ“@PickaxeF‚Â‚é‚Í‚µ
+    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æ”»æ’ƒç”¨ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã€€Pickaxeï¼šã¤ã‚‹ã¯ã—
     void AttackPickaxe();
 
     bool GetAttacking() { return attacking; };
@@ -36,6 +36,6 @@ public:
 //{
 //    if (input.CheckBtn(XINPUT_BUTTON_Y) == TRUE)
 //    {
-//        //Y‚¨‚µ‚½‚çUŒ‚
+//        //YãŠã—ãŸã‚‰æ”»æ’ƒ
 //    }
 //}

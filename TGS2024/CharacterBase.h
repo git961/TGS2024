@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 #include <math.h>
 #include "DxLib.h"
 
-//#define CHARAIMAGENUM 10;//ƒLƒƒƒ‰ƒNƒ^‰æ‘œ“ü‚ê‚é”z—ñ‚Ì‘å‚«‚³
+//#define CHARAIMAGENUM 10;//ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ç”»åƒå…¥ã‚Œã‚‹é…åˆ—ã®å¤§ãã•
 
 class CharacterBase
 {
@@ -14,47 +14,47 @@ protected:
 	float move_x;
 	float move_y;
 
-	float hp;//‘Ì—Í
-	float attack;//UŒ‚—Í
+	float hp;//ä½“åŠ›
+	float attack;//æ”»æ’ƒåŠ›
 
 	float speed;
-	bool direction;//Œü‚«@0:‰E 1:¶
+	bool direction;//å‘ãã€€0:å³ 1:å·¦
 
-	int chara_image[10];//ƒLƒƒƒ‰ƒNƒ^‰æ‘œ“ü‚ê‚é—p
+	int chara_image[10];//ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ç”»åƒå…¥ã‚Œã‚‹ç”¨
 
-	float width;//•
-	float height;//‚‚³
+	float width;//å¹…
+	float height;//é«˜ã•
 
-	float distance_x;//x“¯m‚Ì‹——£‚ÌŒvZ—p
-	float distance_y;//y“¯m‚Ì‹——£‚ÌŒvZ—p
+	float distance_x;//xåŒå£«ã®è·é›¢ã®è¨ˆç®—ç”¨
+	float distance_y;//yåŒå£«ã®è·é›¢ã®è¨ˆç®—ç”¨
 
-	float two_widths;//2‚Â‚Ì•‚ğ‡‚í‚¹‚é—p
-	float two_heights;//2‚Â‚Ì‚‚³‚ğ‡‚í‚¹‚é—p
+	float two_widths;//2ã¤ã®å¹…ã‚’åˆã‚ã›ã‚‹ç”¨
+	float two_heights;//2ã¤ã®é«˜ã•ã‚’åˆã‚ã›ã‚‹ç”¨
 
-	//opponent:ˆÓ–¡¨‘Šè
+	//opponent:æ„å‘³â†’ç›¸æ‰‹
 
 public:
-	//ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÆƒfƒXƒgƒ‰ƒNƒ^
+	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¨ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	CharacterBase(){};
 	~CharacterBase(){};
 
-	//“–‚½‚è”»’è:‰½‚©‚É“–‚½‚Á‚½‚©‚Ç‚¤‚©‚¾‚¯•Ô‚·
+	//å½“ãŸã‚Šåˆ¤å®š:ä½•ã‹ã«å½“ãŸã£ãŸã‹ã©ã†ã‹ã ã‘è¿”ã™
 	bool HitCheck(float opponent_x,float opponent_y,float opponent_center_x, float opponent_center_y)
 	{
 		float my_center_x = width / 2;
 		float my_center_y = height / 2;
 
-		//xÀ•W‚Ì‘Šè‚Æ©•ª‚Ì‹——£‚ğâ‘Î’l‚Å‘ª‚é
+		//xåº§æ¨™ã®ç›¸æ‰‹ã¨è‡ªåˆ†ã®è·é›¢ã‚’çµ¶å¯¾å€¤ã§æ¸¬ã‚‹
 		distance_x = fabs(x - opponent_x);
-		//2‚Â‚Ì•/2‚ğ‘«‚·
+		//2ã¤ã®å¹…/2ã‚’è¶³ã™
 		two_widths = my_center_x + opponent_center_x/2;
 
-		//yÀ•W‚Ì‘Šè‚Æ©•ª‚Ì‹——£‚ğâ‘Î’l‚Å‘ª‚é
+		//yåº§æ¨™ã®ç›¸æ‰‹ã¨è‡ªåˆ†ã®è·é›¢ã‚’çµ¶å¯¾å€¤ã§æ¸¬ã‚‹
 		distance_y = fabs(y - opponent_y);
-		//2‚Â‚Ì‚‚³/2‚ğ‘«‚·
+		//2ã¤ã®é«˜ã•/2ã‚’è¶³ã™
 		two_heights = my_center_y + opponent_center_y / 2;
 
-		//‚à‚µ‹——£‚Ìâ‘Î’l‚æ‚è•‚ª‘å‚«‚©‚Á‚½‚çƒqƒbƒg
+		//ã‚‚ã—è·é›¢ã®çµ¶å¯¾å€¤ã‚ˆã‚Šå¹…ãŒå¤§ãã‹ã£ãŸã‚‰ãƒ’ãƒƒãƒˆ
 		if (distance_x < two_widths && distance_y<two_heights)
 		{
 			return true;
@@ -73,7 +73,7 @@ public:
 	float GetWidth() { return width; };
 	float GetHeight() { return height; };
 
-	bool GetDirection() { return direction; };//ƒLƒƒƒ‰‚ÌŒü‚«‚ğ•Ô‚·@0:‰E 1:¶
+	bool GetDirection() { return direction; };//ã‚­ãƒ£ãƒ©ã®å‘ãã‚’è¿”ã™ã€€0:å³ 1:å·¦
 
 };
 

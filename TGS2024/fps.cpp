@@ -1,4 +1,4 @@
-#include "fps.h"
+Ôªø#include "fps.h"
 
 
 
@@ -25,7 +25,7 @@ void fps::wait_fanc() {
 	int term;
 	static int t = 0;
 
-	//åªç›ÇÃéûä‘ - 1âÒëOÇ…éÊÇ¡ÇΩéûä‘Ç≈16ïbÇ‹ÇƒÇƒÇÈÇ©í≤Ç◊ÇÈ 
+	//ÁèæÂú®„ÅÆÊôÇÈñì - 1ÂõûÂâç„Å´Âèñ„Å£„ÅüÊôÇÈñì„Åß16Áßí„Åæ„Å¶„Å¶„Çã„ÅãË™ø„Åπ„Çã 
 	term = GetNowCount() - t;
 
 	if (16 - term > 0)
@@ -42,16 +42,16 @@ void fps::Reset_fps() {
 }
 
 void fps::Keisoku_fps() {
-	///1ÉãÅ[Évéûì_ÇÃÉVÉXÉeÉÄéûä‘ÇéÊìæ
+	///1„É´„Éº„ÉóÊôÇÁÇπ„ÅÆ„Ç∑„Çπ„ÉÜ„É†ÊôÇÈñì„ÇíÂèñÂæó
 	oldTime = nowTime;
 	nowTime = GetNowHiPerformanceCount();
 
-	//1ÉãÅ[ÉvÇÃéûä‘åoâﬂÇãÅÇﬂÇÈ
+	//1„É´„Éº„Éó„ÅÆÊôÇÈñìÁµåÈÅé„ÇíÊ±Ç„ÇÅ„Çã
 	deltaTime = (nowTime - oldTime) / 6000000.0F;
 
 	count += deltaTime;
 
-	//1ïbä‘ÇÃFPSÇåvë™Ç∑ÇÈÅA1ïbÇ≤Ç∆Ç…èâä˙âªÇ∑ÇÈ
+	//1ÁßíÈñì„ÅÆFPS„ÇíË®àÊ∏¨„Åô„Çã„ÄÅ1Áßí„Åî„Å®„Å´ÂàùÊúüÂåñ„Åô„Çã
 	fpsCounter++;
 	if (nowTime - fpsCheckTime > 1000000) {
 		Fps = fpsCounter;
@@ -63,7 +63,7 @@ void fps::Keisoku_fps() {
 }
 
 void fps::display_fps()const {
-	//FPSÇÃï\é¶
+	//FPS„ÅÆË°®Á§∫
 	SetFontSize(16);
 	DrawFormatString(0, 200, 0xffffff, "FPS:%3d DELTA: %8.6fsec time:%d", Fps, deltaTime, Time);
 

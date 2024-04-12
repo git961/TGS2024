@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "DxLib.h"
 
 #define BUTTON_NUMMAX 16
@@ -17,31 +17,31 @@ public:
 	int Btnnum = 0;
 	int LongBtnnum = 0;
 
-	//’P‰Ÿ‚µƒAƒbƒvƒf[ƒg
+	//å˜æŠ¼ã—ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
 	void InputUpdate() {
-		//“ü—Íó‘Ô‚ğæ“¾
+		//å…¥åŠ›çŠ¶æ…‹ã‚’å–å¾—
 		GetJoypadXInputState(DX_INPUT_PAD1, &getkey);
 
-		//ƒ{ƒ^ƒ““ü—Í
+		//ãƒœã‚¿ãƒ³å…¥åŠ›
 		for (int i = 0; i < 16; i++) {
-			//‘O‚Ì“ü—Í‚ğó‚¯æ‚é
+			//å‰ã®å…¥åŠ›ã‚’å—ã‘å–ã‚‹
 			oldBtn[i] = nowBtn[i];
-			//¡“ü—Í‚³‚ê‚Ä‚¢‚éƒ{ƒ^ƒ“‚ğó‚¯æ‚é
+			//ä»Šå…¥åŠ›ã•ã‚Œã¦ã„ã‚‹ãƒœã‚¿ãƒ³ã‚’å—ã‘å–ã‚‹
 			nowBtn[i] = getkey.Buttons[i];
-			//0‚©‚P‚ğó‚¯æ‚é
+			//0ã‹ï¼‘ã‚’å—ã‘å–ã‚‹
 			Btnflg[i] = nowBtn[i] & ~oldBtn[i];
 			LongPressBtnflg[i] = nowBtn[i];
 
-			//‚P‚ğó‚¯æ‚Á‚½‚ç¡‚Ì”Ô†Ai‚ğó‚¯æ‚é
+			//ï¼‘ã‚’å—ã‘å–ã£ãŸã‚‰ä»Šã®ç•ªå·ã€iã‚’å—ã‘å–ã‚‹
 			if (Btnflg[i] == 1) {
 				Btnnum = i;
 			}
 
-			//¶\šƒL[ƒ`ƒFƒbƒN
+			//å·¦åå­—ã‚­ãƒ¼ãƒã‚§ãƒƒã‚¯
 			if (Btnflg[2] == 1) {
 				LongBtnnum = 2;
 			}
-			//‰E\šƒL[ƒ`ƒFƒbƒN
+			//å³åå­—ã‚­ãƒ¼ãƒã‚§ãƒƒã‚¯
 			if (Btnflg[3] == 1) {
 				LongBtnnum = 3;
 			}
@@ -50,17 +50,17 @@ public:
 
 	}
 
-	//ƒvƒŒƒCƒ„[‚ÌˆÚ“®—pƒAƒbƒvƒf[ƒg
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç§»å‹•ç”¨ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
 	//void InputMoveUpdate() {
-	//	//“ü—Íó‘Ô‚ğæ“¾
+	//	//å…¥åŠ›çŠ¶æ…‹ã‚’å–å¾—
 	//	GetJoypadXInputState(DX_INPUT_PAD1, &getkey);
 	//}
 
-	//ˆê‰ñƒvƒbƒVƒ…—p
+	//ä¸€å›ãƒ—ãƒƒã‚·ãƒ¥ç”¨
 	int CheckBtn(int getBtn) {
-		//‰Ÿ‚³‚ê‚½uŠÔ‚Ìkeynum”Ô–Ú‚Ì’l‚ª‚P‚¾‚Á‚½‚ç
+		//æŠ¼ã•ã‚ŒãŸç¬é–“ã®keynumç•ªç›®ã®å€¤ãŒï¼‘ã ã£ãŸã‚‰
 		if (Btnflg[Btnnum] == 1) {
-			//‰Ÿ‚³‚ê‚½ƒ{ƒ^ƒ“‚Ì”Ô†==ó‚¯æ‚Á‚½’l‚¾‚Á‚½‚ç
+			//æŠ¼ã•ã‚ŒãŸãƒœã‚¿ãƒ³ã®ç•ªå·==å—ã‘å–ã£ãŸå€¤ã ã£ãŸã‚‰
 			if (Btnnum == getBtn) {
 				return TRUE;
 			}
@@ -68,11 +68,11 @@ public:
 		return FALSE;
 	}
 
-	//‰Ÿ‚µ‘±‚¯‚Ä‚¢‚éŠÔ—p
+	//æŠ¼ã—ç¶šã‘ã¦ã„ã‚‹é–“ç”¨
 	int LongPressBtn(int getbtn)
 	{
 		if (LongPressBtnflg[LongBtnnum] == 1) {
-			//‰Ÿ‚³‚ê‚½ƒ{ƒ^ƒ“‚Ì”Ô†==ó‚¯æ‚Á‚½’l‚¾‚Á‚½‚ç
+			//æŠ¼ã•ã‚ŒãŸãƒœã‚¿ãƒ³ã®ç•ªå·==å—ã‘å–ã£ãŸå€¤ã ã£ãŸã‚‰
 			if (LongBtnnum == getbtn) {
 				return TRUE;
 			}

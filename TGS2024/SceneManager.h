@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "AbstractScene.h"
 class SceneManager : public AbstractScene
 {

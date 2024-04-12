@@ -1,4 +1,4 @@
-#include "Player.h"
+ï»¿#include "Player.h"
 #define DEBUG
 int color=0;
 int a;
@@ -23,26 +23,26 @@ void Player::Update(GameMainScene* gamemain)
 	input.InputUpdate();
 
 
-	//ƒvƒŒƒCƒ„[ˆÚ“®
-	//‰EˆÚ“®
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ç§»å‹•
+	//å³ç§»å‹•
 	a = input.LongPressBtn(XINPUT_BUTTON_DPAD_RIGHT);
 
 	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_RIGHT) == TRUE) {
 		x+=3;
 		direction = 0;
 	}
-	//¶ˆÚ“®
+	//å·¦ç§»å‹•
 	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_LEFT) == TRUE) {
 		x-=3;
 		direction = 1;
 	}
 
-	//Y‚¨‚µ‚½‚çUŒ‚
+	//YãŠã—ãŸã‚‰æ”»æ’ƒ
 	if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 	{
 		attacking = true;
 	}
-	//‰½•b‚©Œo‚Á‚½‚çUŒ‚’†ƒtƒ‰ƒO‚ğ–ß‚·H
+	//ä½•ç§’ã‹çµŒã£ãŸã‚‰æ”»æ’ƒä¸­ãƒ•ãƒ©ã‚°ã‚’æˆ»ã™ï¼Ÿ
 	if (attacking == true)
 	{
 		if (atk_cnt_timer++ > 5)
@@ -61,7 +61,7 @@ void Player::Draw() const
 #ifdef DEBUG
 
 
-	////// ‰æ–Ê‚É XINPUT_STATE ‚Ì’†g‚ğ•`‰æ
+	////// ç”»é¢ã« XINPUT_STATE ã®ä¸­èº«ã‚’æç”»
 	color = GetColor(255, 255, 255);
 	for (int i = 0; i < 16; i++)
 	{

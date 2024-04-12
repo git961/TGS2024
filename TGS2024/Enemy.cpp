@@ -1,19 +1,19 @@
-#include "Enemy.h"
+ï»¿#include "Enemy.h"
 
 Enemy::Enemy(int set_type)
 {
-	// ’†SÀ•W
+	// ä¸­å¿ƒåº§æ¨™
 	x = 50;
 	y = 600;
 
 	width = 30;
 	height = 30;
 
-	move_x = 1;			// ˆÚ“®—Ê
-	move_y = 0;			// –¢Žg—p
+	move_x = 1;			// ç§»å‹•é‡
+	move_y = 0;			// æœªä½¿ç”¨
 	hp = 10;
 	attack = 10;
-	speed = 3;			// ‚È‚­‚Ä‚à—Ç‚¢
+	speed = 3;			// ãªãã¦ã‚‚è‰¯ã„
 
 	type = set_type;
 
@@ -28,7 +28,7 @@ Enemy::Enemy(int set_type)
 		direction = false;
 	}
 
-	// is•û–@‚ª¶‚È‚çxÀ•W‚ÆˆÚ“®•ûŒü‚ª•Ï‚í‚é
+	// é€²è¡Œæ–¹æ³•ãŒå·¦ãªã‚‰xåº§æ¨™ã¨ç§»å‹•æ–¹å‘ãŒå¤‰ã‚ã‚‹
 	if (direction == false)
 	{
 		x = 1260;
@@ -43,10 +43,10 @@ Enemy::~Enemy()
 
 void Enemy::Update(GameMainScene* gamemain)
 {
-	// ˆÚ“®ˆ—
+	// ç§»å‹•å‡¦ç†
 	x += speed * move_x;
 
-	// ’[‚É—ˆ‚½‚ç’µ‚Ë•Ô‚éA“G“¯Žm‚Ì“–‚½‚è”»’è‚ÅŽg—p‚·‚é‚©‚à
+	// ç«¯ã«æ¥ãŸã‚‰è·³ã­è¿”ã‚‹ã€æ•µåŒå£«ã®å½“ãŸã‚Šåˆ¤å®šã§ä½¿ç”¨ã™ã‚‹ã‹ã‚‚
 	if (x + width / 2 > 1280 || x - width / 2 < 0)
 	{
 		move_x *= -1;
@@ -60,14 +60,14 @@ void Enemy::Draw() const
 
 #endif // DEBUG
 
-	// “–‚½‚è”»’è‚Ìƒ{ƒbƒNƒX
+	// å½“ãŸã‚Šåˆ¤å®šã®ãƒœãƒƒã‚¯ã‚¹
 	DrawBoxAA(x - width / 2, y - width / 2, x + width / 2, y + height / 2, 0xffffff, true);
-	// ’†SÀ•W
+	// ä¸­å¿ƒåº§æ¨™
 	DrawCircleAA(x, y, 1, 0xff00ff, true);
 
 }
 
-// ”íƒ_ƒ[ƒWˆ—
+// è¢«ãƒ€ãƒ¡ãƒ¼ã‚¸å‡¦ç†
 void Enemy::Damege(int damege)
 {
 	hp -= (float)damege;
