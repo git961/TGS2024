@@ -19,6 +19,7 @@ class Enemy : public CharacterBase
 {
 private:
     int num;        // スポーン位置設定用
+    //int death_cnt;  // 死亡アニメーションが終わるまでの時間
 
 public:
     Enemy(float set_x);
@@ -30,5 +31,6 @@ public:
     void Damege(int damege);                // 被ダメージ処理
 
     float GetHp() { return hp; }            // hp取得
+    //int GetDeathCnt() { return death_cnt; } // 死亡アニメーション終了時間の取得
 };
 

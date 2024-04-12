@@ -16,6 +16,12 @@ Enemy::Enemy(float set_x)
 	attack = 10;
 	speed = 3;			// なくても良い
 
+	//画像読込
+	//LoadDivGraph("images/Enemy/EnemyTest01.png", 9, 3, 1, 64, 64, chara_image);
+	LoadDivGraph("images/Enemy/EnemyTest.png", 9, 3, 1, 32, 32, chara_image);
+
+	//death_cnt = 90;
+
 	//srand(time(NULL));
 	//num = rand() % 10 + 1;
 	//if (num >= 5)
@@ -50,6 +56,11 @@ void Enemy::Update(GameMainScene* gamemain)
 	//{
 	//	move_x *= -1;
 	//}
+
+	//if (hp <= 0 && death_cnt != 0)
+	//{
+	//	death_cnt--;
+	//}
 }
 
 void Enemy::Draw() const
@@ -62,6 +73,42 @@ void Enemy::Draw() const
 	DrawBoxAA(x - width / 2, y - width / 2, x + width / 2, y + height / 2, 0xffffff, true);
 	// 中心座標
 	DrawCircleAA(x, y, 1, 0xff00ff, true);
+
+	// 画像の描画
+	DrawRotaGraph((int)x, (int)y, 1.0, 0.0, chara_image[0], TRUE, FALSE);
+
+	//if (hp <= 0)
+	//{
+	//	switch (death_cnt)
+	//	{
+	//	case 80:
+	//		DrawRotaGraph((int)x, (int)y, 1.0, 0.0, chara_image[1], TRUE, FALSE);
+	//		break;
+	//	case 70:
+	//		DrawRotaGraph((int)x, (int)y, 1.0, 0.0, chara_image[2], TRUE, FALSE);
+	//		break;
+	//	case 60:
+	//		DrawRotaGraph((int)x, (int)y, 1.0, 0.0, chara_image[3], TRUE, FALSE);
+	//		break;
+	//	case 50:
+	//		DrawRotaGraph((int)x, (int)y, 1.0, 0.0, chara_image[4], TRUE, FALSE);
+	//		break;
+	//	case 40:
+	//		DrawRotaGraph((int)x, (int)y, 1.0, 0.0, chara_image[5], TRUE, FALSE);
+	//		break;
+	//	case 30:
+	//		DrawRotaGraph((int)x, (int)y, 1.0, 0.0, chara_image[6], TRUE, FALSE);
+	//		break;
+	//	case 20:
+	//		DrawRotaGraph((int)x, (int)y, 1.0, 0.0, chara_image[7], TRUE, FALSE);
+	//		break;
+	//	case 10:
+	//		DrawRotaGraph((int)x, (int)y, 1.0, 0.0, chara_image[8], TRUE, FALSE);
+	//		break;
+	//	default:
+	//		break;
+	//	}
+	//}
 
 }
 
