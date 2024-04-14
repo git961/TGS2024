@@ -9,7 +9,6 @@ class Player :
     public CharacterBase
 {
 private:
-    CharacterBase charabase;
     Input input;
 
     int player_walk_img[10];

@@ -4,8 +4,8 @@ AttackCheck::AttackCheck()
 {
 	width = 50;
 	height = 40;
-	x = 0;
-	y = 0;
+	location.x = 0;
+	location.y = 0;
 	attack_flg = false;
 }
 
@@ -23,14 +23,14 @@ void AttackCheck::Update(GameMainScene* gamemain,Player* player)
 		//プレイヤーが右を向いてたら
 		if (player->GetDirection() == 0)
 		{
-			x = player->GetX()+40;
-			y = player->GetY();
+			location.x = player->GetLocation().x+40;
+			location.y = player->GetLocation().y;
 		}
 		//プレイヤーが左を向いていたら
 		if (player->GetDirection() == 1)
 		{
-			x = player->GetX()-40;
-			y = player->GetY();
+			location.x = player->GetLocation().x-40;
+			location.y = player->GetLocation().y;
 		}
 		attack_flg = true;
 	}
@@ -45,8 +45,8 @@ void AttackCheck::Draw() const
 {
 	if (attack_flg == true)
 	{
-		DrawBoxAA(x - width / 2, y - height / 2, x + width / 2, y + height / 2, 0x00ffff, false);
-		DrawCircleAA(x, y, 1, 0xff00ff, true);
+		DrawBoxAA(location.x - width / 2, location.y - height / 2, location.x + width / 2, location.y + height / 2, 0x00ffff, false);
+		DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 
 	}
 }

@@ -3,8 +3,8 @@
 Enemy::Enemy(int set_type)
 {
 	// 中心座標
-	x = 50;
-	y = 600;
+	location.x = 50;
+	location.y = 600;
 
 	width = 30;
 	height = 30;
@@ -31,7 +31,7 @@ Enemy::Enemy(int set_type)
 	// 進行方法が左ならx座標と移動方向が変わる
 	if (direction == false)
 	{
-		x = 1260;
+		location.x = 1260;
 		move_x *= -1;
 	}
 }
@@ -44,10 +44,10 @@ Enemy::~Enemy()
 void Enemy::Update(GameMainScene* gamemain)
 {
 	// 移動処理
-	x += speed * move_x;
+	//location.x += speed * move_x;
 
 	// 端に来たら跳ね返る、敵同士の当たり判定で使用するかも
-	if (x + width / 2 > 1280 || x - width / 2 < 0)
+	if (location.x + width / 2 > 1280 || location.x - width / 2 < 0)
 	{
 		move_x *= -1;
 	}
@@ -61,9 +61,9 @@ void Enemy::Draw() const
 #endif // DEBUG
 
 	// 当たり判定のボックス
-	DrawBoxAA(x - width / 2, y - width / 2, x + width / 2, y + height / 2, 0xffffff, true);
+	DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);
 	// 中心座標
-	DrawCircleAA(x, y, 1, 0xff00ff, true);
+	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 
 }
 

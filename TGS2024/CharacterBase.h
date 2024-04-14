@@ -4,12 +4,19 @@
 
 //#define CHARAIMAGENUM 10;//キャラクタ画像入れる配列の大きさ
 
+
+struct Vec2
+{
+	double x;
+	double y;
+};
+
 class CharacterBase
 {
 protected:
 
-	float x;//ローカルｘ
-	float y;//ローカルｙ
+	Vec2 location;
+
 
 	float world_x;
 	float world_y;
@@ -42,20 +49,20 @@ public:
 	~CharacterBase(){};
 
 	//当たり判定:何かに当たったかどうかだけ返す
-	bool HitCheck(float opponent_x,float opponent_y,float opponent_center_x, float opponent_center_y)
+	bool HitCheck(Vec2 opponent,float opponent_width, float opponent_height)
 	{
 		float my_center_x = width / 2;
 		float my_center_y = height / 2;
 
 		//x座標の相手と自分の距離を絶対値で測る
-		distance_x = fabs(x - opponent_x);
+		distance_x = fabs(location.x - opponent.x);
 		//2つの幅/2を足す
-		two_widths = my_center_x + opponent_center_x/2;
+		two_widths = my_center_x + opponent_width/2;
 
 		//y座標の相手と自分の距離を絶対値で測る
-		distance_y = fabs(y - opponent_y);
+		distance_y = fabs(location.y - opponent.y);
 		//2つの高さ/2を足す
-		two_heights = my_center_y + opponent_center_y / 2;
+		two_heights = my_center_y + opponent_height / 2;
 
 		//もし距離の絶対値より幅が大きかったらヒット
 		if (distance_x < two_widths && distance_y<two_heights)
@@ -70,19 +77,21 @@ public:
 	}
 
 
-	float GetX() { return x; };
-	float GetY() { return y; };
+	Vec2 GetLocation() { return location;};
 
 	float GetWidth() { return width; };
 	float GetHeight() { return height; };
 
 	bool GetDirection() { return direction; };//キャラの向きを返す　0:右 1:左
 
-	void SetLocalPosition(float set_camera_x,float set_camera_y)
+	//キャラのlocationとスクリーンの原点を引いてスクリーン座標上の位置に変換
+	void SetLocalPosition(float set_origin_posx,float set_origin_posy)
 	{
-		x = world_x - set_camera_x;
-		y = world_y - set_camera_y;
+		location.x = location.x - set_origin_posx;
+		location.y = location.y - set_origin_posy;
 	};
+
+
 
 };
 

@@ -9,7 +9,6 @@ class AttackCheck :
     public CharacterBase
 {
 private:
-    CharacterBase charabase;
     Input input;
 
     bool attack_flg;

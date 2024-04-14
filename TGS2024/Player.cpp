@@ -15,12 +15,12 @@ Player::Player()
 	LoadDivGraph("image/player.png", 2, 2, 1, 64, 64, player_walk_img);
 	anim_cnt = 0;
 
+	location.x = 200;
+	location.y = 200;
 
 	//幅と座標
 	width = 40;
 	height = 50;
-	x = 200;
-	y = 400;
 
 	direction = 0;
 
@@ -61,6 +61,7 @@ void Player::Update(GameMainScene* gamemain)
 	//
 	input.InputUpdate();
 
+	
 
 	//ジャンプ
 	if (input.CheckBtn(XINPUT_BUTTON_A) == TRUE)
@@ -100,18 +101,18 @@ void Player::Draw() const
 {
 
 
-	DrawBoxAA(x - width/2, y - height/2, x + width / 2, y + height / 2, 0x00ffff,true);
-	DrawCircleAA(x, y, 1, 0xff00ff, true);
+	DrawBoxAA(location.x - width/2, location.y - height/2, location.x + width / 2, location.y + height / 2, 0x00ffff,true);
+	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 
 
 	//プレイヤー画像表示
 	switch (direction)
 	{
 	case 0:
-		DrawRotaGraph(x, y, 1, 0, player_walk_img[0], TRUE, FALSE);
+		DrawRotaGraph(location.x, location.y, 1, 0, player_walk_img[0], TRUE, FALSE);
 		break;
 	case 1:
-		DrawRotaGraph(x, y, 1, 0, player_walk_img[1], TRUE, FALSE);
+		DrawRotaGraph(location.x, location.y, 1, 0, player_walk_img[1], TRUE, FALSE);
 		break;
 	}
 
@@ -124,13 +125,13 @@ void Player::Draw() const
 			switch (anim_cnt)
 			{
 			case 0:
-				DrawRotaGraph(x + 30, y-10, 1, 0, player_attack_img[0], TRUE, FALSE);
+				DrawRotaGraph(location.x + 30, location.y-10, 1, 0, player_attack_img[0], TRUE, FALSE);
 				break;
 			case 3:
-				DrawRotaGraph(x + 30, y+5, 1, 0, player_attack_img[1], TRUE, FALSE);
+				DrawRotaGraph(location.x + 30, location.y+5, 1, 0, player_attack_img[1], TRUE, FALSE);
 				break;
 			case 4:
-				DrawRotaGraph(x + 30, y+10, 1, 0, player_attack_img[2], TRUE, FALSE);
+				DrawRotaGraph(location.x + 30, location.y+10, 1, 0, player_attack_img[2], TRUE, FALSE);
 				break;
 			}
 			break;
@@ -139,13 +140,13 @@ void Player::Draw() const
 			switch (anim_cnt)
 			{
 			case 0:
-				DrawRotaGraph(x - 30, y, 1, 0, player_attack_img[0], TRUE, TRUE);
+				DrawRotaGraph(location.x - 30, location.y, 1, 0, player_attack_img[0], TRUE, TRUE);
 				break;
 			case 5:
-				DrawRotaGraph(x - 30, y, 1, 0, player_attack_img[1], TRUE, TRUE);
+				DrawRotaGraph(location.x - 30, location.y, 1, 0, player_attack_img[1], TRUE, TRUE);
 				break;
 			case 8:
-				DrawRotaGraph(x - 30, y, 1, 0, player_attack_img[2], TRUE, TRUE);
+				DrawRotaGraph(location.x - 30, location.y, 1, 0, player_attack_img[2], TRUE, TRUE);
 				break;
 			}
 			break;
@@ -165,7 +166,7 @@ void Player::Draw() const
 	//DrawFormatString(100, 100, 0xffffff, "Right:%d", a);
 	DrawFormatString(100, 120, 0xffffff, "btnnum: % d", input.Btnnum);
 
-	DrawFormatString(100, 150, 0xffffff, "move_x: %f",move_x);
+	DrawFormatString(100, 150, 0xffffff, "location.x: %f",location.x);
 
 
 #endif // DEBUG
@@ -189,11 +190,11 @@ void Player::PlayerJump()
 	velocity_y += gravity;
 	move_y = -jump_v0 * sinf(rad) * jump_timer + (gravity * jump_timer * jump_timer) / 2;
 
-	y += velocity_y;
+	location.y += velocity_y;
 
-	if (y > y_ground)
+	if (location.y > y_ground)
 	{
-		y = y_ground;
+		location.y = y_ground;
 		velocity_y = 0;
 		jump_flg = false;
 		jump_start_flg = false;
@@ -240,5 +241,5 @@ void Player::PlayerMove()
 	{
 		move_x *= 0.9;
 	}
-	x += move_x;
+	location.x += move_x;
 }

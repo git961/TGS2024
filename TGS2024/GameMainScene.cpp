@@ -2,16 +2,34 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
+//画面の中央を座標に入れる
+static cameraposition camera_pos{ SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f };
+
+static cameraposition screen_origin_position = {
+	camera_pos.x - SCREEN_WIDTH / 2.0f,
+	camera_pos.y - SCREEN_HEIGHT / 2.0f
+};
+
 
 GameMainScene::GameMainScene() {
 	player=new Player;
 
 	enemy = new Enemy(walk);
-	camera_x = 0;
-	camera_y = 0;
 	ac = new AttackCheck;
 	checkhit = false;
 	enemy_damage_once=false;
+
+	//back.png
+	back_img=LoadGraph("back.png", TRUE);
+
+	//カメラ座標は上の代入で座標真ん中取ってるから
+	//それを左上の原点に変換するヤツ->キャラベースのSetLocalPositionに続く
+	cameraposition screen_origin_position = {
+	camera_pos.x - SCREEN_WIDTH / 2.0f,
+	camera_pos.y - SCREEN_HEIGHT / 2.0f
+	};
+
+
 }
 
 
@@ -21,13 +39,13 @@ GameMainScene::~GameMainScene() {
 
 void GameMainScene::Update() {
 
-	UpdateCamera();
+
 	input.InputUpdate();
 	fp.fpsUpdate();
 
 	if (enemy != nullptr)
 	{
-		if (player->HitCheck(enemy->GetX(), enemy->GetY(), enemy->GetWidth(), enemy->GetHeight()) == true) {
+		if (player->HitCheck(enemy->GetLocation(), enemy->GetWidth(), enemy->GetHeight()) == true) {
 			checkhit = true;
 		}
 		else {
@@ -41,7 +59,7 @@ void GameMainScene::Update() {
 			if (enemy_damage_once == false)
 			{
 				//つるはしとエネミーと当たってるかのチェック
-				if (ac->HitCheck(enemy->GetX(), enemy->GetY(), enemy->GetWidth(), enemy->GetHeight()) == true) {
+				if (ac->HitCheck(enemy->GetLocation(), enemy->GetWidth(), enemy->GetHeight()) == true) {
 					//checkhit = true;
 					enemy->Damege(1);
 					enemy_damage_once = true;
@@ -63,7 +81,7 @@ void GameMainScene::Update() {
 	//プレイヤー
 	if (player != nullptr)
 	{
-		player->SetLocalPosition(camera_x, camera_y);
+		player->SetLocalPosition(screen_origin_position.x,screen_origin_position.y);
 		player->Update(this);
 	}
 
@@ -75,9 +93,16 @@ void GameMainScene::Update() {
 	// エネミー更新処理
 	if (enemy != nullptr)
 	{
-		enemy->SetLocalPosition(camera_x, camera_y);
+		enemy->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 		enemy->Update(this);
 	}
+
+	UpdateCamera(player->GetLocation());
+
+	screen_origin_position = {
+camera_pos.x - SCREEN_WIDTH / 2.0f,
+camera_pos.y - SCREEN_HEIGHT / 2.0f
+	};
 
 #ifdef DEBUG
 	if (enemy == nullptr)
@@ -100,6 +125,7 @@ void GameMainScene::Update() {
 }
 
 void GameMainScene::Draw() const {
+	DrawGraph(camera_pos.x, camera_pos.y, back_img,false);
 		DrawFormatString(0, 0, 0xffffff, "GameMain");
 		fp.display_fps();
 
@@ -130,18 +156,31 @@ void GameMainScene::Draw() const {
 }
 
 
-void GameMainScene::UpdateCamera()
+void GameMainScene::UpdateCamera(Vec2 player_pos)
 {
 
-	CameraSetLocation(player->GetX(), player->GetY());
+	camera_pos.x = player_pos.x;
+	camera_pos.y = player_pos.y;
 
-}
+	//ここで固定するのはcameraのｘｙ何で動いたのか意味わからん
 
-void GameMainScene::CameraSetLocation(float set_x, float set_y)
-{
+	if (camera_pos.x  <= 0.0f)
+	{
+		camera_pos.x = 1;
+	}
+	else if (camera_pos.x >= 700)
+	{
+		camera_pos.x =690;
+	}
 
-	camera_x = set_x - (SCREEN_WIDTH / 2);
-	camera_y = set_y - (SCREEN_HEIGHT / 2);
+	if (camera_pos.y - 720 / 2 <= 0.0f)
+	{
+		camera_pos.y = 720 / 2;
+	}
+	else if (camera_pos.y + 360 >= 0)
+	{
+		camera_pos.y = 360;
+	}
 
 }
 

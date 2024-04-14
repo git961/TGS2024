@@ -4,10 +4,22 @@
 #include "Enemy.h"
 #include "AttackCheck.h"
 #include "fps.h"
+#include <math.h>
+
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 720
+
 
 class Player;
 class Enemy;
 class AttackCheck;
+
+struct cameraposition
+{
+    float x;
+    float y;
+
+};
 
 class GameMainScene :
     public AbstractScene
@@ -19,11 +31,19 @@ private:
     AttackCheck *ac;
     fps fp;
 
+    cameraposition camera_pos;
+
+    cameraposition screen_origin_position;
+
     bool enemy_damage_once;
     bool checkhit;
 
-    float camera_x;
-    float camera_y;
+    int back_img;//背景入れるよう
+
+
+    //camera_x - 1280 / 2;
+    //camera_y - 720 / 2;
+
 
 public:
     GameMainScene();
@@ -33,12 +53,12 @@ public:
     void Draw() const override;
     AbstractScene* Change() override;
 
+    void UpdateCamera(Vec2 player_pos);
 
-    void UpdateCamera();
 
-    void CameraSetLocation(float set_x, float set_y);
 
-    float GetCameraX() { return camera_x; };
-    float GetCameraY() { return camera_y; };
+
+    //float GetCameraX() { return camera_x; };
+    //float GetCameraY() { return camera_y; };
 };
 
