@@ -6,6 +6,9 @@ Enemy::Enemy(int set_type)
 	location.x = 50;
 	location.y = 600;
 
+	world.x = 2560;
+	world.y = 600;
+
 	width = 30;
 	height = 30;
 

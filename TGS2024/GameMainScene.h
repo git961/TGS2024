@@ -53,7 +53,7 @@ public:
     void Draw() const override;
     AbstractScene* Change() override;
 
-    void UpdateCamera(Vec2 player_pos);
+    void UpdateCamera(World world);
 
 
 

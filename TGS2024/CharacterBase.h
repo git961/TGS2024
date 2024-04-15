@@ -7,8 +7,13 @@
 
 struct Vec2
 {
-	double x;
-	double y;
+	float x;
+	float y;
+};
+struct World
+{
+	float x;
+	float y;
 };
 
 class CharacterBase
@@ -17,9 +22,7 @@ protected:
 
 	Vec2 location;
 
-
-	float world_x;
-	float world_y;
+	World world;
 	
 	float move_x;
 	float move_y;
@@ -77,18 +80,21 @@ public:
 	}
 
 
-	Vec2 GetLocation() { return location;};
+	Vec2 GetLocation() { return location;}
+	World GetWorldLocation() { return world; }
 
-	float GetWidth() { return width; };
-	float GetHeight() { return height; };
+	float GetWidth() { return width; }
+	float GetHeight() { return height; }
 
-	bool GetDirection() { return direction; };//キャラの向きを返す　0:右 1:左
+	bool GetDirection() { return direction; }//キャラの向きを返す　0:右 1:左
 
 	//キャラのlocationとスクリーンの原点を引いてスクリーン座標上の位置に変換
 	void SetLocalPosition(float set_origin_posx,float set_origin_posy)
 	{
-		location.x = location.x - set_origin_posx;
-		location.y = location.y - set_origin_posy;
+		//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を
+
+		location.x = world.x - set_origin_posx;
+		location.y = world.y - set_origin_posy;
 	};
 
 

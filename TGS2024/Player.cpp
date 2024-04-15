@@ -15,6 +15,9 @@ Player::Player()
 	LoadDivGraph("image/player.png", 2, 2, 1, 64, 64, player_walk_img);
 	anim_cnt = 0;
 
+	world.x = 200;
+	world.y = 200;
+
 	location.x = 200;
 	location.y = 200;
 
@@ -156,17 +159,21 @@ void Player::Draw() const
 #ifdef DEBUG
 
 
-	////// 画面に XINPUT_STATE の中身を描画
-	color = GetColor(255, 255, 255);
-	for (int i = 0; i < 16; i++)
-	{
-		DrawFormatString(64 + i % 8 * 64, 64 + i / 8 * 16, color,
-			"%2d:%d", i, input.getkey.Buttons[i]);
-	}
-	//DrawFormatString(100, 100, 0xffffff, "Right:%d", a);
-	DrawFormatString(100, 120, 0xffffff, "btnnum: % d", input.Btnnum);
+	//////// 画面に XINPUT_STATE の中身を描画
+	//color = GetColor(255, 255, 255);
+	//for (int i = 0; i < 16; i++)
+	//{
+	//	DrawFormatString(64 + i % 8 * 64, 64 + i / 8 * 16, color,
+	//		"%2d:%d", i, input.getkey.Buttons[i]);
+	//}
+	////DrawFormatString(100, 100, 0xffffff, "Right:%d", a);
+	//DrawFormatString(100, 120, 0xffffff, "btnnum: % d", input.Btnnum);
 
-	DrawFormatString(100, 150, 0xffffff, "location.x: %f",location.x);
+	//DrawFormatString(100, 150, 0xffffff, "location.x: %f",location.x);
+	DrawFormatString(100, 100, 0xffffff, "location.x: %f",location.x);
+	DrawFormatString(100, 120, 0xffffff, "location.y: %f",location.y);
+	DrawFormatString(100, 140, 0xffffff, "world.x: %f",world.x);
+	DrawFormatString(100, 160, 0xffffff, "world.y: %f",world.y);
 
 
 #endif // DEBUG
@@ -191,7 +198,9 @@ void Player::PlayerJump()
 	move_y = -jump_v0 * sinf(rad) * jump_timer + (gravity * jump_timer * jump_timer) / 2;
 
 	location.y += velocity_y;
+	world.y += velocity_y;
 
+	//地面
 	if (location.y > y_ground)
 	{
 		location.y = y_ground;
@@ -199,15 +208,6 @@ void Player::PlayerJump()
 		jump_flg = false;
 		jump_start_flg = false;
 	}
-
-
-	//Old_Zakuroy = location.y;
-	////右ジャンプ
-	//Zakuro_Movey = -V_zero * sinf(rad) * time + (g * time * time) / 2;
-	//if (location.x > 1200)location.x = Set_Zakuro_x + Zakuro_Movex;
-	//if (location.y < 320)location.y = Set_Zakuro_y + Zakuro_Movey;
-	//time += 0.01f;
-
 
 }
 
@@ -242,4 +242,5 @@ void Player::PlayerMove()
 		move_x *= 0.9;
 	}
 	location.x += move_x;
+	world.x += move_x;
 }

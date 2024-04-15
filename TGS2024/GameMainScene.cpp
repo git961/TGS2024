@@ -2,6 +2,12 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
+#define FIELD_WIDTH 2560 //ワールド全体の幅
+#define FIELD_HEIGHT 720 //ワールド全体の高さ
+
+#define WINDOW_HALFX SCREEN_WIDTH/2
+#define WINDOW_HALFY SCREEN_HEIGHT/2
+
 //画面の中央を座標に入れる
 static cameraposition camera_pos{ SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f };
 
@@ -20,7 +26,7 @@ GameMainScene::GameMainScene() {
 	enemy_damage_once=false;
 
 	//back.png
-	back_img=LoadGraph("back.png", TRUE);
+	back_img=LoadGraph("image/back.png", TRUE);
 
 	//カメラ座標は上の代入で座標真ん中取ってるから
 	//それを左上の原点に変換するヤツ->キャラベースのSetLocalPositionに続く
@@ -97,12 +103,13 @@ void GameMainScene::Update() {
 		enemy->Update(this);
 	}
 
-	UpdateCamera(player->GetLocation());
+	UpdateCamera(player->GetWorldLocation());
 
 	screen_origin_position = {
-camera_pos.x - SCREEN_WIDTH / 2.0f,
-camera_pos.y - SCREEN_HEIGHT / 2.0f
+		camera_pos.x - SCREEN_WIDTH / 2.0f,
+		camera_pos.y - SCREEN_HEIGHT / 2.0f
 	};
+
 
 #ifdef DEBUG
 	if (enemy == nullptr)
@@ -125,9 +132,10 @@ camera_pos.y - SCREEN_HEIGHT / 2.0f
 }
 
 void GameMainScene::Draw() const {
-	DrawGraph(camera_pos.x, camera_pos.y, back_img,false);
+	//DrawGraph(0, 0, back_img,FALSE);
 		DrawFormatString(0, 0, 0xffffff, "GameMain");
 		fp.display_fps();
+
 
 		if (checkhit == true)
 		{
@@ -153,33 +161,52 @@ void GameMainScene::Draw() const {
 				ac->Draw();
 			}
 		}
+
+#ifdef DEBUG
+
+
+		DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
+		DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
+		DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
+		DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
+
+
+#endif // DEBUG
 }
 
 
-void GameMainScene::UpdateCamera(Vec2 player_pos)
+void GameMainScene::UpdateCamera(World world)
 {
+	//追従する相手のワールド座標をもらう
+	camera_pos.x = world.x;
+	camera_pos.y = world.y;
 
-	camera_pos.x = player_pos.x;
-	camera_pos.y = player_pos.y;
 
-	//ここで固定するのはcameraのｘｙ何で動いたのか意味わからん
+	//X軸のステージの内外判定
 
-	if (camera_pos.x  <= 0.0f)
+	//ワールド左端に到達したらカメラが移動しないように
+	if (camera_pos.x - WINDOW_HALFX<= 0.0f)
 	{
-		camera_pos.x = 1;
+		camera_pos.x = WINDOW_HALFX;
 	}
-	else if (camera_pos.x >= 700)
+	else if (camera_pos.x +WINDOW_HALFX>= FIELD_WIDTH)
 	{
-		camera_pos.x =690;
+		//ワールド右端に到達したらカメラが移動しないように
+		camera_pos.x =FIELD_WIDTH - WINDOW_HALFX;
 	}
 
-	if (camera_pos.y - 720 / 2 <= 0.0f)
+
+	//Y軸のステージの内外判定
+
+	//ワールドの底に到達したらカメラが移動しないように
+	if (camera_pos.y -  WINDOW_HALFY<= 0.0f)
 	{
-		camera_pos.y = 720 / 2;
+		camera_pos.y = WINDOW_HALFY;
 	}
-	else if (camera_pos.y + 360 >= 0)
+	else if (camera_pos.y + WINDOW_HALFY >= FIELD_HEIGHT)
 	{
-		camera_pos.y = 360;
+		//ワールドのてっぺんに到達したらカメラが移動しないように
+		camera_pos.y = FIELD_HEIGHT-WINDOW_HALFY;
 	}
 
 }
