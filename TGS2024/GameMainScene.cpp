@@ -1,12 +1,5 @@
 ﻿#include "GameMainScene.h"
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 720
 
-#define FIELD_WIDTH 2560 //ワールド全体の幅
-#define FIELD_HEIGHT 720 //ワールド全体の高さ
-
-#define WINDOW_HALFX SCREEN_WIDTH/2
-#define WINDOW_HALFY SCREEN_HEIGHT/2
 
 //画面の中央を座標に入れる
 static cameraposition camera_pos{ SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f };
@@ -25,6 +18,7 @@ GameMainScene::GameMainScene() {
 	checkhit = false;
 	enemy_damage_once=false;
 
+	mapio = new MapIo;
 	//back.png
 	back_img=LoadGraph("image/back.png", TRUE);
 
@@ -35,7 +29,7 @@ GameMainScene::GameMainScene() {
 	camera_pos.y - SCREEN_HEIGHT / 2.0f
 	};
 
-
+	mapio->LoadMapData();
 }
 
 

@@ -4,15 +4,23 @@
 #include "Enemy.h"
 #include "AttackCheck.h"
 #include "fps.h"
+#include "MapIo.h"
 #include <math.h>
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
+#define FIELD_WIDTH 2560 //ワールド全体の幅
+#define FIELD_HEIGHT 720 //ワールド全体の高さ
+
+#define WINDOW_HALFX SCREEN_WIDTH/2
+#define WINDOW_HALFY SCREEN_HEIGHT/2
+
 
 class Player;
 class Enemy;
 class AttackCheck;
+class MapIo;
 
 struct cameraposition
 {
@@ -30,6 +38,8 @@ private:
     Enemy *enemy;
     AttackCheck *ac;
     fps fp;
+
+    MapIo *mapio;
 
     cameraposition camera_pos;
 

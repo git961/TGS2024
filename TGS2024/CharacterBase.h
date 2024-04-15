@@ -91,8 +91,7 @@ public:
 	//キャラのlocationとスクリーンの原点を引いてスクリーン座標上の位置に変換
 	void SetLocalPosition(float set_origin_posx,float set_origin_posy)
 	{
-		//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を
-
+		//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
 		location.x = world.x - set_origin_posx;
 		location.y = world.y - set_origin_posy;
 	};
