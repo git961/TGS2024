@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Define.h"
 #include "AbstractScene.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -7,7 +8,7 @@
 #include "MapIo.h"
 #include "StageBlock.h"
 #include <math.h>
-#include "Define.h"
+
 
 
 class Player;

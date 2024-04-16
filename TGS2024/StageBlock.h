@@ -25,7 +25,7 @@ public:
 	void Update();
 	void Draw() const;
 
-	void CreateBlock();
+	bool CheckHitBlock(int i, int j, Vec2 opponent, float opponent_width, float opponent_height);
 
 
 };

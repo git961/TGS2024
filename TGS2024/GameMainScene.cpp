@@ -8,7 +8,8 @@ static cameraposition screen_origin_position = {
 	camera_pos.x - SCREEN_WIDTH / 2.0f,
 	camera_pos.y - SCREEN_HEIGHT / 2.0f
 };
-
+int count=0;
+int okflg=false;
 
 GameMainScene::GameMainScene() {
 	player=new Player;
@@ -31,7 +32,7 @@ GameMainScene::GameMainScene() {
 	};
 
 	mapio->LoadMapData();
-	//stage_block = new StageBlock;
+	stage_block = new StageBlock(mapio);
 
 
 	for (int i = 0; i < 10; i++)
@@ -44,6 +45,10 @@ GameMainScene::GameMainScene() {
 
 GameMainScene::~GameMainScene() {
 	delete[] enemy;
+	delete stage_block;
+	delete player;
+	delete mapio;
+	delete ac;
 }
 
 void GameMainScene::Update() {
@@ -136,7 +141,20 @@ void GameMainScene::Update() {
 		camera_pos.y - SCREEN_HEIGHT / 2.0f
 	};
 
-
+	if (stage_block != nullptr)
+	{
+	//	for (int i = 0; i < 11; i++)
+	//	{
+	//		for (int j = 0; j < 20; j++)
+	//		{
+	////			if (stage_block->CheckHitBlock(i, j, player->GetLocation(), player->GetWidth(), player->GetHeight()) == true)
+	////			{
+	////				count++;
+	////				okflg = true;
+	////			}
+	//		}
+	//	}
+	}
 #ifdef DEBUG
 	//if (enemy == nullptr)
 	//{
@@ -166,9 +184,9 @@ void GameMainScene::Draw() const {
 		fp.display_fps();
 
 
-		if (checkhit == true)
+		if (okflg == true)
 		{
-			DrawFormatString(0, 10, 0xffffff, "hit");
+			DrawFormatString(0, 10, 0xffffff, "blockhit");
 		}
 
 		//プレイヤー描画
