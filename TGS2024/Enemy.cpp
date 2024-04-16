@@ -1,12 +1,12 @@
 ﻿#include "Enemy.h"
 
-Enemy::Enemy(int set_type)
+Enemy::Enemy(float set_x)
 {
 	// 中心座標
-	location.x = 50;
+	location.x = 400 + (40 * set_x);
 	location.y = 600;
 
-	world.x = 2560;
+	world.x = 400 + (40 * set_x);
 	world.y = 600;
 
 	width = 30;
@@ -18,25 +18,23 @@ Enemy::Enemy(int set_type)
 	attack = 10;
 	speed = 3;			// なくても良い
 
-	type = set_type;
+	//srand(time(NULL));
+	//num = rand() % 10 + 1;
+	//if (num >= 5)
+	//{
+	//	direction = true;
+	//}
+	//else
+	//{
+	//	direction = false;
+	//}
 
-	srand(time(NULL));
-	num = rand() % 10 + 1;
-	if (num >= 5)
-	{
-		direction = true;
-	}
-	else
-	{
-		direction = false;
-	}
-
-	// 進行方法が左ならx座標と移動方向が変わる
-	if (direction == false)
-	{
-		location.x = 1260;
-		move_x *= -1;
-	}
+	//// 進行方法が左ならx座標と移動方向が変わる
+	//if (direction == false)
+	//{
+	//	x = 1260;
+	//	move_x *= -1;
+	//}
 }
 
 Enemy::~Enemy()
@@ -47,20 +45,19 @@ Enemy::~Enemy()
 void Enemy::Update(GameMainScene* gamemain)
 {
 	// 移動処理
-	//location.x += speed * move_x;
+	//x += speed * move_x;
 
-	// 端に来たら跳ね返る、敵同士の当たり判定で使用するかも
-	if (location.x + width / 2 > 1280 || location.x - width / 2 < 0)
-	{
-		move_x *= -1;
-	}
+	//// 端に来たら跳ね返る、敵同士の当たり判定で使用するかも
+	//if (x + width / 2 > 1280 || x - width / 2 < 0)
+	//{
+	//	move_x *= -1;
+	//}
 }
 
 void Enemy::Draw() const
 {
 #ifdef DEBUG
 	DrawFormatString(0, 50, 0xffffff, "hp : %f", hp);
-
 #endif // DEBUG
 
 	// 当たり判定のボックス

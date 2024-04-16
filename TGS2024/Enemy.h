@@ -18,11 +18,10 @@ enum EnemyType
 class Enemy : public CharacterBase
 {
 private:
-    int type;       // 0:歩行　1:転がり
     int num;        // スポーン位置設定用
 
 public:
-    Enemy(int set_type);
+    Enemy(float set_x);
     ~Enemy();
 
     void Update(GameMainScene* gamemain);

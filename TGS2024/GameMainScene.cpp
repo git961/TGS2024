@@ -13,7 +13,8 @@ static cameraposition screen_origin_position = {
 GameMainScene::GameMainScene() {
 	player=new Player;
 
-	enemy = new Enemy(walk);
+	enemy = new Enemy * [10];
+
 	ac = new AttackCheck;
 	checkhit = false;
 	enemy_damage_once=false;
@@ -33,9 +34,16 @@ GameMainScene::GameMainScene() {
 	//stage_block = new StageBlock;
 }
 
+	for (int i = 0; i < 10; i++)
+	{
+		enemy[i] = new Enemy(i);
+	}
+
+}
+
 
 GameMainScene::~GameMainScene() {
-	delete enemy;
+	delete[] enemy;
 }
 
 void GameMainScene::Update() {
@@ -54,38 +62,41 @@ void GameMainScene::Update() {
 	input.InputUpdate();
 	fp.fpsUpdate();
 
-	if (enemy != nullptr)
+	for (int i = 0; i < 10; i++)
 	{
-		if (player->HitCheck(enemy->GetLocation(), enemy->GetWidth(), enemy->GetHeight()) == true) {
-			checkhit = true;
-		}
-		else {
-			checkhit = false;
-		}
-
-		//つるはしを振るってる時だけ
-		if (player->GetAttacking() == true)
+		if (enemy[i] != nullptr)
 		{
-			//ダメージを一回だけ与える
-			if (enemy_damage_once == false)
+			if (player->HitCheck(enemy[i]->GetX(), enemy[i]->GetY(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
+				checkhit = true;
+			}
+			else {
+				checkhit = false;
+			}
+
+			//つるはしを振るってる時だけ
+			if (player->GetAttacking() == true)
 			{
-				//つるはしとエネミーと当たってるかのチェック
-				if (ac->HitCheck(enemy->GetLocation(), enemy->GetWidth(), enemy->GetHeight()) == true) {
-					//checkhit = true;
-					enemy->Damege(1);
-					enemy_damage_once = true;
-				}
-				else {
-					//checkhit = false;
+				//ダメージを一回だけ与える
+				if (enemy_damage_once == false)
+				{
+					//つるはしとエネミーと当たってるかのチェック
+					if (ac->HitCheck(enemy[i]->GetX(), enemy[i]->GetY(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
+						//checkhit = true;
+						enemy[i]->Damege(1);
+						enemy_damage_once = true;
+					}
+					else {
+						//checkhit = false;
+					}
 				}
 			}
-		}
-		else
-		{
-			//プレイヤーがつるはし振ってなかったら
-			enemy_damage_once = false;
-		}
+			else
+			{
+				//プレイヤーがつるはし振ってなかったら
+				enemy_damage_once = false;
+			}
 
+		}
 	}
 
 
@@ -101,11 +112,20 @@ void GameMainScene::Update() {
 			ac->Update(this,player);
 	}
 
-	// エネミー更新処理
-	if (enemy != nullptr)
+	for (int i = 0; i < 10; i++)
 	{
-		enemy->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-		enemy->Update(this);
+		// エネミー更新処理
+		if (enemy[i] != nullptr)
+		{
+			enemy[i]->Update(this);
+
+			// エネミー削除処理
+			if (enemy[i]->GetHp() <= 0)
+			{
+				delete enemy[i];
+				enemy[i] = nullptr;
+			}
+		}
 	}
 
 	UpdateCamera(player->GetWorldLocation());
@@ -117,22 +137,25 @@ void GameMainScene::Update() {
 
 
 #ifdef DEBUG
-	if (enemy == nullptr)
-	{
-		enemy = new Enemy(walk);
-	}
+	//if (enemy == nullptr)
+	//{
+	//	enemy = new Enemy(walk);
+	//}
 #endif // DEBUG
 
-	if (enemy != nullptr)
-	{
-		// エネミー削除処理
-		if (enemy->GetHp() <= 0)
-		{
-			delete enemy;
-			enemy = nullptr;
-		}
+	//for (int i = 0; i < 10; i++)
+	//{
+	//	if (enemy[i] != nullptr)
+	//	{
+	//		// エネミー削除処理
+	//		if (enemy[i]->GetHp() <= 0)
+	//		{
+	//			delete enemy;
+	//			enemy = nullptr;
+	//		}
 
-	}
+	//	}
+	//}
 
 }
 
@@ -153,10 +176,13 @@ void GameMainScene::Draw() const {
 			player->Draw();
 		}
 
-		// エネミー描画処理
-		if (enemy != nullptr)
+		for (int i = 0; i < 10; i++)
 		{
-			enemy->Draw();
+			// エネミー描画処理
+			if (enemy[i] != nullptr)
+			{
+				enemy[i]->Draw();
+			}
 		}
 
 		//プレイヤー攻撃描画
