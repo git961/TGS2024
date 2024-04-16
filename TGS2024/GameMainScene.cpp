@@ -8,8 +8,7 @@ static cameraposition screen_origin_position = {
 	camera_pos.x - SCREEN_WIDTH / 2.0f,
 	camera_pos.y - SCREEN_HEIGHT / 2.0f
 };
-int count=0;
-int okflg=false;
+
 
 GameMainScene::GameMainScene() {
 	player=new Player;
@@ -32,14 +31,16 @@ GameMainScene::GameMainScene() {
 	};
 
 	mapio->LoadMapData();
-	stage_block = new StageBlock(mapio);
-
+	if (mapio != nullptr) {
+		stage_block = new StageBlock(this->mapio);
+	}
 
 	for (int i = 0; i < 10; i++)
 	{
 		enemy[i] = new Enemy(i);
 	}
 
+	check_num = 0;
 }
 
 
@@ -141,20 +142,38 @@ void GameMainScene::Update() {
 		camera_pos.y - SCREEN_HEIGHT / 2.0f
 	};
 
-	if (stage_block != nullptr)
-	{
-	//	for (int i = 0; i < 11; i++)
-	//	{
-	//		for (int j = 0; j < 20; j++)
-	//		{
-	////			if (stage_block->CheckHitBlock(i, j, player->GetLocation(), player->GetWidth(), player->GetHeight()) == true)
-	////			{
-	////				count++;
-	////				okflg = true;
-	////			}
-	//		}
-	//	}
-	}
+	
+
+		if (stage_block != nullptr)
+		{
+				for (int i = 0; i < 11; i++)
+				{
+					for (int j = 0; j < 20; j++)
+					{
+						stage_block->SetBlockLocalPosition(screen_origin_position.x, screen_origin_position.y);
+						if (stage_block->CheckHitBlock(i, j, player->GetLocation(), player->GetWidth(), player->GetHeight()) == true)
+						{
+							checkhit = true;
+						}
+					}
+				}
+		}
+
+		if (checkhit == true)
+		{
+			//ブロックに当たったら
+			check_num = stage_block->GetHitDirection();
+			switch (check_num)
+			{
+			case 1:
+				break;
+			case 2:
+				break;
+			default:
+				break;
+			}
+		}
+	
 #ifdef DEBUG
 	//if (enemy == nullptr)
 	//{
@@ -184,10 +203,6 @@ void GameMainScene::Draw() const {
 		fp.display_fps();
 
 
-		if (okflg == true)
-		{
-			DrawFormatString(0, 10, 0xffffff, "blockhit");
-		}
 
 		//プレイヤー描画
 		if (player != nullptr)
@@ -215,8 +230,8 @@ void GameMainScene::Draw() const {
 #ifdef DEBUG
 
 
-		DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
-		DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
+		DrawFormatString(300, 180, 0xffffff, "0:Nothit,1:上,2:右,3:左,4:下:%d", checkhit);
+		DrawFormatString(300, 200, 0xffffff, "stageblock:direction: %d", stage_block->direction);
 		DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
 		DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
 

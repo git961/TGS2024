@@ -50,7 +50,7 @@ Player::Player()
 	velocity_y = 0;
 
 	//デバック用
-	y_ground = 600;
+	y_ground = 650;
 
 }
 
@@ -191,7 +191,8 @@ void Player::PlayerJump()
 		velocity_y = -10;//初速を与える
 		sita = 70;
 		rad = sita * pi / 180;
-		
+		vector.x = 0;
+		vector.y = -1;
 	}
 
 	velocity_y += gravity;
@@ -207,6 +208,8 @@ void Player::PlayerJump()
 		velocity_y = 0;
 		jump_flg = false;
 		jump_start_flg = false;
+		vector.x = 0;
+		vector.y = 1;
 	}
 
 }
@@ -224,6 +227,8 @@ void Player::PlayerMove()
 		}
 
 		direction = 0;
+		vector.x = 1;
+		vector.y = 0;
 	}
 
 	//左移動
@@ -234,6 +239,8 @@ void Player::PlayerMove()
 			move_x -= 1;
 		}
 		direction = 1;
+		vector.x = -1;
+		vector.y = 0;
 	}
 
 	//右左移動してない時

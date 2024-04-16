@@ -46,6 +46,7 @@ private:
 
     int back_img;//背景入れるよう
 
+    int check_num;//blockのどこに当たったか貰うよう
 
     //camera_x - 1280 / 2;
     //camera_y - 720 / 2;

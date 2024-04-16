@@ -58,6 +58,10 @@ public:
     void PlayerMove();
 
     bool GetAttacking() { return attacking; };
+
+    void SetLocationY(float set_y) {
+        location.y = set_y;
+    };
 };
 
 //void Player::AttackPickaxe()
