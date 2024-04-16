@@ -32,7 +32,7 @@ GameMainScene::GameMainScene() {
 
 	mapio->LoadMapData();
 	//stage_block = new StageBlock;
-}
+
 
 	for (int i = 0; i < 10; i++)
 	{
@@ -66,7 +66,7 @@ void GameMainScene::Update() {
 	{
 		if (enemy[i] != nullptr)
 		{
-			if (player->HitCheck(enemy[i]->GetX(), enemy[i]->GetY(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
+			if (player->HitCheck(enemy[i]->GetLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
 				checkhit = true;
 			}
 			else {
@@ -80,8 +80,7 @@ void GameMainScene::Update() {
 				if (enemy_damage_once == false)
 				{
 					//つるはしとエネミーと当たってるかのチェック
-					if (ac->HitCheck(enemy[i]->GetX(), enemy[i]->GetY(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
-						//checkhit = true;
+					if (ac->HitCheck(enemy[i]->GetLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {//checkhit = true;
 						enemy[i]->Damege(1);
 						enemy_damage_once = true;
 					}
@@ -117,6 +116,8 @@ void GameMainScene::Update() {
 		// エネミー更新処理
 		if (enemy[i] != nullptr)
 		{
+			enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
 			enemy[i]->Update(this);
 
 			// エネミー削除処理
