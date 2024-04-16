@@ -14,13 +14,14 @@ MapIo::~MapIo()
 
 void MapIo::LoadMapData()
 {
-	//ファイル読込
+	//ファイルを読込モードで開く
 	fopen_s(&fp, "stage/stage1.csv", "r");
 
 	for (int i = 0; i < map_blockmax_y; i++)
 	{
 		for (int j = 0; j < map_blockmax_x; j++)
 		{
+			//ファイル読込
 			if (fscanf_s(fp, "%d,", &map_array[i][j]) != EOF) {
 				count++;
 			}
@@ -35,29 +36,108 @@ void MapIo::InputTest(GameMainScene* gamemain)
 {
 	GetMousePoint(&mouse_x, &mouse_y);
 
+	//ブロック追加
 	if ((GetMouseInput() & MOUSE_INPUT_LEFT)!=0){
 		//押されてる
+		//i=ｙ座標
+		for (int i = 0; i < map_blockmax_y; i++)
+		{
+			//j=ｘ座標
+			for (int j = 0; j < map_blockmax_x; j++)
+			{
+				//もしこの範囲に居たら
+				//ワールド座標とマウスの座標を比べる
+				if (j * BLOCKSIZE < mouse_x && j * BLOCKSIZE + BLOCKSIZE > mouse_x) {
+					if (i * BLOCKSIZE < mouse_y && i * BLOCKSIZE + BLOCKSIZE > mouse_y)
+					{
+						map_array[i][j] = 1;
+
+						//j*BLOCKSIZE=左上の座標＋幅/２すれば真ん中のY
+						//i*BLOCKSIZE=左上の座標＋幅/２すれば真ん中のY
+					}
+				}
+			}
+		}
+
+
+
+	}
+	
+	//ブロック消去
+	if ((GetMouseInput() & MOUSE_INPUT_RIGHT) != 0)
+	{
+		//押されていない
 		for (int i = 0; i < map_blockmax_y; i++)
 		{
 			for (int j = 0; j < map_blockmax_x; j++)
 			{
 				//もしこの範囲に居たら
 				//ワールド座標とマウスの座標を比べる
-				if (j-1*64<mouse_x&&j*64>mouse_x) {
-					if (j - 1 * 64 < mouse_y&&i * 64 > mouse_y)
+				if (j * BLOCKSIZE < mouse_x && j * BLOCKSIZE + BLOCKSIZE > mouse_x) {
+					if (i * BLOCKSIZE < mouse_y && i * BLOCKSIZE + BLOCKSIZE > mouse_y)
 					{
-						
-						map_array[i][j] = 1;
+
+						map_array[i][j] = 0;
 					}
 				}
 			}
 		}
 
 	}
-	else
+
+
+
+}
+
+void MapIo::SaveMapData()
+{
+	//ファイルを書き込みモードで開く
+	fopen_s(&fp, "stage/stage1.csv", "w");
+
+	for (int i = 0; i < map_blockmax_y; i++)
 	{
-		//押されていない
+		for (int j = 0; j < map_blockmax_x; j++)
+		{
+			//ファイル書き込み
+			//ファイルポインタ、%dで書き込み,map_arrayを入力
+			fprintf_s(fp, "%d,", map_array[i][j]);
+
+		}
 	}
+
+	fclose(fp);
+}
+
+void MapIo::Draw() const
+{
+
+	for (int i = 0; i < map_blockmax_y; i++)
+	{
+		for (int j = 0; j < map_blockmax_x; j++)
+		{
+			if (map_array[i][j] != 0)
+			{
+				DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
+			}
+		}
+	}
+
+	//for (int i = 0; i < map_blockmax_y; i++)
+	//{
+	//	for (int j = 0; j < map_blockmax_x; j++)
+	//	{
+	//		//もしこの範囲に居たら
+	//		//ワールド座標とマウスの座標を比べる
+
+	//		if (j* BLOCKSIZE < mouse_x && j * BLOCKSIZE+BLOCKSIZE > mouse_x) {
+	//			if (i * BLOCKSIZE < mouse_y && i * BLOCKSIZE+BLOCKSIZE > mouse_y)
+	//			{
+	//				DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
+
+	//			}
+	//		}
+	//	}
+	//}
 
 
 

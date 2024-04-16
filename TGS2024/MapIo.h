@@ -3,11 +3,11 @@
 #include <vector>
 #include "DxLib.h"
 #include "stdio.h"
+#include "Define.h"
 
 class GameMainScene;
 
-#define map_blockmax_x 2560 / 64
-#define map_blockmax_y 720 / 64
+
 class MapIo
 {
 private:
@@ -20,6 +20,8 @@ private:
 	//int *map_data = new int[block_num];
 
 	int map_array[map_blockmax_y][map_blockmax_x];
+	//真ん中の座標を手に居れる
+	int stage_block_pos[map_blockmax_x][map_blockmax_y];
 	
 	FILE* fp;
 	int map_get;
@@ -31,8 +33,10 @@ public:
 	MapIo();
 	~MapIo();
 
-	void LoadMapData();
+	void LoadMapData();//マップデータ読込
 	void InputTest(GameMainScene *gamemain);//エディタテスト
-
+	void SaveMapData();//マップデータ保存
+	void Draw() const;
+	int GetMapData(int j, int i) { return map_array[j][i]; }
 };
 

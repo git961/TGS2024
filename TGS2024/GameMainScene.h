@@ -5,22 +5,16 @@
 #include "AttackCheck.h"
 #include "fps.h"
 #include "MapIo.h"
+#include "StageBlock.h"
 #include <math.h>
-
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 720
-
-#define FIELD_WIDTH 2560 //ワールド全体の幅
-#define FIELD_HEIGHT 720 //ワールド全体の高さ
-
-#define WINDOW_HALFX SCREEN_WIDTH/2
-#define WINDOW_HALFY SCREEN_HEIGHT/2
+#include "Define.h"
 
 
 class Player;
 class Enemy;
 class AttackCheck;
 class MapIo;
+class StageBlock;
 
 struct cameraposition
 {
@@ -40,6 +34,7 @@ private:
     fps fp;
 
     MapIo *mapio;
+    StageBlock *stage_block;
 
     cameraposition camera_pos;
 

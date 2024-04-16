@@ -30,6 +30,7 @@ GameMainScene::GameMainScene() {
 	};
 
 	mapio->LoadMapData();
+	//stage_block = new StageBlock;
 }
 
 
@@ -38,7 +39,17 @@ GameMainScene::~GameMainScene() {
 }
 
 void GameMainScene::Update() {
+#ifdef DEBUG
+	if (CheckHitKey(KEY_INPUT_SPACE) == 1)
+	{
+		mapio->SaveMapData();
 
+	}
+	else {
+		mapio->InputTest(this);
+
+	}
+#endif // DEBUG
 
 	input.InputUpdate();
 	fp.fpsUpdate();
@@ -164,7 +175,7 @@ void GameMainScene::Draw() const {
 		DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
 		DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
 
-
+		mapio->Draw();
 #endif // DEBUG
 }
 
