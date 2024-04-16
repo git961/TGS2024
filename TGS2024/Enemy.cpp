@@ -3,9 +3,11 @@
 Enemy::Enemy(float set_x)
 {
 	// 中心座標
-	//x = 50;
-	x = 400 + (40 * set_x);
-	y = 600;
+	location.x = 400 + (40 * set_x);
+	location.y = 600;
+
+	world.x = 400 + (40 * set_x);
+	world.y = 600;
 
 	width = 30;
 	height = 30;
@@ -70,12 +72,12 @@ void Enemy::Draw() const
 #endif // DEBUG
 
 	// 当たり判定のボックス
-	DrawBoxAA(x - width / 2, y - width / 2, x + width / 2, y + height / 2, 0xffffff, true);
+	DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);
 	// 中心座標
-	DrawCircleAA(x, y, 1, 0xff00ff, true);
+	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 
 	// 画像の描画
-	DrawRotaGraph((int)x, (int)y, 1.0, 0.0, chara_image[0], TRUE, FALSE);
+	DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, chara_image[0], TRUE, FALSE);
 
 	//if (hp <= 0)
 	//{

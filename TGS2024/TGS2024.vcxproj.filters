@@ -40,6 +40,12 @@
     <Filter Include="ヘッダー ファイル\BaseFile">
       <UniqueIdentifier>{79a129c6-5f3c-41ce-8135-a225556113e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\StageFile">
+      <UniqueIdentifier>{9bb80dd1-8eb0-4dc4-a1e0-4025818cb88c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\StageFile">
+      <UniqueIdentifier>{12e94412-d881-465b-9799-0a039c7757e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -65,6 +71,15 @@
     </ClCompile>
     <ClCompile Include="AttackCheck.cpp">
       <Filter>ソース ファイル\PlayerFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>ソース ファイル\SystemFile</Filter>
+    </ClCompile>
+    <ClCompile Include="MapIo.cpp">
+      <Filter>ソース ファイル\SystemFile</Filter>
+    </ClCompile>
+    <ClCompile Include="StageBlock.cpp">
+      <Filter>ソース ファイル\StageFile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -94,6 +109,21 @@
     </ClInclude>
     <ClInclude Include="AttackCheck.h">
       <Filter>ヘッダー ファイル\PlayerFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>ヘッダー ファイル\SystemFile</Filter>
+    </ClInclude>
+    <ClInclude Include="MapIo.h">
+      <Filter>ヘッダー ファイル\SystemFile</Filter>
+    </ClInclude>
+    <ClInclude Include="StageBlock.h">
+      <Filter>ヘッダー ファイル\StageFile</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectBase.h">
+      <Filter>ヘッダー ファイル\BaseFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>ヘッダー ファイル\SystemFile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
