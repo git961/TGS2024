@@ -3,8 +3,8 @@
 Enemy::Enemy(float set_x)
 {
 	// 中心座標
-	location.x = 400 + (40 * set_x);
-	location.y = 600;
+	//location.x = 400 + (40 * set_x);
+	//location.y = 600;
 
 	world.x = 400 + (40 * set_x);
 	world.y = 600;

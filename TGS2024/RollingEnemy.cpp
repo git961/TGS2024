@@ -3,8 +3,8 @@
 RollingEnemy::RollingEnemy()
 {
 	// 中心座標
-	location.x = 200;
-	location.y = 600;
+	//location.x = 200;
+	//location.y = 600;
 
 	world.x = 200;
 	world.y = 600;
@@ -54,11 +54,16 @@ void RollingEnemy::Update(GameMainScene* gamemain)
 	// 移動処理
 	world.x += speed * move_x;
 
-	//// 端に来たら跳ね返る、敵同士の当たり判定で使用するかも
-	//if (x + width / 2 > 1280 || x - width / 2 < 0)
-	//{
-	//	move_x *= -1;
+	//if (world.x + width / 2 <= 2540)
+	//
+	//{	// 右端についていなかったら移動する
 	//}
+
+	// 端に来たら跳ね返る、敵同士の当たり判定で使用するかも
+	if (world.x + width / 2 > 2540 || world.x - width / 2 < 20)
+	{
+		move_x *= -1;
+	}
 
 	//if (hp <= 0 && death_cnt != 0)
 	//{

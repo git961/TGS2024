@@ -102,6 +102,39 @@ void GameMainScene::Update() {
 	}
 
 	// 転がる敵との当たり判定
+	if (rolling_enemy != nullptr)
+	{
+		// 歩行敵との当たり判定
+		if (player->HitCheck(rolling_enemy->GetLocation(), rolling_enemy->GetWidth(), rolling_enemy->GetHeight()) == true) {
+			checkhit = true;
+		}
+		else {
+			checkhit = false;
+		}
+
+		//つるはしを振るってる時だけ
+		if (player->GetAttacking() == true)
+		{
+			//ダメージを一回だけ与える
+			if (enemy_damage_once == false)
+			{
+				//つるはしとエネミーと当たってるかのチェック
+				if (ac->HitCheck(rolling_enemy->GetLocation(), rolling_enemy->GetWidth(), rolling_enemy->GetHeight()) == true) {//checkhit = true;
+					rolling_enemy->Damege(1);
+					enemy_damage_once = true;
+				}
+				else {
+					//checkhit = false;
+				}
+			}
+		}
+		else
+		{
+			//プレイヤーがつるはし振ってなかったら
+			enemy_damage_once = false;
+		}
+
+	}
 
 	//プレイヤー
 	if (player != nullptr)
@@ -167,20 +200,6 @@ void GameMainScene::Update() {
 	}
 #endif // DEBUG
 
-	//for (int i = 0; i < 10; i++)
-	//{
-	//	if (enemy[i] != nullptr)
-	//	{
-	//		// エネミー削除処理
-	//		if (enemy[i]->GetHp() <= 0)
-	//		{
-	//			delete enemy;
-	//			enemy = nullptr;
-	//		}
-
-	//	}
-	//}
-
 }
 
 void GameMainScene::Draw() const {
@@ -207,6 +226,11 @@ void GameMainScene::Draw() const {
 			{
 				enemy[i]->Draw();
 			}
+		}
+
+		if (rolling_enemy != nullptr)
+		{
+			rolling_enemy->Draw();
 		}
 
 		//プレイヤー攻撃描画
