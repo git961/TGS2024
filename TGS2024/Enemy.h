@@ -12,7 +12,15 @@ class Enemy : public CharacterBase
 {
 private:
     //int num;        // スポーン位置設定用
-    //int death_cnt;  // 死亡アニメーションが終わるまでの時間
+
+    int enemy_walk_img[3];      // エネミー歩行画像
+    int enemy_death_img[6];      // エネミー死亡画像
+
+    int death_cnt;  // 死亡アニメーションが終わるまでの時間
+    //int image;          // 現在の表示画像
+    int anim_cnt;       // アニメーション用カウント
+    bool decrease;      // アニメーション用カウント減少フラグ
+    int image_num;       // 表示する画像番号
 
 public:
     Enemy(float set_x);
@@ -24,6 +32,6 @@ public:
     void Damege(int damege);                // 被ダメージ処理
 
     float GetHp() { return hp; }            // hp取得
-    //int GetDeathCnt() { return death_cnt; } // 死亡アニメーション終了時間の取得
+    int GetDeathCnt() { return death_cnt; } // 死亡アニメーション終了時間の取得
 };
 

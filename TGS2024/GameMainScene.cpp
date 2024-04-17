@@ -68,36 +68,38 @@ void GameMainScene::Update() {
 	{
 		if (enemy[i] != nullptr)
 		{
-			// 歩行敵との当たり判定
-			if (player->HitCheck(enemy[i]->GetLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
-				checkhit = true;
-			}
-			else {
-				checkhit = false;
-			}
-
-			//つるはしを振るってる時だけ
-			if (player->GetAttacking() == true)
+			if (enemy[i]->GetHp() > 0)
 			{
-				//ダメージを一回だけ与える
-				if (enemy_damage_once == false)
+				// 歩行敵との当たり判定
+				if (player->HitCheck(enemy[i]->GetLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
+					checkhit = true;
+				}
+				else {
+					checkhit = false;
+				}
+
+				//つるはしを振るってる時だけ
+				if (player->GetAttacking() == true)
 				{
-					//つるはしとエネミーと当たってるかのチェック
-					if (ac->HitCheck(enemy[i]->GetLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {//checkhit = true;
-						enemy[i]->Damege(1);
-						enemy_damage_once = true;
-					}
-					else {
-						//checkhit = false;
+					//ダメージを一回だけ与える
+					if (enemy_damage_once == false)
+					{
+						//つるはしとエネミーと当たってるかのチェック
+						if (ac->HitCheck(enemy[i]->GetLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {//checkhit = true;
+							enemy[i]->Damege(1);
+							enemy_damage_once = true;
+						}
+						else {
+							//checkhit = false;
+						}
 					}
 				}
+				else
+				{
+					//プレイヤーがつるはし振ってなかったら
+					enemy_damage_once = false;
+				}
 			}
-			else
-			{
-				//プレイヤーがつるはし振ってなかったら
-				enemy_damage_once = false;
-			}
-
 		}
 	}
 
@@ -156,9 +158,17 @@ void GameMainScene::Update() {
 			enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
 			enemy[i]->Update(this);
+			
+
+			//// エネミー削除処理
+			//if (enemy[i]->GetHp() <= 0)
+			//{
+			//	delete enemy[i];
+			//	enemy[i] = nullptr;
+			//}
 
 			// エネミー削除処理
-			if (enemy[i]->GetHp() <= 0)
+			if (enemy[i]->GetDeathCnt() > 60)
 			{
 				delete enemy[i];
 				enemy[i] = nullptr;
@@ -189,10 +199,6 @@ void GameMainScene::Update() {
 
 
 #ifdef DEBUG
-	//if (enemy == nullptr)
-	//{
-	//	enemy = new Enemy(walk);
-	//}
 
 	if(rolling_enemy == nullptr)
 	{
@@ -203,6 +209,12 @@ void GameMainScene::Update() {
 }
 
 void GameMainScene::Draw() const {
+#ifdef DEBUG
+
+	//DrawBox(0, 0, 720, 720, 0xcccccc, TRUE);
+#endif // DEBUG
+
+
 	//DrawGraph(0, 0, back_img,FALSE);
 		DrawFormatString(0, 0, 0xffffff, "GameMain");
 		fp.display_fps();
