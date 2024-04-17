@@ -1,9 +1,11 @@
 ﻿#pragma once
 #include "CharacterBase.h"
 #include "GameMainScene.h"
+#include "StageBlock.h"
 #include "padinput.h"
 
 class GameMainScene;
+class StageBlock;
 
 class Player :
     public CharacterBase

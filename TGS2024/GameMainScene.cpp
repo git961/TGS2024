@@ -11,7 +11,11 @@ static cameraposition screen_origin_position = {
 
 
 GameMainScene::GameMainScene() {
-	player=new Player;
+
+	mapio = new MapIo;
+
+
+	player=new Player();
 
 	enemy = new Enemy * [10];
 
@@ -19,7 +23,6 @@ GameMainScene::GameMainScene() {
 	checkhit = false;
 	enemy_damage_once=false;
 
-	mapio = new MapIo;
 	//back.png
 	back_img=LoadGraph("image/back.png", TRUE);
 

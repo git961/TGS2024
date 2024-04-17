@@ -125,5 +125,8 @@
     <ClInclude Include="Define.h">
       <Filter>ヘッダー ファイル\SystemFile</Filter>
     </ClInclude>
+    <ClInclude Include="Vec2I.h">
+      <Filter>ヘッダー ファイル\SystemFile</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
