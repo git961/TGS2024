@@ -14,6 +14,7 @@ GameMainScene::GameMainScene() {
 	player=new Player;
 
 	enemy = new Enemy * [10];
+	rolling_enemy = new RollingEnemy;
 
 	ac = new AttackCheck;
 	checkhit = false;
@@ -44,6 +45,7 @@ GameMainScene::GameMainScene() {
 
 GameMainScene::~GameMainScene() {
 	delete[] enemy;
+	delete rolling_enemy;
 }
 
 void GameMainScene::Update() {
@@ -66,6 +68,7 @@ void GameMainScene::Update() {
 	{
 		if (enemy[i] != nullptr)
 		{
+			// 歩行敵との当たり判定
 			if (player->HitCheck(enemy[i]->GetLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
 				checkhit = true;
 			}
@@ -98,6 +101,7 @@ void GameMainScene::Update() {
 		}
 	}
 
+	// 転がる敵との当たり判定
 
 	//プレイヤー
 	if (player != nullptr)
@@ -129,6 +133,20 @@ void GameMainScene::Update() {
 		}
 	}
 
+	// 転がる敵更新処理
+	if (rolling_enemy != nullptr)
+	{
+		rolling_enemy->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+		rolling_enemy->Update(this);
+
+		if (rolling_enemy->GetHp() <= 0)
+		{
+			delete rolling_enemy;
+			rolling_enemy = nullptr;
+		}
+	}
+
 	UpdateCamera(player->GetWorldLocation());
 
 	screen_origin_position = {
@@ -142,6 +160,11 @@ void GameMainScene::Update() {
 	//{
 	//	enemy = new Enemy(walk);
 	//}
+
+	if(rolling_enemy == nullptr)
+	{
+		rolling_enemy = new RollingEnemy;
+	}
 #endif // DEBUG
 
 	//for (int i = 0; i < 10; i++)

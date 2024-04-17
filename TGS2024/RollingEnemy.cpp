@@ -1,16 +1,16 @@
-﻿#include "Enemy.h"
+#include "RollingEnemy.h"
 
-Enemy::Enemy(float set_x)
+RollingEnemy::RollingEnemy()
 {
 	// 中心座標
-	location.x = 400 + (40 * set_x);
+	location.x = 200;
 	location.y = 600;
 
-	world.x = 400 + (40 * set_x);
+	world.x = 200;
 	world.y = 600;
 
-	width = 30;
-	height = 30;
+	width = 40;
+	height = 40;
 
 	move_x = 1;			// 移動量
 	move_y = 0;			// 未使用
@@ -20,7 +20,7 @@ Enemy::Enemy(float set_x)
 
 	//画像読込
 	//LoadDivGraph("images/Enemy/EnemyTest01.png", 9, 3, 1, 64, 64, chara_image);
-	LoadDivGraph("images/Enemy/EnemyTest.png", 9, 3, 1, 32, 32, chara_image);
+	//LoadDivGraph("images/Enemy/EnemyTest.png", 9, 3, 1, 32, 32, chara_image);
 
 	//death_cnt = 90;
 
@@ -41,20 +41,18 @@ Enemy::Enemy(float set_x)
 	//	x = 1260;
 	//	move_x *= -1;
 	//}
+
 }
 
-Enemy::~Enemy()
+RollingEnemy::~RollingEnemy()
 {
-	// 画像の削除
-	for (int i = 0; i < 10; i++) {
-		DeleteGraph(chara_image[i]);
-	}
+
 }
 
-void Enemy::Update(GameMainScene* gamemain)
+void RollingEnemy::Update(GameMainScene* gamemain)
 {
 	// 移動処理
-	//x += speed * move_x;
+	world.x += speed * move_x;
 
 	//// 端に来たら跳ね返る、敵同士の当たり判定で使用するかも
 	//if (x + width / 2 > 1280 || x - width / 2 < 0)
@@ -66,21 +64,22 @@ void Enemy::Update(GameMainScene* gamemain)
 	//{
 	//	death_cnt--;
 	//}
+
 }
 
-void Enemy::Draw() const
+void RollingEnemy::Draw() const
 {
 #ifdef DEBUG
-	DrawFormatString(0, 50, 0xffffff, "hp : %f", hp);
+	//DrawFormatString(0, 50, 0xffffff, "hp : %f", hp);
 #endif // DEBUG
 
 	// 当たり判定のボックス
-	DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);
+	DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0xff0303, true);
 	// 中心座標
 	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 
-	// 画像の描画
-	DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, chara_image[0], TRUE, FALSE);
+	// 画像の描画（回転させる、右回転、左回転がある）
+	//DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, chara_image[0], TRUE, FALSE);
 
 	//if (hp <= 0)
 	//{
@@ -118,7 +117,7 @@ void Enemy::Draw() const
 }
 
 // 被ダメージ処理
-void Enemy::Damege(int damege)
+void RollingEnemy::Damege(int damege)
 {
 	hp -= (float)damege;
 }

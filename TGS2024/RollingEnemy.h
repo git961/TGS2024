@@ -1,5 +1,4 @@
-﻿#pragma once
-#define DEBUG		// デバッグ用、消すと#ifdef DEBUGの処理がされなくなる
+#pragma once
 
 #include <stdlib.h>         // スポーン位置決定用
 #include <time.h>           // スポーン位置決定用
@@ -8,15 +7,17 @@
 
 class GameMainScene;
 
-class Enemy : public CharacterBase
+// 転がる敵
+class RollingEnemy : public CharacterBase
 {
 private:
-    //int num;        // スポーン位置設定用
-    //int death_cnt;  // 死亡アニメーションが終わるまでの時間
+	//int num;        // スポーン位置設定用
+	//int death_cnt;  // 死亡アニメーションが終わるまでの時間
 
 public:
-    Enemy(float set_x);
-    ~Enemy();
+
+    RollingEnemy();
+    ~RollingEnemy();
 
     void Update(GameMainScene* gamemain);
     void Draw() const;
@@ -25,5 +26,6 @@ public:
 
     float GetHp() { return hp; }            // hp取得
     //int GetDeathCnt() { return death_cnt; } // 死亡アニメーション終了時間の取得
+
 };
 

@@ -2,6 +2,7 @@
 #include "AbstractScene.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "RollingEnemy.h"
 #include "AttackCheck.h"
 #include "fps.h"
 #include "MapIo.h"
@@ -12,6 +13,7 @@
 
 class Player;
 class Enemy;
+class RollingEnemy;
 class AttackCheck;
 class MapIo;
 class StageBlock;
@@ -30,6 +32,7 @@ private:
 
     Player *player;
     Enemy **enemy;
+    RollingEnemy* rolling_enemy;
     AttackCheck *ac;
     fps fp;
 
