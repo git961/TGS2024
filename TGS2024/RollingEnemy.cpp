@@ -9,18 +9,29 @@ RollingEnemy::RollingEnemy()
 	world.x = 200;
 	world.y = 600;
 
-	width = 40;
-	height = 40;
+	width = 60;
+	height = 60;
 
 	move_x = 1;			// 移動量
 	move_y = 0;			// 未使用
 	hp = 10;
 	attack = 10;
 	speed = 3;			// なくても良い
+	direction = true;	// 右向き
 
 	//画像読込
-	//LoadDivGraph("images/Enemy/EnemyTest01.png", 9, 3, 1, 64, 64, chara_image);
-	//LoadDivGraph("images/Enemy/EnemyTest.png", 9, 3, 1, 32, 32, chara_image);
+	LoadDivGraph("images/Enemy/RollingTest.png", 5, 5, 1, 64, 64, enemy_roll_img);
+	LoadDivGraph("images/Enemy/EffectTest.png", 4, 4, 1, 64, 64, enemy_effect_img);
+
+	anim_cnt = 0;       // アニメーション用カウント
+	decrease = false;      // アニメーション用カウント減少フラグ
+	enemy_image_num = 0;       // 表示する画像番号
+	effect_image_num = 0;
+
+	angle = 0.0;
+	degree = 0.0;
+
+	is_delete = false;
 
 	//death_cnt = 90;
 
@@ -51,24 +62,93 @@ RollingEnemy::~RollingEnemy()
 
 void RollingEnemy::Update(GameMainScene* gamemain)
 {
-	// 移動処理
-	world.x += speed * move_x;
-
-	//if (world.x + width / 2 <= 2540)
-	//
-	//{	// 右端についていなかったら移動する
-	//}
-
-	// 端に来たら跳ね返る、敵同士の当たり判定で使用するかも
-	if (world.x + width / 2 > 2540 || world.x - width / 2 < 20)
+	if (hp > 0)
 	{
-		move_x *= -1;
+		if (direction == true)
+		{
+			// 右回り
+			if (degree < 360.0f)
+			{
+				degree += 6;
+			}
+			else
+			{
+				degree = 0.0f;
+			}
+		}
+		else
+		{
+			// 左回り
+			if (degree > 0.0f)
+			{
+				degree -= 6;
+			}
+			else
+			{
+				degree = 360.0f;
+			}
+		}
+
+		// 画像の角度
+		angle = DEGREE_RADIAN(degree);
+
+		// 移動処理
+		world.x += speed * move_x;
+	}
+	else
+	{
+		if (anim_cnt < 74)
+		{
+			// アニメーション用カウント増加
+			anim_cnt++;
+		}
+		else
+		{
+			// hpがなくなり、一定時間経ったら削除
+			is_delete = true;
+
+			// なくてもいい
+			anim_cnt = 0;
+		}
+
+		if (anim_cnt != 0)
+		{
+			// エネミー画像番号の計算、5カウントごとに画像番号が変わる
+			enemy_image_num = anim_cnt / 5;
+
+			if (enemy_image_num > 4)
+			{
+				enemy_image_num = 4;
+			}
+
+			if (enemy_image_num == 4)
+			{
+				// エフェクト画像番号の計算、15カウントごとに画像番号が変わる
+				effect_image_num = (75 - anim_cnt) / 15;
+			}
+		}
+
+		angle = 0.0;
 	}
 
-	//if (hp <= 0 && death_cnt != 0)
-	//{
-	//	death_cnt--;
-	//}
+	// 端に来たら跳ね返る
+	if (world.x + width / 2 > 2540 || world.x - width / 2 < 20)
+	{
+		//　画像の回転方向を変える
+		if (direction == true)
+		{
+			// 左回転に変更
+			direction = false;
+		}
+		else
+		{
+			// 右回転に変更
+			direction = true;
+		}
+
+		// -1を掛けて移動量反転
+		move_x *= -1;
+	}
 
 }
 
@@ -76,49 +156,22 @@ void RollingEnemy::Draw() const
 {
 #ifdef DEBUG
 	//DrawFormatString(0, 50, 0xffffff, "hp : %f", hp);
+	//DrawFormatString(300, 50, 0xffffff, "enemy_image_num : %d", enemy_image_num);
 #endif // DEBUG
 
 	// 当たり判定のボックス
-	DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0xff0303, true);
+	//DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0xff0303, true);
 	// 中心座標
-	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
+	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 
-	// 画像の描画（回転させる、右回転、左回転がある）
-	//DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, chara_image[0], TRUE, FALSE);
+	// エネミー画像の描画（回転させる、右回転、左回転がある）
+	DrawRotaGraph((int)location.x, (int)location.y, 1.0, angle, enemy_roll_img[enemy_image_num], TRUE, FALSE);
 
-	//if (hp <= 0)
-	//{
-	//	switch (death_cnt)
-	//	{
-	//	case 80:
-	//		DrawRotaGraph((int)x, (int)y, 1.0, 0.0, chara_image[1], TRUE, FALSE);
-	//		break;
-	//	case 70:
-	//		DrawRotaGraph((int)x, (int)y, 1.0, 0.0, chara_image[2], TRUE, FALSE);
-	//		break;
-	//	case 60:
-	//		DrawRotaGraph((int)x, (int)y, 1.0, 0.0, chara_image[3], TRUE, FALSE);
-	//		break;
-	//	case 50:
-	//		DrawRotaGraph((int)x, (int)y, 1.0, 0.0, chara_image[4], TRUE, FALSE);
-	//		break;
-	//	case 40:
-	//		DrawRotaGraph((int)x, (int)y, 1.0, 0.0, chara_image[5], TRUE, FALSE);
-	//		break;
-	//	case 30:
-	//		DrawRotaGraph((int)x, (int)y, 1.0, 0.0, chara_image[6], TRUE, FALSE);
-	//		break;
-	//	case 20:
-	//		DrawRotaGraph((int)x, (int)y, 1.0, 0.0, chara_image[7], TRUE, FALSE);
-	//		break;
-	//	case 10:
-	//		DrawRotaGraph((int)x, (int)y, 1.0, 0.0, chara_image[8], TRUE, FALSE);
-	//		break;
-	//	default:
-	//		break;
-	//	}
-	//}
-
+	if (enemy_image_num == 4)
+	{
+		// エフェクト画像の描画
+		DrawRotaGraph((int)location.x, (int)location.y, 1.0, angle, enemy_effect_img[effect_image_num], TRUE, FALSE);
+	}
 }
 
 // 被ダメージ処理

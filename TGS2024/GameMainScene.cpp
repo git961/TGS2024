@@ -106,36 +106,38 @@ void GameMainScene::Update() {
 	// 転がる敵との当たり判定
 	if (rolling_enemy != nullptr)
 	{
-		// 歩行敵との当たり判定
-		if (player->HitCheck(rolling_enemy->GetLocation(), rolling_enemy->GetWidth(), rolling_enemy->GetHeight()) == true) {
-			checkhit = true;
-		}
-		else {
-			checkhit = false;
-		}
-
-		//つるはしを振るってる時だけ
-		if (player->GetAttacking() == true)
+		if (rolling_enemy->GetHp() > 0)
 		{
-			//ダメージを一回だけ与える
-			if (enemy_damage_once == false)
+			// 歩行敵との当たり判定
+			if (player->HitCheck(rolling_enemy->GetLocation(), rolling_enemy->GetWidth(), rolling_enemy->GetHeight()) == true) {
+				checkhit = true;
+			}
+			else {
+				checkhit = false;
+			}
+
+			//つるはしを振るってる時だけ
+			if (player->GetAttacking() == true)
 			{
-				//つるはしとエネミーと当たってるかのチェック
-				if (ac->HitCheck(rolling_enemy->GetLocation(), rolling_enemy->GetWidth(), rolling_enemy->GetHeight()) == true) {//checkhit = true;
-					rolling_enemy->Damege(1);
-					enemy_damage_once = true;
-				}
-				else {
-					//checkhit = false;
+				//ダメージを一回だけ与える
+				if (enemy_damage_once == false)
+				{
+					//つるはしとエネミーと当たってるかのチェック
+					if (ac->HitCheck(rolling_enemy->GetLocation(), rolling_enemy->GetWidth(), rolling_enemy->GetHeight()) == true) {//checkhit = true;
+						rolling_enemy->Damege(10);
+						enemy_damage_once = true;
+					}
+					else {
+						//checkhit = false;
+					}
 				}
 			}
+			else
+			{
+				//プレイヤーがつるはし振ってなかったら
+				enemy_damage_once = false;
+			}
 		}
-		else
-		{
-			//プレイヤーがつるはし振ってなかったら
-			enemy_damage_once = false;
-		}
-
 	}
 
 	//プレイヤー
@@ -168,7 +170,7 @@ void GameMainScene::Update() {
 			//}
 
 			// エネミー削除処理
-			if (enemy[i]->GetDeathCnt() > 60)
+			if (enemy[i]->GetDeleteFlg() == true)
 			{
 				delete enemy[i];
 				enemy[i] = nullptr;
@@ -183,7 +185,7 @@ void GameMainScene::Update() {
 
 		rolling_enemy->Update(this);
 
-		if (rolling_enemy->GetHp() <= 0)
+		if (rolling_enemy->GetDeleteFlg() == true)
 		{
 			delete rolling_enemy;
 			rolling_enemy = nullptr;
@@ -242,6 +244,7 @@ void GameMainScene::Draw() const {
 
 		if (rolling_enemy != nullptr)
 		{
+			// 転がるエネミー描画
 			rolling_enemy->Draw();
 		}
 

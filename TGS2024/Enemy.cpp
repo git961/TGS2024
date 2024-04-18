@@ -31,6 +31,7 @@ Enemy::Enemy(float set_x)
 	image_num = 0;
 
 	death_cnt = 0;
+	is_delete = false;
 
 	//srand(time(NULL));
 	//num = rand() % 10 + 1;
@@ -90,10 +91,12 @@ void Enemy::Update(GameMainScene* gamemain)
 	}
 	else
 	{
-		//if (death_cnt > 0)
-		//{
-			death_cnt++;
-		//}
+		death_cnt++;
+
+		if (death_cnt >= 60)
+		{
+			is_delete = true;
+		}
 	}
 
 	// 画像切り替え
