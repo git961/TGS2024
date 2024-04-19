@@ -6,11 +6,11 @@ Enemy::Enemy(float set_x)
 	//location.x = 400 + (40 * set_x);
 	//location.y = 600;
 
-	world.x = 400 + (40 * set_x);
+	world.x = 400 + (80 * set_x);
 	world.y = 600;
 
-	width = 30;
-	height = 30;
+	width = 45;
+	height = 64;
 
 	move_x = 1;			// 移動量
 	move_y = 0;			// 未使用
@@ -21,8 +21,8 @@ Enemy::Enemy(float set_x)
 
 	//画像読込
 	//LoadDivGraph("images/Enemy/EnemyTest01.png", 9, 3, 1, 64, 64, chara_image);
-	LoadDivGraph("images/Enemy/EnemyTest_walk.png", 3, 3, 1, 32, 32, enemy_walk_img);
-	LoadDivGraph("images/Enemy/EnemyTest_death.png", 6, 6, 1, 32, 32, enemy_death_img);
+	LoadDivGraph("images/Enemy/WalkTest.png", 5, 5, 1, 64, 64, enemy_walk_img);
+	LoadDivGraph("images/Enemy/WalkDeathTest.png", 4, 4, 1, 64, 64, enemy_death_img);
 
 	anim_cnt = 0;
 	// 現在の画像
@@ -66,28 +66,29 @@ void Enemy::Update(GameMainScene* gamemain)
 	{
 		if (decrease == false)
 		{
-			if (anim_cnt < 59)
+			if (anim_cnt < 99)
 			{
 				// アニメーション用カウント増加
 				anim_cnt++;
 			}
 			else
 			{
-				decrease = true;
+				anim_cnt = 0;
+				//decrease = true;
 			}
 		}
-		else
-		{
-			if (anim_cnt > 0)
-			{
-				// アニメーション用カウント減少
-				anim_cnt--;
-			}
-			else
-			{
-				decrease = false;
-			}
-		}
+		//else
+		//{
+		//	if (anim_cnt > 0)
+		//	{
+		//		// アニメーション用カウント減少
+		//		anim_cnt--;
+		//	}
+		//	else
+		//	{
+		//		decrease = false;
+		//	}
+		//}
 	}
 	else
 	{
@@ -107,53 +108,18 @@ void Enemy::Update(GameMainScene* gamemain)
 			// 20カウントごとに変わる
 			image_num = anim_cnt / 20;
 		}
-
-		// 歩行アニメーション（仮）
-		//if (anim_cnt <= 20)
-		//{
-		//	image = chara_image[0];
-		//}
-		//else if (anim_cnt <= 40)
-		//{
-		//	image = chara_image[1];
-		//}
-		//else if (anim_cnt <= 60)
-		//{
-		//	image = chara_image[2];
-		//}
 	}
 	else
 	{
 		if (death_cnt != 0)
 		{
-			image_num = death_cnt / 10;
+			image_num = death_cnt / 5;
 		}
 
-		// 死亡アニメーション（仮）
-		//if (death_cnt >= 50)
-		//{
-		//	image = chara_image[3];
-		//}
-		//else if (death_cnt >= 40)
-		//{
-		//	image = chara_image[4];
-		//}
-		//else if (death_cnt >= 30)
-		//{
-		//	image = chara_image[5];
-		//}
-		//else if (death_cnt >= 20)
-		//{
-		//	image = chara_image[6];
-		//}
-		//else if (death_cnt >= 10)
-		//{
-		//	image = chara_image[7];
-		//}
-		//else if (death_cnt >= 0)
-		//{
-		//	image = chara_image[8];
-		//}
+		if (image_num > 3)
+		{
+			image_num = 3;
+		}
 	}
 
 	//if (hp > 0)
@@ -168,11 +134,6 @@ void Enemy::Update(GameMainScene* gamemain)
 	//	//}
 	//}
 
-
-	//if (hp <= 0 && death_cnt != 0)
-	//{
-	//	death_cnt--;
-	//}
 }
 
 void Enemy::Draw() const
@@ -185,7 +146,7 @@ void Enemy::Draw() const
 #endif // DEBUG
 
 	// 当たり判定のボックス
-	DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);
+	//DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);
 	// 中心座標
 	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 
@@ -198,7 +159,6 @@ void Enemy::Draw() const
 	{
 		DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_death_img[image_num], TRUE, FALSE);
 	}
-
 }
 
 // 被ダメージ処理

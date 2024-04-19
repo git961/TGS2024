@@ -13,8 +13,8 @@ class Enemy : public CharacterBase
 private:
     //int num;        // スポーン位置設定用
 
-    int enemy_walk_img[3];      // エネミー歩行画像
-    int enemy_death_img[6];      // エネミー死亡画像
+    int enemy_walk_img[5];      // エネミー歩行画像
+    int enemy_death_img[4];      // エネミー死亡画像
 
     int death_cnt;  // 死亡アニメーションが終わるまでの時間
     bool is_delete;     // 削除するか？
