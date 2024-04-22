@@ -21,6 +21,7 @@ private:
 
     //int image;          // 現在の表示画像
     int anim_cnt;       // アニメーション用カウント
+    int anim_max_cnt;   // アニメーションカウントの最大値
     bool decrease;      // アニメーション用カウント減少フラグ
     int image_num;       // 表示する画像番号
 

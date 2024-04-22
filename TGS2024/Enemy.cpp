@@ -16,7 +16,7 @@ Enemy::Enemy(float set_x)
 	move_y = 0;			// 未使用
 	hp = 10;
 	attack = 10;
-	speed = 3;			// なくても良い
+	speed = 2;			// なくても良い
 
 
 	//画像読込
@@ -25,6 +25,8 @@ Enemy::Enemy(float set_x)
 	LoadDivGraph("images/Enemy/WalkDeathTest.png", 4, 4, 1, 64, 64, enemy_death_img);
 
 	anim_cnt = 0;
+	anim_max_cnt = 19;
+
 	// 現在の画像
 	//image = 0;
 	decrease = false;
@@ -32,6 +34,8 @@ Enemy::Enemy(float set_x)
 
 	death_cnt = 0;
 	is_delete = false;
+
+	direction = false;		// 画像は右向き
 
 	//srand(time(NULL));
 	//num = rand() % 10 + 1;
@@ -66,7 +70,7 @@ void Enemy::Update(GameMainScene* gamemain)
 	{
 		if (decrease == false)
 		{
-			if (anim_cnt < 99)
+			if (anim_cnt < anim_max_cnt)
 			{
 				// アニメーション用カウント増加
 				anim_cnt++;
@@ -105,44 +109,58 @@ void Enemy::Update(GameMainScene* gamemain)
 	{
 		if (anim_cnt != 0)
 		{	
+			// 歩行
 			// 20カウントごとに変わる
-			image_num = anim_cnt / 20;
+			image_num = anim_cnt / 5;
 		}
 	}
 	else
 	{
 		if (death_cnt != 0)
 		{
+			// 死亡
+			// 5カウントごとに変わる
 			image_num = death_cnt / 5;
 		}
 
 		if (image_num > 3)
 		{
+			// 最後の画像番号で止める
 			image_num = 3;
 		}
 	}
 
-	//if (hp > 0)
-	//{
-	//	// 移動処理
-	//	//x += speed * move_x;
+	if (hp > 0)
+	{
+		// 移動処理
+		world.x -= speed * move_x;
 
-	//	//// 端に来たら跳ね返る、敵同士の当たり判定で使用するかも
-	//	//if (x + width / 2 > 1280 || x - width / 2 < 0)
-	//	//{
-	//	//	move_x *= -1;
-	//	//}
-	//}
+		// 端に来たら跳ね返る、敵同士の当たり判定で使用するかも
+		if (world.x + width / 2 > 1280 || world.x - width / 2 < 0)
+		{
+			// 移動量を反転
+			move_x *= -1;
 
+			if (direction == false)
+			{
+				// 左向きに変更
+				direction = true;
+			}
+			else
+			{
+				// 右向きに変更
+				direction = false;
+			}
+			
+		}
+	}
 }
 
 void Enemy::Draw() const
 {
 #ifdef DEBUG
-	DrawFormatString(0, 50, 0xffffff, "death_cnt : %d", death_cnt);
+	//DrawFormatString(0, 50, 0xffffff, "death_cnt : %d", death_cnt);
 	DrawFormatString(200, 50, 0xffffff, "image_num : %d", image_num);
-	//DrawFormatString(400, 50, 0xffffff, "image : %d", image);
-
 #endif // DEBUG
 
 	// 当たり判定のボックス
@@ -153,11 +171,11 @@ void Enemy::Draw() const
 	// 画像の描画
 	if (hp > 0)
 	{
-		DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_walk_img[image_num], TRUE, FALSE);
+		DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_walk_img[image_num], TRUE, direction);
 	}
 	else
 	{
-		DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_death_img[image_num], TRUE, FALSE);
+		DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_death_img[image_num], TRUE, direction);
 	}
 }
 

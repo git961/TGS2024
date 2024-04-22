@@ -49,6 +49,13 @@ private:
     int back_img;//背景入れるよう
 
 
+    // 背景画像スクロール用
+    // ※　後で削除予定！！！
+    float location_x;
+    float location_y;
+    float world_x;
+    float world_y;
+
     //camera_x - 1280 / 2;
     //camera_y - 720 / 2;
 

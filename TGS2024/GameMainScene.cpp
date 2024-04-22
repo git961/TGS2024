@@ -22,7 +22,15 @@ GameMainScene::GameMainScene() {
 
 	mapio = new MapIo;
 	//back.png
-	back_img=LoadGraph("image/back.png", TRUE);
+	back_img=LoadGraph("images/background_test.png", TRUE);
+
+	// 背景画像ローカル座標
+	location_x = 0.0f;
+	location_y = 0.0f;
+	// 背景画像ワールド座標
+	world_x = 0.0f;
+	world_y = 0.0f;
+
 
 	//カメラ座標は上の代入で座標真ん中取ってるから
 	//それを左上の原点に変換するヤツ->キャラベースのSetLocalPositionに続く
@@ -59,6 +67,11 @@ void GameMainScene::Update() {
 		mapio->InputTest(this);
 
 	}
+
+	//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
+	location_x = world_x - screen_origin_position.x;
+	location_y = world_y - screen_origin_position.y;
+
 #endif // DEBUG
 
 	input.InputUpdate();
@@ -212,12 +225,13 @@ void GameMainScene::Update() {
 
 void GameMainScene::Draw() const {
 #ifdef DEBUG
-
-	//DrawBox(0, 0, 720, 720, 0xcccccc, TRUE);
+	// 背景色
+	//DrawBox(0, 0, 1280, 720, 0x9c9c9c, TRUE);
 #endif // DEBUG
 
+	// 背景画像描画（仮）
+	DrawGraph(location_x, location_y, back_img,FALSE);
 
-	//DrawGraph(0, 0, back_img,FALSE);
 		DrawFormatString(0, 0, 0xffffff, "GameMain");
 		fp.display_fps();
 
@@ -236,9 +250,9 @@ void GameMainScene::Draw() const {
 		for (int i = 0; i < 10; i++)
 		{
 			// エネミー描画処理
-			if (enemy[i] != nullptr)
+			if (enemy[1] != nullptr)
 			{
-				enemy[i]->Draw();
+				enemy[1]->Draw();
 			}
 		}
 
