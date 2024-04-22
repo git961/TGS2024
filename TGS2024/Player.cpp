@@ -104,44 +104,8 @@ void Player::Update(GameMainScene* gamemain)
 		PlayerMove();
 	}
 
-	//左上の座標
-	edge_list[0][0] = { location.x-width/2};//左のｘ座標を入れる
-	edge_list[0][1] = {location.y-height/2};//上のy座標
 
-	//左下の座標
-	edge_list[0][2] = { location.x + width / 2 };//左のｘ座標を入れる
-	edge_list[0][3] = { location.y + height / 2 };//下のy座標
 
-	/*for (int i = 0; i < 4; i++)
-	{*/
-		//左に向かって動いているか？
-		if (location.x < 0.0f == true)
-		{
-			is_check_edge[0]=true;
-		}
-		else {
-			is_check_edge[0] = false;
-		}
-	//}
-		//判定
-		for (int i = 0; i < 4; i++)
-		{
-			//使用しない軸ならcontinue
-			if (is_check_edge[i] == false)
-			{
-				continue;
-			}
-
-			for (int y = edge_list[i][1]; y <= edge_list[i][3]; y++)
-			{
-				for (int x = edge_list[i][0]; x <= edge_list[i][2]; x++)
-				{
-					//当たり
-					
-				}
-			}
-
-		}
 }
 
 void Player::Draw() const
@@ -214,8 +178,8 @@ void Player::Draw() const
 	//DrawFormatString(100, 120, 0xffffff, "btnnum: % d", input.Btnnum);
 
 	//DrawFormatString(100, 150, 0xffffff, "location.x: %f",location.x);
-	DrawFormatString(100, 100, 0xffffff, "vectorx: %fvectory:%f",vector.x,vector.y);
-	DrawFormatString(100, 120, 0xffffff, "velocity_y: %f", velocity_y);
+	DrawFormatString(100, 100, 0xffffff, "worldx: %f location.x:%f",world.x,location.x);
+	DrawFormatString(100, 120, 0xffffff, "world_y: %f location.y:%f", world.y,location.y);
 	/*DrawFormatString(100, 120, 0xffffff, "location.y: %f", location.y);
 	DrawFormatString(100, 140, 0xffffff, "world.x: %f",world.x);
 	DrawFormatString(100, 160, 0xffffff, "world.y: %f",world.y);*/

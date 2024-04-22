@@ -1,6 +1,7 @@
 #pragma once
 #include <math.h>
 #include "DxLib.h"
+#include "Define.h"
 
 struct Vec2
 {
@@ -13,12 +14,33 @@ struct World
 	float y;
 };
 
+//vertex 頂点
+//右下の頂点
+struct Boxvertex
+{
+	//右下
+	float lower_rightx;
+	float lower_righty;
+
+	//左上
+	float upper_leftx;
+	float upper_lefty;
+};
+//
+////左上の頂点
+//struct vertexupperleft
+//{
+//	float x;
+//	float y;
+//};
+
 class ObjectBase
 {
 protected:
 
 	Vec2 location;
 	World world;
+	Boxvertex box_vertex;
 
 	float width;//幅
 	float height;//高さ
@@ -68,6 +90,8 @@ public:
 	Vec2 GetLocation() { return location; }
 	World GetWorldLocation() { return world; }
 
+	Boxvertex GetVertex() { return box_vertex; }
+
 	float GetWidth() { return width; }
 	float GetHeight() { return height; }
 
@@ -79,5 +103,24 @@ public:
 		location.x = world.x - set_origin_posx;
 		location.y = world.y - set_origin_posy;
 	};
+
+	//各頂点の座標をセット
+	void SetVertex()
+	{
+		//右下の座標をセット
+		//右下のx座標＝中心ｘ＋ボックスの半分X
+		box_vertex.lower_rightx=world.x+BLOCKSIZE/2;
+		//右下のy座標＝中心y＋ボックスの半分Y
+		box_vertex.lower_righty = world.y + BLOCKSIZE / 2;
+
+
+		//左上の座標をセット
+		//左上のx座標＝中心ｘ-ボックスの半分X
+		box_vertex.upper_leftx = world.x - BLOCKSIZE / 2;
+		//左上のy座標＝中心y-ボックスの半分Y
+		box_vertex.upper_lefty = world.y + BLOCKSIZE / 2;
+
+	};
+
 
 };

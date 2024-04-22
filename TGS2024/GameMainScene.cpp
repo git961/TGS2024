@@ -154,9 +154,10 @@ void GameMainScene::Update() {
 					for (int j = 0; j < 20; j++)
 					{
 						stage_block->SetBlockLocalPosition(screen_origin_position.x, screen_origin_position.y);
-						if (stage_block->CheckHitBlock(i, j, player->GetLocation(), player->GetWidth(), player->GetHeight()) == true)
+						
+						if (player != nullptr)
 						{
-							checkhit = true;
+							player->HitCheckB(stage_block->GetVertex(), stage_block->GetWorldLocation());
 						}
 					}
 				}

@@ -1,6 +1,7 @@
 #pragma once
 
 #define BLOCKSIZE 64
+#define BLOCK_HALFSIZE BLOCKSIZE/2
 
 #define map_blockmax_x 2560 / BLOCKSIZE
 #define map_blockmax_y 720 / BLOCKSIZE

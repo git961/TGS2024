@@ -3,6 +3,7 @@
 #include "DxLib.h"
 #include "ObjectBase.h"
 
+
 //#define CHARAIMAGENUM 10;//キャラクタ画像入れる配列の大きさ
 
 
@@ -91,6 +92,26 @@ public:
 		{
 			return false;
 		}
+
+	}
+
+	void HitCheckB(Boxvertex set_vertex,World set_world)
+	{
+		//右下と左上の判定
+		// ブロックが下にある場合を判定したいとき
+		//相手の左上をもらう
+
+		//もし自分の右下が、相手の左上よりも、下だったら
+		if (box_vertex.lower_righty < set_vertex.upper_lefty)
+		{
+			//相手のｙをもらって、押し上げてもらう
+			//恐らくｗｏｒｌｄロケーションをもらう
+			world.y = set_world.y;
+		}
+
+
+		//右下の座標と受け取った、ブロックの座標の高さと比較する
+		//もし、みんなブロックとの当たり判定をとるなら、既に各頂点を入れる箱を作ったほうが良いのでは？
 
 	}
 
