@@ -67,12 +67,11 @@ void GameMainScene::Update() {
 		mapio->InputTest(this);
 
 	}
+#endif // DEBUG
 
 	//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
 	location_x = world_x - screen_origin_position.x;
 	location_y = world_y - screen_origin_position.y;
-
-#endif // DEBUG
 
 	input.InputUpdate();
 	fp.fpsUpdate();
@@ -83,7 +82,7 @@ void GameMainScene::Update() {
 		{
 			if (enemy[i]->GetHp() > 0)
 			{
-				// 歩行敵との当たり判定
+				// 歩行エネミーとの当たり判定
 				if (player->HitCheck(enemy[i]->GetLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
 					checkhit = true;
 				}
@@ -99,7 +98,7 @@ void GameMainScene::Update() {
 					{
 						//つるはしとエネミーと当たってるかのチェック
 						if (ac->HitCheck(enemy[i]->GetLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {//checkhit = true;
-							enemy[i]->Damege(1);
+							enemy[i]->Damege(10);
 							enemy_damage_once = true;
 						}
 						else {
@@ -116,12 +115,11 @@ void GameMainScene::Update() {
 		}
 	}
 
-	// 転がる敵との当たり判定
 	if (rolling_enemy != nullptr)
 	{
 		if (rolling_enemy->GetHp() > 0)
 		{
-			// 歩行敵との当たり判定
+			// 転がるエネミーとの当たり判定
 			if (player->HitCheck(rolling_enemy->GetLocation(), rolling_enemy->GetWidth(), rolling_enemy->GetHeight()) == true) {
 				checkhit = true;
 			}
@@ -165,7 +163,7 @@ void GameMainScene::Update() {
 			ac->Update(this,player);
 	}
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		// エネミー更新処理
 		if (enemy[i] != nullptr)
@@ -174,14 +172,6 @@ void GameMainScene::Update() {
 
 			enemy[i]->Update(this);
 			
-
-			//// エネミー削除処理
-			//if (enemy[i]->GetHp() <= 0)
-			//{
-			//	delete enemy[i];
-			//	enemy[i] = nullptr;
-			//}
-
 			// エネミー削除処理
 			if (enemy[i]->GetDeleteFlg() == true)
 			{
@@ -212,11 +202,31 @@ void GameMainScene::Update() {
 		camera_pos.y - SCREEN_HEIGHT / 2.0f
 	};
 
+	// 歩行エネミー同士の当たり判定
+	for (int i = 0; i < 10; i++)
+	{
+		if (enemy[i] != nullptr)
+		{
+			for (int j = 1; j < 10; j++)
+			{
+				if (enemy[j] != nullptr)
+				{
+					if (enemy[i]->HitCheck(enemy[j]->GetLocation(), enemy[j]->GetWidth(), enemy[j]->GetHeight()) == true)
+					{
+						// 当たっていたら２体とも進行方向を反対に変更する
+						enemy[i]->ChangeDirection();
+						enemy[j]->ChangeDirection();
+					}
+				}
+			}
+		}
+	}
 
 #ifdef DEBUG
 
 	if(rolling_enemy == nullptr)
 	{
+		// 転がるエネミーが消えたら新しく出現させる
 		rolling_enemy = new RollingEnemy;
 	}
 #endif // DEBUG
@@ -247,12 +257,12 @@ void GameMainScene::Draw() const {
 			player->Draw();
 		}
 
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 2; i++)
 		{
 			// エネミー描画処理
-			if (enemy[1] != nullptr)
+			if (enemy[i] != nullptr)
 			{
-				enemy[1]->Draw();
+				enemy[i]->Draw();
 			}
 		}
 

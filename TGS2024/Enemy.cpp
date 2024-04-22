@@ -6,7 +6,7 @@ Enemy::Enemy(float set_x)
 	//location.x = 400 + (40 * set_x);
 	//location.y = 600;
 
-	world.x = 400 + (80 * set_x);
+	world.x = 400 + (120 * set_x);
 	world.y = 600;
 
 	width = 45;
@@ -100,6 +100,7 @@ void Enemy::Update(GameMainScene* gamemain)
 
 		if (death_cnt >= 60)
 		{
+			// 60カウント以上なら削除フラグをtrueに変更
 			is_delete = true;
 		}
 	}
@@ -125,7 +126,7 @@ void Enemy::Update(GameMainScene* gamemain)
 
 		if (image_num > 3)
 		{
-			// 最後の画像番号で止める
+			// 最終画像で止める
 			image_num = 3;
 		}
 	}
@@ -136,9 +137,9 @@ void Enemy::Update(GameMainScene* gamemain)
 		world.x -= speed * move_x;
 
 		// 端に来たら跳ね返る、敵同士の当たり判定で使用するかも
-		if (world.x + width / 2 > 1280 || world.x - width / 2 < 0)
+		if (world.x + width / 2 > FIELD_WIDTH || world.x - width / 2 < 0)
 		{
-			// 移動量を反転
+			// 移動量の反転
 			move_x *= -1;
 
 			if (direction == false)
@@ -151,7 +152,6 @@ void Enemy::Update(GameMainScene* gamemain)
 				// 右向きに変更
 				direction = false;
 			}
-			
 		}
 	}
 }
@@ -161,21 +161,44 @@ void Enemy::Draw() const
 #ifdef DEBUG
 	//DrawFormatString(0, 50, 0xffffff, "death_cnt : %d", death_cnt);
 	DrawFormatString(200, 50, 0xffffff, "image_num : %d", image_num);
+	//DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);				// 当たり判定のボックス
 #endif // DEBUG
 
-	// 当たり判定のボックス
-	//DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);
-	// 中心座標
-	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 
 	// 画像の描画
 	if (hp > 0)
 	{
+		// 歩行画像
 		DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_walk_img[image_num], TRUE, direction);
 	}
 	else
 	{
+		// 死亡画像
 		DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_death_img[image_num], TRUE, direction);
+	}
+
+
+#ifdef DEBUG
+	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);			// 中心座標
+#endif // DEBUG
+
+}
+
+// 進行方向の変更
+void Enemy::ChangeDirection()
+{
+	// 移動量の反転
+	move_x *= -1;
+
+	if (direction == false)
+	{
+		// 左向きに変更
+		direction = true;
+	}
+	else
+	{
+		// 右向きに変更
+		direction = false;
 	}
 }
 

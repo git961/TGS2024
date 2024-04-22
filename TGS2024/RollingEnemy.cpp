@@ -6,7 +6,7 @@ RollingEnemy::RollingEnemy()
 	//location.x = 200;
 	//location.y = 600;
 
-	world.x = 200;
+	world.x = 30;
 	world.y = 600;
 
 	width = 60;
@@ -132,7 +132,7 @@ void RollingEnemy::Update(GameMainScene* gamemain)
 	}
 
 	// 端に来たら跳ね返る
-	if (world.x + width / 2 > 2540 || world.x - width / 2 < 20)
+	if (world.x + width / 2 > FIELD_WIDTH || world.x - width / 2 < 0)
 	{
 		//　画像の回転方向を変える
 		if (direction == true)
@@ -157,12 +157,9 @@ void RollingEnemy::Draw() const
 #ifdef DEBUG
 	//DrawFormatString(0, 50, 0xffffff, "hp : %f", hp);
 	//DrawFormatString(300, 50, 0xffffff, "enemy_image_num : %d", enemy_image_num);
+	DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0x3c3c3c, true);			// 当たり判定のボックス
 #endif // DEBUG
 
-	// 当たり判定のボックス
-	//DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0xff0303, true);
-	// 中心座標
-	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 
 	// エネミー画像の描画（回転させる、右回転、左回転がある）
 	DrawRotaGraph((int)location.x, (int)location.y, 1.0, angle, enemy_roll_img[enemy_image_num], TRUE, FALSE);
@@ -172,6 +169,11 @@ void RollingEnemy::Draw() const
 		// エフェクト画像の描画
 		DrawRotaGraph((int)location.x, (int)location.y, 1.0, angle, enemy_effect_img[effect_image_num], TRUE, FALSE);
 	}
+
+
+#ifdef DEBUG
+	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);				// 中心座標
+#endif // DEBUG
 }
 
 // 被ダメージ処理
