@@ -194,11 +194,13 @@ void Enemy::ChangeDirection()
 	{
 		// 左向きに変更
 		direction = true;
+		world.x += 3;
 	}
 	else
 	{
 		// 右向きに変更
 		direction = false;
+		world.x -= 3;
 	}
 }
 
