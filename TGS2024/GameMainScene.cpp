@@ -24,13 +24,14 @@ GameMainScene::GameMainScene() {
 	//back.png
 	back_img=LoadGraph("images/background_test.png", TRUE);
 
+	enemyhit = false;		// 当たっていない
+
 	// 背景画像ローカル座標
 	location_x = 0.0f;
 	location_y = 0.0f;
 	// 背景画像ワールド座標
 	world_x = 0.0f;
 	world_y = 0.0f;
-
 
 	//カメラ座標は上の代入で座標真ん中取ってるから
 	//それを左上の原点に変換するヤツ->キャラベースのSetLocalPositionに続く
@@ -75,6 +76,58 @@ void GameMainScene::Update() {
 
 	input.InputUpdate();
 	fp.fpsUpdate();
+
+	//プレイヤー
+	if (player != nullptr)
+	{
+		player->SetLocalPosition(screen_origin_position.x,screen_origin_position.y);
+		player->Update(this);
+	}
+
+	//プレイヤーの攻撃
+	if (ac != nullptr) {
+			ac->Update(this,player);
+	}
+
+	for (int i = 0; i < 2; i++)
+	{
+		// エネミー更新処理
+		if (enemy[i] != nullptr)
+		{
+			enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+			enemy[i]->Update(this);
+			
+			// エネミー削除処理
+			if (enemy[i]->GetDeleteFlg() == true)
+			{
+				delete enemy[i];
+				enemy[i] = nullptr;
+			}
+		}
+	}
+
+	// 転がる敵更新処理
+	if (rolling_enemy != nullptr)
+	{
+		rolling_enemy->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+		rolling_enemy->Update(this);
+
+		if (rolling_enemy->GetDeleteFlg() == true)
+		{
+			delete rolling_enemy;
+			rolling_enemy = nullptr;
+		}
+	}
+
+	UpdateCamera(player->GetWorldLocation());
+
+	screen_origin_position = {
+		camera_pos.x - SCREEN_WIDTH / 2.0f,
+		camera_pos.y - SCREEN_HEIGHT / 2.0f
+	};
+
 
 	for (int i = 0; i < 10; i++)
 	{
@@ -151,71 +204,25 @@ void GameMainScene::Update() {
 		}
 	}
 
-	//プレイヤー
-	if (player != nullptr)
-	{
-		player->SetLocalPosition(screen_origin_position.x,screen_origin_position.y);
-		player->Update(this);
-	}
-
-	//プレイヤーの攻撃
-	if (ac != nullptr) {
-			ac->Update(this,player);
-	}
-
-	for (int i = 0; i < 2; i++)
-	{
-		// エネミー更新処理
-		if (enemy[i] != nullptr)
-		{
-			enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-
-			enemy[i]->Update(this);
-			
-			// エネミー削除処理
-			if (enemy[i]->GetDeleteFlg() == true)
-			{
-				delete enemy[i];
-				enemy[i] = nullptr;
-			}
-		}
-	}
-
-	// 転がる敵更新処理
-	if (rolling_enemy != nullptr)
-	{
-		rolling_enemy->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-
-		rolling_enemy->Update(this);
-
-		if (rolling_enemy->GetDeleteFlg() == true)
-		{
-			delete rolling_enemy;
-			rolling_enemy = nullptr;
-		}
-	}
-
-	UpdateCamera(player->GetWorldLocation());
-
-	screen_origin_position = {
-		camera_pos.x - SCREEN_WIDTH / 2.0f,
-		camera_pos.y - SCREEN_HEIGHT / 2.0f
-	};
-
 	// 歩行エネミー同士の当たり判定
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		if (enemy[i] != nullptr)
 		{
-			for (int j = 1; j < 10; j++)
+			for (int j = 1; j < 2; j++)
 			{
 				if (enemy[j] != nullptr)
 				{
 					if (enemy[i]->HitCheck(enemy[j]->GetLocation(), enemy[j]->GetWidth(), enemy[j]->GetHeight()) == true)
 					{
 						// 当たっていたら２体とも進行方向を反対に変更する
-						enemy[i]->ChangeDirection();
-						enemy[j]->ChangeDirection();
+						//enemy[i]->ChangeDirection();
+						//enemy[j]->ChangeDirection();
+						enemyhit = true;
+					}
+					else
+					{
+						enemyhit = false;
 					}
 				}
 			}
@@ -234,61 +241,57 @@ void GameMainScene::Update() {
 }
 
 void GameMainScene::Draw() const {
-#ifdef DEBUG
-	// 背景色
-	//DrawBox(0, 0, 1280, 720, 0x9c9c9c, TRUE);
-#endif // DEBUG
-
 	// 背景画像描画（仮）
 	DrawGraph(location_x, location_y, back_img,FALSE);
 
-		DrawFormatString(0, 0, 0xffffff, "GameMain");
-		fp.display_fps();
+	DrawFormatString(0, 0, 0xffffff, "GameMain");
+	fp.display_fps();
 
 
-		if (checkhit == true)
+	if (checkhit == true)
+	{
+		DrawFormatString(0, 10, 0xffffff, "hit");
+	}
+
+	//プレイヤー描画
+	if (player != nullptr)
+	{
+		player->Draw();
+	}
+
+	for (int i = 0; i < 2; i++)
+	{
+		// エネミー描画処理
+		if (enemy[i] != nullptr)
 		{
-			DrawFormatString(0, 10, 0xffffff, "hit");
+			enemy[i]->Draw();
 		}
+	}
 
-		//プレイヤー描画
-		if (player != nullptr)
+	if (rolling_enemy != nullptr)
+	{
+		// 転がるエネミー描画
+		rolling_enemy->Draw();
+	}
+
+	//プレイヤー攻撃描画
+	if (ac != nullptr) {
+		if (ac->GetAttackFlg() == true)
 		{
-			player->Draw();
+			ac->Draw();
 		}
-
-		for (int i = 0; i < 2; i++)
-		{
-			// エネミー描画処理
-			if (enemy[i] != nullptr)
-			{
-				enemy[i]->Draw();
-			}
-		}
-
-		if (rolling_enemy != nullptr)
-		{
-			// 転がるエネミー描画
-			rolling_enemy->Draw();
-		}
-
-		//プレイヤー攻撃描画
-		if (ac != nullptr) {
-			if (ac->GetAttackFlg() == true)
-			{
-				ac->Draw();
-			}
-		}
+	}
 
 #ifdef DEBUG
 
+	DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
+	DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
+	DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
+	DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
+	
+	DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
 
-		DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
-		DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
-		DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
-		DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
-
-		mapio->Draw();
+	mapio->Draw();
 #endif // DEBUG
 }
 
@@ -328,7 +331,6 @@ void GameMainScene::UpdateCamera(World world)
 	}
 
 }
-
 
 
 AbstractScene* GameMainScene::Change() {

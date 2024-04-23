@@ -133,12 +133,11 @@ void Enemy::Update(GameMainScene* gamemain)
 
 	if (hp > 0)
 	{
-		// 移動処理
-		world.x -= speed * move_x;
-
 		// 端に来たら跳ね返る、敵同士の当たり判定で使用するかも
 		if (world.x + width / 2 > FIELD_WIDTH || world.x - width / 2 < 0)
 		{
+
+			//ChangeDirection();
 			// 移動量の反転
 			move_x *= -1;
 
@@ -153,6 +152,9 @@ void Enemy::Update(GameMainScene* gamemain)
 				direction = false;
 			}
 		}
+
+		// 移動処理
+		world.x -= speed * move_x;
 	}
 }
 
@@ -160,7 +162,9 @@ void Enemy::Draw() const
 {
 #ifdef DEBUG
 	//DrawFormatString(0, 50, 0xffffff, "death_cnt : %d", death_cnt);
-	DrawFormatString(200, 50, 0xffffff, "image_num : %d", image_num);
+	DrawFormatString(location.x - 100, 50, 0xffffff, "d : %d", direction);
+	DrawFormatString(location.x - 100, 70, 0xffffff, "l.x : %.1f", location.x);
+	DrawFormatString(location.x - 100, 90, 0xffffff, "l.y : %.1f", location.y);
 	//DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);				// 当たり判定のボックス
 #endif // DEBUG
 
@@ -179,7 +183,7 @@ void Enemy::Draw() const
 
 
 #ifdef DEBUG
-	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);			// 中心座標
+	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);			// 中心座標
 #endif // DEBUG
 
 }

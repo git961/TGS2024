@@ -157,7 +157,7 @@ void RollingEnemy::Draw() const
 #ifdef DEBUG
 	//DrawFormatString(0, 50, 0xffffff, "hp : %f", hp);
 	//DrawFormatString(300, 50, 0xffffff, "enemy_image_num : %d", enemy_image_num);
-	DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0x3c3c3c, true);			// 当たり判定のボックス
+	//DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0x3c3c3c, true);			// 当たり判定のボックス
 #endif // DEBUG
 
 
@@ -172,7 +172,7 @@ void RollingEnemy::Draw() const
 
 
 #ifdef DEBUG
-	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);				// 中心座標
+	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);				// 中心座標
 #endif // DEBUG
 }
 
