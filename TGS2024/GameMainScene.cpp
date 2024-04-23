@@ -18,6 +18,7 @@ GameMainScene::GameMainScene() {
 	player=new Player();
 
 	enemy = new Enemy * [10];
+	rolling_enemy = new RollingEnemy;
 	stage_block = new StageBlock * [map_blockmax_y * map_blockmax_x];
 
 
@@ -26,7 +27,16 @@ GameMainScene::GameMainScene() {
 	enemy_damage_once=false;
 
 	//back.png
-	back_img=LoadGraph("image/back.png", TRUE);
+	back_img=LoadGraph("images/background_test.png", TRUE);
+
+	enemyhit = false;		// 当たっていない
+
+	// 背景画像ローカル座標
+	location_x = 0.0f;
+	location_y = 0.0f;
+	// 背景画像ワールド座標
+	world_x = 0.0f;
+	world_y = 0.0f;
 
 	//カメラ座標は上の代入で座標真ん中取ってるから
 	//それを左上の原点に変換するヤツ->キャラベースのSetLocalPositionに続く
@@ -74,6 +84,7 @@ GameMainScene::~GameMainScene() {
 	delete player;
 	delete mapio;
 	delete ac;
+	delete rolling_enemy;
 }
 
 void GameMainScene::Update() {
@@ -89,45 +100,12 @@ void GameMainScene::Update() {
 	}
 #endif // DEBUG
 
+	//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
+	location_x = world_x - screen_origin_position.x;
+	location_y = world_y - screen_origin_position.y;
+
 	input.InputUpdate();
 	fp.fpsUpdate();
-
-	for (int i = 0; i < 10; i++)
-	{
-		if (enemy[i] != nullptr)
-		{
-			if (player->HitCheck(enemy[i]->GetLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
-				checkhit = true;
-			}
-			else {
-				checkhit = false;
-			}
-
-			//つるはしを振るってる時だけ
-			if (player->GetAttacking() == true)
-			{
-				//ダメージを一回だけ与える
-				if (enemy_damage_once == false)
-				{
-					//つるはしとエネミーと当たってるかのチェック
-					if (ac->HitCheck(enemy[i]->GetLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {//checkhit = true;
-						enemy[i]->Damege(1);
-						enemy_damage_once = true;
-					}
-					else {
-						//checkhit = false;
-					}
-				}
-			}
-			else
-			{
-				//プレイヤーがつるはし振ってなかったら
-				enemy_damage_once = false;
-			}
-
-		}
-	}
-
 
 	//プレイヤー
 	if (player != nullptr)
@@ -141,7 +119,7 @@ void GameMainScene::Update() {
 			ac->Update(this,player);
 	}
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		// エネミー更新処理
 		if (enemy[i] != nullptr)
@@ -149,12 +127,134 @@ void GameMainScene::Update() {
 			enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
 			enemy[i]->Update(this);
-
+			
 			// エネミー削除処理
-			if (enemy[i]->GetHp() <= 0)
+			if (enemy[i]->GetDeleteFlg() == true)
 			{
 				delete enemy[i];
 				enemy[i] = nullptr;
+			}
+		}
+	}
+
+	// 転がる敵更新処理
+	if (rolling_enemy != nullptr)
+	{
+		rolling_enemy->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+		rolling_enemy->Update(this);
+
+		if (rolling_enemy->GetDeleteFlg() == true)
+		{
+			delete rolling_enemy;
+			rolling_enemy = nullptr;
+		}
+	}
+
+	UpdateCamera(player->GetWorldLocation());
+
+	screen_origin_position = {
+		camera_pos.x - SCREEN_WIDTH / 2.0f,
+		camera_pos.y - SCREEN_HEIGHT / 2.0f
+	};
+
+
+	for (int i = 0; i < 10; i++)
+	{
+		if (enemy[i] != nullptr)
+		{
+			if (enemy[i]->GetHp() > 0)
+			{
+				// 歩行エネミーとの当たり判定
+				if (player->HitCheck(enemy[i]->GetLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
+					checkhit = true;
+				}
+				else {
+					checkhit = false;
+				}
+
+				//つるはしを振るってる時だけ
+				if (player->GetAttacking() == true)
+				{
+					//ダメージを一回だけ与える
+					if (enemy_damage_once == false)
+					{
+						//つるはしとエネミーと当たってるかのチェック
+						if (ac->HitCheck(enemy[i]->GetLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {//checkhit = true;
+							enemy[i]->Damege(10);
+							enemy_damage_once = true;
+						}
+						else {
+							//checkhit = false;
+						}
+					}
+				}
+				else
+				{
+					//プレイヤーがつるはし振ってなかったら
+					enemy_damage_once = false;
+				}
+			}
+		}
+	}
+
+	if (rolling_enemy != nullptr)
+	{
+		if (rolling_enemy->GetHp() > 0)
+		{
+			// 転がるエネミーとの当たり判定
+			if (player->HitCheck(rolling_enemy->GetLocation(), rolling_enemy->GetWidth(), rolling_enemy->GetHeight()) == true) {
+				checkhit = true;
+			}
+			else {
+				checkhit = false;
+			}
+
+			//つるはしを振るってる時だけ
+			if (player->GetAttacking() == true)
+			{
+				//ダメージを一回だけ与える
+				if (enemy_damage_once == false)
+				{
+					//つるはしとエネミーと当たってるかのチェック
+					if (ac->HitCheck(rolling_enemy->GetLocation(), rolling_enemy->GetWidth(), rolling_enemy->GetHeight()) == true) {//checkhit = true;
+						rolling_enemy->Damege(10);
+						enemy_damage_once = true;
+					}
+					else {
+						//checkhit = false;
+					}
+				}
+			}
+			else
+			{
+				//プレイヤーがつるはし振ってなかったら
+				enemy_damage_once = false;
+			}
+		}
+	}
+
+	// 歩行エネミー同士の当たり判定
+	for (int i = 0; i < 1; i++)
+	{
+		if (enemy[i] != nullptr)
+		{
+			for (int j = 1; j < 2; j++)
+			{
+				if (enemy[j] != nullptr)
+				{
+					if (enemy[i]->HitCheck(enemy[j]->GetLocation(), enemy[j]->GetWidth(), enemy[j]->GetHeight()) == true)
+					{
+						// 当たっていたら２体とも進行方向を反対に変更する
+						//enemy[i]->ChangeDirection();
+						//enemy[j]->ChangeDirection();
+						enemyhit = true;
+					}
+					else
+					{
+						enemyhit = false;
+					}
+				}
 			}
 		}
 	}
@@ -192,49 +292,49 @@ void GameMainScene::Update() {
 
 	
 #ifdef DEBUG
-	//if (enemy == nullptr)
-	//{
-	//	enemy = new Enemy(walk);
-	//}
+
+	if(rolling_enemy == nullptr)
+	{
+		// 転がるエネミーが消えたら新しく出現させる
+		rolling_enemy = new RollingEnemy;
+	}
 #endif // DEBUG
-
-	//for (int i = 0; i < 10; i++)
-	//{
-	//	if (enemy[i] != nullptr)
-	//	{
-	//		// エネミー削除処理
-	//		if (enemy[i]->GetHp() <= 0)
-	//		{
-	//			delete enemy;
-	//			enemy = nullptr;
-	//		}
-
-	//	}
-	//}
 
 }
 
 void GameMainScene::Draw() const {
-	//DrawGraph(0, 0, back_img,FALSE);
-		DrawFormatString(0, 0, 0xffffff, "GameMain");
-		fp.display_fps();
+	// 背景画像描画（仮）
+	DrawGraph(location_x, location_y, back_img,FALSE);
+
+	DrawFormatString(0, 0, 0xffffff, "GameMain");
+	fp.display_fps();
 
 
-
-		//プレイヤー描画
-		if (player != nullptr)
+		if (checkhit == true)
 		{
-			player->Draw();
+			DrawFormatString(0, 10, 0xffffff, "hit");
 		}
 
-		for (int i = 0; i < 10; i++)
+	//プレイヤー描画
+	if (player != nullptr)
+	{
+		player->Draw();
+	}
+
+	for (int i = 0; i < 2; i++)
+	{
+		// エネミー描画処理
+		if (enemy[i] != nullptr)
 		{
-			// エネミー描画処理
-			if (enemy[i] != nullptr)
-			{
-				enemy[i]->Draw();
-			}
+			enemy[i]->Draw();
 		}
+	}
+
+	if (rolling_enemy != nullptr)
+	{
+		// 転がるエネミー描画
+		rolling_enemy->Draw();
+	}
 
 		//プレイヤー攻撃描画
 		if (ac != nullptr) {
@@ -254,11 +354,14 @@ void GameMainScene::Draw() const {
 
 #ifdef DEBUG
 
+	DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
+	DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
+	DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
+	DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
+	
+	DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
 
-		DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
-		DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
-
-		mapio->Draw();
+	mapio->Draw();
 #endif // DEBUG
 }
 
@@ -298,7 +401,6 @@ void GameMainScene::UpdateCamera(World world)
 	}
 
 }
-
 
 
 AbstractScene* GameMainScene::Change() {

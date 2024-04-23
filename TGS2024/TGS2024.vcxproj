@@ -160,6 +160,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapIo.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RollingEnemy.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="StageBlock.cpp" />
   </ItemGroup>
@@ -176,6 +177,7 @@
     <ClInclude Include="MapIo.h" />
     <ClInclude Include="padinput.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="RollingEnemy.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="StageBlock.h" />
     <ClInclude Include="Vec2I.h" />

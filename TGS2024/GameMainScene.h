@@ -3,6 +3,7 @@
 #include "AbstractScene.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "RollingEnemy.h"
 #include "AttackCheck.h"
 #include "fps.h"
 #include "MapIo.h"
@@ -13,6 +14,7 @@
 
 class Player;
 class Enemy;
+class RollingEnemy;
 class AttackCheck;
 class MapIo;
 class StageBlock;
@@ -31,6 +33,7 @@ private:
 
     Player *player;
     Enemy **enemy;
+    RollingEnemy* rolling_enemy;
     AttackCheck *ac;
     fps fp;
 
@@ -43,11 +46,21 @@ private:
 
     bool enemy_damage_once;
     bool checkhit;
+    bool enemyhit;      // 歩行エネミー同士の当たり判定チェック用、後に削除
 
     int back_img;//背景入れるよう
 
     int check_num;//blockのどこに当たったか貰うよう
 
+    // 背景画像スクロール用
+    // ※　後で削除予定！！！
+    float location_x;
+    float location_y;
+    float world_x;
+    float world_y;
+
+    //camera_x - 1280 / 2;
+    //camera_y - 720 / 2;
 
     int count;//
 

@@ -81,6 +81,9 @@
     <ClCompile Include="StageBlock.cpp">
       <Filter>ソース ファイル\StageFile</Filter>
     </ClCompile>
+    <ClCompile Include="RollingEnemy.cpp">
+      <Filter>ソース ファイル\EnemyFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fps.h">
@@ -124,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="Define.h">
       <Filter>ヘッダー ファイル\SystemFile</Filter>
+    </ClInclude>
+    <ClInclude Include="RollingEnemy.h">
+      <Filter>ヘッダー ファイル\EnemyFile</Filter>
     </ClInclude>
     <ClInclude Include="Vec2I.h">
       <Filter>ヘッダー ファイル\SystemFile</Filter>

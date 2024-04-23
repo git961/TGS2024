@@ -1,24 +1,29 @@
 ﻿#pragma once
-#define DEBUG		// デバッグ用、消すと#ifdef DEBUGの処理がされなくなる
+#define DEBUG		        // デバッグ用、消すと#ifdef DEBUGの処理がされなくなる
 
-#include <stdlib.h>
-#include <time.h>
+#include <stdlib.h>         // スポーン位置決定用
+#include <time.h>           // スポーン位置決定用
 #include "CharacterBase.h"
 #include "GameMainScene.h"
 
 class GameMainScene;
 
-// 敵の種類
-enum EnemyType
-{
-    walk,       // 歩行
-    roll        // 転がり
-};
-
 class Enemy : public CharacterBase
 {
 private:
-    int num;        // スポーン位置設定用
+    //int num;                      // スポーン位置設定用
+
+    int enemy_walk_img[5];          // エネミー歩行画像
+    int enemy_death_img[4];         // エネミー死亡画像
+
+    int death_cnt;                  // 死亡アニメーションが終わるまでの時間
+    bool is_delete;                 // 削除するか？
+
+    //int image;                    // 現在の表示画像
+    int anim_cnt;                   // アニメーション用カウント
+    int anim_max_cnt;               // アニメーションカウントの最大値
+    bool decrease;                  // アニメーション用カウント減少フラグ
+    int image_num;                  // 表示する画像番号
 
 public:
     Enemy(float set_x);
@@ -27,8 +32,11 @@ public:
     void Update(GameMainScene* gamemain);
     void Draw() const;
 
-    void Damege(int damege);                // 被ダメージ処理
+    void ChangeDirection();                     // 進行方向の変更
 
-    float GetHp() { return hp; }            // hp取得
+    void Damege(int damege);                    // 被ダメージ処理
+
+    float GetHp() { return hp; }                // hp取得
+    bool GetDeleteFlg() { return is_delete; }   // 削除フラグの取得
 };
 
