@@ -49,7 +49,7 @@ private:
     int check_num;//blockのどこに当たったか貰うよう
 
 
-    int count;
+    int count;//
 
 public:
     GameMainScene();

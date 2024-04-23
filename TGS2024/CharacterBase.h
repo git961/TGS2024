@@ -107,7 +107,7 @@ public:
 	}
 
 
-	void HitCheckB(Boxvertex box_vertex,World set_world)
+	void HitCheckB(Boxvertex set_box_vertex,World set_world)
 	{
 		//右下と左上の判定
 		// ブロックが下にある場合を判定したいとき
@@ -117,11 +117,11 @@ public:
 		//if(world.x)
 
 		//もし自分の右下が、相手の左上よりも、下だったら
-		if (box_vertex.lower_righty < box_vertex.upper_lefty)
+		if (box_vertex.lower_righty >= set_box_vertex.upper_lefty)
 		{
 			//相手のｙをもらって、押し上げてもらう
-			//恐らくｗｏｒｌｄロケーションをもらう
-			world.y = set_world.y;
+			//恐らくworldrロケーションをもらう
+			world.y = set_world.y-BLOCKSIZE;
 		}
 
 

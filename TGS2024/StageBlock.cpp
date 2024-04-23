@@ -48,7 +48,7 @@ void StageBlock::Update()
 void StageBlock::Draw() const
 {
 	//DrawBox(world.x, world.y, width, world.x + 20, world.y + 20,TRUE);
-	DrawBox(world.x-BLOCK_HALFSIZE, world.y-BLOCK_HALFSIZE, world.x + BLOCK_HALFSIZE, world.y + BLOCK_HALFSIZE,0xffffff,TRUE);
+	DrawBox(location.x-BLOCK_HALFSIZE, location.y-BLOCK_HALFSIZE, location.x + BLOCK_HALFSIZE, location.y + BLOCK_HALFSIZE,0xffffff,TRUE);
 
 
 }

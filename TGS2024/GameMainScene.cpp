@@ -174,11 +174,15 @@ void GameMainScene::Update() {
 						if (stage_block[j] != nullptr)
 						{
 							stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-							//stage_block[j]->SetBlockLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
 							if (player != nullptr)
 							{
-								//各頂点の座標を確保しておく
+								if (player->HitCheck(stage_block[j]->GetLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+								{
+									//各頂点の座標を確保しておく
 									player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
+
+								}
 								
 							}
 						}

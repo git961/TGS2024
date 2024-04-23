@@ -15,14 +15,13 @@ struct World
 };
 
 //vertex 頂点
-//右下の頂点
 struct Boxvertex
 {
-	//右下
+	//右下の頂点
 	float lower_rightx;
 	float lower_righty;
 
-	//左上
+	//左上の頂点
 	float upper_leftx;
 	float upper_lefty;
 };
