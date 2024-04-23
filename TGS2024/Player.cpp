@@ -63,7 +63,7 @@ Player::~Player()
 
 void Player::Update(GameMainScene* gamemain)
 {
-
+	//プレイヤー状態によってスイッチで変えよう
 
 
 	//
