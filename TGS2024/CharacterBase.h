@@ -109,24 +109,42 @@ public:
 
 	void HitCheckB(Boxvertex set_box_vertex,World set_world)
 	{
-		//右下と左上の判定
-		// ブロックが下にある場合を判定したいとき
-		//相手の左上をもらう
+
 
 		//もし相手の座標が自身の座標の２００以内に居たら
 		//if(world.x)
 
-		//もし自分の右下が、相手の左上よりも、下だったら
-		if (box_vertex.lower_righty >= set_box_vertex.upper_lefty)
+		//ブロックの上に乗っかる処理
+		////もし自分の右下が、相手の左上よりも、下だったら
+		//if (box_vertex.lower_righty >= set_box_vertex.upper_lefty)
+		//{
+		//	//相手のｙをもらって、押し上げてもらう
+		//	//恐らくworldrロケーションをもらう
+		//	world.y = set_world.y-BLOCKSIZE;
+		//}//当たったら下降とめる
+
+		////ブロックの下にぶつかる処理
+		//if (box_vertex.upper_righty <= set_box_vertex.lower_lefty)
+		//{
+		//	//相手のｙをもらって、押し上げてもらう
+		//	//恐らくworldrロケーションをもらう
+		//	world.y = set_world.y + BLOCKSIZE;
+		//}
+		////ブロックにぶつかったら上昇を止める
+		////すぐ下に落ちてく
+		//
+
+		//ブロックの右にぶつかる処理
+		if (box_vertex.lower_leftx <= set_box_vertex.upper_rightx)
 		{
-			//相手のｙをもらって、押し上げてもらう
-			//恐らくworldrロケーションをもらう
-			world.y = set_world.y-BLOCKSIZE;
+			world.x = set_world.x + BLOCKSIZE;
 		}
 
-
-		//右下の座標と受け取った、ブロックの座標の高さと比較する
-		//もし、みんなブロックとの当たり判定をとるなら、既に各頂点を入れる箱を作ったほうが良いのでは？
+		//ブロックの左にぶつかる処理
+		if (box_vertex.lower_rightx >=set_box_vertex.upper_leftx)
+		{
+			world.x = set_world.x - BLOCKSIZE;
+		}
 
 	}
 
