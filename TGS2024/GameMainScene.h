@@ -35,7 +35,7 @@ private:
     fps fp;
 
     MapIo *mapio;
-    StageBlock *stage_block;
+    StageBlock **stage_block;
 
     cameraposition camera_pos;
 
@@ -48,9 +48,8 @@ private:
 
     int check_num;//blockのどこに当たったか貰うよう
 
-    //camera_x - 1280 / 2;
-    //camera_y - 720 / 2;
 
+    int count;
 
 public:
     GameMainScene();

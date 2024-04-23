@@ -18,6 +18,8 @@ GameMainScene::GameMainScene() {
 	player=new Player();
 
 	enemy = new Enemy * [10];
+	stage_block = new StageBlock * [map_blockmax_y * map_blockmax_x];
+
 
 	ac = new AttackCheck;
 	checkhit = false;
@@ -32,10 +34,29 @@ GameMainScene::GameMainScene() {
 	camera_pos.x - SCREEN_WIDTH / 2.0f,
 	camera_pos.y - SCREEN_HEIGHT / 2.0f
 	};
-
+	count = 0;
 	mapio->LoadMapData();
 	if (mapio != nullptr) {
-		stage_block = new StageBlock(this->mapio);
+		//stage_block = new StageBlock(this->mapio);
+
+		for (int i = 0; i < map_blockmax_y; i++)
+		{
+			for (int j = 0; j < map_blockmax_x; j++)
+			{
+				//もしマップioのgetマップデータが１だったら
+
+				if (mapio->GetMapData(i, j) == 1) {
+					stage_block[count++] = new StageBlock(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+				}
+				//stage_blockdata[i][j] = mapio->GetMapData(i, j);
+				//if (stage_blockdata[i][j] != 0)
+				//{
+				//	block_world.x[j] = j * BLOCKSIZE + BLOCKSIZE / 2;
+				//	block_world.y[i] = i * BLOCKSIZE + BLOCKSIZE / 2;
+				//}
+
+			}
+		}
 	}
 
 	for (int i = 0; i < 10; i++)
@@ -147,36 +168,24 @@ void GameMainScene::Update() {
 
 	
 
-		if (stage_block != nullptr)
-		{
-				for (int i = 0; i < 11; i++)
-				{
-					for (int j = 0; j < 20; j++)
+	
+					for (int j = 0; j < count; j++)
 					{
-						stage_block->SetBlockLocalPosition(screen_origin_position.x, screen_origin_position.y);
-						
-						if (player != nullptr)
+						if (stage_block[j] != nullptr)
 						{
-							player->HitCheckB(stage_block->GetVertex(), stage_block->GetWorldLocation());
+							stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+							//stage_block[j]->SetBlockLocalPosition(screen_origin_position.x, screen_origin_position.y);
+							if (player != nullptr)
+							{
+								//各頂点の座標を確保しておく
+									player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
+								
+							}
 						}
 					}
-				}
-		}
+				
 
-		if (checkhit == true)
-		{
-			//ブロックに当たったら
-			check_num = stage_block->GetHitDirection();
-			switch (check_num)
-			{
-			case 1:
-				break;
-			case 2:
-				break;
-			default:
-				break;
-			}
-		}
+
 	
 #ifdef DEBUG
 	//if (enemy == nullptr)
@@ -230,12 +239,18 @@ void GameMainScene::Draw() const {
 				ac->Draw();
 			}
 		}
+		
+		for (int j = 0; j < count; j++)
+		{
+			if (stage_block[j] != nullptr)
+			{
+				stage_block[j]->Draw();
+			}
+		}
 
 #ifdef DEBUG
 
 
-		DrawFormatString(300, 180, 0xffffff, "0:Nothit,1:上,2:右,3:左,4:下:%d", checkhit);
-		DrawFormatString(300, 200, 0xffffff, "stageblock:direction: %d", stage_block->direction);
 		DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
 		DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
 

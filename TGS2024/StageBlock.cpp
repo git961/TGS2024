@@ -1,27 +1,40 @@
 #include "StageBlock.h"
 
 
-StageBlock::StageBlock(MapIo *mapio)
+StageBlock::StageBlock(float set_x, float set_y)
 {
-	direction = 0;
 	height = BLOCKSIZE;
 	width= BLOCKSIZE;
 
+	world.x = set_x;
+	world.y = set_y;
+	location.x = set_x;
+	location.y = set_y;
+	/*
 	for (int i = 0; i < map_blockmax_y; i++)
 	{
 		for (int j = 0; j < map_blockmax_x; j++)
 		{
-			stage_blockdata[i][j] = mapio->GetMapData(i, j);
-			if (stage_blockdata[i][j] != 0)
-			{
-				block_world.x[j]= j * BLOCKSIZE+BLOCKSIZE/2;
-				block_world.y[i]=i * BLOCKSIZE+BLOCKSIZE / 2;
-			}
+
+			//stage_blockdata[i][j] = mapio->GetMapData(i, j);
+			//if (stage_blockdata[i][j] != 0)
+			//{
+			//	block_world.x[j]= j * BLOCKSIZE+BLOCKSIZE/2;
+			//	block_world.y[i]=i * BLOCKSIZE+BLOCKSIZE / 2;
+
+			//	////右下のx座標＝中心ｘ＋ボックスの半分X
+				//block_vertex.lower_rightx[j] = block_world.x[j] + BLOCKSIZE / 2;
+				//block_vertex.lower_righty[i] = block_world.y[i] + BLOCKSIZE / 2;
+				//////左上の座標をセット
+				//block_vertex.upper_leftx[j] = block_world.x[j] - BLOCKSIZE / 2;
+				//block_vertex.upper_lefty[i] = block_world.y[i] - BLOCKSIZE / 2;
+
+			//}
 			//stage_blockdata[j][i] = stagearraydata[j][i];
 
 		}
-	}
-
+	}*/
+	SetVertex();
 }
 
 StageBlock::~StageBlock()
@@ -34,68 +47,8 @@ void StageBlock::Update()
 
 void StageBlock::Draw() const
 {
-}
+	//DrawBox(world.x, world.y, width, world.x + 20, world.y + 20,TRUE);
+	DrawBox(world.x-BLOCK_HALFSIZE, world.y-BLOCK_HALFSIZE, world.x + BLOCK_HALFSIZE, world.y + BLOCK_HALFSIZE,0xffffff,TRUE);
 
-bool StageBlock::CheckHitBlock(int i, int j, Vec2 opponent, float opponent_width, float opponent_height)
-{
-	if (stage_blockdata[i][j] == 0)
-	{
-		return false;
-	}
-	
-		float my_center_x = width / 2;
-		float my_center_y = height / 2;
-		//x座標の相手と自分の距離を絶対値で測る
-		distance_x = fabs(block_local.x[j] - opponent.x);
-		//2つの幅/2を足す
-		two_widths = my_center_x + opponent_width / 2;
-
-
-		//y座標の相手と自分の距離を絶対値で測る
-		distance_y = fabs(block_local.y[i] - opponent.y);
-		//2つの高さ/2を足す
-		two_heights = my_center_y + opponent_height / 2;
-
-		//もし距離の絶対値より幅が大きかったらヒット
-		if (distance_x < two_widths && distance_y < two_heights)
-		{
-			//Yの判定
-			//左上
-			if (block_local.x[j] >= opponent.x&& block_local.y[i] >= opponent.y)
-			{
-				direction= 1;
-			}
-			//右上
-			if (block_local.x[j] <= opponent.x && block_local.y[i] >= opponent.y)
-			{			
-				direction = 1;
-			}
-			
-			//左下
-			if (block_local.x[j] >= opponent.x && block_local.y[i] <= opponent.y)
-			{
-				direction = 3;
-			}
-
-			//右下
-			if (block_local.x[j] <= opponent.x && block_local.y[i] <= opponent.y)
-			{
-				direction = 3;
-			}
-			
-		
-			//xの判定
-
-
-
-
-
-			return true;
-		}
-		else
-		{
-			return false;
-		}
 
 }
-

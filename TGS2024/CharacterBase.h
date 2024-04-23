@@ -46,7 +46,7 @@ public:
 	bool GetDirection() { return direction; }//キャラの向きを返す　0:右 1:左
 
 
-
+	/*
 	//当たり判定:何かに当たったかどうかだけ返す
 	bool HitCheckBlock(Vec2 opponent, float opponent_width, float opponent_height,Vector set_vector)
 	{
@@ -68,25 +68,36 @@ public:
 		{
 			//return true;
 
-			//判定
-			for (int i = 0; i < 4; i++)
-			{
-				//使用しない軸ならcontinue
-				if (is_check_edge[i] == false)
-				{
-					continue;
-				}
+		}
+		else
+		{
+			return false;
+		}
 
-				for (int y = edge_list[i][1]; y <= edge_list[i][3]; y++)
-				{
-					for (int x = edge_list[i][0]; x <= edge_list[i][2]; x++)
-					{
-						//当たり
+	}*/
+	
 
-					}
-				}
+	//当たり判定:何かに当たったかどうかだけ返す
+	bool HitCheckBlock(Vec2 opponent, float opponent_width, float opponent_height, Vector set_vector)
+	{
+		float my_center_x = width+200 / 2 + set_vector.x;
+		float my_center_y = height+200 / 2 + set_vector.y;
 
-			}
+		//x座標の相手と自分の距離を絶対値で測る
+		distance_x = fabs(location.x - opponent.x);
+		//2つの幅/2を足す
+		two_widths = my_center_x + opponent_width / 2;
+
+		//y座標の相手と自分の距離を絶対値で測る
+		distance_y = fabs(location.y - opponent.y);
+		//2つの高さ/2を足す
+		two_heights = my_center_y + opponent_height / 2;
+
+		//もし距離の絶対値より幅が大きかったらヒット
+		if (distance_x < two_widths && distance_y < two_heights)
+		{
+			return true;
+		
 		}
 		else
 		{
@@ -95,14 +106,18 @@ public:
 
 	}
 
-	void HitCheckB(Boxvertex set_vertex,World set_world)
+
+	void HitCheckB(Boxvertex box_vertex,World set_world)
 	{
 		//右下と左上の判定
 		// ブロックが下にある場合を判定したいとき
 		//相手の左上をもらう
 
+		//もし相手の座標が自身の座標の２００以内に居たら
+		//if(world.x)
+
 		//もし自分の右下が、相手の左上よりも、下だったら
-		if (box_vertex.lower_righty < set_vertex.upper_lefty)
+		if (box_vertex.lower_righty < box_vertex.upper_lefty)
 		{
 			//相手のｙをもらって、押し上げてもらう
 			//恐らくｗｏｒｌｄロケーションをもらう

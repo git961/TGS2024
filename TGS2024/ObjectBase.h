@@ -118,7 +118,7 @@ public:
 		//左上のx座標＝中心ｘ-ボックスの半分X
 		box_vertex.upper_leftx = world.x - BLOCKSIZE / 2;
 		//左上のy座標＝中心y-ボックスの半分Y
-		box_vertex.upper_lefty = world.y + BLOCKSIZE / 2;
+		box_vertex.upper_lefty = world.y - BLOCKSIZE / 2;
 
 	};
 

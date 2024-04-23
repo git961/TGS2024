@@ -265,4 +265,5 @@ void Player::PlayerMove()
 	}
 	location.x += move_x;
 	world.x += move_x;
+	SetVertex();
 }

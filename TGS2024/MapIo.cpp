@@ -111,16 +111,16 @@ void MapIo::SaveMapData()
 void MapIo::Draw() const
 {
 
-	for (int i = 0; i < map_blockmax_y; i++)
-	{
-		for (int j = 0; j < map_blockmax_x; j++)
-		{
-			if (map_array[i][j] != 0)
-			{
-				DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
-			}
-		}
-	}
+	//for (int i = 0; i < map_blockmax_y; i++)
+	//{
+	//	for (int j = 0; j < map_blockmax_x; j++)
+	//	{
+	//		if (map_array[i][j] != 0)
+	//		{
+	//			DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
+	//		}
+	//	}
+	//}
 
 	//for (int i = 0; i < map_blockmax_y; i++)
 	//{
