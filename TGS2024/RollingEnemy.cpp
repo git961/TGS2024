@@ -17,7 +17,7 @@ RollingEnemy::RollingEnemy()
 	hp = 10;
 	attack = 10;
 	speed = 3;			// なくても良い
-	direction = true;	// 右向き
+	direction = true;	// 左向き
 
 	//画像読込
 	LoadDivGraph("images/Enemy/RollingTest.png", 5, 5, 1, 64, 64, enemy_roll_img);
@@ -108,7 +108,7 @@ void RollingEnemy::Update(GameMainScene* gamemain)
 			is_delete = true;
 
 			// なくてもいい
-			anim_cnt = 0;
+			//anim_cnt = 0;
 		}
 
 		if (anim_cnt != 0)
@@ -126,6 +126,7 @@ void RollingEnemy::Update(GameMainScene* gamemain)
 				// エフェクト画像番号の計算、15カウントごとに画像番号が変わる
 				effect_image_num = (75 - anim_cnt) / 15;
 			}
+
 		}
 
 		angle = 0.0;
@@ -156,7 +157,7 @@ void RollingEnemy::Draw() const
 {
 #ifdef DEBUG
 	//DrawFormatString(0, 50, 0xffffff, "hp : %f", hp);
-	//DrawFormatString(300, 50, 0xffffff, "enemy_image_num : %d", enemy_image_num);
+	DrawFormatString(location.x - 100, 530, 0xffffff, "enemy_image_num : %d", enemy_image_num);
 	//DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0x3c3c3c, true);			// 当たり判定のボックス
 #endif // DEBUG
 
@@ -169,7 +170,6 @@ void RollingEnemy::Draw() const
 		// エフェクト画像の描画
 		DrawRotaGraph((int)location.x, (int)location.y, 1.0, angle, enemy_effect_img[effect_image_num], TRUE, FALSE);
 	}
-
 
 #ifdef DEBUG
 	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);				// 中心座標
