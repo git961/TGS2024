@@ -69,7 +69,7 @@ GameMainScene::GameMainScene() {
 		}
 	}
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
 		enemy[i] = new Enemy(i);
 	}
@@ -189,6 +189,8 @@ void GameMainScene::Update() {
 						//つるはしとエネミーと当たってるかのチェック
 						if (ac->HitCheck(enemy[i]->GetLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {//checkhit = true;
 							enemy[i]->Damege(10);
+							// 歩行エネミーのノックバック処理
+							enemy[i]->SetKnockBackFlg(true);
 							enemy_damage_once = true;
 						}
 						else {

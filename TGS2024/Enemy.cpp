@@ -14,7 +14,7 @@ Enemy::Enemy(float set_x)
 
 	move_x = 1;			// 移動量
 	move_y = 0;			// 未使用
-	hp = 10;
+	hp = 30;
 	attack = 10;
 	speed = 2;			// なくても良い
 
@@ -29,13 +29,15 @@ Enemy::Enemy(float set_x)
 
 	// 現在の画像
 	//image = 0;
-	decrease = false;
 	image_num = 0;
 
 	death_cnt = 0;
 	is_delete = false;
 
-	direction = false;		// 画像は右向き
+	direction = false;			// 画像は右向き
+
+	is_knock_back = false;		// ノックバックしない
+	knock_back_cnt = 90;		// ノックバック時間
 
 	//srand(time(NULL));
 	//num = rand() % 10 + 1;
@@ -66,95 +68,26 @@ Enemy::~Enemy()
 
 void Enemy::Update(GameMainScene* gamemain)
 {
-	if (hp > 0)
+	if (is_knock_back == true && hp > 0)
 	{
-		if (decrease == false)
-		{
-			if (anim_cnt < anim_max_cnt)
-			{
-				// アニメーション用カウント増加
-				anim_cnt++;
-			}
-			else
-			{
-				anim_cnt = 0;
-				//decrease = true;
-			}
-		}
-		//else
-		//{
-		//	if (anim_cnt > 0)
-		//	{
-		//		// アニメーション用カウント減少
-		//		anim_cnt--;
-		//	}
-		//	else
-		//	{
-		//		decrease = false;
-		//	}
-		//}
+		// ノックバック処理
+		KnockBack();
 	}
 	else
 	{
-		death_cnt++;
-
-		if (death_cnt >= 60)
+		if (hp > 0)
 		{
-			// 60カウント以上なら削除フラグをtrueに変更
-			is_delete = true;
-		}
-	}
+			// 移動処理
+			Move();
 
-	// 画像切り替え
-	if (hp > 0)
-	{
-		if (anim_cnt != 0)
-		{	
-			// 歩行
-			// 20カウントごとに変わる
-			image_num = anim_cnt / 5;
+			// 歩行アニメーション
+			WalkingAnimation();
 		}
-	}
-	else
-	{
-		if (death_cnt != 0)
+		else
 		{
-			// 死亡
-			// 5カウントごとに変わる
-			image_num = death_cnt / 5;
+			// 死亡アニメーション
+			DeathAnimation();
 		}
-
-		if (image_num > 3)
-		{
-			// 最終画像で止める
-			image_num = 3;
-		}
-	}
-
-	if (hp > 0)
-	{
-		// 端に来たら跳ね返る、敵同士の当たり判定で使用するかも
-		if (world.x + width / 2 > FIELD_WIDTH || world.x - width / 2 < 0)
-		{
-
-			//ChangeDirection();
-			// 移動量の反転
-			move_x *= -1;
-
-			if (direction == false)
-			{
-				// 左向きに変更
-				direction = true;
-			}
-			else
-			{
-				// 右向きに変更
-				direction = false;
-			}
-		}
-
-		// 移動処理
-		world.x -= speed * move_x;
 	}
 }
 
@@ -188,6 +121,31 @@ void Enemy::Draw() const
 
 }
 
+// 移動処理
+void Enemy::Move()
+{
+	// 端に来たら跳ね返る
+	if (world.x + width / 2 > FIELD_WIDTH || world.x - width / 2 < 0)
+	{
+		// 移動量の反転
+		move_x *= -1;
+
+		if (direction == false)
+		{
+			// 左向きに変更
+			direction = true;
+		}
+		else
+		{
+			// 右向きに変更
+			direction = false;
+		}
+	}
+
+	// 移動処理
+	world.x -= speed * move_x;
+}
+
 // 進行方向の変更
 void Enemy::ChangeDirection()
 {
@@ -205,6 +163,69 @@ void Enemy::ChangeDirection()
 		// 右向きに変更
 		direction = false;
 		world.x -= 4;
+	}
+}
+
+// ノックバック処理
+void Enemy::KnockBack()
+{
+	if (knock_back_cnt > 0)
+	{
+		world.x += 3;
+		knock_back_cnt--;
+	}
+	else
+	{
+		is_knock_back = false;
+		knock_back_cnt = 90;
+	}
+}
+
+// 歩行アニメーション関係の処理
+void Enemy::WalkingAnimation()
+{
+	if (anim_cnt < anim_max_cnt)
+	{
+		// アニメーション用カウント増加
+		anim_cnt++;
+	}
+	else
+	{
+		anim_cnt = 0;
+	}
+
+	// 画像切り替え
+	if (anim_cnt != 0)
+	{
+		// 歩行
+		// 20カウントごとに変わる
+		image_num = anim_cnt / 5;
+	}
+}
+
+// 死亡アニメーション関係の処理
+void Enemy::DeathAnimation()
+{
+	death_cnt++;
+
+	if (death_cnt >= 60)
+	{
+		// 60カウント以上なら削除フラグをtrueに変更
+		is_delete = true;
+	}
+
+	// 画像切り替え
+	if (death_cnt != 0)
+	{
+		// 死亡
+		// 5カウントごとに変わる
+		image_num = death_cnt / 5;
+
+		if (image_num > 3)
+		{
+			// 最終画像で止める
+			image_num = 3;
+		}
 	}
 }
 
