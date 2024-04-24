@@ -284,7 +284,10 @@ void GameMainScene::Update() {
 					player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
 					
 				}
-				//player->SetGroundFlg(false);
+				else {
+					player->SetGroundFlg(false);
+
+				}
 
 			}
 		}

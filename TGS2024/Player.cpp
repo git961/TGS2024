@@ -42,9 +42,7 @@ Player::Player()
 	atk_cnt_timer = 0;
 
 	//playerジャンプ用変数
-	jump_start_flg = false;
-	jump_flg = false;
-
+	
 	jump_timer = 0;
 	rad = 0;
 
@@ -65,28 +63,45 @@ void Player::Update(GameMainScene* gamemain)
 {
 	//プレイヤー状態によってスイッチで変えよう
 
-
-	//
 	input.InputUpdate();
 
-	
+
 
 	//ジャンプ
 	if (input.CheckBtn(XINPUT_BUTTON_A) == TRUE)
 	{
-		jump_start_flg = true;
-	}
-
-	if (jump_start_flg == true)
-	{
-		PlayerJump();
+		player_state = JUMP;
 	}
 
 	//Yおしたら攻撃
 	if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 	{
 		attacking = true;
+		player_state = ATTACK;
 	}
+
+	switch (player_state)
+	{
+
+	case NOMAL:
+		//プレイヤーの移動処理
+		PlayerMove();
+		break;
+	case JUMP:
+		PlayerJump();
+		break;
+	case FALLING:
+		break;
+	case ATTACK:
+		break;
+	default:
+		break;
+	}
+
+
+
+
+
 	//何秒か経ったら攻撃中フラグを戻す？
 	if (attacking == true)
 	{
@@ -100,12 +115,13 @@ void Player::Update(GameMainScene* gamemain)
 	}
 	else
 	{
-		//プレイヤーの移動処理
-		PlayerMove();
+		player_state = NOMAL;
 	}
 
-
-
+	if (ground_flg != true)
+	{
+		world.y++;
+	}
 }
 
 void Player::Draw() const
@@ -194,42 +210,14 @@ void Player::Draw() const
 #endif // DEBUG
 }
 
+void Player::PlayerBtn()
+{
+}
+
 void Player::PlayerJump()
 {
-	////右ジャンプ
-//Zakuro_Movey = -V_zero * sinf(rad) * time + (g * time * time) / 2;
 
 
-	if (jump_flg == false)
-	{
-		jump_flg = true;
-		velocity_y = -10;//初速を与える
-		sita = 70;
-		rad = sita * pi / 180;
-		vector.x = 0;
-		vector.y = -1;
-	}
-
-	velocity_y += gravity;
-	move_y = -jump_v0 * sinf(rad) * jump_timer + (gravity * jump_timer * jump_timer) / 2;
-
-	world.y += velocity_y;
-
-	if (velocity_y > 0) {
-		vector.x = 0;
-		vector.y = 1;
-	}
-
-
-	//地面
-	if (ground_flg==true)
-	{
-		velocity_y = 0;
-		jump_flg = false;
-		jump_start_flg = false;
-		vector.x = 0;
-		vector.y = 1;
-	}
 
 }
 

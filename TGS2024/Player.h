@@ -7,11 +7,19 @@
 class GameMainScene;
 class StageBlock;
 
+enum PlayerState {
+    NOMAL,//地面に居る：歩くのが可能
+    JUMP,    //ジャンプ中：上昇だけ
+    FALLING,//落下：下降だけ
+    ATTACK
+};
+
 class Player :
     public CharacterBase
 {
 private:
     Input input;
+    PlayerState player_state;
 
     int player_walk_img[10];
     int player_attack_img[10];
@@ -26,8 +34,6 @@ private:
         float walk_velocity_x;
 
 
-        bool jump_flg;//true:ジャンプ中　false:地面に居る
-        bool jump_start_flg;//ボタンが押されたら
         bool ground_flg;//地面に付いたか
         
         float jump_timer;
@@ -51,8 +57,8 @@ public:
     void Update(GameMainScene* gamemain);
     void Draw() const;
 
-    //プレイヤー攻撃用モーション　Pickaxe：つるはし
-    void AttackPickaxe();
+    //ボタン入力をまとめた関数
+    void PlayerBtn();
 
     //プレイヤージャンプ用
     void PlayerJump();
@@ -69,6 +75,9 @@ public:
     void SetLocationY(float set_y) {
         location.y = set_y;
     }
+
+
+
 };
 
 //void Player::AttackPickaxe()
