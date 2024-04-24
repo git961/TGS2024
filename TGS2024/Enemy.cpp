@@ -162,9 +162,9 @@ void Enemy::Draw() const
 {
 #ifdef DEBUG
 	//DrawFormatString(0, 50, 0xffffff, "death_cnt : %d", death_cnt);
-	DrawFormatString(location.x - 100, 50, 0xffffff, "d : %d", direction);
-	DrawFormatString(location.x - 100, 70, 0xffffff, "l.x : %.1f", location.x);
-	DrawFormatString(location.x - 100, 90, 0xffffff, "l.y : %.1f", location.y);
+	//DrawFormatString(location.x - 100, 50, 0xffffff, "d : %d", direction);
+	//DrawFormatString(location.x - 100, 70, 0xffffff, "l.x : %.1f", location.x);
+	//DrawFormatString(location.x - 100, 90, 0xffffff, "l.y : %.1f", location.y);
 	//DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);				// 当たり判定のボックス
 #endif // DEBUG
 
@@ -198,13 +198,13 @@ void Enemy::ChangeDirection()
 	{
 		// 左向きに変更
 		direction = true;
-		world.x += 3;
+		world.x += 4;
 	}
 	else
 	{
 		// 右向きに変更
 		direction = false;
-		world.x -= 3;
+		world.x -= 4;
 	}
 }
 

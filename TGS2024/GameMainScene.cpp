@@ -17,7 +17,7 @@ GameMainScene::GameMainScene() {
 
 	player=new Player();
 
-	enemy = new Enemy * [10];
+	enemy = new Enemy * [ENEMYMAXNUM];
 	rolling_enemy = new RollingEnemy;
 	stage_block = new StageBlock * [map_blockmax_y * map_blockmax_x];
 
@@ -29,7 +29,7 @@ GameMainScene::GameMainScene() {
 	//back.png
 	back_img=LoadGraph("images/background_test.png", TRUE);
 
-	enemyhit = false;		// 当たっていない
+	//enemyhit = false;		// 当たっていない
 
 	// 背景画像ローカル座標
 	location_x = 0.0f;
@@ -126,7 +126,7 @@ void GameMainScene::Update() {
 			ac->Update(this,player);
 	}
 
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
 		// エネミー更新処理
 		if (enemy[i] != nullptr)
@@ -166,7 +166,7 @@ void GameMainScene::Update() {
 	};
 
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
 		if (enemy[i] != nullptr)
 		{
@@ -242,24 +242,24 @@ void GameMainScene::Update() {
 	}
 
 	// 歩行エネミー同士の当たり判定
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
-		if (enemy[i] != nullptr)
+		if (enemy[i] != nullptr && enemy[i]->GetHp() > 0)
 		{
-			for (int j = 0; j < 2; j++)
+			for (int j = i + 1; j < ENEMYMAXNUM; j++)
 			{
-				if (i != j && enemy[j] != nullptr)
+				if (enemy[j] != nullptr && enemy[j]->GetHp() > 0)
 				{
 					if (enemy[i]->HitCheck(enemy[j]->GetLocation(), enemy[j]->GetWidth(), enemy[j]->GetHeight()) == true)
 					{
 						// 当たっていたら２体とも進行方向を反対に変更する
-						//enemy[i]->ChangeDirection();
-						//enemy[j]->ChangeDirection();
-						enemyhit = true;
+						enemy[j]->ChangeDirection();
+						enemy[i]->ChangeDirection();
+						//enemyhit = true;
 					}
 					else
 					{
-						enemyhit = false;
+						//enemyhit = false;
 					}
 				}
 			}
@@ -313,7 +313,7 @@ void GameMainScene::Draw() const {
 		player->Draw();
 	}
 
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
 		// エネミー描画処理
 		if (enemy[i] != nullptr)
@@ -350,8 +350,7 @@ void GameMainScene::Draw() const {
 	//DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
 	//DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
 	//DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
-
-	DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
+	//DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
 
 	mapio->Draw();
 #endif // DEBUG

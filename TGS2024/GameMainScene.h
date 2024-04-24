@@ -46,7 +46,7 @@ private:
 
     bool enemy_damage_once;
     bool checkhit;
-    bool enemyhit;      // 歩行エネミー同士の当たり判定チェック用、後に削除
+    //bool enemyhit;      // 歩行エネミー同士の当たり判定チェック用、後に削除
 
     int back_img;//背景入れるよう
 

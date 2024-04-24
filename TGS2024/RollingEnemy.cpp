@@ -157,7 +157,7 @@ void RollingEnemy::Draw() const
 {
 #ifdef DEBUG
 	//DrawFormatString(0, 50, 0xffffff, "hp : %f", hp);
-	DrawFormatString(location.x - 100, 530, 0xffffff, "enemy_image_num : %d", enemy_image_num);
+	//DrawFormatString(location.x - 100, 530, 0xffffff, "enemy_image_num : %d", enemy_image_num);
 	//DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0x3c3c3c, true);			// 当たり判定のボックス
 #endif // DEBUG
 
