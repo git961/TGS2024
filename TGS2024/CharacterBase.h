@@ -109,43 +109,62 @@ public:
 
 	void HitCheckB(Boxvertex set_box_vertex,World set_world)
 	{
+		//上か下にいないって言う条件式で全部囲む
 
+		//もしキャラがブロックより上に居たら
 
-		//もし相手の座標が自身の座標の２００以内に居たら
-		//if(world.x)
+			//ブロックの上に乗っかる処理
+			//もし自分の右下が、相手の左上よりも、下だったら
 
-		//ブロックの上に乗っかる処理
-		////もし自分の右下が、相手の左上よりも、下だったら
-		//if (box_vertex.lower_righty >= set_box_vertex.upper_lefty)
-		//{
-		//	//相手のｙをもらって、押し上げてもらう
-		//	//恐らくworldrロケーションをもらう
-		//	world.y = set_world.y-BLOCKSIZE;
-		//}//当たったら下降とめる
-
-		////ブロックの下にぶつかる処理
-		//if (box_vertex.upper_righty <= set_box_vertex.lower_lefty)
-		//{
-		//	//相手のｙをもらって、押し上げてもらう
-		//	//恐らくworldrロケーションをもらう
-		//	world.y = set_world.y + BLOCKSIZE;
-		//}
-		////ブロックにぶつかったら上昇を止める
-		////すぐ下に落ちてく
-		//
-
-		//ブロックの右にぶつかる処理
-		if (box_vertex.lower_leftx <= set_box_vertex.upper_rightx)
+		//もしキャラクタがブロックのｘ座標の幅の内側に居たら
+		if (world.x >= set_box_vertex.lower_leftx && world.x <= set_box_vertex.lower_rightx)
 		{
-			world.x = set_world.x + BLOCKSIZE;
+			//もしキャラのｙ座標がブロックのｙよりも下だったら
+			if (world.y < set_world.y)
+			{
+				//キャラの右下の頂点の高さと、ボックスの左上の頂点の高さを比べる
+				if (box_vertex.lower_righty >= set_box_vertex.upper_lefty)
+				{
+					//右下の頂点の方が高かったら上に居るという事になる。
+					world.y = set_world.y - BLOCKSIZE;
+				}
+			}
+			else
+			{
+				if (box_vertex.upper_righty < set_box_vertex.lower_lefty)
+				{
+					world.y = set_world.y + BLOCKSIZE;
+				}
+			}
 		}
-
-		//ブロックの左にぶつかる処理
-		if (box_vertex.lower_rightx >=set_box_vertex.upper_leftx)
+		
+		//もしキャラクタがブロックのｙ座標の幅の内側に居たら
+		if (world.y<=set_box_vertex.lower_lefty && world.y>=set_box_vertex.upper_lefty)
 		{
-			world.x = set_world.x - BLOCKSIZE;
-		}
+			//キャラがブロックの右に居る場合
+			if (world.x >= set_world.x)
+				{
 
+					//ブロックの右にぶつかる処理
+					if (box_vertex.lower_leftx < set_box_vertex.upper_rightx)
+					{
+						world.x = set_world.x + BLOCKSIZE;
+					}
+				}
+
+			//キャラがブロックの左に居る場合
+			if (world.x <= set_world.x)
+				{
+					//ブロックの左にぶつかる処理
+					if (box_vertex.lower_rightx > set_box_vertex.upper_leftx)
+					{
+						world.x = set_world.x - BLOCKSIZE;
+					}
+				}
+
+		}
+			
+		
 	}
 
 

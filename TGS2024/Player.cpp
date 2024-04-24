@@ -167,6 +167,12 @@ void Player::Draw() const
 #ifdef DEBUG
 
 
+	DrawCircle(box_vertex.upper_leftx, box_vertex.upper_lefty, 2, 0x0000ff, TRUE);
+	DrawCircle(box_vertex.lower_leftx, box_vertex.lower_lefty, 2, 0x0000ff, TRUE);
+	DrawCircle(box_vertex.upper_rightx, box_vertex.upper_righty, 2, 0x0000ff, TRUE);
+	DrawCircle(box_vertex.lower_rightx, box_vertex.lower_righty, 2, 0x0000ff, TRUE);
+
+
 	//////// 画面に XINPUT_STATE の中身を描画
 	//color = GetColor(255, 255, 255);
 	//for (int i = 0; i < 16; i++)
@@ -207,7 +213,6 @@ void Player::PlayerJump()
 	velocity_y += gravity;
 	move_y = -jump_v0 * sinf(rad) * jump_timer + (gravity * jump_timer * jump_timer) / 2;
 
-	location.y += velocity_y;
 	world.y += velocity_y;
 
 	if (velocity_y > 0) {
@@ -217,9 +222,8 @@ void Player::PlayerJump()
 
 
 	//地面
-	if (location.y > y_ground)
+	if (ground_flg==true)
 	{
-		location.y = y_ground;
 		velocity_y = 0;
 		jump_flg = false;
 		jump_start_flg = false;

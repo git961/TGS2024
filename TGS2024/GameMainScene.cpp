@@ -269,24 +269,26 @@ void GameMainScene::Update() {
 	
 
 	
-					for (int j = 0; j < count; j++)
-					{
-						if (stage_block[j] != nullptr)
-						{
-							stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+	for (int j = 0; j < count; j++)
+	{
+		if (stage_block[j] != nullptr)
+		{
+			stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
-							if (player != nullptr)
-							{
-								if (player->HitCheck(stage_block[j]->GetLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-								{
-									//各頂点の座標を確保しておく
-									player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
+			if (player != nullptr)
+			{
+				if (player->HitCheck(stage_block[j]->GetLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+				{
+					//各頂点の座標を確保しておく
+					player->SetGroundFlg(true);
+					player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
+					
+				}
+				//player->SetGroundFlg(false);
 
-								}
-								
-							}
-						}
-					}
+			}
+		}
+	}
 				
 
 

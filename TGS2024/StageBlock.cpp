@@ -50,5 +50,7 @@ void StageBlock::Draw() const
 	//DrawBox(world.x, world.y, width, world.x + 20, world.y + 20,TRUE);
 	DrawBox(location.x-BLOCK_HALFSIZE, location.y-BLOCK_HALFSIZE, location.x + BLOCK_HALFSIZE, location.y + BLOCK_HALFSIZE,0xffffff,TRUE);
 
+	DrawCircle(box_vertex.upper_leftx, box_vertex.upper_lefty, 2, 0xff00ff, TRUE);
+	DrawCircle(box_vertex.lower_leftx, box_vertex.lower_lefty, 2, 0xff00ff, TRUE);
 
 }

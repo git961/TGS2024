@@ -28,6 +28,7 @@ private:
 
         bool jump_flg;//true:ジャンプ中　false:地面に居る
         bool jump_start_flg;//ボタンが押されたら
+        bool ground_flg;//地面に付いたか
         
         float jump_timer;
         float rad;
@@ -61,9 +62,13 @@ public:
 
     bool GetAttacking() { return attacking; };
 
+    void SetGroundFlg(bool set_flg) {
+        ground_flg = set_flg;
+    }
+
     void SetLocationY(float set_y) {
         location.y = set_y;
-    };
+    }
 };
 
 //void Player::AttackPickaxe()
