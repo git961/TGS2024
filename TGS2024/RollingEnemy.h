@@ -29,7 +29,7 @@ private:
     double angle;        // 画像の角度
     double degree;       // 角度計算用
 
-    int is_delete;      // 削除するか？
+    bool is_delete;      // 削除するか？
 
 public:
 

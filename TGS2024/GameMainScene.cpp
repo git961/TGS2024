@@ -17,7 +17,7 @@ GameMainScene::GameMainScene() {
 
 	player=new Player();
 
-	enemy = new Enemy * [10];
+	enemy = new Enemy * [ENEMYMAXNUM];
 	rolling_enemy = new RollingEnemy;
 	stage_block = new StageBlock * [map_blockmax_y * map_blockmax_x];
 
@@ -29,7 +29,7 @@ GameMainScene::GameMainScene() {
 	//back.png
 	back_img=LoadGraph("images/background_test.png", TRUE);
 
-	enemyhit = false;		// 当たっていない
+	//enemyhit = false;		// 当たっていない
 
 	// 背景画像ローカル座標
 	location_x = 0.0f;
@@ -69,7 +69,7 @@ GameMainScene::GameMainScene() {
 		}
 	}
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
 		enemy[i] = new Enemy(i);
 	}
@@ -98,6 +98,13 @@ void GameMainScene::Update() {
 		mapio->InputTest(this);
 
 	}
+
+	if (rolling_enemy == nullptr)
+	{
+		// 転がるエネミーが消えたら新しく出現させる
+		rolling_enemy = new RollingEnemy;
+	}
+
 #endif // DEBUG
 
 	//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
@@ -119,7 +126,7 @@ void GameMainScene::Update() {
 			ac->Update(this,player);
 	}
 
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
 		// エネミー更新処理
 		if (enemy[i] != nullptr)
@@ -159,7 +166,7 @@ void GameMainScene::Update() {
 	};
 
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
 		if (enemy[i] != nullptr)
 		{
@@ -181,7 +188,11 @@ void GameMainScene::Update() {
 					{
 						//つるはしとエネミーと当たってるかのチェック
 						if (ac->HitCheck(enemy[i]->GetLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {//checkhit = true;
-							enemy[i]->Damege(10);
+							enemy[i]->Damege(1);
+							// 歩行エネミーのノックバック処理
+							enemy[i]->SetKnockBackStartFlg(true);
+							enemy[i]->SetKnockBackFlg(true);
+							enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
 							enemy_damage_once = true;
 						}
 						else {
@@ -235,24 +246,24 @@ void GameMainScene::Update() {
 	}
 
 	// 歩行エネミー同士の当たり判定
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
-		if (enemy[i] != nullptr)
+		if (enemy[i] != nullptr && enemy[i]->GetHp() > 0)
 		{
-			for (int j = 1; j < 2; j++)
+			for (int j = i + 1; j < ENEMYMAXNUM; j++)
 			{
-				if (enemy[j] != nullptr)
+				if (enemy[j] != nullptr && enemy[j]->GetHp() > 0)
 				{
 					if (enemy[i]->HitCheck(enemy[j]->GetLocation(), enemy[j]->GetWidth(), enemy[j]->GetHeight()) == true)
 					{
 						// 当たっていたら２体とも進行方向を反対に変更する
-						//enemy[i]->ChangeDirection();
-						//enemy[j]->ChangeDirection();
-						enemyhit = true;
+						enemy[j]->ChangeDirection();
+						enemy[i]->ChangeDirection();
+						//enemyhit = true;
 					}
 					else
 					{
-						enemyhit = false;
+						//enemyhit = false;
 					}
 				}
 			}
@@ -283,9 +294,6 @@ void GameMainScene::Update() {
 					player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
 					
 				}
-				else {
-
-				}
 
 			}
 		}
@@ -301,8 +309,6 @@ void GameMainScene::Update() {
 		// 転がるエネミーが消えたら新しく出現させる
 		rolling_enemy = new RollingEnemy;
 	}
-#endif // DEBUG
-
 }
 
 void GameMainScene::Draw() const {
@@ -313,10 +319,10 @@ void GameMainScene::Draw() const {
 	fp.display_fps();
 
 
-		if (checkhit == true)
-		{
-			DrawFormatString(0, 10, 0xffffff, "hit");
-		}
+	//if (checkhit == true)
+	//{
+	//	DrawFormatString(0, 10, 0xffffff, "hit");
+	//}
 
 	//プレイヤー描画
 	if (player != nullptr)
@@ -324,7 +330,7 @@ void GameMainScene::Draw() const {
 		player->Draw();
 	}
 
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
 		// エネミー描画処理
 		if (enemy[i] != nullptr)
@@ -339,30 +345,29 @@ void GameMainScene::Draw() const {
 		rolling_enemy->Draw();
 	}
 
-		//プレイヤー攻撃描画
-		if (ac != nullptr) {
-			if (ac->GetAttackFlg() == true)
-			{
-				ac->Draw();
-			}
-		}
-		
-		for (int j = 0; j < count; j++)
+	//プレイヤー攻撃描画
+	if (ac != nullptr) {
+		if (ac->GetAttackFlg() == true)
 		{
-			if (stage_block[j] != nullptr)
-			{
-				stage_block[j]->Draw();
-			}
+			ac->Draw();
 		}
+	}
+		
+	for (int j = 0; j < count; j++)
+	{
+		if (stage_block[j] != nullptr)
+		{
+			stage_block[j]->Draw();
+		}
+	}
 
 #ifdef DEBUG
 
-	DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
-	DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
-	DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
-	DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
-	
-	DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
+	//DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
+	//DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
+	//DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
+	//DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
+	//DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
 
 	mapio->Draw();
 #endif // DEBUG
