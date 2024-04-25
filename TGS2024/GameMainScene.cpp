@@ -301,14 +301,6 @@ void GameMainScene::Update() {
 				
 
 
-	
-#ifdef DEBUG
-
-	if(rolling_enemy == nullptr)
-	{
-		// 転がるエネミーが消えたら新しく出現させる
-		rolling_enemy = new RollingEnemy;
-	}
 }
 
 void GameMainScene::Draw() const {
