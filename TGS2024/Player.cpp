@@ -42,16 +42,12 @@ Player::Player()
 	atk_cnt_timer = 0;
 
 	//playerジャンプ用変数
-	
-	jump_timer = 0;
-	rad = 0;
-
-	jump_v0 = -12.0;
-	gravity = 0.3f;
-	velocity_y = 0;
+	vel = -20;
+	acc = 1;
 
 	//デバック用
 	y_ground = 650;
+	player_state = NOMAL;
 
 }
 
@@ -71,6 +67,8 @@ void Player::Update(GameMainScene* gamemain)
 	if (input.CheckBtn(XINPUT_BUTTON_A) == TRUE)
 	{
 		player_state = JUMP;
+
+		ground_flg = false;
 	}
 
 	//Yおしたら攻撃
@@ -84,8 +82,7 @@ void Player::Update(GameMainScene* gamemain)
 	{
 
 	case NOMAL:
-		//プレイヤーの移動処理
-		PlayerMove();
+
 		break;
 	case JUMP:
 		PlayerJump();
@@ -100,6 +97,8 @@ void Player::Update(GameMainScene* gamemain)
 
 
 
+	//プレイヤーの移動処理
+	PlayerMove();
 
 
 	//何秒か経ったら攻撃中フラグを戻す？
@@ -111,17 +110,21 @@ void Player::Update(GameMainScene* gamemain)
 			anim_cnt = 0;
 			atk_cnt_timer = 0;
 			attacking = false;
+			player_state = NOMAL;
 		}
 	}
 	else
 	{
-		player_state = NOMAL;
+		//player_state = NOMAL;
 	}
 
 	if (ground_flg != true)
 	{
 		world.y++;
 	}
+
+
+	SetVertex();
 }
 
 void Player::Draw() const
@@ -187,7 +190,8 @@ void Player::Draw() const
 	DrawCircle(box_vertex.lower_leftx, box_vertex.lower_lefty, 2, 0x0000ff, TRUE);
 	DrawCircle(box_vertex.upper_rightx, box_vertex.upper_righty, 2, 0x0000ff, TRUE);
 	DrawCircle(box_vertex.lower_rightx, box_vertex.lower_righty, 2, 0x0000ff, TRUE);
-
+	
+	
 
 	//////// 画面に XINPUT_STATE の中身を描画
 	//color = GetColor(255, 255, 255);
@@ -202,6 +206,7 @@ void Player::Draw() const
 	//DrawFormatString(100, 150, 0xffffff, "location.x: %f",location.x);
 	DrawFormatString(100, 100, 0xffffff, "worldx: %f location.x:%f",world.x,location.x);
 	DrawFormatString(100, 120, 0xffffff, "world_y: %f location.y:%f", world.y,location.y);
+	DrawFormatString(100, 140, 0xffffff, "ground_flg%d", ground_flg);
 	/*DrawFormatString(100, 120, 0xffffff, "location.y: %f", location.y);
 	DrawFormatString(100, 140, 0xffffff, "world.x: %f",world.x);
 	DrawFormatString(100, 160, 0xffffff, "world.y: %f",world.y);*/
@@ -217,8 +222,16 @@ void Player::PlayerBtn()
 void Player::PlayerJump()
 {
 
+		//ジャンプ
+		vel += acc;
+		world.y += vel;
 
-
+		//地面に付いたら
+		if (ground_flg == true)
+		{
+			vel = -20;
+			player_state = NOMAL;
+		}
 }
 
 void Player::PlayerMove()
@@ -257,5 +270,4 @@ void Player::PlayerMove()
 	}
 	location.x += move_x;
 	world.x += move_x;
-	SetVertex();
 }

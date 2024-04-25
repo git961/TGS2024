@@ -33,18 +33,11 @@ private:
 
         float walk_velocity_x;
 
-
-        bool ground_flg;//地面に付いたか
+       
         
-        float jump_timer;
-        float rad;
-        float sita;
-        float pi = 3.1415f;
-
-
-        float jump_v0;//ジャンプの初速度
-        float gravity;//ジャンプの重力
-        float velocity_y;//y方向の速度
+        float vel;//ｙ報告の速度
+        float acc;//重力加速度
+        float can_jump;//ジャンプが出来る状態か？
 
         float y_ground;//地面の高さデバック用
         float v_max;//速度最大値

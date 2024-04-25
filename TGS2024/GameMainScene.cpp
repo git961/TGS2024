@@ -280,12 +280,10 @@ void GameMainScene::Update() {
 				if (player->HitCheck(stage_block[j]->GetLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
 				{
 					//各頂点の座標を確保しておく
-					player->SetGroundFlg(true);
 					player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
 					
 				}
 				else {
-					player->SetGroundFlg(false);
 
 				}
 

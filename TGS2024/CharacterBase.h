@@ -34,8 +34,7 @@ protected:
 
 	int chara_image[10];//キャラクタ画像入れる用
 
-	float edge_list[4][4];
-	bool is_check_edge[4];
+	bool ground_flg;//地面に居るか？
 
 public:
 	//コンストラクタとデストラクタ
@@ -123,14 +122,19 @@ public:
 			if (world.y < set_world.y)
 			{
 				//キャラの右下の頂点の高さと、ボックスの左上の頂点の高さを比べる
-				if (box_vertex.lower_righty >= set_box_vertex.upper_lefty)
+				if (box_vertex.lower_righty > set_box_vertex.upper_lefty)
 				{
 					//右下の頂点の方が高かったら上に居るという事になる。
-					world.y = set_world.y - BLOCKSIZE;
+					world.y = set_world.y - BLOCKSIZE-10;
+					ground_flg = true;
+				}
+				else {
+					ground_flg = false;
 				}
 			}
 			else
 			{
+
 				if (box_vertex.upper_righty < set_box_vertex.lower_lefty)
 				{
 					world.y = set_world.y + BLOCKSIZE;
