@@ -25,7 +25,12 @@ private:
     int image_num;                  // 表示する画像番号
 
     bool is_knock_back;             // ノックバックするか？
-    int knock_back_cnt;             // ノックバックの時間
+    bool is_knock_back_start;       // ノックバック開始か？
+    bool knock_back_direction;       // ノックバック向き true: 右　false: 左
+    //int knock_back_cnt;             // ノックバックの時間
+
+    float player_x;
+    float player_y;
 
 public:
     Enemy(float set_x);
@@ -40,9 +45,20 @@ public:
     void WalkingAnimation();                    // 歩行アニメーション関係の処理
     void DeathAnimation();                      // 死亡アニメーション関係の処理
 
+    void SetPlayerWorldLocation(World set_world)
+    {
+        player_x = set_world.x;
+        player_y = set_world.y;
+    }
+
     void SetKnockBackFlg(bool set_flg)
     {
         is_knock_back = set_flg;
+    }
+
+    void SetKnockBackStartFlg(bool set_flg)
+    {
+        is_knock_back_start = set_flg;
     }
 
     void Damege(int damege);                    // 被ダメージ処理

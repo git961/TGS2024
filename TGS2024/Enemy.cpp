@@ -6,18 +6,17 @@ Enemy::Enemy(float set_x)
 	//location.x = 400 + (40 * set_x);
 	//location.y = 600;
 
-	world.x = 400 + (120 * set_x);
-	world.y = 600;
+	world.x = 400.0f + (120.0f * set_x);
+	world.y = 600.0f;
 
-	width = 45;
-	height = 64;
+	width = 45.0f;
+	height = 64.0f;
 
-	move_x = 1;			// 移動量
-	move_y = 0;			// 未使用
-	hp = 30;
-	attack = 10;
-	speed = 2;			// なくても良い
-
+	move_x = 1.0f;			// 移動量
+	move_y = 0.0f;			// 未使用
+	hp = 30.0f;
+	attack = 10.0f;
+	speed = 2.0f;
 
 	//画像読込
 	//LoadDivGraph("images/Enemy/EnemyTest01.png", 9, 3, 1, 64, 64, chara_image);
@@ -37,7 +36,12 @@ Enemy::Enemy(float set_x)
 	direction = false;			// 画像は右向き
 
 	is_knock_back = false;		// ノックバックしない
-	knock_back_cnt = 90;		// ノックバック時間
+	is_knock_back_start = false;
+	knock_back_direction = true;
+	//knock_back_cnt = 90;		// ノックバック時間
+
+	player_x = 0.0f;
+	player_y = 0.0f;
 
 	//srand(time(NULL));
 	//num = rand() % 10 + 1;
@@ -70,6 +74,23 @@ void Enemy::Update(GameMainScene* gamemain)
 {
 	if (is_knock_back == true && hp > 0)
 	{
+		if (is_knock_back_start == true)
+		{
+			// ノックバック時の初期スピード
+			speed = 5.0f;
+
+			if (world.x > player_x)
+			{
+				// 右にノックバックする
+				knock_back_direction = true;
+			}
+			else
+			{
+				// 左にノックバックする
+				knock_back_direction = false;
+			}
+		}
+
 		// ノックバック処理
 		KnockBack();
 	}
@@ -94,7 +115,8 @@ void Enemy::Update(GameMainScene* gamemain)
 void Enemy::Draw() const
 {
 #ifdef DEBUG
-	//DrawFormatString(0, 50, 0xffffff, "death_cnt : %d", death_cnt);
+	DrawFormatString(location.x - 100, 50, 0xffffff, "speed : %.1f", speed);
+	DrawFormatString(location.x - 100, 80, 0xffffff, "is_k: %d", is_knock_back);
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "d : %d", direction);
 	//DrawFormatString(location.x - 100, 70, 0xffffff, "l.x : %.1f", location.x);
 	//DrawFormatString(location.x - 100, 90, 0xffffff, "l.y : %.1f", location.y);
@@ -142,6 +164,12 @@ void Enemy::Move()
 		}
 	}
 
+	if (speed < 2.0f)
+	{
+		// 加速処理
+		speed += 2.0f / 120;
+	}
+
 	// 移動処理
 	world.x -= speed * move_x;
 }
@@ -169,15 +197,43 @@ void Enemy::ChangeDirection()
 // ノックバック処理
 void Enemy::KnockBack()
 {
-	if (knock_back_cnt > 0)
+	//if (knock_back_cnt > 0)
+	//{
+	//	world.x += 3;
+	//	knock_back_cnt--;
+	//}
+	//else
+	//{
+	//	is_knock_back = false;
+	//	knock_back_cnt = 90;
+	//}
+
+	if (speed >= 0.0f)
 	{
-		world.x += 3;
-		knock_back_cnt--;
+		if (knock_back_direction == true)
+		{
+			// 右に移動
+			world.x += speed;
+
+		}
+		else
+		{
+			// 左に移動
+			world.x -= speed;
+		}
+
+		// 減速処理
+		speed -= 5.0f / 30;
 	}
 	else
 	{
+		// ノックバック終了
 		is_knock_back = false;
-		knock_back_cnt = 90;
+	}
+
+	if (is_knock_back_start == true)
+	{
+		is_knock_back_start = false;
 	}
 }
 
@@ -198,7 +254,7 @@ void Enemy::WalkingAnimation()
 	if (anim_cnt != 0)
 	{
 		// 歩行
-		// 20カウントごとに変わる
+		// 5カウントごとに変わる
 		image_num = anim_cnt / 5;
 	}
 }
