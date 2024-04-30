@@ -23,6 +23,8 @@ private:
 
     int player_walk_img[10];
     int player_attack_img[10];
+    int player_img[10];
+    int p_imgnum;//プレイヤーの画像番号切り替え用
     int anim_cnt;//画像切り替え用
 
     float atk_cnt_timer;//攻撃発生してからとめるまでの時間をカウントする用

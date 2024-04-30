@@ -15,6 +15,10 @@ Player::Player()
 	//画像読込
 	LoadDivGraph("image/pickaxe.png", 3, 3, 1, 64, 64, player_attack_img);
 	LoadDivGraph("image/player.png", 2, 2, 1, 64, 64, player_walk_img);
+	LoadDivGraph("images/Player/player.png", 5, 5, 1, 128, 128, player_img);
+
+	p_imgnum = 0;
+
 	anim_cnt = 0;
 
 	world.x = 200;
@@ -105,7 +109,7 @@ void Player::Update(GameMainScene* gamemain)
 	if (attacking == true)
 	{
 		anim_cnt++;
-		if (atk_cnt_timer++ > 8)
+		if (atk_cnt_timer++ > 15)
 		{
 			anim_cnt = 0;
 			atk_cnt_timer = 0;
@@ -125,6 +129,40 @@ void Player::Update(GameMainScene* gamemain)
 
 
 	SetVertex();
+
+
+
+
+
+				
+
+	if (attacking == true)
+	{
+
+			switch (anim_cnt)
+			{
+			case 0:
+				p_imgnum = 1;
+				break;
+			case 2:
+				p_imgnum = 2;
+				break;
+			case 7:
+				p_imgnum = 3;
+				break;
+			case 9:
+				p_imgnum = 4;
+				break;
+			}
+
+	}
+	else {
+		p_imgnum=0;
+	}
+
+	
+	
+
 }
 
 void Player::Draw() const
@@ -136,52 +174,7 @@ void Player::Draw() const
 
 
 	//プレイヤー画像表示
-	switch (direction)
-	{
-	case 0:
-		DrawRotaGraph(location.x, location.y, 1, 0, player_walk_img[0], TRUE, FALSE);
-		break;
-	case 1:
-		DrawRotaGraph(location.x, location.y, 1, 0, player_walk_img[1], TRUE, FALSE);
-		break;
-	}
-
-	if (attacking == true)
-	{
-		switch (direction)
-		{
-		case 0:
-			//右向きだったら
-			switch (anim_cnt)
-			{
-			case 0:
-				DrawRotaGraph(location.x + 30, location.y-10, 1, 0, player_attack_img[0], TRUE, FALSE);
-				break;
-			case 3:
-				DrawRotaGraph(location.x + 30, location.y+5, 1, 0, player_attack_img[1], TRUE, FALSE);
-				break;
-			case 4:
-				DrawRotaGraph(location.x + 30, location.y+10, 1, 0, player_attack_img[2], TRUE, FALSE);
-				break;
-			}
-			break;
-		case 1:
-			//左向きだったら
-			switch (anim_cnt)
-			{
-			case 0:
-				DrawRotaGraph(location.x - 30, location.y, 1, 0, player_attack_img[0], TRUE, TRUE);
-				break;
-			case 5:
-				DrawRotaGraph(location.x - 30, location.y, 1, 0, player_attack_img[1], TRUE, TRUE);
-				break;
-			case 8:
-				DrawRotaGraph(location.x - 30, location.y, 1, 0, player_attack_img[2], TRUE, TRUE);
-				break;
-			}
-			break;
-		}
-	}
+	DrawRotaGraph(location.x, location.y, 1, 0, player_img[p_imgnum], TRUE, direction);
 
 #ifdef DEBUG
 
