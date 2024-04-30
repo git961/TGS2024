@@ -122,17 +122,15 @@ void Player::Update(GameMainScene* gamemain)
 		//player_state = NOMAL;
 	}
 
-	if (ground_flg != true)
-	{
-		world.y++;
-	}
-
+	//if (ground_flg != true)
+	//{
+		//world.y++;
+	//}
+	
 
 	SetVertex();
 
-
-				
-
+	
 	if (attacking == true)
 	{
 
@@ -266,6 +264,10 @@ void Player::PlayerMove()
 		move_x *= 0.9;
 	}
 
-	location.x += move_x;
-	world.x += move_x;
+	//壁に当たっていなかったら加算
+	if (wall_flg != true)
+	{
+		location.x += move_x;
+		world.x += move_x;
+	}
 }

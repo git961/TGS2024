@@ -34,7 +34,9 @@ protected:
 
 	int chara_image[10];//キャラクタ画像入れる用
 
-	bool ground_flg;//地面に居るか？
+	bool ground_flg;//地面に当たってるか
+	bool wall_flg;//壁に当たってるか
+	bool hit_block_flg;//ブロックに当たっているか
 
 public:
 	//コンストラクタとデストラクタ
@@ -108,12 +110,7 @@ public:
 
 	void HitCheckB(Boxvertex set_box_vertex,World set_world)
 	{
-		//上か下にいないって言う条件式で全部囲む
-
-		//もしキャラがブロックより上に居たら
-
-			//ブロックの上に乗っかる処理
-			//もし自分の右下が、相手の左上よりも、下だったら
+		hit_block_flg = true;
 
 		//もしキャラクタがブロックのｘ座標の幅の内側に居たら
 		if (world.x >= set_box_vertex.lower_leftx && world.x <= set_box_vertex.lower_rightx)
@@ -153,6 +150,7 @@ public:
 					//ブロックの右にぶつかる処理
 					if (box_vertex.lower_leftx < set_box_vertex.upper_rightx)
 					{
+						wall_flg = true;
 						world.x = set_world.x + width/2+BLOCKSIZE;
 					}
 				}
@@ -163,6 +161,7 @@ public:
 					//ブロックの左にぶつかる処理
 					if (box_vertex.lower_rightx > set_box_vertex.upper_leftx)
 					{
+						wall_flg = true;
 						world.x = set_world.x - width/2-BLOCKSIZE;
 					}
 				}

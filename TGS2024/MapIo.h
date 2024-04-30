@@ -4,6 +4,8 @@
 #include "DxLib.h"
 #include "stdio.h"
 #include "Define.h"
+#include "padinput.h"
+
 
 class GameMainScene;
 
@@ -11,6 +13,7 @@ class GameMainScene;
 class MapIo
 {
 private:
+	Input input;
 
 	int count;
 	//const int map_blockmax_x=FIELD_WIDTH/64;
@@ -28,6 +31,8 @@ private:
 
 	int mouse_x;
 	int mouse_y;
+
+	int add_x;
 
 public:
 	MapIo();

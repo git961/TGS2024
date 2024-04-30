@@ -6,6 +6,7 @@ MapIo::MapIo()
 
 	fp = NULL;
 	count = 0;
+	add_x = 0;
 }
 
 MapIo::~MapIo()
@@ -34,7 +35,24 @@ void MapIo::LoadMapData()
 
 void MapIo::InputTest(GameMainScene* gamemain)
 {
+	input.InputUpdate();
+
 	GetMousePoint(&mouse_x, &mouse_y);
+
+	if (input.CheckBtn(XINPUT_BUTTON_RIGHT_SHOULDER) == TRUE)
+	{
+		add_x += 1280;
+
+	}
+
+	if (input.CheckBtn(XINPUT_BUTTON_LEFT_SHOULDER) == TRUE)
+	{
+		if (add_x > 0)
+		{
+			add_x -= 1280;
+		}
+	}
+	//1280
 
 	//ブロック追加
 	if ((GetMouseInput() & MOUSE_INPUT_LEFT)!=0){
@@ -47,7 +65,7 @@ void MapIo::InputTest(GameMainScene* gamemain)
 			{
 				//もしこの範囲に居たら
 				//ワールド座標とマウスの座標を比べる
-				if (j * BLOCKSIZE < mouse_x && j * BLOCKSIZE + BLOCKSIZE > mouse_x) {
+				if (j * BLOCKSIZE < mouse_x+add_x && j * BLOCKSIZE + BLOCKSIZE > mouse_x+add_x) {
 					if (i * BLOCKSIZE < mouse_y && i * BLOCKSIZE + BLOCKSIZE > mouse_y)
 					{
 						map_array[i][j] = 1;
@@ -73,7 +91,7 @@ void MapIo::InputTest(GameMainScene* gamemain)
 			{
 				//もしこの範囲に居たら
 				//ワールド座標とマウスの座標を比べる
-				if (j * BLOCKSIZE < mouse_x && j * BLOCKSIZE + BLOCKSIZE > mouse_x) {
+				if (j * BLOCKSIZE < mouse_x+add_x && j * BLOCKSIZE + BLOCKSIZE > mouse_x+add_x) {
 					if (i * BLOCKSIZE < mouse_y && i * BLOCKSIZE + BLOCKSIZE > mouse_y)
 					{
 
@@ -139,6 +157,7 @@ void MapIo::Draw() const
 	//	}
 	//}
 
+	DrawFormatString(40, 40, 0xffffff, "Mousex+add_x:%d",mouse_x+add_x);
 
 
 }
