@@ -52,5 +52,7 @@ void StageBlock::Draw() const
 
 	DrawCircle(box_vertex.upper_leftx, box_vertex.upper_lefty, 2, 0xff00ff, TRUE);
 	DrawCircle(box_vertex.lower_leftx, box_vertex.lower_lefty, 2, 0xff00ff, TRUE);
+	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);			// 中心座標
+
 
 }

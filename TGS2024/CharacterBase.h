@@ -125,7 +125,8 @@ public:
 				if (box_vertex.lower_righty > set_box_vertex.upper_lefty)
 				{
 					//右下の頂点の方が高かったら上に居るという事になる。
-					world.y = set_world.y - BLOCKSIZE-10;
+					
+					world.y = set_world.y - height/2-BLOCKSIZE;
 					ground_flg = true;
 				}
 				else {
@@ -137,7 +138,7 @@ public:
 
 				if (box_vertex.upper_righty < set_box_vertex.lower_lefty)
 				{
-					world.y = set_world.y + BLOCKSIZE;
+					world.y = set_world.y + height/2+BLOCKSIZE;
 				}
 			}
 		}
@@ -152,7 +153,7 @@ public:
 					//ブロックの右にぶつかる処理
 					if (box_vertex.lower_leftx < set_box_vertex.upper_rightx)
 					{
-						world.x = set_world.x + BLOCKSIZE;
+						world.x = set_world.x + width/2+BLOCKSIZE;
 					}
 				}
 
@@ -162,7 +163,7 @@ public:
 					//ブロックの左にぶつかる処理
 					if (box_vertex.lower_rightx > set_box_vertex.upper_leftx)
 					{
-						world.x = set_world.x - BLOCKSIZE;
+						world.x = set_world.x - width/2-BLOCKSIZE;
 					}
 				}
 

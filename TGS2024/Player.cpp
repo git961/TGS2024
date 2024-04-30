@@ -131,37 +131,40 @@ void Player::Update(GameMainScene* gamemain)
 	SetVertex();
 
 
-
-
-
 				
 
 	if (attacking == true)
 	{
 
-			switch (anim_cnt)
-			{
-			case 0:
-				p_imgnum = 1;
-				break;
-			case 2:
-				p_imgnum = 2;
-				break;
-			case 7:
-				p_imgnum = 3;
-				break;
-			case 9:
-				p_imgnum = 4;
-				break;
-			}
+		switch (anim_cnt)
+		{
+		case 0:
+			p_imgnum = 1;
+			break;
+		case 2:
+			p_imgnum = 2;
+			break;
+		case 7:
+			p_imgnum = 3;
+			break;
+		case 9:
+			p_imgnum = 4;
+			break;
+		}
 
 	}
 	else {
 		p_imgnum=0;
 	}
 
-	
-	
+	// 端に来たら跳ね返る
+	if (world.x + width / 2 > FIELD_WIDTH)
+	{
+		world.x=FIELD_WIDTH-20;
+
+	}else if (world.x - width / 2 < 0) {
+		world.x = width / 2;
+	}
 
 }
 
@@ -174,7 +177,7 @@ void Player::Draw() const
 
 
 	//プレイヤー画像表示
-	DrawRotaGraph(location.x, location.y, 1, 0, player_img[p_imgnum], TRUE, direction);
+	DrawRotaGraph(location.x, location.y-25, 1, 0, player_img[p_imgnum], TRUE, direction);
 
 #ifdef DEBUG
 
@@ -204,6 +207,7 @@ void Player::Draw() const
 	DrawFormatString(100, 140, 0xffffff, "world.x: %f",world.x);
 	DrawFormatString(100, 160, 0xffffff, "world.y: %f",world.y);*/
 
+	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);			// 中心座標
 
 #endif // DEBUG
 }
@@ -261,6 +265,7 @@ void Player::PlayerMove()
 	{
 		move_x *= 0.9;
 	}
+
 	location.x += move_x;
 	world.x += move_x;
 }

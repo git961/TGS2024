@@ -231,7 +231,8 @@ void Enemy::KnockBack()
 		}
 		else if (world.x - width / 2 < 0)
 		{
-			world.x = world.x + width / 2;
+			world.x =width / 2+10;
+
 		}
 	}
 	else
