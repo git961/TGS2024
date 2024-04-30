@@ -214,7 +214,6 @@ void Enemy::KnockBack()
 		{
 			// 右に移動
 			world.x += speed;
-
 		}
 		else
 		{
@@ -224,6 +223,16 @@ void Enemy::KnockBack()
 
 		// 減速処理
 		speed -= 5.0f / 30;
+
+		// 画面外に出ないようにする
+		if (world.x + width / 2 > FIELD_WIDTH)
+		{
+			world.x = FIELD_WIDTH - width / 2;
+		}
+		else if (world.x - width / 2 < 0)
+		{
+			world.x = world.x + width / 2;
+		}
 	}
 	else
 	{
