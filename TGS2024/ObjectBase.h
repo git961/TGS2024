@@ -66,18 +66,18 @@ public:
 	~ObjectBase() {};
 
 	//当たり判定:何かに当たったかどうかだけ返す
-	bool HitCheck(Vec2 opponent, float opponent_width, float opponent_height)
+	bool HitCheck(World opponent, float opponent_width, float opponent_height)
 	{
 		float my_center_x = width / 2;
 		float my_center_y = height / 2;
 
 		//x座標の相手と自分の距離を絶対値で測る
-		distance_x = fabs(location.x - opponent.x);
+		distance_x = fabs(world.x - opponent.x);
 		//2つの幅/2を足す
 		two_widths = my_center_x + opponent_width / 2;
 
 		//y座標の相手と自分の距離を絶対値で測る
-		distance_y = fabs(location.y - opponent.y);
+		distance_y = fabs(world.y - opponent.y);
 		//2つの高さ/2を足す
 		two_heights = my_center_y + opponent_height / 2;
 

@@ -13,11 +13,11 @@ Player::Player()
 
 
 	//画像読込
-	LoadDivGraph("image/pickaxe.png", 3, 3, 1, 64, 64, player_attack_img);
-	LoadDivGraph("image/player.png", 2, 2, 1, 64, 64, player_walk_img);
 	LoadDivGraph("images/Player/player.png", 5, 5, 1, 128, 128, player_img);
+	LoadDivGraph("images/Player/pickaxe_effect.png", 2, 2, 1, 128, 128, effect_img);
 
 	p_imgnum = 0;
+	effect_num = 0;
 
 	anim_cnt = 0;
 
@@ -49,6 +49,10 @@ Player::Player()
 	vel = -20;
 	acc = 1;
 
+	//player落下用変数
+	fall_vel = 7;
+	fall_acc = 1;
+
 	//デバック用
 	y_ground = 650;
 	player_state = NOMAL;
@@ -68,11 +72,14 @@ void Player::Update(GameMainScene* gamemain)
 
 
 	//ジャンプ
-	if (input.CheckBtn(XINPUT_BUTTON_A) == TRUE)
+	if (player_state == NOMAL)
 	{
-		player_state = JUMP;
+		if (input.CheckBtn(XINPUT_BUTTON_A) == TRUE)
+		{
+			player_state = JUMP;
 
-		ground_flg = false;
+			ground_flg = false;
+		}
 	}
 
 	//Yおしたら攻撃
@@ -92,6 +99,7 @@ void Player::Update(GameMainScene* gamemain)
 		PlayerJump();
 		break;
 	case FALLING:
+		PlayerFALL();
 		break;
 	case ATTACK:
 		break;
@@ -104,12 +112,37 @@ void Player::Update(GameMainScene* gamemain)
 	//プレイヤーの移動処理
 	PlayerMove();
 
+	if (attacking == true)
+	{
+
+		switch (anim_cnt)
+		{
+		case 0:
+			p_imgnum = 1;
+			break;
+		case 10:
+			p_imgnum = 2;
+			break;
+		case 15:
+			p_imgnum = 3;
+			break;
+		case 20:
+			effect_num = 1;
+			p_imgnum = 4;
+			break;
+		}
+
+	}
+	else {
+		p_imgnum = 0;
+	}
+
 
 	//何秒か経ったら攻撃中フラグを戻す？
 	if (attacking == true)
 	{
 		anim_cnt++;
-		if (atk_cnt_timer++ > 15)
+		if (atk_cnt_timer++ > 30)
 		{
 			anim_cnt = 0;
 			atk_cnt_timer = 0;
@@ -131,30 +164,6 @@ void Player::Update(GameMainScene* gamemain)
 	SetVertex();
 
 	
-	if (attacking == true)
-	{
-
-		switch (anim_cnt)
-		{
-		case 0:
-			p_imgnum = 1;
-			break;
-		case 2:
-			p_imgnum = 2;
-			break;
-		case 7:
-			p_imgnum = 3;
-			break;
-		case 9:
-			p_imgnum = 4;
-			break;
-		}
-
-	}
-	else {
-		p_imgnum=0;
-	}
-
 	// 端に来たら跳ね返る
 	if (world.x + width / 2 > FIELD_WIDTH)
 	{
@@ -176,7 +185,10 @@ void Player::Draw() const
 
 	//プレイヤー画像表示
 	DrawRotaGraph(location.x, location.y-25, 1, 0, player_img[p_imgnum], TRUE, direction);
-
+	if (p_imgnum > 1)
+	{
+		DrawRotaGraph(location.x, location.y - 25, 1, 0, effect_img[effect_num], TRUE, direction);
+	}
 #ifdef DEBUG
 
 
@@ -200,7 +212,7 @@ void Player::Draw() const
 	//DrawFormatString(100, 150, 0xffffff, "location.x: %f",location.x);
 	DrawFormatString(100, 100, 0xffffff, "worldx: %f location.x:%f",world.x,location.x);
 	DrawFormatString(100, 120, 0xffffff, "world_y: %f location.y:%f", world.y,location.y);
-	DrawFormatString(100, 140, 0xffffff, "ground_flg%d", ground_flg);
+	DrawFormatString(100, 140, 0xffffff, "playerstate%d", player_state);
 	/*DrawFormatString(100, 120, 0xffffff, "location.y: %f", location.y);
 	DrawFormatString(100, 140, 0xffffff, "world.x: %f",world.x);
 	DrawFormatString(100, 160, 0xffffff, "world.y: %f",world.y);*/
@@ -210,10 +222,6 @@ void Player::Draw() const
 #endif // DEBUG
 }
 
-void Player::PlayerBtn()
-{
-}
-
 void Player::PlayerJump()
 {
 
@@ -221,12 +229,27 @@ void Player::PlayerJump()
 		vel += acc;
 		world.y += vel;
 
-		//地面に付いたら
-		if (ground_flg == true)
+		//限界まで飛んだら
+		if (vel>=0)
 		{
+			player_state = FALLING;
 			vel = -20;
-			player_state = NOMAL;
 		}
+}
+
+void Player::PlayerFALL()
+{
+
+	fall_vel += fall_acc;
+	world.y += fall_vel;
+
+	//地面に付いたら
+	if (ground_flg==true)
+	{
+		fall_vel = 20;
+		player_state = NOMAL;
+	}
+
 }
 
 void Player::PlayerMove()
@@ -265,9 +288,9 @@ void Player::PlayerMove()
 	}
 
 	//壁に当たっていなかったら加算
-	if (wall_flg != true)
-	{
+	/*if (wall_flg != true)
+	{*/
 		location.x += move_x;
 		world.x += move_x;
-	}
+	//}
 }

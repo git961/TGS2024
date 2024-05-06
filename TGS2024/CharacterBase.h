@@ -132,10 +132,14 @@ public:
 			}
 			else
 			{
-
+				//ブロックの下にいる
 				if (box_vertex.upper_righty < set_box_vertex.lower_lefty)
 				{
 					world.y = set_world.y + height/2+BLOCKSIZE;
+				}
+				else
+				{
+					
 				}
 			}
 		}
@@ -150,7 +154,7 @@ public:
 					//ブロックの右にぶつかる処理
 					if (box_vertex.lower_leftx < set_box_vertex.upper_rightx)
 					{
-						wall_flg = true;
+						//wall_flg = true;
 						world.x = set_world.x + width/2+BLOCKSIZE;
 					}
 				}

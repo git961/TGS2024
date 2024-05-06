@@ -173,7 +173,7 @@ void GameMainScene::Update() {
 			if (enemy[i]->GetHp() > 0)
 			{
 				// 歩行エネミーとの当たり判定
-				if (player->HitCheck(enemy[i]->GetLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
+				if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
 					checkhit = true;
 				}
 				else {
@@ -187,7 +187,7 @@ void GameMainScene::Update() {
 					if (enemy_damage_once == false)
 					{
 						//つるはしとエネミーと当たってるかのチェック
-						if (ac->HitCheck(enemy[i]->GetLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {//checkhit = true;
+						if (ac->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {//checkhit = true;
 							enemy[i]->Damege(1);
 							// 歩行エネミーのノックバック処理
 							enemy[i]->SetKnockBackStartFlg(true);
@@ -214,7 +214,7 @@ void GameMainScene::Update() {
 		if (rolling_enemy->GetHp() > 0)
 		{
 			// 転がるエネミーとの当たり判定
-			if (player->HitCheck(rolling_enemy->GetLocation(), rolling_enemy->GetWidth(), rolling_enemy->GetHeight()) == true) {
+			if (player->HitCheck(rolling_enemy->GetWorldLocation(), rolling_enemy->GetWidth(), rolling_enemy->GetHeight()) == true) {
 				checkhit = true;
 			}
 			else {
@@ -228,7 +228,7 @@ void GameMainScene::Update() {
 				if (enemy_damage_once == false)
 				{
 					//つるはしとエネミーと当たってるかのチェック
-					if (ac->HitCheck(rolling_enemy->GetLocation(), rolling_enemy->GetWidth(), rolling_enemy->GetHeight()) == true) {//checkhit = true;
+					if (ac->HitCheck(rolling_enemy->GetWorldLocation(), rolling_enemy->GetWidth(), rolling_enemy->GetHeight()) == true) {//checkhit = true;
 						rolling_enemy->Damege(10);
 						enemy_damage_once = true;
 					}
@@ -254,7 +254,7 @@ void GameMainScene::Update() {
 			{
 				if (enemy[j] != nullptr && enemy[j]->GetHp() > 0)
 				{
-					if (enemy[i]->HitCheck(enemy[j]->GetLocation(), enemy[j]->GetWidth(), enemy[j]->GetHeight()) == true)
+					if (enemy[i]->HitCheck(enemy[j]->GetWorldLocation(), enemy[j]->GetWidth(), enemy[j]->GetHeight()) == true)
 					{
 						// 当たっていたら２体とも進行方向を反対に変更する
 						enemy[j]->ChangeDirection();
@@ -288,11 +288,18 @@ void GameMainScene::Update() {
 
 			if (player != nullptr)
 			{
-				if (player->HitCheck(stage_block[j]->GetLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+				//if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+				//{
+				//	//各頂点の座標を確保しておく
+				//	player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
+				//	
+				//}
+
+				if (stage_block[j]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
 				{
 					//各頂点の座標を確保しておく
 					player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
-					
+
 				}
 
 			}

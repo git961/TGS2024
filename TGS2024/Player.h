@@ -24,7 +24,10 @@ private:
     int player_walk_img[10];
     int player_attack_img[10];
     int player_img[10];
+    int effect_img[10];
+
     int p_imgnum;//プレイヤーの画像番号切り替え用
+    int effect_num;//effectの画像番号切り替え用
     int anim_cnt;//画像切り替え用
 
     float atk_cnt_timer;//攻撃発生してからとめるまでの時間をカウントする用
@@ -41,6 +44,9 @@ private:
         float acc;//重力加速度
         float can_jump;//ジャンプが出来る状態か？
 
+        float fall_vel;//落下するときのｙ方向の速度
+        float fall_acc;//落下するときの重力加速度
+
         float y_ground;//地面の高さデバック用
         float v_max;//速度最大値
 
@@ -52,11 +58,11 @@ public:
     void Update(GameMainScene* gamemain);
     void Draw() const;
 
-    //ボタン入力をまとめた関数
-    void PlayerBtn();
-
     //プレイヤージャンプ用
     void PlayerJump();
+
+    //プレイヤー落下
+    void PlayerFALL();
 
     //プレイヤー移動用
     void PlayerMove();
