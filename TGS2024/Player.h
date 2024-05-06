@@ -31,6 +31,10 @@ private:
     int anim_cnt;//画像切り替え用
 
     float atk_cnt_timer;//攻撃発生してからとめるまでの時間をカウントする用
+    int next_attackflg;//攻撃中もう一度ボタンが押されたら攻撃をする
+    int attack_cnt;//何回攻撃ボタンを押したかカウント用
+    int wait_atk_cnt;//もう一度攻撃できるようになるまでの時間カウント用
+    bool wait_flg;//
 
        //プレイヤーの状態
         bool walk;//true:歩いてる false:止まってる
@@ -42,7 +46,7 @@ private:
         
         float vel;//ｙ報告の速度
         float acc;//重力加速度
-        float can_jump;//ジャンプが出来る状態か？
+        float is_jump;//ジャンプが出来る状態か？
 
         float fall_vel;//落下するときのｙ方向の速度
         float fall_acc;//落下するときの重力加速度

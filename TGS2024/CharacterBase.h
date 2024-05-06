@@ -127,7 +127,7 @@ public:
 					ground_flg = true;
 				}
 				else {
-					ground_flg = false;
+					//ground_flg = false;
 				}
 			}
 			else

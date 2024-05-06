@@ -44,10 +44,15 @@ Player::Player()
 	//攻撃に使用変数
 	attacking = false;
 	atk_cnt_timer = 0;
+	next_attackflg = false;
+	attack_cnt = 0;
+	wait_atk_cnt = 0;
+	wait_flg = false;
 
 	//playerジャンプ用変数
 	vel = -20;
 	acc = 1;
+	is_jump = true;
 
 	//player落下用変数
 	fall_vel = 7;
@@ -77,16 +82,26 @@ void Player::Update(GameMainScene* gamemain)
 		if (input.CheckBtn(XINPUT_BUTTON_A) == TRUE)
 		{
 			player_state = JUMP;
-
+			is_jump = true;
 			ground_flg = false;
 		}
 	}
 
-	//Yおしたら攻撃
-	if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+	if (wait_flg==false)
 	{
-		attacking = true;
-		player_state = ATTACK;
+		//Bおしたら攻撃
+		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+		{
+			attacking = true;
+			player_state = ATTACK;
+		}
+	}
+	else if(wait_flg==true)
+	{//攻撃がすぐには出来ないように待たせる
+		if (wait_atk_cnt++ > 30) {
+			wait_atk_cnt = 0;
+			wait_flg = false;
+		}
 	}
 
 	switch (player_state)
@@ -99,7 +114,7 @@ void Player::Update(GameMainScene* gamemain)
 		PlayerJump();
 		break;
 	case FALLING:
-		PlayerFALL();
+		//PlayerFALL();
 		break;
 	case ATTACK:
 		break;
@@ -107,7 +122,10 @@ void Player::Update(GameMainScene* gamemain)
 		break;
 	}
 
-
+	if (ground_flg == false)
+	{
+		PlayerFALL();
+	}
 
 	//プレイヤーの移動処理
 	PlayerMove();
@@ -142,12 +160,35 @@ void Player::Update(GameMainScene* gamemain)
 	if (attacking == true)
 	{
 		anim_cnt++;
+		if (anim_cnt > 2)
+		{
+			//そのままやるとそのままcheckBtnの中に入ってしまうので、数フレーム待たせる
+
+			if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+			{
+				next_attackflg = true;
+			}
+		}
 		if (atk_cnt_timer++ > 30)
 		{
-			anim_cnt = 0;
-			atk_cnt_timer = 0;
-			attacking = false;
-			player_state = NOMAL;
+			if (next_attackflg == false||attack_cnt>1)
+			{
+				attack_cnt = 0;
+				anim_cnt = 0;
+				atk_cnt_timer = 0;
+				attacking = false;
+				wait_flg = true;
+				player_state = NOMAL;
+			}
+			else
+			{
+				//次の攻撃をする準備
+				anim_cnt = 0;
+				atk_cnt_timer = 0;
+				attack_cnt++;
+
+				next_attackflg = false;
+			}
 		}
 	}
 	else
@@ -213,6 +254,7 @@ void Player::Draw() const
 	DrawFormatString(100, 100, 0xffffff, "worldx: %f location.x:%f",world.x,location.x);
 	DrawFormatString(100, 120, 0xffffff, "world_y: %f location.y:%f", world.y,location.y);
 	DrawFormatString(100, 140, 0xffffff, "playerstate%d", player_state);
+	DrawFormatString(100, 160, 0xffffff, "attack_cnt%d", attack_cnt);
 	/*DrawFormatString(100, 120, 0xffffff, "location.y: %f", location.y);
 	DrawFormatString(100, 140, 0xffffff, "world.x: %f",world.x);
 	DrawFormatString(100, 160, 0xffffff, "world.y: %f",world.y);*/
@@ -224,17 +266,22 @@ void Player::Draw() const
 
 void Player::PlayerJump()
 {
-
+	if (is_jump == true)
+	{
 		//ジャンプ
 		vel += acc;
 		world.y += vel;
 
-		//限界まで飛んだら
-		if (vel>=0)
+
+		if (ground_flg == true)
 		{
-			player_state = FALLING;
+			is_jump = false;
+			player_state = NOMAL;
 			vel = -20;
 		}
+		//ジャンプはジャンプで下まで降りるものとして
+		//落下はスイッチからぬかしてグラウンドフラグふぁるすだったらとか
+	}
 }
 
 void Player::PlayerFALL()
