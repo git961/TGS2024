@@ -188,7 +188,7 @@ void GameMainScene::Update() {
 					{
 						//つるはしとエネミーと当たってるかのチェック
 						if (ac->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {//checkhit = true;
-							enemy[i]->Damege(1);
+							enemy[i]->Damege(10);
 							// 歩行エネミーのノックバック処理
 							enemy[i]->SetKnockBackStartFlg(true);
 							enemy[i]->SetKnockBackFlg(true);

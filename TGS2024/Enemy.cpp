@@ -19,9 +19,16 @@ Enemy::Enemy(float set_x)
 	speed = 2.0f;
 
 	//画像読込
-	//LoadDivGraph("images/Enemy/EnemyTest01.png", 9, 3, 1, 64, 64, chara_image);
 	LoadDivGraph("images/Enemy/WalkTest.png", 5, 5, 1, 64, 64, enemy_walk_img);
 	LoadDivGraph("images/Enemy/WalkDeathTest.png", 4, 4, 1, 64, 64, enemy_death_img);
+	knock_back_img = LoadGraph("images/Enemy/KnockBack.png");
+	dust_img = LoadGraph("images/Enemy/Dust.png");
+	LoadDivGraph("images/Enemy/crack.png", 2, 2, 1, 64, 64, crack_img);
+
+
+	opacity = 180;				// 画像の不透明度
+	move_x_img = 100;
+	size = 0.3;					// 画像の大きさ
 
 	anim_cnt = 0;
 	anim_max_cnt = 19;
@@ -29,21 +36,21 @@ Enemy::Enemy(float set_x)
 	// 現在の画像
 	//image = 0;
 	image_num = 0;
+	crack_image_num = -1;
 
 	death_cnt = 0;
 	is_delete = false;
 
 	direction = false;			// 画像は右向き
 
-	is_knock_back = false;		// ノックバックしない
+	is_knock_back = false;		// ノックバック中ではない
 	is_knock_back_start = false;
-	knock_back_direction = true;
-	//knock_back_cnt = 90;		// ノックバック時間
+	//knock_back_direction = true;
 
 	player_x = 0.0f;
 	player_y = 0.0f;
 
-	//srand(time(NULL));
+	srand((unsigned int)time(NULL));			// 現在時刻の情報で初期化
 	//num = rand() % 10 + 1;
 	//if (num >= 5)
 	//{
@@ -79,23 +86,40 @@ void Enemy::Update(GameMainScene* gamemain)
 			// ノックバック時の初期スピード
 			speed = 2.0f;
 
+			// アニメーションカウントを0に戻す
+			anim_cnt = 0;
+
 			if (world.x > player_x)
 			{
 				// 右にノックバックする
-				knock_back_direction = true;
+				//knock_back_direction = true;
+				direction = false;
+				move_x = 1;
 			}
 			else
 			{
 				// 左にノックバックする
-				knock_back_direction = false;
+				//knock_back_direction = false;
+				direction = true;
+				move_x = -1;
 			}
 		}
+
+		move_x_img++;
+
+		opacity -= 4;
 
 		// ノックバック処理
 		KnockBack();
 	}
 	else
 	{
+		if (move_x_img != 1)
+		{
+			move_x_img = 1;
+			opacity = 180;
+		}
+
 		if (hp > 0)
 		{
 			// 移動処理
@@ -117,18 +141,42 @@ void Enemy::Draw() const
 #ifdef DEBUG
 	DrawFormatString(location.x - 100, 50, 0xffffff, "speed : %.1f", speed);
 	DrawFormatString(location.x - 100, 80, 0xffffff, "is_k: %d", is_knock_back);
+	DrawFormatString(100, 20, 0xffffff, "opacity: %d", opacity);
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "d : %d", direction);
 	//DrawFormatString(location.x - 100, 70, 0xffffff, "l.x : %.1f", location.x);
 	//DrawFormatString(location.x - 100, 90, 0xffffff, "l.y : %.1f", location.y);
 	//DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);				// 当たり判定のボックス
 #endif // DEBUG
 
-
 	// 画像の描画
 	if (hp > 0)
 	{
-		// 歩行画像
-		DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_walk_img[image_num], TRUE, direction);
+		if (is_knock_back == false)
+		{
+			// 歩行画像
+			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_walk_img[image_num], TRUE, direction);
+
+			if (hp != 30)
+			{
+				// ひび割れ画像
+				if (image_num == 1)
+				{
+					DrawRotaGraph((int)location.x, (int)location.y + 2, 1.1, 0.0, crack_img[crack_image_num], TRUE, direction);
+				}
+				else
+				{
+					DrawRotaGraph((int)location.x, (int)location.y, 1.1, 0.0, crack_img[crack_image_num], TRUE, direction);
+				}
+			}
+		}
+		else
+		{
+			// ノックバック画像
+			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, knock_back_img, TRUE, direction);
+			//DrawRotaGraph((int)location.x - move_x_img, (int)location.y + 20, size+ 0.5, 0.0, dust_img, TRUE, FALSE);
+
+			DrawDust();
+		}
 	}
 	else
 	{
@@ -167,7 +215,8 @@ void Enemy::Move()
 	if (speed < 2.0f)
 	{
 		// 加速処理
-		speed += 2.0f / 120;
+		speed += 2.0f / 60;
+		//speed = 2.0f;
 	}
 
 	// 移動処理
@@ -197,20 +246,9 @@ void Enemy::ChangeDirection()
 // ノックバック処理
 void Enemy::KnockBack()
 {
-	//if (knock_back_cnt > 0)
-	//{
-	//	world.x += 3;
-	//	knock_back_cnt--;
-	//}
-	//else
-	//{
-	//	is_knock_back = false;
-	//	knock_back_cnt = 90;
-	//}
-
 	if (speed >= 0.0f)
 	{
-		if (knock_back_direction == true)
+		if (direction == false)
 		{
 			// 右に移動
 			world.x += speed;
@@ -231,8 +269,7 @@ void Enemy::KnockBack()
 		}
 		else if (world.x - width / 2 < 0)
 		{
-			world.x =width / 2+10;
-
+			world.x = width / 2;
 		}
 	}
 	else
@@ -244,6 +281,10 @@ void Enemy::KnockBack()
 	if (is_knock_back_start == true)
 	{
 		is_knock_back_start = false;
+		if (crack_image_num < 2)
+		{
+			crack_image_num++;
+		}
 	}
 }
 
@@ -293,6 +334,28 @@ void Enemy::DeathAnimation()
 			image_num = 3;
 		}
 	}
+}
+
+// ノックバック時のエフェクト描画
+void Enemy::DrawDust() const
+{
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, opacity);
+
+	for (int i = 0; i < 3; i++)
+	{
+		if (direction == false)
+		{
+			DrawRotaGraph((int)location.x - move_x_img + i * 20, (int)location.y + 20, size + i * 0.15, 0.0, dust_img, TRUE, FALSE);
+		}
+		else
+		{
+			// 画像
+			DrawRotaGraph((int)location.x + move_x_img - i * 20, (int)location.y + 20, size + i * 0.15, 0.0, dust_img, TRUE, FALSE);
+		}
+	}
+
+	// ブレンドモードをデフォルトにする
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 // 被ダメージ処理

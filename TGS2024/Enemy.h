@@ -15,19 +15,25 @@ private:
 
     int enemy_walk_img[5];          // エネミー歩行画像
     int enemy_death_img[4];         // エネミー死亡画像
+    int knock_back_img;             // ノックバック画像
+    int dust_img;                   // エフェクト画像
+    int crack_img[2];               // ひび割れ画像
+
+    int opacity;                    // 画像の不透明度
+    int move_x_img;                 // 画像の移動量
+    double size;                    // 画像の大きさ
 
     int death_cnt;                  // 死亡アニメーションが終わるまでの時間
     bool is_delete;                 // 削除するか？
 
-    //int image;                    // 現在の表示画像
     int anim_cnt;                   // アニメーション用カウント
     int anim_max_cnt;               // アニメーションカウントの最大値
     int image_num;                  // 表示する画像番号
+    int crack_image_num;                  // ひび割れ画像番号
 
     bool is_knock_back;             // ノックバックするか？
     bool is_knock_back_start;       // ノックバック開始か？
-    bool knock_back_direction;       // ノックバック向き true: 右　false: 左
-    //int knock_back_cnt;             // ノックバックの時間
+    //bool knock_back_direction;       // ノックバック向き true: 右　false: 左
 
     float player_x;
     float player_y;
@@ -44,6 +50,7 @@ public:
     void KnockBack();                           // ノックバック処理
     void WalkingAnimation();                    // 歩行アニメーション関係の処理
     void DeathAnimation();                      // 死亡アニメーション関係の処理
+    void DrawDust() const;                      // ノックバック時のエフェクト描画
 
     void SetPlayerWorldLocation(World set_world)
     {
