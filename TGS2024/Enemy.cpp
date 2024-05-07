@@ -23,9 +23,11 @@ Enemy::Enemy(float set_x)
 	LoadDivGraph("images/Enemy/WalkDeathTest.png", 4, 4, 1, 64, 64, enemy_death_img);
 	knock_back_img = LoadGraph("images/Enemy/KnockBack.png");
 	dust_img = LoadGraph("images/Enemy/Dust.png");
+	LoadDivGraph("images/Enemy/crack.png", 2, 2, 1, 64, 64, crack_img);
 
-	opacity = 255;				// 画像の不透明度
-	move_x_img = 1;
+
+	opacity = 180;				// 画像の不透明度
+	move_x_img = 100;
 	size = 0.3;					// 画像の大きさ
 
 	anim_cnt = 0;
@@ -34,6 +36,7 @@ Enemy::Enemy(float set_x)
 	// 現在の画像
 	//image = 0;
 	image_num = 0;
+	crack_image_num = -1;
 
 	death_cnt = 0;
 	is_delete = false;
@@ -104,7 +107,7 @@ void Enemy::Update(GameMainScene* gamemain)
 
 		move_x_img++;
 
-		opacity -= 8;
+		opacity -= 4;
 
 		// ノックバック処理
 		KnockBack();
@@ -114,7 +117,7 @@ void Enemy::Update(GameMainScene* gamemain)
 		if (move_x_img != 1)
 		{
 			move_x_img = 1;
-			opacity = 255;
+			opacity = 180;
 		}
 
 		if (hp > 0)
@@ -152,11 +155,26 @@ void Enemy::Draw() const
 		{
 			// 歩行画像
 			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_walk_img[image_num], TRUE, direction);
+
+			if (hp != 30)
+			{
+				// ひび割れ画像
+				if (image_num == 1)
+				{
+					DrawRotaGraph((int)location.x, (int)location.y + 2, 1.1, 0.0, crack_img[crack_image_num], TRUE, direction);
+				}
+				else
+				{
+					DrawRotaGraph((int)location.x, (int)location.y, 1.1, 0.0, crack_img[crack_image_num], TRUE, direction);
+				}
+			}
 		}
 		else
 		{
 			// ノックバック画像
 			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, knock_back_img, TRUE, direction);
+			//DrawRotaGraph((int)location.x - move_x_img, (int)location.y + 20, size+ 0.5, 0.0, dust_img, TRUE, FALSE);
+
 			DrawDust();
 		}
 	}
@@ -263,6 +281,10 @@ void Enemy::KnockBack()
 	if (is_knock_back_start == true)
 	{
 		is_knock_back_start = false;
+		if (crack_image_num < 2)
+		{
+			crack_image_num++;
+		}
 	}
 }
 
@@ -323,12 +345,12 @@ void Enemy::DrawDust() const
 	{
 		if (direction == false)
 		{
-			// 画像
-			DrawRotaGraph((int)location.x + move_x_img + i * 15, (int)location.y + 20, size + i * 0.15, 0.0, dust_img, TRUE, FALSE);
+			DrawRotaGraph((int)location.x - move_x_img + i * 20, (int)location.y + 20, size + i * 0.15, 0.0, dust_img, TRUE, FALSE);
 		}
 		else
 		{
-			DrawRotaGraph((int)location.x - move_x_img - i * 15, (int)location.y + 20, size + i * 0.15, 0.0, dust_img, TRUE, FALSE);
+			// 画像
+			DrawRotaGraph((int)location.x + move_x_img - i * 20, (int)location.y + 20, size + i * 0.15, 0.0, dust_img, TRUE, FALSE);
 		}
 	}
 

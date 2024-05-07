@@ -17,7 +17,7 @@ private:
     int enemy_death_img[4];         // エネミー死亡画像
     int knock_back_img;             // ノックバック画像
     int dust_img;                   // エフェクト画像
-    int crack_img;
+    int crack_img[2];               // ひび割れ画像
 
     int opacity;                    // 画像の不透明度
     int move_x_img;                 // 画像の移動量
@@ -29,6 +29,7 @@ private:
     int anim_cnt;                   // アニメーション用カウント
     int anim_max_cnt;               // アニメーションカウントの最大値
     int image_num;                  // 表示する画像番号
+    int crack_image_num;                  // ひび割れ画像番号
 
     bool is_knock_back;             // ノックバックするか？
     bool is_knock_back_start;       // ノックバック開始か？
