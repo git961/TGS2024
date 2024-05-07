@@ -16,16 +16,18 @@ Player::Player()
 	LoadDivGraph("images/Player/player.png", 5, 5, 1, 128, 128, player_img);
 	LoadDivGraph("images/Player/pickaxe_effect.png", 2, 2, 1, 128, 128, effect_img);
 
+	atk_sound = LoadSoundMem("sounds/Attack.mp3");
+
 	p_imgnum = 0;
 	effect_num = 0;
 
 	anim_cnt = 0;
 
 	world.x = 200;
-	world.y = 200;
+	world.y = 600.0f;
 
 	location.x = 200;
-	location.y = 200;
+	location.y = 600.0f;
 
 
 	//幅と座標
@@ -76,22 +78,26 @@ void Player::Update(GameMainScene* gamemain)
 
 
 
-	//ジャンプ
-	if (player_state == NOMAL)
-	{
-		if (input.CheckBtn(XINPUT_BUTTON_A) == TRUE)
-		{
-			player_state = JUMP;
-			is_jump = true;
-			ground_flg = false;
-		}
-	}
+	////ジャンプ
+	//if (player_state == NOMAL)
+	//{
+	//	if (input.CheckBtn(XINPUT_BUTTON_A) == TRUE)
+	//	{
+	//		player_state = JUMP;
+	//		is_jump = true;
+	//		ground_flg = false;
+	//	}
+	//}
 
 	if (wait_flg==false)
 	{
 		//Bおしたら攻撃
 		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 		{
+			if (CheckSoundMem(atk_sound) == FALSE)
+			{
+				PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+			}
 			attacking = true;
 			player_state = ATTACK;
 		}
@@ -111,7 +117,7 @@ void Player::Update(GameMainScene* gamemain)
 
 		break;
 	case JUMP:
-		PlayerJump();
+		//PlayerJump();
 		break;
 	case FALLING:
 		//PlayerFALL();
@@ -142,6 +148,7 @@ void Player::Update(GameMainScene* gamemain)
 			p_imgnum = 2;
 			break;
 		case 15:
+			effect_num = 0;
 			p_imgnum = 3;
 			break;
 		case 20:
@@ -166,11 +173,17 @@ void Player::Update(GameMainScene* gamemain)
 
 			if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 			{
+
 				next_attackflg = true;
 			}
 		}
 		if (atk_cnt_timer++ > 30)
 		{
+			if (CheckSoundMem(atk_sound) == TRUE)
+			{
+				StopSoundMem(atk_sound);
+			}
+
 			if (next_attackflg == false||attack_cnt>1)
 			{
 				attack_cnt = 0;
@@ -187,6 +200,7 @@ void Player::Update(GameMainScene* gamemain)
 				atk_cnt_timer = 0;
 				attack_cnt++;
 
+				attacking = false;
 				next_attackflg = false;
 			}
 		}

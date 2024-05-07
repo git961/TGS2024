@@ -77,7 +77,7 @@ void Enemy::Update(GameMainScene* gamemain)
 		if (is_knock_back_start == true)
 		{
 			// ノックバック時の初期スピード
-			speed = 5.0f;
+			speed = 2.0f;
 
 			if (world.x > player_x)
 			{

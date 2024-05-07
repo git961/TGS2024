@@ -9,6 +9,7 @@ AttackCheck::AttackCheck()
 	world.x = 0;
 	world.y = 0;
 	attack_flg = false;
+
 }
 
 AttackCheck::~AttackCheck()
@@ -19,9 +20,10 @@ void AttackCheck::Update(GameMainScene* gamemain,Player* player)
 {
 	input.InputUpdate();
 	
-	//Yおしたら攻撃
+	//Bおしたら攻撃
 	if(player->GetAttacking() == true)
     {
+
 		//プレイヤーが右を向いてたら
 		if (player->GetDirection() == 0)
 		{

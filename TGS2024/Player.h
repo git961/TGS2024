@@ -36,23 +36,25 @@ private:
     int wait_atk_cnt;//もう一度攻撃できるようになるまでの時間カウント用
     bool wait_flg;//
 
-       //プレイヤーの状態
-        bool walk;//true:歩いてる false:止まってる
-        bool attacking;//true:攻撃中 false:攻撃してない 
+    int atk_sound;//つるはし攻撃音
 
-        float walk_velocity_x;
+    //プレイヤーの状態
+    bool walk;//true:歩いてる false:止まってる
+    bool attacking;//true:攻撃中 false:攻撃してない 
+
+    float walk_velocity_x;
 
        
         
-        float vel;//ｙ報告の速度
-        float acc;//重力加速度
-        float is_jump;//ジャンプが出来る状態か？
+    float vel;//ｙ報告の速度
+    float acc;//重力加速度
+    float is_jump;//ジャンプが出来る状態か？
 
-        float fall_vel;//落下するときのｙ方向の速度
-        float fall_acc;//落下するときの重力加速度
+    float fall_vel;//落下するときのｙ方向の速度
+    float fall_acc;//落下するときの重力加速度
 
-        float y_ground;//地面の高さデバック用
-        float v_max;//速度最大値
+    float y_ground;//地面の高さデバック用
+    float v_max;//速度最大値
 
 
 public:
