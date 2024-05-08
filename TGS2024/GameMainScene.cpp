@@ -256,9 +256,18 @@ void GameMainScene::Update() {
 				{
 					if (enemy[i]->HitCheck(enemy[j]->GetWorldLocation(), enemy[j]->GetWidth(), enemy[j]->GetHeight()) == true)
 					{
-						// 当たっていたら２体とも進行方向を反対に変更する
-						enemy[j]->ChangeDirection();
-						enemy[i]->ChangeDirection();
+						if (enemy[i]->GetIsKnockBack() == true)
+						{
+							// ノックバックしている敵に当たったら自身もノックバックを開始する
+							enemy[j]->SetKnockBackStartFlg(true);
+							enemy[j]->SetKnockBackFlg(true);
+						}
+						else
+						{
+							// 当たっていたら２体とも進行方向を反対に変更する
+							enemy[j]->ChangeDirection();
+							enemy[i]->ChangeDirection();
+						}
 						//enemyhit = true;
 					}
 					else

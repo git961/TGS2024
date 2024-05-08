@@ -69,7 +69,7 @@ void RollingEnemy::Update(GameMainScene* gamemain)
 			// 右回り
 			if (degree < 360.0f)
 			{
-				degree += 6;
+				degree += speed;
 			}
 			else
 			{
@@ -81,7 +81,7 @@ void RollingEnemy::Update(GameMainScene* gamemain)
 			// 左回り
 			if (degree > 0.0f)
 			{
-				degree -= 6;
+				degree -= speed;
 			}
 			else
 			{
@@ -126,9 +126,7 @@ void RollingEnemy::Update(GameMainScene* gamemain)
 				// エフェクト画像番号の計算、15カウントごとに画像番号が変わる
 				effect_image_num = (75 - anim_cnt) / 15;
 			}
-
 		}
-
 		angle = 0.0;
 	}
 
