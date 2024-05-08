@@ -33,6 +33,7 @@ class StageBlock
 private:
 	Blockvertex block_vertex;
 	int stage_blockdata[map_blockmax_y][map_blockmax_x];
+	int block_img;
 public:
 	int direction;
 

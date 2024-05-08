@@ -10,6 +10,9 @@ StageBlock::StageBlock(float set_x, float set_y)
 	world.y = set_y;
 	location.x = set_x;
 	location.y = set_y;
+
+	block_img = LoadGraph("images/Stage/block.png");
+
 	/*
 	for (int i = 0; i < map_blockmax_y; i++)
 	{
@@ -49,6 +52,8 @@ void StageBlock::Draw() const
 {
 	//DrawBox(world.x, world.y, width, world.x + 20, world.y + 20,TRUE);
 	DrawBox(location.x-BLOCK_HALFSIZE, location.y-BLOCK_HALFSIZE, location.x + BLOCK_HALFSIZE, location.y + BLOCK_HALFSIZE,0xffffff,TRUE);
+	DrawRotaGraph(world.x, world.y, 1, 0,block_img, TRUE, 0);
+
 
 	DrawCircle(box_vertex.upper_leftx, box_vertex.upper_lefty, 2, 0xff00ff, TRUE);
 	DrawCircle(box_vertex.lower_leftx, box_vertex.lower_lefty, 2, 0xff00ff, TRUE);

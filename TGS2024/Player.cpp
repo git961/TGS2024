@@ -13,8 +13,10 @@ Player::Player()
 
 
 	//画像読込
-	LoadDivGraph("images/Player/player.png", 5, 5, 1, 128, 128, player_img);
-	LoadDivGraph("images/Player/pickaxe_effect.png", 2, 2, 1, 128, 128, effect_img);
+	player_img[0] = LoadGraph("images/Player/player.png");
+	LoadDivGraph("images/Player/p_attack.png", 4, 4, 1, 128, 128, player_attack_img);
+	LoadDivGraph("images/Player/pickaxe.png", 4, 4, 1, 128, 128, pickaxe_img);
+	LoadDivGraph("images/Player/soil_effect.png", 2, 2, 1, 128, 128, soil_effect);
 
 	atk_sound = LoadSoundMem("sounds/Attack.mp3");
 
@@ -63,7 +65,7 @@ Player::Player()
 	//デバック用
 	y_ground = 650;
 	player_state = NOMAL;
-
+	is_hit_enemy = false;
 }
 
 Player::~Player()
@@ -110,23 +112,7 @@ void Player::Update(GameMainScene* gamemain)
 		}
 	}
 
-	switch (player_state)
-	{
 
-	case NOMAL:
-
-		break;
-	case JUMP:
-		//PlayerJump();
-		break;
-	case FALLING:
-		//PlayerFALL();
-		break;
-	case ATTACK:
-		break;
-	default:
-		break;
-	}
 
 	if (ground_flg == false)
 	{
@@ -142,18 +128,18 @@ void Player::Update(GameMainScene* gamemain)
 		switch (anim_cnt)
 		{
 		case 0:
-			p_imgnum = 1;
+			p_imgnum = 0;
 			break;
 		case 10:
+			p_imgnum = 1;
+			break;
+		case 12:
+			effect_num = 0;
 			p_imgnum = 2;
 			break;
 		case 15:
-			effect_num = 0;
-			p_imgnum = 3;
-			break;
-		case 20:
 			effect_num = 1;
-			p_imgnum = 4;
+			p_imgnum = 3;
 			break;
 		}
 
@@ -207,7 +193,7 @@ void Player::Update(GameMainScene* gamemain)
 	}
 	else
 	{
-		//player_state = NOMAL;
+		player_state = NOMAL;
 	}
 
 	//if (ground_flg != true)
@@ -239,11 +225,48 @@ void Player::Draw() const
 
 
 	//プレイヤー画像表示
-	DrawRotaGraph(location.x, location.y-25, 1, 0, player_img[p_imgnum], TRUE, direction);
-	if (p_imgnum > 1)
+	//DrawRotaGraph(location.x, location.y-25, 1, 0, player_img[p_imgnum], TRUE, direction);
+
+
+
+	switch (player_state)
 	{
-		DrawRotaGraph(location.x, location.y - 25, 1, 0, effect_img[effect_num], TRUE, direction);
+
+	case NOMAL:
+		DrawRotaGraph(location.x, location.y-25, 1, 0, player_img[0], TRUE, direction);
+		break;
+	case ATTACK:
+		DrawRotaGraph(location.x, location.y - 25, 1, 0, player_attack_img[p_imgnum], TRUE, direction);
+
+		if (is_hit_enemy == true)
+		{
+			if (p_imgnum > 2)
+			{
+				DrawRotaGraph(location.x, location.y - 25, 1, 0, pickaxe_img[2], TRUE, direction);
+			}
+			else
+			{
+				DrawRotaGraph(location.x, location.y - 25, 1, 0, pickaxe_img[p_imgnum], TRUE, direction);
+
+			}
+		}
+		else {
+
+			DrawRotaGraph(location.x, location.y - 25, 1, 0, pickaxe_img[p_imgnum], TRUE, direction);
+			if (p_imgnum > 2)
+			{
+				//DrawRotaGraph(location.x, location.y - 25, 1, 0, effect_img[effect_num], TRUE, direction);
+				DrawRotaGraph(location.x, location.y - 25, 1, 0, soil_effect[effect_num], TRUE, direction);
+			}
+		}
+
+		break;
+	default:
+		break;
 	}
+
+
+
 #ifdef DEBUG
 
 

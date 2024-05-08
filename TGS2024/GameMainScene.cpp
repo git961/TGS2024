@@ -138,6 +138,7 @@ void GameMainScene::Update() {
 			// エネミー削除処理
 			if (enemy[i]->GetDeleteFlg() == true)
 			{
+				player->SetEnemyHit(false);
 				delete enemy[i];
 				enemy[i] = nullptr;
 			}
@@ -188,6 +189,8 @@ void GameMainScene::Update() {
 					{
 						//つるはしとエネミーと当たってるかのチェック
 						if (ac->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {//checkhit = true;
+							player->SetEnemyHit(true);
+							
 							enemy[i]->Damege(10);
 							// 歩行エネミーのノックバック処理
 							enemy[i]->SetKnockBackStartFlg(true);
@@ -197,6 +200,8 @@ void GameMainScene::Update() {
 						}
 						else {
 							//checkhit = false;
+							player->SetEnemyHit(false);
+
 						}
 					}
 				}
@@ -204,6 +209,7 @@ void GameMainScene::Update() {
 				{
 					//プレイヤーがつるはし振ってなかったら
 					enemy_damage_once = false;
+
 				}
 			}
 		}
