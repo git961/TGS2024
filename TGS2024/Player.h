@@ -9,9 +9,8 @@ class StageBlock;
 
 enum PlayerState {
     NOMAL,//地面に居る：歩くのが可能
-    JUMP,    //ジャンプ中：上昇だけ
-    FALLING,//落下：下降だけ
-    ATTACK
+    ATTACK,
+    WALK
 };
 
 class Player :
@@ -30,6 +29,10 @@ private:
 
 
     int p_imgnum;//プレイヤーの画像番号切り替え用
+    int walk_num;//プレイヤ歩行画像切り替え用
+    int walk_abs;//プレイヤ歩行画像切りかえ計算用
+    float old_worldx;
+
     int effect_num;//effectの画像番号切り替え用
     int anim_cnt;//画像切り替え用
     bool is_hit_enemy;//エネミーに当たったか
@@ -39,6 +42,8 @@ private:
     int attack_cnt;//何回攻撃ボタンを押したかカウント用
     int wait_atk_cnt;//もう一度攻撃できるようになるまでの時間カウント用
     bool wait_flg;//
+
+    bool is_atk_putout;//攻撃判定を出すか？
 
     int atk_sound;//つるはし攻撃音
 
@@ -50,15 +55,7 @@ private:
 
        
         
-    float vel;//ｙ報告の速度
-    float acc;//重力加速度
-    float is_jump;//ジャンプが出来る状態か？
-
-    float fall_vel;//落下するときのｙ方向の速度
-    float fall_acc;//落下するときの重力加速度
-
-    float y_ground;//地面の高さデバック用
-    float v_max;//速度最大値
+  
 
 
 public:
@@ -68,16 +65,11 @@ public:
     void Update(GameMainScene* gamemain);
     void Draw() const;
 
-    //プレイヤージャンプ用
-    void PlayerJump();
-
-    //プレイヤー落下
-    void PlayerFALL();
 
     //プレイヤー移動用
     void PlayerMove();
 
-    bool GetAttacking() { return attacking; };
+    bool GetAttacking() { return is_atk_putout; };
 
     void SetGroundFlg(bool set_flg) {
         ground_flg = set_flg;

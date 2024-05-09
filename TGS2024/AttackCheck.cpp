@@ -36,6 +36,8 @@ void AttackCheck::Update(GameMainScene* gamemain,Player* player)
 			world.x = player->GetWorldLocation().x-20;
 			world.y = player->GetWorldLocation().y;
 		}
+
+		//デバック攻撃範囲表示用
 		attack_flg = true;
 	}
 	else
