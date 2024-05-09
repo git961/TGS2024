@@ -114,6 +114,51 @@ void GameMainScene::Update() {
 	input.InputUpdate();
 	fp.fpsUpdate();
 
+	// 歩行エネミーとプレイヤーの当たり判定
+	for (int i = 0; i < ENEMYMAXNUM; i++)
+	{
+		if (enemy[i] != nullptr)
+		{
+			if (enemy[i]->GetHp() > 0)
+			{
+				// 歩行エネミーとの当たり判定
+				if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
+					checkhit = true;
+				}
+				else {
+					checkhit = false;
+				}
+
+				//つるはしを振るってる時だけ
+				if (player->GetAttacking() == true)
+				{
+					//ダメージを一回だけ与える
+					if (enemy_damage_once == false)
+					{
+						//つるはしとエネミーと当たってるかのチェック
+						if (ac->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {//checkhit = true;
+							enemy[i]->Damege(10);
+							// 歩行エネミーのノックバック処理
+							enemy[i]->SetKnockBackStartFlg(true);
+							enemy[i]->SetKnockBackFlg(true);
+							enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+							enemy[i]->SetDrawStarFlg(true);
+							enemy_damage_once = true;
+						}
+						else {
+							//checkhit = false;
+						}
+					}
+				}
+				else
+				{
+					//プレイヤーがつるはし振ってなかったら
+					enemy_damage_once = false;
+				}
+			}
+		}
+	}
+
 	//プレイヤー
 	if (player != nullptr)
 	{
@@ -165,50 +210,7 @@ void GameMainScene::Update() {
 		camera_pos.y - SCREEN_HEIGHT / 2.0f
 	};
 
-
-	for (int i = 0; i < ENEMYMAXNUM; i++)
-	{
-		if (enemy[i] != nullptr)
-		{
-			if (enemy[i]->GetHp() > 0)
-			{
-				// 歩行エネミーとの当たり判定
-				if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
-					checkhit = true;
-				}
-				else {
-					checkhit = false;
-				}
-
-				//つるはしを振るってる時だけ
-				if (player->GetAttacking() == true)
-				{
-					//ダメージを一回だけ与える
-					if (enemy_damage_once == false)
-					{
-						//つるはしとエネミーと当たってるかのチェック
-						if (ac->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {//checkhit = true;
-							enemy[i]->Damege(10);
-							// 歩行エネミーのノックバック処理
-							enemy[i]->SetKnockBackStartFlg(true);
-							enemy[i]->SetKnockBackFlg(true);
-							enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
-							enemy_damage_once = true;
-						}
-						else {
-							//checkhit = false;
-						}
-					}
-				}
-				else
-				{
-					//プレイヤーがつるはし振ってなかったら
-					enemy_damage_once = false;
-				}
-			}
-		}
-	}
-
+	// 転がるエネミーとプレイヤーの当たり判定
 	if (rolling_enemy != nullptr)
 	{
 		if (rolling_enemy->GetHp() > 0)
@@ -285,9 +287,6 @@ void GameMainScene::Update() {
 		camera_pos.x - SCREEN_WIDTH / 2.0f,
 		camera_pos.y - SCREEN_HEIGHT / 2.0f
 	};
-
-	
-
 	
 	for (int j = 0; j < count; j++)
 	{
@@ -315,8 +314,6 @@ void GameMainScene::Update() {
 		}
 	}
 				
-
-
 }
 
 void GameMainScene::Draw() const {

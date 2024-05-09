@@ -43,6 +43,7 @@ private:
     float star_x;                     // 星画像の座標
     float star_y;                     // 星画像の座標
     int count;                        // sin用のカウント
+    bool is_draw_star;                // 星を描画するか？
 
 public:
     Enemy(float set_x);
@@ -57,7 +58,11 @@ public:
     void WalkingAnimation();                    // 歩行アニメーション関係の処理
     void DeathAnimation();                      // 死亡アニメーション関係の処理
     void DrawDust() const;                      // ノックバック時の土埃エフェクト描画
+    void KnockBackPreparation();                // ノックバック準備処理
+    void StarEffect();                          // 星エフェクト関係の処理
+    void Damege(int damege);                    // 被ダメージ処理
 
+    // set関数
     void SetPlayerWorldLocation(World set_world)
     {
         player_x = set_world.x;
@@ -74,8 +79,12 @@ public:
         is_knock_back_start = set_flg;
     }
 
-    void Damege(int damege);                            // 被ダメージ処理
+    void SetDrawStarFlg(bool set_flg)
+    {
+        is_draw_star = set_flg;
+    }
 
+    // get関数
     float GetHp() { return hp; }                        // hp取得
     bool GetDeleteFlg() { return is_delete; }           // 削除フラグの取得
     bool GetIsKnockBack() { return is_knock_back; }     // ノックバックフラグの取得

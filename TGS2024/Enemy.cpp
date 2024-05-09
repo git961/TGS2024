@@ -71,8 +71,8 @@ Enemy::Enemy(float set_x)
 
 	star_x = world.x;
 	star_y = world.y - 40;
-
 	count = 0;
+	is_draw_star = false;				// 星の描画なし
 }
 
 Enemy::~Enemy()
@@ -89,52 +89,17 @@ void Enemy::Update(GameMainScene* gamemain)
 	{
 		if (is_knock_back_start == true)
 		{
-			// ノックバック時の初期スピード
-			speed = 5.0f;
-			degree = 0.0;
-			star_x = location.x;
-			star_y = location.y - 40;
-			count = 0;
-
-			// アニメーションカウントを0に戻す
-			anim_cnt = 0;
-
-			if (world.x > player_x)
-			{
-				// 右にノックバックする
-				direction = false;
-				move_x = 1;
-			}
-			else
-			{
-				// 左にノックバックする
-				direction = true;
-				move_x = -1;
-			}
+			KnockBackPreparation();
 		}
 
+		// 土埃エフェクト用
 		move_x_img++;
-
 		opacity -= 4;
 
-		// 星の画像回転
-		if (degree < 360.0)
+		// 星を描画するのであれば
+		if (is_draw_star == true)
 		{
-			degree++;
-		}
-		else
-		{
-			degree = 0.0;
-		}
-
-		// 星の画像sin用カウント
-		if (count < 30)
-		{
-			count++;
-		}
-		else
-		{
-			count = 0;
+			StarEffect();
 		}
 
 		// ノックバック処理
@@ -142,6 +107,13 @@ void Enemy::Update(GameMainScene* gamemain)
 	}
 	else
 	{
+		// 星用
+		if (is_draw_star == true)
+		{
+			is_draw_star = false;
+		}
+
+		// 土埃エフェクト用
 		if (move_x_img != 1)
 		{
 			move_x_img = 1;
@@ -167,7 +139,8 @@ void Enemy::Update(GameMainScene* gamemain)
 void Enemy::Draw() const
 {
 #ifdef DEBUG
-	DrawFormatString(location.x - 100, 50, 0xffffff, "speed : %d", crack_image_num);
+	DrawFormatString(location.x - 100, 50, 0xffffff, "x : %.1f", star_x);
+	//DrawFormatString(location.x - 100, 80, 0xffffff, "y : %.1f", star_y);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "k: %d", is_knock_back);
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "s: %d", is_knock_back_start);
 	//DrawFormatString(100, 20, 0xffffff, "opacity: %d", opacity);
@@ -200,8 +173,11 @@ void Enemy::Draw() const
 			// ノックバック画像
 			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, knock_back_img, TRUE, direction);
 
-			// 星描画
-			DrawRotaGraph((int)star_x, (int)star_y - abs(sinf(M_PI * 2 / 60 * count) * 60), 1.0, degree, star_img, TRUE, direction);
+			if (is_draw_star == true)
+			{
+				// 星描画
+				DrawRotaGraph((int)star_x, (int)star_y - abs(sinf(M_PI * 2 / 60 * count) * 60), 1.0, degree, star_img, TRUE, direction);
+			}
 
 			// 土埃エフェクト
 			DrawDust();
@@ -310,9 +286,12 @@ void Enemy::KnockBack()
 	if (is_knock_back_start == true)
 	{
 		is_knock_back_start = false;
-		if (crack_image_num < 1)
+		if (is_draw_star == true)
 		{
-			crack_image_num++;
+			if (crack_image_num < 1)
+			{
+				crack_image_num++;
+			}
 		}
 	}
 }
@@ -385,6 +364,74 @@ void Enemy::DrawDust() const
 
 	// ブレンドモードをデフォルトにする
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
+
+// ノックバック準備処理
+void Enemy::KnockBackPreparation()
+{
+	// ノックバック時の初期スピード
+	speed = 5.0f;
+
+	// アニメーションカウントを0に戻す
+	anim_cnt = 0;
+
+	if (world.x > player_x)
+	{
+		// 右にノックバックする
+		direction = false;
+		move_x = 1;
+	}
+	else
+	{
+		// 左にノックバックする
+		direction = true;
+		move_x = -1;
+	}
+}
+
+// 星エフェクト関係の処理
+void Enemy::StarEffect()
+{
+	if (is_knock_back_start == true)
+	{
+		// 星画像用変数
+		degree = 0.0;
+		star_x = location.x;
+		star_y = location.y - 40;
+		count = 0;
+	}
+
+	// 星の画像回転
+	if (degree < 360.0)
+	{
+		degree++;
+	}
+	else
+	{
+		degree = 0.0;
+	}
+
+	// 星の画像sin用カウント
+	if (count < 30)
+	{
+		count++;
+	}
+	else
+	{
+		count = 0;
+	}
+
+	// 星が飛ぶ向き
+	if (direction == false)
+	{
+		// 左に飛ぶ
+		star_x--;
+	}
+	else
+	{
+		// 右に飛ぶ
+		star_x++;
+	}
 }
 
 // 被ダメージ処理
