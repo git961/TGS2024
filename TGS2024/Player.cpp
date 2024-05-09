@@ -2,8 +2,6 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #define DEBUG
-//デグリーからラジアンに変換
-#define DEGREE_RADIAN(_deg) (M_PI*(_deg)/180.0f)
 
 
 Player::Player()
