@@ -64,6 +64,8 @@ private:
 
     int count;//
 
+    int defeat_enemy_num;           // 倒した敵の数
+
 public:
     GameMainScene();
     ~GameMainScene();
