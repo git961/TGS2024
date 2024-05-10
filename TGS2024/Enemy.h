@@ -44,6 +44,7 @@ private:
     float star_y;                     // 星画像の座標
     int count;                        // sin用のカウント
     bool is_draw_star;                // 星を描画するか？
+    int star_timer;                   // 星描画用タイマー
 
 public:
     Enemy(float set_x);
