@@ -82,7 +82,15 @@ void Player::Update(GameMainScene* gamemain)
 			{
 				PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
 			}
-			
+
+			//右向きだったら
+			if (direction == 0)
+			{
+				world.x += 3;
+			}
+			else {
+				world.x -= 3;
+			}
 			attacking = true;
 			player_state = ATTACK;
 		}
@@ -131,10 +139,11 @@ void Player::Update(GameMainScene* gamemain)
 	if (attacking == true)
 	{
 		anim_cnt++;
-		if (anim_cnt > 2)
+		if (anim_cnt > 1)
 		{
 			//そのままやるとそのままcheckBtnの中に入ってしまうので、数フレーム待たせる
 			//受付を１０までにする
+			//123.じゃなくて1,23ってなるときがあるので治す？
 			if (atk_cnt_timer < 13)
 			{
 				if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
