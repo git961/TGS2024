@@ -26,7 +26,6 @@ Enemy::Enemy(float set_x)
 	star_img = LoadGraph("images/Enemy/star.png");
 	LoadDivGraph("images/Enemy/crack.png", 2, 2, 1, 64, 64, crack_img);
 
-
 	opacity = 180;				// 画像の不透明度
 	move_x_img = 100;
 	size = 0.3;					// 画像の大きさ
@@ -51,7 +50,7 @@ Enemy::Enemy(float set_x)
 	player_x = 0.0f;
 	player_y = 0.0f;
 
-	srand((unsigned int)time(NULL));			// 現在時刻の情報で初期化
+	//srand((unsigned int)time(NULL));			// 現在時刻の情報で初期化
 	//num = rand() % 10 + 1;
 	//if (num >= 5)
 	//{

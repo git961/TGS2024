@@ -75,6 +75,8 @@ GameMainScene::GameMainScene() {
 	}
 
 	check_num = 0;
+
+	defeat_enemy_num = 0;
 }
 
 
@@ -104,6 +106,21 @@ void GameMainScene::Update() {
 		// 転がるエネミーが消えたら新しく出現させる
 		rolling_enemy = new RollingEnemy;
 	}
+
+	// 生成された歩行エネミーをすべて倒したら
+	if (defeat_enemy_num == ENEMYMAXNUM)
+	{
+		// 歩行エネミーの生成
+		for (int i = 0; i < ENEMYMAXNUM; i++)
+		{
+			if (enemy[i] == nullptr)
+			{
+				enemy[i] = new Enemy(i);
+			}
+		}
+		defeat_enemy_num = 0;
+	}
+
 
 #endif // DEBUG
 
@@ -186,6 +203,7 @@ void GameMainScene::Update() {
 				player->SetEnemyHit(false);
 				delete enemy[i];
 				enemy[i] = nullptr;
+				defeat_enemy_num++;
 			}
 		}
 	}
