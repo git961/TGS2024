@@ -370,7 +370,7 @@ void Enemy::DrawDust() const
 void Enemy::KnockBackPreparation()
 {
 	// ノックバック時の初期スピード
-	speed = 5.0f;
+	speed = 1.0f;
 
 	// アニメーションカウントを0に戻す
 	anim_cnt = 0;

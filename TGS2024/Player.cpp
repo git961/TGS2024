@@ -53,6 +53,8 @@ Player::Player()
 	wait_atk_cnt = 0;
 	wait_flg = false;
 
+	color13 = 0xffffff;
+
 	is_atk_putout = false;
 
 	player_state = NOMAL;
@@ -80,6 +82,7 @@ void Player::Update(GameMainScene* gamemain)
 			{
 				PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
 			}
+			
 			attacking = true;
 			player_state = ATTACK;
 		}
@@ -104,15 +107,15 @@ void Player::Update(GameMainScene* gamemain)
 		case 0:
 			p_imgnum = 0;
 			break;
-		case 10:
+		case 5:
 			p_imgnum = 1;
 			break;
-		case 12:
+		case 7:
 			is_atk_putout = true;
 			effect_num = 0;
 			p_imgnum = 2;
 			break;
-		case 15:
+		case 10:
 			effect_num = 1;
 			p_imgnum = 3;
 			break;
@@ -131,14 +134,17 @@ void Player::Update(GameMainScene* gamemain)
 		if (anim_cnt > 2)
 		{
 			//そのままやるとそのままcheckBtnの中に入ってしまうので、数フレーム待たせる
-
-			if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+			//受付を１０までにする
+			if (atk_cnt_timer < 13)
 			{
-
-				next_attackflg = true;
+				if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+				{
+					color13 = 0x000000;
+					next_attackflg = true;
+				}
 			}
 		}
-		if (atk_cnt_timer++ > 30)
+		if (atk_cnt_timer++ > 20)
 		{
 			if (CheckSoundMem(atk_sound) == TRUE)
 			{
@@ -154,6 +160,8 @@ void Player::Update(GameMainScene* gamemain)
 				attacking = false;
 				wait_flg = true;
 				player_state = NOMAL;
+				color13 = 0x000000;
+
 			}
 			else
 			{
@@ -164,6 +172,7 @@ void Player::Update(GameMainScene* gamemain)
 				is_atk_putout = false;
 				attacking = false;
 				next_attackflg = false;
+
 			}
 		}
 	}
@@ -176,26 +185,32 @@ void Player::Update(GameMainScene* gamemain)
 
 	SetVertex();
 
-
-	//プレイヤーの移動処理
-	PlayerMove();
-
-	if (player_state == WALK)
+	if (player_state != ATTACK)
 	{
-		if (abs((int)world.x - (int)old_worldx) > 61)
-		{
-			old_worldx = world.x;
-		}
-
-		walk_abs = abs((int)world.x - (int)old_worldx);
-		// 歩行
-		// 5カウントごとに変わる
-		if (walk_abs != 0)
-		{
-			walk_num = walk_abs / 20;
-		}
+		//プレイヤーの移動処理
+		PlayerMove();
+	}
+	else
+	{
+		move_x = 0;
 	}
 
+		if (player_state == WALK)
+		{
+			if (abs((int)world.x - (int)old_worldx) > 61)
+			{
+				old_worldx = world.x;
+			}
+
+			walk_abs = abs((int)world.x - (int)old_worldx);
+			// 歩行
+			// 5カウントごとに変わる
+			if (walk_abs != 0)
+			{
+				walk_num = walk_abs / 20;
+			}
+		}
+	
 	
 	// 端に来たら跳ね返る
 	if (world.x + width / 2 > FIELD_WIDTH)
@@ -212,7 +227,7 @@ void Player::Draw() const
 {
 
 
-	DrawBoxAA(location.x - width/2, location.y - height/2, location.x + width / 2, location.y + height / 2, 0x00ffff,true);
+	DrawBoxAA(location.x - width/2, location.y - height/2, location.x + width / 2, location.y + height / 2, color13,true);
 	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 
 

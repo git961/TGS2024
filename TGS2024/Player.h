@@ -27,6 +27,8 @@ private:
     int soil_effect[10];
 
 
+    int color13;
+
 
     int p_imgnum;//プレイヤーの画像番号切り替え用
     int walk_num;//プレイヤ歩行画像切り替え用
