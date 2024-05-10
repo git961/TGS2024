@@ -13,13 +13,14 @@ Player::Player()
 	//画像読込
 	player_img[0] = LoadGraph("images/Player/player.png");
 	LoadDivGraph("images/Player/player_walk.png", 4, 4, 1, 64, 64, player_walk_img);
-	LoadDivGraph("images/Player/p_attack.png", 4, 4, 1, 128, 128, player_attack_img);
+	LoadDivGraph("images/Player/p_attack.png", 12, 4, 3, 128, 128, player_attack_img);
 	LoadDivGraph("images/Player/pickaxe.png", 4, 4, 1, 128, 128, pickaxe_img);
 	LoadDivGraph("images/Player/soil_effect.png", 2, 2, 1, 128, 128, soil_effect);
 
 	atk_sound = LoadSoundMem("sounds/Attack.mp3");
 
 	p_imgnum = 0;
+	p_atk_imgnum = 0;
 	effect_num = 0;
 	walk_num = 0;
 
@@ -98,6 +99,8 @@ void Player::Update(GameMainScene* gamemain)
 	else if(wait_flg==true)
 	{//攻撃がすぐには出来ないように待たせる
 		if (wait_atk_cnt++ > 30) {
+			attack_cnt = 0;
+
 			wait_atk_cnt = 0;
 			wait_flg = false;
 		}
@@ -106,9 +109,20 @@ void Player::Update(GameMainScene* gamemain)
 
 
 
-
 	if (attacking == true)
 	{
+		if (attack_cnt == 1)
+		{
+			p_atk_imgnum = 4;
+		}
+		else if (attack_cnt == 2)
+		{
+			p_atk_imgnum = 8;
+		}
+		else {
+			p_atk_imgnum = 0;
+
+		}
 
 		switch (anim_cnt)
 		{
@@ -139,12 +153,13 @@ void Player::Update(GameMainScene* gamemain)
 	if (attacking == true)
 	{
 		anim_cnt++;
+		atk_cnt_timer++;
 		if (anim_cnt > 1)
 		{
 			//そのままやるとそのままcheckBtnの中に入ってしまうので、数フレーム待たせる
 			//受付を１０までにする
 			//123.じゃなくて1,23ってなるときがあるので治す？
-			if (atk_cnt_timer < 13)
+			if (atk_cnt_timer < 15)
 			{
 				if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 				{
@@ -153,43 +168,83 @@ void Player::Update(GameMainScene* gamemain)
 				}
 			}
 		}
-		if (atk_cnt_timer++ > 20)
-		{
-			if (CheckSoundMem(atk_sound) == TRUE)
-			{
-				StopSoundMem(atk_sound);
-			}
+		////20フレーム回ったら
+		//if (atk_cnt_timer++ > 20)
+		//{
+		//	if (CheckSoundMem(atk_sound) == TRUE)
+		//	{
+		//		StopSoundMem(atk_sound);
+		//	}
 
-			if (next_attackflg == false||attack_cnt>1)
-			{
-				attack_cnt = 0;
-				anim_cnt = 0;
-				atk_cnt_timer = 0;
-				is_atk_putout = false;
-				attacking = false;
-				wait_flg = true;
-				player_state = NOMAL;
-				color13 = 0x000000;
 
-			}
-			else
-			{
-				//次の攻撃をする準備
-				anim_cnt = 0;
-				atk_cnt_timer = 0;
-				attack_cnt++;
-				is_atk_putout = false;
-				attacking = false;
-				next_attackflg = false;
+		//	if (next_attackflg == false || attack_cnt>=2)
+		//	{
+		//		attack_cnt = 0;
+		//		anim_cnt = 0;
+		//		atk_cnt_timer = 0;
+		//		is_atk_putout = false;
+		//		next_attackflg = false;
+		//		attacking = false;
+		//		wait_flg = true;
+		//		player_state = NOMAL;
+		//		color13 = 0x000000;
 
-			}
-		}
+		//	}
+		//	else
+		//	{
+		//		//次の攻撃をする準備
+		//		anim_cnt = 0;
+		//		atk_cnt_timer = 0;
+		//		attack_cnt++;
+		//		is_atk_putout = false;
+		//		attacking = false;
+		//		next_attackflg = false;
+
+		//	}
+		//}
+
 	}
 	else
 	{
 
 		player_state = NOMAL;
 	}
+
+	//20フレーム回ったら
+	if (atk_cnt_timer > 20)
+	{
+		if (CheckSoundMem(atk_sound) == TRUE)
+		{
+			StopSoundMem(atk_sound);
+		}
+
+
+		if (next_attackflg == false || attack_cnt >= 2)
+		{
+			attack_cnt = 0;
+			anim_cnt = 0;
+			atk_cnt_timer = 0;
+			is_atk_putout = false;
+			next_attackflg = false;
+			attacking = false;
+			wait_flg = true;
+			player_state = NOMAL;
+			color13 = 0x000000;
+
+		}
+		else
+		{
+			//次の攻撃をする準備
+			anim_cnt = 0;
+			atk_cnt_timer = 0;
+			attack_cnt++;
+			is_atk_putout = false;
+			attacking = false;
+			next_attackflg = false;
+
+		}
+	}
+
 
 
 	SetVertex();
@@ -252,7 +307,7 @@ void Player::Draw() const
 		DrawRotaGraph(location.x, location.y-25, 1, 0, player_img[0], TRUE, direction);
 		break;
 	case ATTACK:
-		DrawRotaGraph(location.x, location.y - 25, 1, 0, player_attack_img[p_imgnum], TRUE, direction);
+		DrawRotaGraph(location.x, location.y - 25, 1, 0, player_attack_img[p_imgnum+p_atk_imgnum], TRUE, direction);
 
 		if (is_hit_enemy == true)
 		{
@@ -309,8 +364,8 @@ void Player::Draw() const
 	//DrawFormatString(100, 150, 0xffffff, "location.x: %f",location.x);
 	DrawFormatString(100, 100, 0xffffff, "worldx: %f location.x:%f",world.x,location.x);
 	DrawFormatString(100, 120, 0xffffff, "world_y: %f location.y:%f", world.y,location.y);
-	DrawFormatString(100, 140, 0xffffff, "playerstate%d", player_state);
-	DrawFormatString(100, 160, 0xffffff, "abs%d", abs((int)world.x - (int)old_worldx));
+	DrawFormatString(location.x, location.y-20, 0x000000, "attaking%d", attacking);
+	DrawFormatString(location.x, location.y, 0x000000, "%d", attack_cnt);
 	/*DrawFormatString(100, 120, 0xffffff, "location.y: %f", location.y);
 	DrawFormatString(100, 140, 0xffffff, "world.x: %f",world.x);
 	DrawFormatString(100, 160, 0xffffff, "world.y: %f",world.y);*/

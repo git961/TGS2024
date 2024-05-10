@@ -51,13 +51,13 @@ void StageBlock::Update()
 void StageBlock::Draw() const
 {
 	//DrawBox(world.x, world.y, width, world.x + 20, world.y + 20,TRUE);
-	DrawBox(location.x-BLOCK_HALFSIZE, location.y-BLOCK_HALFSIZE, location.x + BLOCK_HALFSIZE, location.y + BLOCK_HALFSIZE,0xffffff,TRUE);
-	DrawRotaGraph(world.x, world.y, 1, 0,block_img, TRUE, 0);
+	//DrawBox(location.x-BLOCK_HALFSIZE, location.y-BLOCK_HALFSIZE, location.x + BLOCK_HALFSIZE, location.y + BLOCK_HALFSIZE,0xffffff,TRUE);
+	DrawRotaGraph(location.x, location.y, 1, 0,block_img, TRUE, 0);
 
 
-	DrawCircle(box_vertex.upper_leftx, box_vertex.upper_lefty, 2, 0xff00ff, TRUE);
-	DrawCircle(box_vertex.lower_leftx, box_vertex.lower_lefty, 2, 0xff00ff, TRUE);
-	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);			// 中心座標
+	//DrawCircle(box_vertex.upper_leftx, box_vertex.upper_lefty, 2, 0xff00ff, TRUE);
+	//DrawCircle(box_vertex.lower_leftx, box_vertex.lower_lefty, 2, 0xff00ff, TRUE);
+	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);			// 中心座標
 
 
 }

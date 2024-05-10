@@ -22,7 +22,7 @@ private:
 
     int player_img[10];
     int player_walk_img[10];
-    int player_attack_img[10];
+    int player_attack_img[15];
     int pickaxe_img[10];
     int soil_effect[10];
 
@@ -31,6 +31,9 @@ private:
 
 
     int p_imgnum;//プレイヤーの画像番号切り替え用
+
+    int p_atk_imgnum;//攻撃画像切り替え用
+
     int walk_num;//プレイヤ歩行画像切り替え用
     int walk_abs;//プレイヤ歩行画像切りかえ計算用
     float old_worldx;
