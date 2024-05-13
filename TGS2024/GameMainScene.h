@@ -44,6 +44,7 @@ private:
 
     cameraposition screen_origin_position;
 
+
     bool enemy_damage_once;
     bool checkhit;
     //bool enemyhit;      // 歩行エネミー同士の当たり判定チェック用、後に削除

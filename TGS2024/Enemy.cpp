@@ -2,6 +2,8 @@
 
 Enemy::Enemy(float set_x)
 {
+	enm_death_sound = LoadSoundMem("sounds/DeiRock.mp3");
+
 	// 中心座標
 	location.x = 400 + (40 * set_x);
 	location.y = 600;
@@ -129,6 +131,10 @@ void Enemy::Update(GameMainScene* gamemain)
 		}
 		else
 		{
+			if (CheckSoundMem(enm_death_sound) == FALSE)
+			{
+				PlaySoundMem(enm_death_sound, DX_PLAYTYPE_BACK);
+			}
 			// 死亡アニメーション
 			DeathAnimation();
 		}

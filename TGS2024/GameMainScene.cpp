@@ -29,6 +29,7 @@ GameMainScene::GameMainScene() {
 	//back.png
 	back_img=LoadGraph("images/background_test.png", TRUE);
 
+
 	//enemyhit = false;		// 当たっていない
 
 	// 背景画像ローカル座標
@@ -200,6 +201,7 @@ void GameMainScene::Update() {
 			// エネミー削除処理
 			if (enemy[i]->GetDeleteFlg() == true)
 			{
+
 				player->SetEnemyHit(false);
 				delete enemy[i];
 				enemy[i] = nullptr;

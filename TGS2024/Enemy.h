@@ -14,6 +14,8 @@ class Enemy : public CharacterBase
 private:
     //int num;                      // スポーン位置設定用
 
+    int enm_death_sound;//死亡SE
+
     int enemy_walk_img[5];          // エネミー歩行画像
     int enemy_death_img[4];         // エネミー死亡画像
     int knock_back_img;             // ノックバック画像

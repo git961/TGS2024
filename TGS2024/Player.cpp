@@ -19,6 +19,7 @@ Player::Player()
 
 	atk_sound = LoadSoundMem("sounds/Attack.mp3");
 
+
 	p_imgnum = 0;
 	p_atk_imgnum = 0;
 	effect_num = 0;
