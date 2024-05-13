@@ -21,9 +21,14 @@ private:
     int crack_img[2];               // ひび割れ画像
     int star_img;                   // 星エフェクト画像
 
+    float dust_x;
+    float dust_y;
     int opacity;                    // 画像の不透明度
     int move_x_img;                 // 画像の移動量
     double size;                    // 画像の大きさ
+    bool is_draw_dust;              // 土埃を描画するか？
+    int dust_timer;                 // 土埃描画時間
+
     double degree;                  // 画像の角度
 
     int death_cnt;                  // 死亡アニメーションが終わるまでの時間
@@ -44,7 +49,8 @@ private:
     float star_y;                     // 星画像の座標
     int count;                        // sin用のカウント
     bool is_draw_star;                // 星を描画するか？
-    int star_timer;                   // 星描画用タイマー
+    int star_timer;                   // 星描画時間
+    bool tmp_direction;               // 星描画時の向きの一時保管
 
 public:
     Enemy(float set_x);
@@ -61,6 +67,7 @@ public:
     void DrawDust() const;                      // ノックバック時の土埃エフェクト描画
     void KnockBackPreparation();                // ノックバック準備処理
     void StarEffect();                          // 星エフェクト関係の処理
+    void DustEffect();                          // 土埃エフェクト関係の処理
     void Damege(int damege);                    // 被ダメージ処理
 
     // set関数
@@ -68,11 +75,6 @@ public:
     {
         player_x = set_world.x;
         player_y = set_world.y;
-    }
-
-    void SetKnockBackFlg(bool set_flg)
-    {
-        is_knock_back = set_flg;
     }
 
     void SetKnockBackStartFlg(bool set_flg)

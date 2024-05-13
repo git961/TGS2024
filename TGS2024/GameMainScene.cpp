@@ -157,7 +157,6 @@ void GameMainScene::Update() {
 							enemy[i]->Damege(10);
 							// 歩行エネミーのノックバック処理
 							enemy[i]->SetKnockBackStartFlg(true);
-							enemy[i]->SetKnockBackFlg(true);
 							enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
 							enemy[i]->SetDrawStarFlg(true);
 							enemy_damage_once = true;
@@ -281,7 +280,6 @@ void GameMainScene::Update() {
 						{
 							// ノックバックしている敵に当たったら自身もノックバックを開始する
 							enemy[j]->SetKnockBackStartFlg(true);
-							enemy[j]->SetKnockBackFlg(true);
 						}
 						else
 						{

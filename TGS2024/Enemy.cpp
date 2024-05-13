@@ -26,9 +26,14 @@ Enemy::Enemy(float set_x)
 	star_img = LoadGraph("images/Enemy/star.png");
 	LoadDivGraph("images/Enemy/crack.png", 2, 2, 1, 64, 64, crack_img);
 
+	dust_x = 0.0f;
+	dust_y = 0.0f;
 	opacity = 180;				// 画像の不透明度
 	move_x_img = 100;
 	size = 0.3;					// 画像の大きさ
+	is_draw_dust = false;		// 土埃は描画しない
+	dust_timer = 0;
+
 	degree = 0.0;				// 画像の角度
 
 	anim_cnt = 0;
@@ -73,6 +78,7 @@ Enemy::Enemy(float set_x)
 	count = 0;
 	is_draw_star = false;				// 星の描画なし
 	star_timer = 0;
+	tmp_direction = direction;
 }
 
 Enemy::~Enemy()
@@ -85,44 +91,27 @@ Enemy::~Enemy()
 
 void Enemy::Update(GameMainScene* gamemain)
 {
-	if (is_knock_back == true && hp > 0)
+	if (hp > 0)
 	{
 		if (is_knock_back_start == true)
 		{
-			KnockBackPreparation();
+			is_knock_back = true;
+			is_draw_dust = true;
+			dust_x = location.x;
+			dust_y = location.y;
 		}
 
-		// 土埃エフェクト用
-		move_x_img++;
-		opacity -= 4;
-
-
-		// ノックバック処理
-		KnockBack();
-	}
-	else
-	{
-
-		// 星を描画するのであれば
-		if (is_draw_star == true)
+		if (is_knock_back == true)
 		{
-			StarEffect();
+			if (is_knock_back_start == true)
+			{
+				KnockBackPreparation();
+			}
+
+			// ノックバック処理
+			KnockBack();
 		}
-
-		//// 星用
-		//if (is_draw_star == true)
-		//{
-		//	is_draw_star = false;
-		//}
-
-		// 土埃エフェクト用
-		if (move_x_img != 1)
-		{
-			move_x_img = 1;
-			opacity = 180;
-		}
-
-		if (hp > 0)
+		else
 		{
 			// 移動処理
 			Move();
@@ -130,18 +119,37 @@ void Enemy::Update(GameMainScene* gamemain)
 			// 歩行アニメーション
 			WalkingAnimation();
 		}
-		else
+
+		// 星を描画するのであれば
+		if (is_draw_star == true)
 		{
-			// 死亡アニメーション
-			DeathAnimation();
+			StarEffect();
 		}
+
+		// 土埃を描画するのであれば
+		if (is_draw_dust == true)
+		{
+			DustEffect();
+		}
+
+		//// 土埃エフェクト用
+		//if (move_x_img != 1)
+		//{
+		//	move_x_img = 1;
+		//	opacity = 180;
+		//}
+	}
+	else
+	{
+		// 死亡アニメーション
+		DeathAnimation();
 	}
 }
 
 void Enemy::Draw() const
 {
 #ifdef DEBUG
-	DrawFormatString(location.x - 100, 50, 0xffffff, "x : %.1f", star_x);
+	DrawFormatString(location.x - 100, 50, 0xffffff, "%d", dust_timer);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "y : %.1f", star_y);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "k: %d", is_knock_back);
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "s: %d", is_knock_back_start);
@@ -175,15 +183,18 @@ void Enemy::Draw() const
 			// ノックバック画像
 			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, knock_back_img, TRUE, direction);
 
-
-			// 土埃エフェクト
-			DrawDust();
 		}
 
 		if (is_draw_star == true)
 		{
 			// 星描画
 			DrawRotaGraph((int)star_x, (int)star_y - abs(sinf(M_PI * 2 / 60 * count) * 60), 1.0, degree, star_img, TRUE, direction);
+		}
+
+		if (is_draw_dust == true)
+		{
+			// 土埃描画
+			DrawDust();
 		}
 
 	}
@@ -213,11 +224,13 @@ void Enemy::Move()
 		{
 			// 左向きに変更
 			direction = true;
+			world.x += 4;
 		}
 		else
 		{
 			// 右向きに変更
 			direction = false;
+			world.x -= 4;
 		}
 	}
 
@@ -358,12 +371,12 @@ void Enemy::DrawDust() const
 	{
 		if (direction == false)
 		{
-			DrawRotaGraph((int)location.x - move_x_img + i * 20, (int)location.y + 20, size + i * 0.15, 0.0, dust_img, TRUE, FALSE);
+			DrawRotaGraph((int)dust_x - move_x_img + i * 20, (int)dust_y + 20, size + i * 0.15, 0.0, dust_img, TRUE, FALSE);
 		}
 		else
 		{
 			// 画像
-			DrawRotaGraph((int)location.x + move_x_img - i * 20, (int)location.y + 20, size + i * 0.15, 0.0, dust_img, TRUE, FALSE);
+			DrawRotaGraph((int)dust_x + move_x_img - i * 20, (int)dust_y + 20, size + i * 0.15, 0.0, dust_img, TRUE, FALSE);
 		}
 	}
 
@@ -398,11 +411,14 @@ void Enemy::KnockBackPreparation()
 	star_x = location.x;
 	star_y = location.y - 40;
 	count = 0;
+	tmp_direction = direction;
 }
 
 // 星エフェクト関係の処理
 void Enemy::StarEffect()
 {
+	// 星の座標を敵のスクリーン座標にする
+	star_x = location.x;
 	star_timer++;
 
 	// 星の画像回転
@@ -426,21 +442,39 @@ void Enemy::StarEffect()
 	}
 
 	// 星が飛ぶ向き
-	if (direction == false)
+	if (tmp_direction == false)
 	{
 		// 左に飛ぶ
-		star_x--;
+		star_x -= (float)star_timer;
 	}
 	else
 	{
 		// 右に飛ぶ
-		star_x++;
+		star_x += (float)star_timer;
 	}
 
 	if (star_timer > 30)
 	{
 		is_draw_star = false;
 		star_timer = 0;
+	}
+}
+
+// 土埃エフェクト関係の処理
+void Enemy::DustEffect()
+{
+	dust_timer++;
+
+	// 土埃エフェクト用
+	move_x_img++;
+	opacity--;
+
+	if (dust_timer > 60)
+	{
+		is_draw_dust = false;
+		move_x_img = 1;
+		opacity = 180;
+		dust_timer = 0;
 	}
 }
 
