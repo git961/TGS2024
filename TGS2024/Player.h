@@ -23,7 +23,7 @@ private:
     int player_img[10];
     int player_walk_img[10];
     int player_attack_img[15];
-    int pickaxe_img[10];
+    int pickaxe_img[15];
     int soil_effect[10];
 
 

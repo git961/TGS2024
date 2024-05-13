@@ -14,7 +14,7 @@ Player::Player()
 	player_img[0] = LoadGraph("images/Player/player.png");
 	LoadDivGraph("images/Player/player_walk.png", 4, 4, 1, 64, 64, player_walk_img);
 	LoadDivGraph("images/Player/p_attack.png", 12, 4, 3, 128, 128, player_attack_img);
-	LoadDivGraph("images/Player/pickaxe.png", 4, 4, 1, 128, 128, pickaxe_img);
+	LoadDivGraph("images/Player/pickaxe.png", 12, 4, 3, 128, 128, pickaxe_img);
 	LoadDivGraph("images/Player/soil_effect.png", 2, 2, 1, 128, 128, soil_effect);
 
 	atk_sound = LoadSoundMem("sounds/Attack.mp3");
@@ -100,7 +100,6 @@ void Player::Update(GameMainScene* gamemain)
 	{//攻撃がすぐには出来ないように待たせる
 		if (wait_atk_cnt++ > 30) {
 			attack_cnt = 0;
-
 			wait_atk_cnt = 0;
 			wait_flg = false;
 		}
@@ -129,15 +128,15 @@ void Player::Update(GameMainScene* gamemain)
 		case 0:
 			p_imgnum = 0;
 			break;
-		case 5:
+		case 7:
 			p_imgnum = 1;
 			break;
-		case 7:
+		case 10:
 			is_atk_putout = true;
 			effect_num = 0;
 			p_imgnum = 2;
 			break;
-		case 10:
+		case 13:
 			effect_num = 1;
 			p_imgnum = 3;
 			break;
@@ -153,7 +152,6 @@ void Player::Update(GameMainScene* gamemain)
 	if (attacking == true)
 	{
 		anim_cnt++;
-		atk_cnt_timer++;
 		if (anim_cnt > 1)
 		{
 			//そのままやるとそのままcheckBtnの中に入ってしまうので、数フレーム待たせる
@@ -168,40 +166,40 @@ void Player::Update(GameMainScene* gamemain)
 				}
 			}
 		}
-		////20フレーム回ったら
-		//if (atk_cnt_timer++ > 20)
-		//{
-		//	if (CheckSoundMem(atk_sound) == TRUE)
-		//	{
-		//		StopSoundMem(atk_sound);
-		//	}
+		//20フレーム回ったら
+		if (atk_cnt_timer++ > 20)
+		{
+			if (CheckSoundMem(atk_sound) == TRUE)
+			{
+				StopSoundMem(atk_sound);
+			}
 
 
-		//	if (next_attackflg == false || attack_cnt>=2)
-		//	{
-		//		attack_cnt = 0;
-		//		anim_cnt = 0;
-		//		atk_cnt_timer = 0;
-		//		is_atk_putout = false;
-		//		next_attackflg = false;
-		//		attacking = false;
-		//		wait_flg = true;
-		//		player_state = NOMAL;
-		//		color13 = 0x000000;
+			if (next_attackflg == false || attack_cnt>=2)
+			{
+				attack_cnt = 0;
+				anim_cnt = 0;
+				atk_cnt_timer = 0;
+				is_atk_putout = false;
+				next_attackflg = false;
+				attacking = false;
+				wait_flg = true;
+				player_state = NOMAL;
+				color13 = 0x000000;
 
-		//	}
-		//	else
-		//	{
-		//		//次の攻撃をする準備
-		//		anim_cnt = 0;
-		//		atk_cnt_timer = 0;
-		//		attack_cnt++;
-		//		is_atk_putout = false;
-		//		attacking = false;
-		//		next_attackflg = false;
+			}
+			else
+			{
+				//次の攻撃をする準備
+				anim_cnt = 0;
+				atk_cnt_timer = 0;
+				attack_cnt++;
+				is_atk_putout = false;
+				attacking = false;
+				next_attackflg = false;
 
-		//	}
-		//}
+			}
+		}
 
 	}
 	else
@@ -210,40 +208,6 @@ void Player::Update(GameMainScene* gamemain)
 		player_state = NOMAL;
 	}
 
-	//20フレーム回ったら
-	if (atk_cnt_timer > 20)
-	{
-		if (CheckSoundMem(atk_sound) == TRUE)
-		{
-			StopSoundMem(atk_sound);
-		}
-
-
-		if (next_attackflg == false || attack_cnt >= 2)
-		{
-			attack_cnt = 0;
-			anim_cnt = 0;
-			atk_cnt_timer = 0;
-			is_atk_putout = false;
-			next_attackflg = false;
-			attacking = false;
-			wait_flg = true;
-			player_state = NOMAL;
-			color13 = 0x000000;
-
-		}
-		else
-		{
-			//次の攻撃をする準備
-			anim_cnt = 0;
-			atk_cnt_timer = 0;
-			attack_cnt++;
-			is_atk_putout = false;
-			attacking = false;
-			next_attackflg = false;
-
-		}
-	}
 
 
 
@@ -313,17 +277,16 @@ void Player::Draw() const
 		{
 			if (p_imgnum > 2)
 			{
-				DrawRotaGraph(location.x, location.y - 25, 1, 0, pickaxe_img[2], TRUE, direction);
+				DrawRotaGraph(location.x, location.y - 25, 1, 0, pickaxe_img[2 + p_atk_imgnum], TRUE, direction);
 			}
 			else
 			{
-				DrawRotaGraph(location.x, location.y - 25, 1, 0, pickaxe_img[p_imgnum], TRUE, direction);
-
+				DrawRotaGraph(location.x, location.y - 25, 1, 0, pickaxe_img[p_imgnum + p_atk_imgnum], TRUE, direction);
 			}
 		}
 		else {
 
-			DrawRotaGraph(location.x, location.y - 25, 1, 0, pickaxe_img[p_imgnum], TRUE, direction);
+			DrawRotaGraph(location.x, location.y - 25, 1, 0, pickaxe_img[p_imgnum + p_atk_imgnum], TRUE, direction);
 			if (p_imgnum > 2)
 			{
 				//DrawRotaGraph(location.x, location.y - 25, 1, 0, effect_img[effect_num], TRUE, direction);
