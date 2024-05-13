@@ -42,6 +42,8 @@ private:
     int anim_cnt;//画像切り替え用
     bool is_hit_enemy;//エネミーに当たったか
 
+    int reset_timer;//攻撃をしばらくしなかった場合元に戻す
+
     float atk_cnt_timer;//攻撃発生してからとめるまでの時間をカウントする用
     int next_attackflg;//攻撃中もう一度ボタンが押されたら攻撃をする
     int attack_cnt;//何回攻撃ボタンを押したかカウント用

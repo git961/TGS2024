@@ -19,7 +19,7 @@ Player::Player()
 
 	atk_sound = LoadSoundMem("sounds/Attack.mp3");
 
-
+	reset_timer = 0;
 	p_imgnum = 0;
 	p_atk_imgnum = 0;
 	effect_num = 0;
@@ -207,10 +207,15 @@ void Player::Update(GameMainScene* gamemain)
 	{
 
 		player_state = NOMAL;
+		if (attack_cnt != 0)
+		{
+			if (reset_timer++ > 25)
+			{
+				reset_timer = 0;
+				attack_cnt = 0;
+			}
+		}
 	}
-
-
-
 
 	SetVertex();
 
