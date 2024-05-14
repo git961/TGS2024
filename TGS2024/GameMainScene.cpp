@@ -158,7 +158,6 @@ void GameMainScene::Update() {
 							// 歩行エネミーのノックバック処理
 							enemy[i]->SetKnockBackStartFlg(true);
 							enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
-							enemy[i]->SetDrawStarFlg(true);
 							enemy_damage_once = true;
 						}
 						else {

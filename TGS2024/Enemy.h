@@ -9,28 +9,26 @@
 
 class GameMainScene;
 
+struct effect
+{
+    float x;
+    float y;
+    double degree;                  // 画像の角度
+    int timer;          // 描画時間
+    int count;          // 三角関数用
+    bool is_draw;       // 描画するか？
+};
+
 class Enemy : public CharacterBase
 {
 private:
-    //int num;                      // スポーン位置設定用
-
     int enemy_walk_img[5];          // エネミー歩行画像
     int enemy_death_img[4];         // エネミー死亡画像
     int knock_back_img;             // ノックバック画像
     int dust_img;                   // エフェクト画像
     int crack_img[2];               // ひび割れ画像
     int star_img;                   // 星エフェクト画像
-
-    float dust_x;
-    float dust_y;
-    int opacity;                    // 画像の不透明度
-    int move_x_img;                 // 画像の移動量
-    double size;                    // 画像の大きさ
-    bool is_draw_dust;              // 土埃を描画するか？
-    int dust_timer;                 // 土埃描画時間
-
-    double degree;                  // 画像の角度
-
+    
     int death_cnt;                  // 死亡アニメーションが終わるまでの時間
     bool is_delete;                 // 削除するか？
 
@@ -45,11 +43,7 @@ private:
     float player_x;
     float player_y;
 
-    float star_x;                     // 星画像の座標
-    float star_y;                     // 星画像の座標
-    int count;                        // sin用のカウント
-    bool is_draw_star;                // 星を描画するか？
-    int star_timer;                   // 星描画時間
+    effect star;                      // 星の描画座標
     bool tmp_direction;               // 星描画時の向きの一時保管
 
 public:
@@ -64,10 +58,8 @@ public:
     void KnockBack();                           // ノックバック処理
     void WalkingAnimation();                    // 歩行アニメーション関係の処理
     void DeathAnimation();                      // 死亡アニメーション関係の処理
-    void DrawDust() const;                      // ノックバック時の土埃エフェクト描画
     void KnockBackPreparation();                // ノックバック準備処理
     void StarEffect();                          // 星エフェクト関係の処理
-    void DustEffect();                          // 土埃エフェクト関係の処理
     void Damege(int damege);                    // 被ダメージ処理
 
     // set関数
@@ -82,14 +74,9 @@ public:
         is_knock_back_start = set_flg;
     }
 
-    void SetDrawStarFlg(bool set_flg)
-    {
-        is_draw_star = set_flg;
-    }
-
     // get関数
-    float GetHp() { return hp; }                        // hp取得
-    bool GetDeleteFlg() { return is_delete; }           // 削除フラグの取得
-    bool GetIsKnockBack() { return is_knock_back; }     // ノックバックフラグの取得
+    float GetHp() const { return hp; }                        // hp取得
+    bool GetDeleteFlg() const { return is_delete; }           // 削除フラグの取得
+    bool GetIsKnockBack() const { return is_knock_back; }     // ノックバックフラグの取得
 };
 
