@@ -62,14 +62,25 @@ Enemy::Enemy(float set_x)
 	//	move_x *= -1;
 	//}
 
-	star.x = world.x;
-	star.y = world.y - 40;
+	star.x = 0.0f;
+	star.y = 0.0f;
 	star.degree = 0.0;						// 画像の角度
 	star.radian = 0.0;						// 画像の角度
 	star.timer = 0;
 	star.count = 0;
 	star.is_draw = false;				// 星の描画なし
 	tmp_direction = direction;
+
+	for (int i = 0; i < 4; i++)
+	{
+		fragment[i].x = 0.0f;
+		fragment[i].y = 0.0f;
+		fragment[i].degree = 0.0;
+		fragment[i].radian = 0.0;
+		fragment[i].timer = 0;
+		fragment[i].count = 0;
+		fragment[i].is_draw = false;
+	}
 }
 
 Enemy::~Enemy()
@@ -178,7 +189,7 @@ void Enemy::Draw() const
 		for (int i = 0; i < 4; i++)
 		{
 			// 破片描画
-			DrawRotaGraph((int)fragment[i].x, (int)fragment[i].y, 1.0, fragment[i].degree, fragment_img[i], TRUE, direction);
+			DrawRotaGraph((int)fragment[i].x, (int)fragment[i].y, 1.0, fragment[i].radian, fragment_img[i], TRUE, direction);
 		}
 	}
 
@@ -443,8 +454,27 @@ void Enemy::FragmentEffect()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		fragment[i].x = location.x + i * 20;
-		fragment[i].y = location.y - height / 2;		// 画像の中心
+		if (fragment[i].is_draw == false)
+		{
+			fragment[i].x = location.x + i * 20;
+			fragment[i].y = location.y - height / 2;		// 画像の中心
+		}
+
+		if (fragment[i].y < location.y)
+		{
+			if (i > 1)
+			{
+				//fragment[i].x++;
+			}
+			else
+			{
+				//fragment[i].x--;
+			}
+
+			//fragment[i].y++;
+		}
+
+		fragment[i].is_draw = true;
 	}
 
 }

@@ -1,8 +1,8 @@
 ﻿#pragma once
 #define DEBUG		        // デバッグ用、消すと#ifdef DEBUGの処理がされなくなる
 
-#include <stdlib.h>         // スポーン位置決定用
-#include <time.h>           // スポーン位置決定用
+//#include <stdlib.h>         // スポーン位置決定用
+//#include <time.h>           // スポーン位置決定用
 #include <math.h>
 #include "CharacterBase.h"
 #include "GameMainScene.h"
@@ -45,7 +45,7 @@ private:
     float player_y;
 
     effect star;
-    bool tmp_direction;               // 星描画時の向きの一時保管
+    bool tmp_direction;               // 向きの一時保管
 
     effect fragment[4];
 
