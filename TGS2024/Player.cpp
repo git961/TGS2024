@@ -99,7 +99,7 @@ void Player::Update(GameMainScene* gamemain)
 	}
 	else if(wait_flg==true)
 	{//攻撃がすぐには出来ないように待たせる
-		if (wait_atk_cnt++ > 30) {
+		if (wait_atk_cnt++ > 15) {
 			attack_cnt = 0;
 			wait_atk_cnt = 0;
 			wait_flg = false;
@@ -209,11 +209,15 @@ void Player::Update(GameMainScene* gamemain)
 		player_state = NOMAL;
 		if (attack_cnt != 0)
 		{
-			if (reset_timer++ > 25)
+			if (reset_timer++ > 20)
 			{
 				reset_timer = 0;
 				attack_cnt = 0;
 			}
+		}
+		else
+		{
+			reset_timer = 0;
 		}
 	}
 
