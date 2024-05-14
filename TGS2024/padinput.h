@@ -17,11 +17,13 @@ public:
 	int Btnnum = 0;
 	int LongBtnnum = 0;
 
+	
+
 	//単押しアップデート
 	void InputUpdate() {
 		//入力状態を取得
 		GetJoypadXInputState(DX_INPUT_PAD1, &getkey);
-
+		
 		//ボタン入力
 		for (int i = 0; i < 16; i++) {
 			//前の入力を受け取る
@@ -80,7 +82,7 @@ public:
 
 	}
 
-
+	int GetPadThumbLX() { return getkey.ThumbLX; }
 
 
 };

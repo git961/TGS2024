@@ -416,7 +416,8 @@ void Player::PlayerMove()
 
 	//攻撃中じゃなかったらプレイヤー移動
 	//右移動
-	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_RIGHT) == TRUE) {
+	
+	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_RIGHT) == TRUE||input.GetPadThumbLX()>=32000) {
 
 		if (move_x <= 4)
 		{
@@ -434,7 +435,7 @@ void Player::PlayerMove()
 	}
 
 	//左移動
-	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_LEFT) == TRUE) {
+	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_LEFT) == TRUE||input.GetPadThumbLX() <= -32000) {
 
 		if (move_x >= -4)
 		{
@@ -451,12 +452,17 @@ void Player::PlayerMove()
 	}
 
 	//右左移動してない時
+	//十字キーの入力がなかったら
 	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_RIGHT) != TRUE && input.LongPressBtn(XINPUT_BUTTON_DPAD_LEFT) != TRUE)
 	{
-		move_x *= 0.9;
-		if (player_state != ATTACK)
+		//左スティックからの入力が無かったら
+		if (input.GetPadThumbLX() >= -32000 && input.GetPadThumbLX() <= 32000)
 		{
-			player_state = NOMAL;
+			move_x *= 0.9;
+			if (player_state != ATTACK)
+			{
+				player_state = NOMAL;
+			}
 		}
 	}
 
