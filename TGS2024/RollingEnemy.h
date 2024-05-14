@@ -1,10 +1,5 @@
 #pragma once
 
-#define _USE_MATH_DEFINES       // M_PI使用用
-
-//デグリーからラジアンに変換
-#define DEGREE_RADIAN(_deg) (M_PI*(_deg)/180.0f)
-
 #include <stdlib.h>         // スポーン位置決定用
 #include <time.h>           // スポーン位置決定用
 #include "CharacterBase.h"
@@ -42,7 +37,7 @@ public:
     void Damege(int damege);                // 被ダメージ処理
 
     float GetHp() { return hp; }            // hp取得
+    float GetAttack() const { return attack; }// 攻撃力取得
     bool GetDeleteFlg() { return is_delete; } // 削除フラグの取得
-
 };
 

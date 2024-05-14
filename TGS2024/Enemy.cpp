@@ -24,20 +24,14 @@ Enemy::Enemy(float set_x)
 	LoadDivGraph("images/Enemy/WalkTest.png", 5, 5, 1, 64, 64, enemy_walk_img);
 	LoadDivGraph("images/Enemy/WalkDeathTest.png", 4, 4, 1, 64, 64, enemy_death_img);
 	knock_back_img = LoadGraph("images/Enemy/KnockBack.png");
-	dust_img = LoadGraph("images/Enemy/Dust.png");
-	star_img = LoadGraph("images/Enemy/star.png");
 	LoadDivGraph("images/Enemy/crack.png", 2, 2, 1, 64, 64, crack_img);
-
-	opacity = 180;				// 画像の不透明度
-	move_x_img = 100;
-	size = 0.3;					// 画像の大きさ
-	degree = 0.0;				// 画像の角度
+	star_img = LoadGraph("images/Enemy/star.png");
+	LoadDivGraph("images/Enemy/fragment.png", 4, 4, 1, 64, 64, fragment_img);
 
 	anim_cnt = 0;
 	anim_max_cnt = 19;
 
 	// 現在の画像
-	//image = 0;
 	image_num = 0;
 	crack_image_num = -1;
 
@@ -70,10 +64,25 @@ Enemy::Enemy(float set_x)
 	//	move_x *= -1;
 	//}
 
-	star_x = world.x;
-	star_y = world.y - 40;
-	count = 0;
-	is_draw_star = false;				// 星の描画なし
+	star.x = 0.0f;
+	star.y = 0.0f;
+	star.degree = 0.0;						// 画像の角度
+	star.radian = 0.0;						// 画像の角度
+	star.timer = 0;
+	star.count = 0;
+	star.is_draw = false;				// 星の描画なし
+	tmp_direction = direction;
+
+	for (int i = 0; i < 4; i++)
+	{
+		fragment[i].x = 0.0f;
+		fragment[i].y = 0.0f;
+		fragment[i].degree = 0.0;
+		fragment[i].radian = 0.0;
+		fragment[i].timer = 0;
+		fragment[i].count = 0;
+		fragment[i].is_draw = false;
+	}
 }
 
 Enemy::~Enemy()
@@ -86,42 +95,26 @@ Enemy::~Enemy()
 
 void Enemy::Update(GameMainScene* gamemain)
 {
-	if (is_knock_back == true && hp > 0)
+	if (hp > 0)
 	{
 		if (is_knock_back_start == true)
 		{
-			KnockBackPreparation();
+			is_knock_back = true;
+			star.is_draw = true;
 		}
 
-		// 土埃エフェクト用
-		move_x_img++;
-		opacity -= 4;
-
-		// 星を描画するのであれば
-		if (is_draw_star == true)
+		if (is_knock_back == true)
 		{
-			StarEffect();
-		}
+			if (is_knock_back_start == true)
+			{
+				// ノックバックの準備
+				KnockBackPreparation();
+			}
 
-		// ノックバック処理
-		KnockBack();
-	}
-	else
-	{
-		// 星用
-		if (is_draw_star == true)
-		{
-			is_draw_star = false;
+			// ノックバック処理
+			KnockBack();
 		}
-
-		// 土埃エフェクト用
-		if (move_x_img != 1)
-		{
-			move_x_img = 1;
-			opacity = 180;
-		}
-
-		if (hp > 0)
+		else
 		{
 			// 移動処理
 			Move();
@@ -129,22 +122,27 @@ void Enemy::Update(GameMainScene* gamemain)
 			// 歩行アニメーション
 			WalkingAnimation();
 		}
-		else
+
+		// 星を描画するのであれば
+		if (star.is_draw == true)
 		{
-			if (CheckSoundMem(enm_death_sound) == FALSE)
-			{
-				PlaySoundMem(enm_death_sound, DX_PLAYTYPE_BACK);
-			}
-			// 死亡アニメーション
-			DeathAnimation();
+			StarEffect();
 		}
+	}
+	else
+	{
+		// 死亡アニメーション
+		DeathAnimation();
+
+		// 破片エフェクト
+		FragmentEffect();
 	}
 }
 
 void Enemy::Draw() const
 {
 #ifdef DEBUG
-	DrawFormatString(location.x - 100, 50, 0xffffff, "x : %.1f", star_x);
+	//DrawFormatString(location.x - 100, 50, 0xffffff, "%d", opacity);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "y : %.1f", star_y);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "k: %d", is_knock_back);
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "s: %d", is_knock_back_start);
@@ -177,21 +175,24 @@ void Enemy::Draw() const
 		{
 			// ノックバック画像
 			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, knock_back_img, TRUE, direction);
+		}
 
-			if (is_draw_star == true)
-			{
-				// 星描画
-				DrawRotaGraph((int)star_x, (int)star_y - abs(sinf(M_PI * 2 / 60 * count) * 60), 1.0, degree, star_img, TRUE, direction);
-			}
-
-			// 土埃エフェクト
-			DrawDust();
+		if (star.is_draw == true)
+		{
+			// 星描画
+			DrawRotaGraph((int)star.x, (int)star.y, 1.0, star.radian, star_img, TRUE, tmp_direction);
 		}
 	}
 	else
 	{
 		// 死亡画像
 		DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_death_img[image_num], TRUE, direction);
+
+		for (int i = 0; i < 4; i++)
+		{
+			// 破片描画
+			DrawRotaGraph((int)fragment[i].x, (int)fragment[i].y, 1.0, fragment[i].radian, fragment_img[i], TRUE, direction);
+		}
 	}
 
 
@@ -214,11 +215,13 @@ void Enemy::Move()
 		{
 			// 左向きに変更
 			direction = true;
+			world.x += 4;
 		}
 		else
 		{
 			// 右向きに変更
 			direction = false;
+			world.x -= 4;
 		}
 	}
 
@@ -291,7 +294,8 @@ void Enemy::KnockBack()
 	if (is_knock_back_start == true)
 	{
 		is_knock_back_start = false;
-		if (is_draw_star == true)
+
+		if (star.is_draw == true)
 		{
 			if (crack_image_num < 1)
 			{
@@ -301,7 +305,7 @@ void Enemy::KnockBack()
 	}
 }
 
-// 歩行アニメーション関係の処理
+// 歩行アニメーションの処理
 void Enemy::WalkingAnimation()
 {
 	if (anim_cnt < anim_max_cnt)
@@ -323,7 +327,7 @@ void Enemy::WalkingAnimation()
 	}
 }
 
-// 死亡アニメーション関係の処理
+// 死亡アニメーションの処理
 void Enemy::DeathAnimation()
 {
 	death_cnt++;
@@ -349,28 +353,6 @@ void Enemy::DeathAnimation()
 	}
 }
 
-// ノックバック時のエフェクト描画
-void Enemy::DrawDust() const
-{
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, opacity);
-
-	for (int i = 0; i < 3; i++)
-	{
-		if (direction == false)
-		{
-			DrawRotaGraph((int)location.x - move_x_img + i * 20, (int)location.y + 20, size + i * 0.15, 0.0, dust_img, TRUE, FALSE);
-		}
-		else
-		{
-			// 画像
-			DrawRotaGraph((int)location.x + move_x_img - i * 20, (int)location.y + 20, size + i * 0.15, 0.0, dust_img, TRUE, FALSE);
-		}
-	}
-
-	// ブレンドモードをデフォルトにする
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-}
-
 // ノックバック準備処理
 void Enemy::KnockBackPreparation()
 {
@@ -392,51 +374,111 @@ void Enemy::KnockBackPreparation()
 		direction = true;
 		move_x = -1;
 	}
+
+	// 星画像用変数
+	star.degree = 0.0;
+	star.x = location.x;
+	star.y = location.y - 40;
+	star.count = 0;
+	tmp_direction = direction;
 }
 
-// 星エフェクト関係の処理
+// 星エフェクトの処理
 void Enemy::StarEffect()
 {
-	if (is_knock_back_start == true)
-	{
-		// 星画像用変数
-		degree = 0.0;
-		star_x = location.x;
-		star_y = location.y - 40;
-		count = 0;
-	}
+	// 星の座標を敵のスクリーン座標にする
+	star.x = location.x;
+	star.y = location.y - abs(sinf(M_PI * 2 / 60 * star.count) * 60);
+	star.timer++;
 
-	// 星の画像回転
-	if (degree < 360.0)
+	if (tmp_direction == false)
 	{
-		degree++;
+		// 反時計回り
+		if (star.degree > 0.0)
+		{
+			star.degree -= 4;
+		}
+		else
+		{
+			star.degree = 360.0;
+		}
 	}
 	else
 	{
-		degree = 0.0;
+		// 時計回り
+		if (star.degree < 360.0)
+		{
+			star.degree += 4;
+		}
+		else
+		{
+			star.degree = 0.0;
+		}
 	}
+
+	// 角度をデグリーからラジアンへ変更
+	star.radian = DEGREE_RADIAN(star.degree);
 
 	// 星の画像sin用カウント
-	if (count < 30)
+	if (star.count < 30)
 	{
-		count++;
+		star.count++;
 	}
 	else
 	{
-		count = 0;
+		star.count = 0;
 	}
 
 	// 星が飛ぶ向き
-	if (direction == false)
+	if (tmp_direction == false)
 	{
 		// 左に飛ぶ
-		star_x--;
+		star.x -= (float)star.timer;
 	}
 	else
 	{
 		// 右に飛ぶ
-		star_x++;
+		star.x += (float)star.timer;
 	}
+
+	if (star.timer > 30)
+	{
+		star.is_draw = false;
+		star.timer = 0;
+		star.count = 0;
+		star.degree = 0.0;
+		star.radian = 0.0;
+	}
+}
+
+// 石の破片エフェクトの処理
+void Enemy::FragmentEffect()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		if (fragment[i].is_draw == false)
+		{
+			fragment[i].x = location.x + i * 20;
+			fragment[i].y = location.y - height / 2;		// 画像の中心
+		}
+
+		if (fragment[i].y < location.y)
+		{
+			if (i > 1)
+			{
+				//fragment[i].x++;
+			}
+			else
+			{
+				//fragment[i].x--;
+			}
+
+			//fragment[i].y++;
+		}
+
+		fragment[i].is_draw = true;
+	}
+
 }
 
 // 被ダメージ処理

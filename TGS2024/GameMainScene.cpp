@@ -158,9 +158,7 @@ void GameMainScene::Update() {
 							enemy[i]->Damege(10);
 							// 歩行エネミーのノックバック処理
 							enemy[i]->SetKnockBackStartFlg(true);
-							enemy[i]->SetKnockBackFlg(true);
 							enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
-							enemy[i]->SetDrawStarFlg(true);
 							enemy_damage_once = true;
 						}
 						else {
@@ -210,7 +208,7 @@ void GameMainScene::Update() {
 		}
 	}
 
-	// 転がる敵更新処理
+	// 転がるエネミー更新処理
 	if (rolling_enemy != nullptr)
 	{
 		rolling_enemy->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
@@ -283,7 +281,6 @@ void GameMainScene::Update() {
 						{
 							// ノックバックしている敵に当たったら自身もノックバックを開始する
 							enemy[j]->SetKnockBackStartFlg(true);
-							enemy[j]->SetKnockBackFlg(true);
 						}
 						else
 						{
@@ -343,7 +340,6 @@ void GameMainScene::Draw() const {
 
 	DrawFormatString(0, 0, 0xffffff, "GameMain");
 	fp.display_fps();
-
 
 	//if (checkhit == true)
 	//{
