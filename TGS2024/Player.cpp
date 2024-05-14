@@ -74,7 +74,6 @@ void Player::Update(GameMainScene* gamemain)
 	input.InputUpdate();
 
 
-
 	if (wait_flg==false)
 	{
 		//Bおしたら攻撃
@@ -255,9 +254,28 @@ void Player::Update(GameMainScene* gamemain)
 	{
 		world.x=FIELD_WIDTH-20;
 
-	}else if (world.x - width / 2 < 0) {
+	}
+	else if (world.x - width / 2 < 0) {
 		world.x = width / 2;
 	}
+
+#ifdef DEBUG
+	if (input.CheckBtn(XINPUT_BUTTON_X) == TRUE)
+	{
+
+		//右向きだったら
+		if (direction == 0)
+		{
+			world.x += 3;
+		}
+		else {
+			world.x -= 3;
+		}
+		attacking = true;
+		player_state = ATTACK;
+		wait_flg = false;
+	}
+#endif // DEBUG
 
 }
 
@@ -265,7 +283,7 @@ void Player::Draw() const
 {
 
 
-	DrawBoxAA(location.x - width/2, location.y - height/2, location.x + width / 2, location.y + height / 2, color13,true);
+	//DrawBoxAA(location.x - width/2, location.y - height/2, location.x + width / 2, location.y + height / 2, color13,true);
 	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 
 
@@ -355,7 +373,7 @@ void Player::PlayerMove()
 	//右移動
 	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_RIGHT) == TRUE) {
 
-		if (move_x <= 3)
+		if (move_x <= 4)
 		{
 			move_x += 1;
 		}
@@ -373,7 +391,7 @@ void Player::PlayerMove()
 	//左移動
 	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_LEFT) == TRUE) {
 
-		if (move_x >= -3)
+		if (move_x >= -4)
 		{
 			move_x -= 1;
 		}
