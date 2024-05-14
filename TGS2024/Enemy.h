@@ -59,10 +59,11 @@ public:
     void Move();                                // 移動処理
     void ChangeDirection();                     // 進行方向の変更
     void KnockBack();                           // ノックバック処理
-    void WalkingAnimation();                    // 歩行アニメーション関係の処理
-    void DeathAnimation();                      // 死亡アニメーション関係の処理
+    void WalkingAnimation();                    // 歩行アニメーションの処理
+    void DeathAnimation();                      // 死亡アニメーションの処理
     void KnockBackPreparation();                // ノックバック準備処理
-    void StarEffect();                          // 星エフェクト関係の処理
+    void StarEffect();                          // 星エフェクトの処理
+    void FragmentEffect();                      // 石の破片エフェクトの処理
     void Damege(int damege);                    // 被ダメージ処理
 
     // set関数

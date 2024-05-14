@@ -120,6 +120,9 @@ void Enemy::Update(GameMainScene* gamemain)
 	{
 		// 死亡アニメーション
 		DeathAnimation();
+
+		// 破片エフェクト
+		FragmentEffect();
 	}
 }
 
@@ -175,7 +178,7 @@ void Enemy::Draw() const
 		for (int i = 0; i < 4; i++)
 		{
 			// 破片描画
-			//DrawRotaGraph((int)star.x, (int)star.y - abs(sinf(M_PI * 2 / 60 * star.count) * 60), 1.0, star.degree, star_img, TRUE, direction);
+			DrawRotaGraph((int)fragment[i].x, (int)fragment[i].y, 1.0, fragment[i].degree, fragment_img[i], TRUE, direction);
 		}
 	}
 
@@ -289,7 +292,7 @@ void Enemy::KnockBack()
 	}
 }
 
-// 歩行アニメーション関係の処理
+// 歩行アニメーションの処理
 void Enemy::WalkingAnimation()
 {
 	if (anim_cnt < anim_max_cnt)
@@ -311,7 +314,7 @@ void Enemy::WalkingAnimation()
 	}
 }
 
-// 死亡アニメーション関係の処理
+// 死亡アニメーションの処理
 void Enemy::DeathAnimation()
 {
 	death_cnt++;
@@ -367,7 +370,7 @@ void Enemy::KnockBackPreparation()
 	tmp_direction = direction;
 }
 
-// 星エフェクト関係の処理
+// 星エフェクトの処理
 void Enemy::StarEffect()
 {
 	// 星の座標を敵のスクリーン座標にする
@@ -433,6 +436,17 @@ void Enemy::StarEffect()
 		star.degree = 0.0;
 		star.radian = 0.0;
 	}
+}
+
+// 石の破片エフェクトの処理
+void Enemy::FragmentEffect()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		fragment[i].x = location.x + i * 20;
+		fragment[i].y = location.y - height / 2;		// 画像の中心
+	}
+
 }
 
 // 被ダメージ処理
