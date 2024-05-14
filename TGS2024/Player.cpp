@@ -73,7 +73,40 @@ void Player::Update(GameMainScene* gamemain)
 
 	input.InputUpdate();
 
+	if (wait_flg == false)
+	{
+		//Bおしたら攻撃
+		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+		{
+			if (CheckSoundMem(atk_sound) == FALSE)
+			{
+				PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+			}
 
+			//右向きだったら
+			if (direction == 0)
+			{
+				world.x += 3;
+			}
+			else {
+				world.x -= 3;
+			}
+			attacking = true;
+			player_state = ATTACK;
+		}
+	}
+	else if (wait_flg == true)
+	{//攻撃がすぐには出来ないように待たせる
+		if (wait_atk_cnt++ > 15) {
+			attack_cnt = 0;
+			wait_atk_cnt = 0;
+			wait_flg = false;
+		}
+	}
+
+	PlayerAttack();
+
+	/*
 	if (wait_flg==false)
 	{
 		//Bおしたら攻撃
@@ -146,11 +179,12 @@ void Player::Update(GameMainScene* gamemain)
 	else {
 		p_imgnum = 0;
 	}
-
+	*/
 
 	//何秒か経ったら攻撃中フラグを戻す？
 	if (attacking == true)
 	{
+		/*
 		anim_cnt++;
 		if (anim_cnt > 1)
 		{
@@ -200,6 +234,8 @@ void Player::Update(GameMainScene* gamemain)
 
 			}
 		}
+
+		*/
 
 	}
 	else
@@ -262,6 +298,15 @@ void Player::Update(GameMainScene* gamemain)
 #ifdef DEBUG
 	if (input.CheckBtn(XINPUT_BUTTON_X) == TRUE)
 	{
+		//if (CheckSoundMem(atk_sound) == TRUE)
+		//{
+		//	StopSoundMem(atk_sound);
+		//}
+
+		if (CheckSoundMem(atk_sound) == FALSE)
+		{
+			PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+		}
 
 		//右向きだったら
 		if (direction == 0)
@@ -421,4 +466,145 @@ void Player::PlayerMove()
 		location.x += move_x;
 		world.x += move_x;
 	//}
+}
+
+void Player::PlayerAttack()
+{
+
+
+
+	if (attacking == true)
+	{
+		if (attack_cnt == 1)
+		{
+			p_atk_imgnum = 4;
+			//2段
+			switch (anim_cnt)
+			{
+			case 0:
+				p_imgnum = 0;
+				break;
+			case 10:
+				p_imgnum = 1;
+				break;
+			case 13:
+				is_atk_putout = true;
+				effect_num = 0;
+				p_imgnum = 2;
+				break;
+			case 16:
+				effect_num = 1;
+				p_imgnum = 3;
+				break;
+			}
+
+		}
+		else if (attack_cnt == 2)
+		{
+			p_atk_imgnum = 8;
+			//初段
+			switch (anim_cnt)
+			{
+			case 0:
+				p_imgnum = 0;
+				break;
+			case 12:
+				p_imgnum = 1;
+				break;
+			case 15:
+				is_atk_putout = true;
+				effect_num = 0;
+				p_imgnum = 2;
+				break;
+			case 18:
+				effect_num = 1;
+				p_imgnum = 3;
+				break;
+			}
+
+		}
+		else {
+			p_atk_imgnum = 0;
+			//初段
+			switch (anim_cnt)
+			{
+			case 0:
+				p_imgnum = 0;
+				break;
+			case 7:
+				p_imgnum = 1;
+				break;
+			case 10:
+				is_atk_putout = true;
+				effect_num = 0;
+				p_imgnum = 2;
+				break;
+			case 13:
+				effect_num = 1;
+				p_imgnum = 3;
+				break;
+			}
+
+		}
+
+
+	}
+	else {
+		p_imgnum = 0;
+	}
+	//何秒か経ったら攻撃中フラグを戻す？
+	if (attacking == true)
+	{
+		anim_cnt++;
+		if (anim_cnt > 1)
+		{
+			//そのままやるとそのままcheckBtnの中に入ってしまうので、数フレーム待たせる
+			//受付を１０までにする
+			//123.じゃなくて1,23ってなるときがあるので治す？
+			if (atk_cnt_timer < 20)
+			{
+				if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+				{
+					color13 = 0x000000;
+					next_attackflg = true;
+				}
+			}
+		}
+		//20フレーム回ったら
+		if (atk_cnt_timer++ > 20)
+		{
+			if (CheckSoundMem(atk_sound) == TRUE)
+			{
+				StopSoundMem(atk_sound);
+			}
+
+
+			if (next_attackflg == false || attack_cnt >= 2)
+			{
+				attack_cnt = 0;
+				anim_cnt = 0;
+				atk_cnt_timer = 0;
+				is_atk_putout = false;
+				next_attackflg = false;
+				attacking = false;
+				wait_flg = true;
+				player_state = NOMAL;
+				color13 = 0x000000;
+
+			}
+			else
+			{
+				//次の攻撃をする準備
+				anim_cnt = 0;
+				atk_cnt_timer = 0;
+				attack_cnt++;
+				is_atk_putout = false;
+				attacking = false;
+				next_attackflg = false;
+
+			}
+		}
+	}
+
+
 }

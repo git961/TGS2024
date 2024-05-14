@@ -16,7 +16,7 @@ RollingEnemy::RollingEnemy()
 	move_y = 0;			// 未使用
 	hp = 10;
 	attack = 10;
-	speed = 0;			// なくても良い
+	speed = 1;			// なくても良い
 	direction = true;	// 左向き
 
 	//画像読込

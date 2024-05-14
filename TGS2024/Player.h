@@ -44,6 +44,8 @@ private:
 
     int reset_timer;//攻撃をしばらくしなかった場合元に戻す
 
+    int img_time;//画像切替の時間調節用
+
     float atk_cnt_timer;//攻撃発生してからとめるまでの時間をカウントする用
     int next_attackflg;//攻撃中もう一度ボタンが押されたら攻撃をする
     int attack_cnt;//何回攻撃ボタンを押したかカウント用
@@ -76,6 +78,8 @@ public:
     //プレイヤー移動用
     void PlayerMove();
 
+    void PlayerAttack();
+
     bool GetAttacking() { return is_atk_putout; };
 
     void SetGroundFlg(bool set_flg) {
@@ -90,6 +94,8 @@ public:
     {
         is_hit_enemy = set_hitflg;
     }
+
+
 
 };
 
