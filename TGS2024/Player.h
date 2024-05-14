@@ -60,12 +60,11 @@ private:
     bool walk;//true:歩いてる false:止まってる
     bool attacking;//true:攻撃中 false:攻撃してない 
 
+    bool hit_damage;//ダメージを受けた
+
     float walk_velocity_x;
 
-       
-        
-  
-
+   
 
 public:
     Player();
@@ -95,7 +94,9 @@ public:
         is_hit_enemy = set_hitflg;
     }
 
+    void SetDamage(float damage) { hp = hp - damage; }
 
+    void SetDamageFlg(bool set_damageflg) { hit_damage = set_damageflg; }
 
 };
 

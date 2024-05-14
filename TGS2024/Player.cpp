@@ -35,6 +35,9 @@ Player::Player()
 
 	old_worldx = world.x;
 
+	//体力
+	hp = 100;
+
 	//幅と座標
 	width = 40;
 	height = 50;
@@ -335,47 +338,52 @@ void Player::Draw() const
 	//プレイヤー画像表示
 	//DrawRotaGraph(location.x, location.y-25, 1, 0, player_img[p_imgnum], TRUE, direction);
 
-
-
-	switch (player_state)
+	if (hit_damage == true)
 	{
 
-	case NOMAL:
-		DrawRotaGraph(location.x, location.y-25, 1, 0, player_img[0], TRUE, direction);
-		break;
-	case ATTACK:
-		DrawRotaGraph(location.x, location.y - 25, 1, 0, player_attack_img[p_imgnum+p_atk_imgnum], TRUE, direction);
+		//ダメージを受けたら、薄くなったり、元に戻ったりの点滅をする
 
-		if (is_hit_enemy == true)
-		{
-			if (p_imgnum > 2)
-			{
-				DrawRotaGraph(location.x, location.y - 25, 1, 0, pickaxe_img[2 + p_atk_imgnum], TRUE, direction);
-			}
-			else
-			{
-				DrawRotaGraph(location.x, location.y - 25, 1, 0, pickaxe_img[p_imgnum + p_atk_imgnum], TRUE, direction);
-			}
-		}
-		else {
-
-			DrawRotaGraph(location.x, location.y - 25, 1, 0, pickaxe_img[p_imgnum + p_atk_imgnum], TRUE, direction);
-			if (p_imgnum > 2)
-			{
-				//DrawRotaGraph(location.x, location.y - 25, 1, 0, effect_img[effect_num], TRUE, direction);
-				DrawRotaGraph(location.x, location.y - 25, 1, 0, soil_effect[effect_num], TRUE, direction);
-			}
-		}
-
-		break;
-	case WALK:
-		DrawRotaGraph(location.x, location.y, 1, 0, player_walk_img[walk_num], TRUE, direction);
-		break;
-	default:
-		break;
 	}
+	else
+	{
+		switch (player_state)
+		{
 
+		case NOMAL:
+			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_img[0], TRUE, direction);
+			break;
+		case ATTACK:
+			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_attack_img[p_imgnum + p_atk_imgnum], TRUE, direction);
 
+			if (is_hit_enemy == true)
+			{
+				if (p_imgnum > 2)
+				{
+					DrawRotaGraph(location.x, location.y - 25, 1, 0, pickaxe_img[2 + p_atk_imgnum], TRUE, direction);
+				}
+				else
+				{
+					DrawRotaGraph(location.x, location.y - 25, 1, 0, pickaxe_img[p_imgnum + p_atk_imgnum], TRUE, direction);
+				}
+			}
+			else {
+
+				DrawRotaGraph(location.x, location.y - 25, 1, 0, pickaxe_img[p_imgnum + p_atk_imgnum], TRUE, direction);
+				if (p_imgnum > 2)
+				{
+					//DrawRotaGraph(location.x, location.y - 25, 1, 0, effect_img[effect_num], TRUE, direction);
+					DrawRotaGraph(location.x, location.y - 25, 1, 0, soil_effect[effect_num], TRUE, direction);
+				}
+			}
+
+			break;
+		case WALK:
+			DrawRotaGraph(location.x, location.y, 1, 0, player_walk_img[walk_num], TRUE, direction);
+			break;
+		default:
+			break;
+		}
+	}
 
 #ifdef DEBUG
 
@@ -400,8 +408,7 @@ void Player::Draw() const
 	//DrawFormatString(100, 150, 0xffffff, "location.x: %f",location.x);
 	DrawFormatString(100, 100, 0xffffff, "worldx: %f location.x:%f",world.x,location.x);
 	DrawFormatString(100, 120, 0xffffff, "world_y: %f location.y:%f", world.y,location.y);
-	DrawFormatString(location.x, location.y-20, 0x000000, "attaking%d", attacking);
-	DrawFormatString(location.x, location.y, 0x000000, "%d", attack_cnt);
+	DrawFormatString(location.x, location.y-20, 0x000000, "hp%f", hp);
 	/*DrawFormatString(100, 120, 0xffffff, "location.y: %f", location.y);
 	DrawFormatString(100, 140, 0xffffff, "world.x: %f",world.x);
 	DrawFormatString(100, 160, 0xffffff, "world.y: %f",world.y);*/
