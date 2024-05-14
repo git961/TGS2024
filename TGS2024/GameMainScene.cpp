@@ -206,7 +206,7 @@ void GameMainScene::Update() {
 		}
 	}
 
-	// 転がる敵更新処理
+	// 転がるエネミー更新処理
 	if (rolling_enemy != nullptr)
 	{
 		rolling_enemy->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
@@ -338,7 +338,6 @@ void GameMainScene::Draw() const {
 
 	DrawFormatString(0, 0, 0xffffff, "GameMain");
 	fp.display_fps();
-
 
 	//if (checkhit == true)
 	//{

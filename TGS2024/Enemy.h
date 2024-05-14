@@ -13,7 +13,8 @@ struct effect
 {
     float x;
     float y;
-    double degree;                  // 画像の角度
+    double degree;      // 画像の角度（デグリー）
+    double radian;      // 画像の角度（ラジアン）
     int timer;          // 描画時間
     int count;          // 三角関数用
     bool is_draw;       // 描画するか？
@@ -25,9 +26,9 @@ private:
     int enemy_walk_img[5];          // エネミー歩行画像
     int enemy_death_img[4];         // エネミー死亡画像
     int knock_back_img;             // ノックバック画像
-    int dust_img;                   // エフェクト画像
     int crack_img[2];               // ひび割れ画像
     int star_img;                   // 星エフェクト画像
+    int fragment_img[4];            // 石の破片エフェクト画像
     
     int death_cnt;                  // 死亡アニメーションが終わるまでの時間
     bool is_delete;                 // 削除するか？
@@ -43,8 +44,10 @@ private:
     float player_x;
     float player_y;
 
-    effect star;                      // 星の描画座標
+    effect star;
     bool tmp_direction;               // 星描画時の向きの一時保管
+
+    effect fragment[4];
 
 public:
     Enemy(float set_x);
@@ -76,6 +79,7 @@ public:
 
     // get関数
     float GetHp() const { return hp; }                        // hp取得
+    float GetAttack() const{ return attack; }                 // 攻撃力取得
     bool GetDeleteFlg() const { return is_delete; }           // 削除フラグの取得
     bool GetIsKnockBack() const { return is_knock_back; }     // ノックバックフラグの取得
 };

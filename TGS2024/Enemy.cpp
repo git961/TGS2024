@@ -22,9 +22,9 @@ Enemy::Enemy(float set_x)
 	LoadDivGraph("images/Enemy/WalkTest.png", 5, 5, 1, 64, 64, enemy_walk_img);
 	LoadDivGraph("images/Enemy/WalkDeathTest.png", 4, 4, 1, 64, 64, enemy_death_img);
 	knock_back_img = LoadGraph("images/Enemy/KnockBack.png");
-	dust_img = LoadGraph("images/Enemy/Dust.png");
-	star_img = LoadGraph("images/Enemy/star.png");
 	LoadDivGraph("images/Enemy/crack.png", 2, 2, 1, 64, 64, crack_img);
+	star_img = LoadGraph("images/Enemy/star.png");
+	LoadDivGraph("images/Enemy/fragment.png", 4, 4, 1, 64, 64, fragment_img);
 
 	anim_cnt = 0;
 	anim_max_cnt = 19;
@@ -65,6 +65,7 @@ Enemy::Enemy(float set_x)
 	star.x = world.x;
 	star.y = world.y - 40;
 	star.degree = 0.0;						// 画像の角度
+	star.radian = 0.0;						// 画像の角度
 	star.timer = 0;
 	star.count = 0;
 	star.is_draw = false;				// 星の描画なし
@@ -163,13 +164,19 @@ void Enemy::Draw() const
 		if (star.is_draw == true)
 		{
 			// 星描画
-			DrawRotaGraph((int)star.x, (int)star.y - abs(sinf(M_PI * 2 / 60 * star.count) * 60), 1.0, star.degree, star_img, TRUE, direction);
+			DrawRotaGraph((int)star.x, (int)star.y, 1.0, star.radian, star_img, TRUE, tmp_direction);
 		}
 	}
 	else
 	{
 		// 死亡画像
 		DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_death_img[image_num], TRUE, direction);
+
+		for (int i = 0; i < 4; i++)
+		{
+			// 破片描画
+			//DrawRotaGraph((int)star.x, (int)star.y - abs(sinf(M_PI * 2 / 60 * star.count) * 60), 1.0, star.degree, star_img, TRUE, direction);
+		}
 	}
 
 
@@ -365,17 +372,36 @@ void Enemy::StarEffect()
 {
 	// 星の座標を敵のスクリーン座標にする
 	star.x = location.x;
+	star.y = location.y - abs(sinf(M_PI * 2 / 60 * star.count) * 60);
 	star.timer++;
 
-	// 星の画像回転
-	if (star.degree < 360.0)
+	if (tmp_direction == false)
 	{
-		star.degree++;
+		// 反時計回り
+		if (star.degree > 0.0)
+		{
+			star.degree -= 4;
+		}
+		else
+		{
+			star.degree = 360.0;
+		}
 	}
 	else
 	{
-		star.degree = 0.0;
+		// 時計回り
+		if (star.degree < 360.0)
+		{
+			star.degree += 4;
+		}
+		else
+		{
+			star.degree = 0.0;
+		}
 	}
+
+	// 角度をデグリーからラジアンへ変更
+	star.radian = DEGREE_RADIAN(star.degree);
 
 	// 星の画像sin用カウント
 	if (star.count < 30)
@@ -403,6 +429,9 @@ void Enemy::StarEffect()
 	{
 		star.is_draw = false;
 		star.timer = 0;
+		star.count = 0;
+		star.degree = 0.0;
+		star.radian = 0.0;
 	}
 }
 
