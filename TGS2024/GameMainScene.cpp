@@ -185,14 +185,16 @@ void GameMainScene::Update() {
 	//プレイヤーと歩行の敵との当たり判定
 		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
-			//もしプレイヤーとエネミーが当たったら
-			if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight() == true))
-			{
-				if (player_damage_once == false)
+			if (enemy[i] != nullptr) {
+				//もしプレイヤーとエネミーが当たったら
+				if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight() == true))
 				{
-					player_damage_once = true;
-					player->SetDamageFlg(player_damage_once);
-					player->SetDamage(10);
+					if (player_damage_once == false)
+					{
+						player_damage_once = true;
+						player->SetDamageFlg(player_damage_once);
+						player->SetDamage(10);
+					}
 				}
 			}
 		}

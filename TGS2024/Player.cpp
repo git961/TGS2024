@@ -12,6 +12,7 @@ Player::Player()
 
 	//画像読込
 	player_img[0] = LoadGraph("images/Player/player.png");
+	player_img[1] = LoadGraph("images/Player/damage.png");
 	LoadDivGraph("images/Player/player_walk.png", 4, 4, 1, 64, 64, player_walk_img);
 	LoadDivGraph("images/Player/p_attack.png", 12, 4, 3, 128, 128, player_attack_img);
 	LoadDivGraph("images/Player/pickaxe.png", 12, 4, 3, 128, 128, pickaxe_img);
@@ -64,6 +65,11 @@ Player::Player()
 
 	player_state = NOMAL;
 	is_hit_enemy = false;
+
+	//被弾点滅
+	hit_damage = false;
+	flash_flg = false;
+	flash_cnt = 0;
 }
 
 Player::~Player()
@@ -76,200 +82,203 @@ void Player::Update(GameMainScene* gamemain)
 
 	input.InputUpdate();
 
-	if (wait_flg == false)
-	{
-		//Bおしたら攻撃
-		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
-		{
-			if (CheckSoundMem(atk_sound) == FALSE)
-			{
-				PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
-			}
+	//if (player_state == HITDAMAGE)
+	//{
 
-			//右向きだったら
-			if (direction == 0)
+		if (wait_flg == false)
+		{
+			//Bおしたら攻撃
+			if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 			{
-				world.x += 3;
+				if (CheckSoundMem(atk_sound) == FALSE)
+				{
+					PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+				}
+
+				//右向きだったら
+				if (direction == 0)
+				{
+					world.x += 3;
+				}
+				else {
+					world.x -= 3;
+				}
+				attacking = true;
+				player_state = ATTACK;
+			}
+		}
+		else if (wait_flg == true)
+		{//攻撃がすぐには出来ないように待たせる
+			if (wait_atk_cnt++ > 15) {
+				attack_cnt = 0;
+				wait_atk_cnt = 0;
+				wait_flg = false;
+			}
+		}
+
+		PlayerAttack();
+
+		/*
+		if (wait_flg==false)
+		{
+			//Bおしたら攻撃
+			if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+			{
+				if (CheckSoundMem(atk_sound) == FALSE)
+				{
+					PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+				}
+
+				//右向きだったら
+				if (direction == 0)
+				{
+					world.x += 3;
+				}
+				else {
+					world.x -= 3;
+				}
+				attacking = true;
+				player_state = ATTACK;
+			}
+		}
+		else if(wait_flg==true)
+		{//攻撃がすぐには出来ないように待たせる
+			if (wait_atk_cnt++ > 15) {
+				attack_cnt = 0;
+				wait_atk_cnt = 0;
+				wait_flg = false;
+			}
+		}
+
+
+
+
+		if (attacking == true)
+		{
+			if (attack_cnt == 1)
+			{
+				p_atk_imgnum = 4;
+			}
+			else if (attack_cnt == 2)
+			{
+				p_atk_imgnum = 8;
 			}
 			else {
-				world.x -= 3;
+				p_atk_imgnum = 0;
+
 			}
-			attacking = true;
-			player_state = ATTACK;
-		}
-	}
-	else if (wait_flg == true)
-	{//攻撃がすぐには出来ないように待たせる
-		if (wait_atk_cnt++ > 15) {
-			attack_cnt = 0;
-			wait_atk_cnt = 0;
-			wait_flg = false;
-		}
-	}
 
-	PlayerAttack();
-
-	/*
-	if (wait_flg==false)
-	{
-		//Bおしたら攻撃
-		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
-		{
-			if (CheckSoundMem(atk_sound) == FALSE)
+			switch (anim_cnt)
 			{
-				PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+			case 0:
+				p_imgnum = 0;
+				break;
+			case 7:
+				p_imgnum = 1;
+				break;
+			case 10:
+				is_atk_putout = true;
+				effect_num = 0;
+				p_imgnum = 2;
+				break;
+			case 13:
+				effect_num = 1;
+				p_imgnum = 3;
+				break;
 			}
 
-			//右向きだったら
-			if (direction == 0)
-			{
-				world.x += 3;
-			}
-			else {
-				world.x -= 3;
-			}
-			attacking = true;
-			player_state = ATTACK;
-		}
-	}
-	else if(wait_flg==true)
-	{//攻撃がすぐには出来ないように待たせる
-		if (wait_atk_cnt++ > 15) {
-			attack_cnt = 0;
-			wait_atk_cnt = 0;
-			wait_flg = false;
-		}
-	}
-
-
-
-
-	if (attacking == true)
-	{
-		if (attack_cnt == 1)
-		{
-			p_atk_imgnum = 4;
-		}
-		else if (attack_cnt == 2)
-		{
-			p_atk_imgnum = 8;
 		}
 		else {
-			p_atk_imgnum = 0;
-
-		}
-
-		switch (anim_cnt)
-		{
-		case 0:
 			p_imgnum = 0;
-			break;
-		case 7:
-			p_imgnum = 1;
-			break;
-		case 10:
-			is_atk_putout = true;
-			effect_num = 0;
-			p_imgnum = 2;
-			break;
-		case 13:
-			effect_num = 1;
-			p_imgnum = 3;
-			break;
 		}
-
-	}
-	else {
-		p_imgnum = 0;
-	}
-	*/
-
-	//何秒か経ったら攻撃中フラグを戻す？
-	if (attacking == true)
-	{
-		/*
-		anim_cnt++;
-		if (anim_cnt > 1)
-		{
-			//そのままやるとそのままcheckBtnの中に入ってしまうので、数フレーム待たせる
-			//受付を１０までにする
-			//123.じゃなくて1,23ってなるときがあるので治す？
-			if (atk_cnt_timer < 15)
-			{
-				if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
-				{
-					color13 = 0x000000;
-					next_attackflg = true;
-				}
-			}
-		}
-		//20フレーム回ったら
-		if (atk_cnt_timer++ > 20)
-		{
-			if (CheckSoundMem(atk_sound) == TRUE)
-			{
-				StopSoundMem(atk_sound);
-			}
-
-
-			if (next_attackflg == false || attack_cnt>=2)
-			{
-				attack_cnt = 0;
-				anim_cnt = 0;
-				atk_cnt_timer = 0;
-				is_atk_putout = false;
-				next_attackflg = false;
-				attacking = false;
-				wait_flg = true;
-				player_state = NOMAL;
-				color13 = 0x000000;
-
-			}
-			else
-			{
-				//次の攻撃をする準備
-				anim_cnt = 0;
-				atk_cnt_timer = 0;
-				attack_cnt++;
-				is_atk_putout = false;
-				attacking = false;
-				next_attackflg = false;
-
-			}
-		}
-
 		*/
 
-	}
-	else
-	{
-
-		player_state = NOMAL;
-		if (attack_cnt != 0)
+		//何秒か経ったら攻撃中フラグを戻す？
+		if (attacking == true)
 		{
-			if (reset_timer++ > 20)
+			/*
+			anim_cnt++;
+			if (anim_cnt > 1)
 			{
-				reset_timer = 0;
-				attack_cnt = 0;
+				//そのままやるとそのままcheckBtnの中に入ってしまうので、数フレーム待たせる
+				//受付を１０までにする
+				//123.じゃなくて1,23ってなるときがあるので治す？
+				if (atk_cnt_timer < 15)
+				{
+					if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+					{
+						color13 = 0x000000;
+						next_attackflg = true;
+					}
+				}
 			}
+			//20フレーム回ったら
+			if (atk_cnt_timer++ > 20)
+			{
+				if (CheckSoundMem(atk_sound) == TRUE)
+				{
+					StopSoundMem(atk_sound);
+				}
+
+
+				if (next_attackflg == false || attack_cnt>=2)
+				{
+					attack_cnt = 0;
+					anim_cnt = 0;
+					atk_cnt_timer = 0;
+					is_atk_putout = false;
+					next_attackflg = false;
+					attacking = false;
+					wait_flg = true;
+					player_state = NOMAL;
+					color13 = 0x000000;
+
+				}
+				else
+				{
+					//次の攻撃をする準備
+					anim_cnt = 0;
+					atk_cnt_timer = 0;
+					attack_cnt++;
+					is_atk_putout = false;
+					attacking = false;
+					next_attackflg = false;
+
+				}
+			}
+
+			*/
+
 		}
 		else
 		{
-			reset_timer = 0;
+
+			player_state = NOMAL;
+			if (attack_cnt != 0)
+			{
+				if (reset_timer++ > 20)
+				{
+					reset_timer = 0;
+					attack_cnt = 0;
+				}
+			}
+			else
+			{
+				reset_timer = 0;
+			}
 		}
-	}
 
-	SetVertex();
+		SetVertex();
 
-	if (player_state != ATTACK)
-	{
-		//プレイヤーの移動処理
-		PlayerMove();
-	}
-	else
-	{
-		move_x = 0;
-	}
+		if (player_state != ATTACK)
+		{
+			//プレイヤーの移動処理
+			PlayerMove();
+		}
+		else
+		{
+			move_x = 0;
+		}
 
 		if (player_state == WALK)
 		{
@@ -286,17 +295,35 @@ void Player::Update(GameMainScene* gamemain)
 				walk_num = walk_abs / 20;
 			}
 		}
-	
-	
-	// 端に来たら跳ね返る
-	if (world.x + width / 2 > FIELD_WIDTH)
-	{
-		world.x=FIELD_WIDTH-20;
 
-	}
-	else if (world.x - width / 2 < 0) {
-		world.x = width / 2;
-	}
+
+		// 端に来たら跳ね返る
+		if (world.x + width / 2 > FIELD_WIDTH)
+		{
+			world.x = FIELD_WIDTH - 20;
+
+		}
+		else if (world.x - width / 2 < 0) {
+			world.x = width / 2;
+		}
+
+
+		//if (hit_damage == true)
+		//{
+		//	//player_state = HITDAMAGE;
+		//	flash_flg = true;
+
+		//	//ノックバック処理
+		//			//右向きだったら
+		//	if (direction == 0)
+		//	{
+		//		world.x += 10;
+		//	}
+		//	else {
+		//		world.x -= 10;
+		//	}
+		//}
+	
 
 #ifdef DEBUG
 	if (input.CheckBtn(XINPUT_BUTTON_X) == TRUE)
@@ -343,10 +370,9 @@ void Player::Draw() const
 
 		//ダメージを受けたら、薄くなったり、元に戻ったりの点滅をして
 		//数秒たったら戻る
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
 
 	}
-	else
-	{
 		switch (player_state)
 		{
 
@@ -381,10 +407,15 @@ void Player::Draw() const
 		case WALK:
 			DrawRotaGraph(location.x, location.y, 1, 0, player_walk_img[walk_num], TRUE, direction);
 			break;
+		case HITDAMAGE:
+			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_img[1], TRUE, direction);
+			break;
 		default:
 			break;
 		}
-	}
+	
+
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 #ifdef DEBUG
 

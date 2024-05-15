@@ -10,7 +10,8 @@ class StageBlock;
 enum PlayerState {
     NOMAL,//地面に居る：歩くのが可能
     ATTACK,
-    WALK
+    WALK,
+    HITDAMAGE
 };
 
 class Player :
@@ -60,7 +61,10 @@ private:
     bool walk;//true:歩いてる false:止まってる
     bool attacking;//true:攻撃中 false:攻撃してない 
 
+    //ダメージ受けた時に点滅させるよう
     bool hit_damage;//ダメージを受けた
+    bool flash_flg;//点滅させるフラグ
+    bool flash_cnt;
 
     float walk_velocity_x;
 
