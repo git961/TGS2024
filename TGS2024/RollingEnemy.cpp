@@ -7,7 +7,7 @@ RollingEnemy::RollingEnemy()
 	//location.y = 600;
 
 	world.x = 30;
-	world.y = 600;
+	world.y = 606;
 
 	width = 60;
 	height = 60;
@@ -16,7 +16,7 @@ RollingEnemy::RollingEnemy()
 	move_y = 0;			// 未使用
 	hp = 10;
 	attack = 10;
-	speed = 4;
+	speed = 0;
 	direction = true;	// 左向き
 
 	//画像読込
