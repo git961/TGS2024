@@ -24,6 +24,7 @@ private:
     int player_img[10];
     int player_walk_img[10];
     int player_attack_img[15];
+    int player_death_img[15];
     int pickaxe_img[15];
     int soil_effect[10];
 
@@ -86,7 +87,9 @@ public:
 
     void PlayerAttack();
 
-    bool GetAttacking() { return is_atk_putout; };
+    bool GetAttacking() { return is_atk_putout; }
+
+    float GetHp() { return hp; }
 
     void SetGroundFlg(bool set_flg) {
         ground_flg = set_flg;

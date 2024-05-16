@@ -197,6 +197,10 @@ void GameMainScene::Update() {
 							player->SetDamageFlg(player_damage_once);
 							player->SetDamage(10);
 						}
+						if (player->GetHp() < 0)
+						{
+							
+						}
 					}
 				}
 			}
@@ -220,7 +224,6 @@ void GameMainScene::Update() {
 			// エネミー削除処理
 			if (enemy[i]->GetDeleteFlg() == true)
 			{
-
 				player->SetEnemyHit(false);
 				delete enemy[i];
 				enemy[i] = nullptr;
@@ -320,8 +323,10 @@ void GameMainScene::Update() {
 		}
 	}
 
-	UpdateCamera(player->GetWorldLocation());
-
+	if (player != nullptr)
+	{
+		UpdateCamera(player->GetWorldLocation());
+	}
 	screen_origin_position = {
 		camera_pos.x - SCREEN_WIDTH / 2.0f,
 		camera_pos.y - SCREEN_HEIGHT / 2.0f
