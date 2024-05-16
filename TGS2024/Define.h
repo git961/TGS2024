@@ -20,4 +20,4 @@
 #define _USE_MATH_DEFINES       // M_PI使用用
 
 //デグリーからラジアンに変換
-#define DEGREE_RADIAN(_deg) (M_PI*(_deg)/180.0f)
+#define DEGREE_RADIAN(_deg) (M_PI*(_deg)/180.0)

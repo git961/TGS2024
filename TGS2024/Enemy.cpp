@@ -2,13 +2,12 @@
 
 Enemy::Enemy(float set_x)
 {
-
 	// 中心座標
 	location.x = 400 + (40 * set_x);
 	location.y = 600;
 
 	world.x = 400.0f + (120.0f * set_x);
-	world.y = 600.0f;
+	world.y = 608.0f;
 
 	width = 45.0f;
 	height = 64.0f;
@@ -45,7 +44,7 @@ Enemy::Enemy(float set_x)
 	player_x = 0.0f;
 	player_y = 0.0f;
 
-	//srand((unsigned int)time(NULL));			// 現在時刻の情報で初期化
+	srand((unsigned int)time(NULL));			// 現在時刻の情報で初期化
 	//num = rand() % 10 + 1;
 	//if (num >= 5)
 	//{
@@ -75,12 +74,25 @@ Enemy::Enemy(float set_x)
 	{
 		fragment[i].x = 0.0f;
 		fragment[i].y = 0.0f;
-		fragment[i].degree = 0.0;
-		fragment[i].radian = 0.0;
 		fragment[i].timer = 0;
 		fragment[i].count = 0;
 		fragment[i].is_draw = false;
+
+		// 初速度の設定
+		v0[i] = rand() % 5 + 1;
+
+		// 発射角度の設定
+		fragment[i].degree = rand() % 90;
+
+		if (i < 2)
+		{
+			fragment[i].degree += 270;
+		}
+
+		fragment[i].radian = (double)DEGREE_RADIAN(fragment[i].degree);
 	}
+
+	gravity = 9.807f;
 }
 
 Enemy::~Enemy()
@@ -140,12 +152,15 @@ void Enemy::Update(GameMainScene* gamemain)
 void Enemy::Draw() const
 {
 #ifdef DEBUG
-	//DrawFormatString(location.x - 100, 50, 0xffffff, "%d", opacity);
-	//DrawFormatString(location.x - 100, 80, 0xffffff, "y : %.1f", star_y);
+	DrawFormatString(location.x - 100, 50, 0xffffff, "%f", fragment[0].x);
+	DrawFormatString(location.x - 100, 80, 0xffffff, "%f", v0[0]);
+	//DrawFormatString(location.x - 100, 80, 0xffffff, "y: %f", fragment[0].radian);
+	//DrawFormatString(location.x - 100, 80, 0xffffff, "y: %f", fragment[0].timer);
+	//DrawFormatString(location.x - 100, 80, 0xffffff, "y: %f", fragment[0].y);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "k: %d", is_knock_back);
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "s: %d", is_knock_back_start);
 	//DrawFormatString(100, 20, 0xffffff, "opacity: %d", opacity);
-	//DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);				// 当たり判定のボックス
+	//DrawBoxAA(location.x - width / 2, location.y - height / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);				// 当たり判定のボックス
 #endif // DEBUG
 
 	// 画像の描画
@@ -189,7 +204,7 @@ void Enemy::Draw() const
 		for (int i = 0; i < 4; i++)
 		{
 			// 破片描画
-			DrawRotaGraph((int)fragment[i].x, (int)fragment[i].y, 1.0, fragment[i].radian, fragment_img[i], TRUE, direction);
+			DrawRotaGraph((int)fragment[i].x, (int)fragment[i].y, 1.0, 0.0, fragment_img[i], TRUE, direction);
 		}
 	}
 
@@ -456,25 +471,36 @@ void Enemy::FragmentEffect()
 	{
 		if (fragment[i].is_draw == false)
 		{
-			fragment[i].x = location.x + i * 20;
-			fragment[i].y = location.y - height / 2;		// 画像の中心
+			fragment[i].x = location.x;
+			fragment[i].y = location.y - height /  2;				// 画像の中心
 		}
 
-		if (fragment[i].y < location.y)
+		if (fragment[i].y <= 608.0f)
 		{
-			if (i > 1)
+			// 地面についていないのであれば
+			if (fragment[i].timer++ < 60)
 			{
-				//fragment[i].x++;
-			}
-			else
-			{
-				//fragment[i].x--;
-			}
+				if (i > 1)
+				{
+					// 斜方投射
+					// 右向き
+					fragment[i].x += v0[i] * cosf((float)fragment[i].radian);
+				}
+				else
+				{
+					// 斜方投射
+					// 左向き
+					fragment[i].x -= v0[i] * cosf((float)fragment[i].radian);
+				}
 
-			//fragment[i].y++;
+				fragment[i].y += v0[i] * sinf((float)fragment[i].radian) - gravity;
+			}
 		}
 
-		fragment[i].is_draw = true;
+		if (fragment[i].is_draw == false)
+		{
+			fragment[i].is_draw = true;
+		}
 	}
 
 }
