@@ -78,7 +78,7 @@ public:
 
     void UpdateCamera(World world);
 
-
+    void SetPlayerDamageOnce(bool set_flg) { player_damage_once = set_flg; }
 
 
     //float GetCameraX() { return camera_x; };

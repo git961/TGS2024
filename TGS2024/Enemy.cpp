@@ -55,7 +55,6 @@ Enemy::Enemy(float set_x)
 	//{
 	//	direction = false;
 	//}
-
 	//// 進行方法が左ならx座標と移動方向が変わる
 	//if (direction == false)
 	//{

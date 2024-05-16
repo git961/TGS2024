@@ -189,11 +189,14 @@ void GameMainScene::Update() {
 				//もしプレイヤーとエネミーが当たったら
 				if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight() == true))
 				{
-					if (player_damage_once == false)
+					if (enemy[i]->GetHp() > 0)
 					{
-						player_damage_once = true;
-						player->SetDamageFlg(player_damage_once);
-						player->SetDamage(10);
+						if (player_damage_once == false)
+						{
+							player_damage_once = true;
+							player->SetDamageFlg(player_damage_once);
+							player->SetDamage(10);
+						}
 					}
 				}
 			}

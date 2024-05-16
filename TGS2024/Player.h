@@ -31,6 +31,7 @@ private:
     int color13;
 
 
+    
     int p_imgnum;//プレイヤーの画像番号切り替え用
 
     int p_atk_imgnum;//攻撃画像切り替え用
@@ -63,8 +64,10 @@ private:
 
     //ダメージ受けた時に点滅させるよう
     bool hit_damage;//ダメージを受けた
+    bool hit_cnt;//
+    bool flash_start;
     bool flash_flg;//点滅させるフラグ
-    bool flash_cnt;
+    int flash_cnt;
 
     float walk_velocity_x;
 

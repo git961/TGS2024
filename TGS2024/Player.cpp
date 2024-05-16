@@ -68,6 +68,7 @@ Player::Player()
 
 	//被弾点滅
 	hit_damage = false;
+	flash_start = false;
 	flash_flg = false;
 	flash_cnt = 0;
 }
@@ -82,8 +83,22 @@ void Player::Update(GameMainScene* gamemain)
 
 	input.InputUpdate();
 
-	//if (player_state == HITDAMAGE)
-	//{
+	if (player_state == HITDAMAGE)
+	{
+		if ((unsigned)move_x >0) {
+			move_x *= 0.9;
+			location.x += move_x;
+			world.x += move_x;
+		}
+		else
+		{
+			player_state = NOMAL;
+			hit_damage = false;
+			flash_start = true;
+		}
+	}
+	else
+	{
 
 		if (wait_flg == false)
 		{
@@ -307,53 +322,97 @@ void Player::Update(GameMainScene* gamemain)
 			world.x = width / 2;
 		}
 
+		//敵からダメージを食らったら
+		if (hit_damage == true)
+		{
+			player_state = HITDAMAGE;
 
-		//if (hit_damage == true)
-		//{
-		//	//player_state = HITDAMAGE;
-		//	flash_flg = true;
+			//ノックバック処理
+					//右向きだったら
+			if (direction == 0)
+			{
+				move_x = -4;
+			}
+			else
+			{
+				move_x =4;
+			}
+		}
 
-		//	//ノックバック処理
-		//			//右向きだったら
-		//	if (direction == 0)
-		//	{
-		//		world.x += 10;
-		//	}
-		//	else {
-		//		world.x -= 10;
-		//	}
-		//}
-	
+		//点滅処理
+		if (flash_start == true)
+		{
+			if ((flash_cnt % 20) == 0)
+			{
+				flash_flg = true;
+			}
+			else if ((flash_cnt % 10) == 0) {
+				flash_flg = false;
+			}
+
+			if (flash_cnt > 90)
+			{
+				flash_flg = false;
+				flash_start = false;
+				gamemain->SetPlayerDamageOnce(false);
+			}
+
+			//switch (flash_cnt)
+			//{
+			//case 0:
+			//	flash_flg = true;
+			//	break;
+			//case 10:
+			//	flash_flg = false;
+			//	break;
+			//case 20:
+			//	flash_flg = true;
+			//	break;
+			//case 60:
+			//	flash_flg = false;
+			//	flash_start = false;
+			//	break;
+			//default:
+			//	break;
+			//}
+
+			flash_cnt++;
+		}
+		else
+		{
+			flash_cnt = 0;
+		}
 
 #ifdef DEBUG
-	if (input.CheckBtn(XINPUT_BUTTON_X) == TRUE)
-	{
-		//if (CheckSoundMem(atk_sound) == TRUE)
-		//{
-		//	StopSoundMem(atk_sound);
-		//}
-
-		if (CheckSoundMem(atk_sound) == FALSE)
+		if (input.CheckBtn(XINPUT_BUTTON_X) == TRUE)
 		{
-			PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
-		}
+			//if (CheckSoundMem(atk_sound) == TRUE)
+			//{
+			//	StopSoundMem(atk_sound);
+			//}
 
-		//右向きだったら
-		if (direction == 0)
-		{
-			world.x += 3;
+			if (CheckSoundMem(atk_sound) == FALSE)
+			{
+				PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+			}
+
+			//右向きだったら
+			if (direction == 0)
+			{
+				world.x += 3;
+			}
+			else {
+				world.x -= 3;
+			}
+			attacking = true;
+			player_state = ATTACK;
+			wait_flg = false;
 		}
-		else {
-			world.x -= 3;
-		}
-		attacking = true;
-		player_state = ATTACK;
-		wait_flg = false;
-	}
 #endif // DEBUG
 
-}
+	}
 
+}
 void Player::Draw() const
 {
 
@@ -365,12 +424,16 @@ void Player::Draw() const
 	//プレイヤー画像表示
 	//DrawRotaGraph(location.x, location.y-25, 1, 0, player_img[p_imgnum], TRUE, direction);
 
-	if (hit_damage == true)
+	if (flash_flg == true)
 	{
 
 		//ダメージを受けたら、薄くなったり、元に戻ったりの点滅をして
 		//数秒たったら戻る
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
+		
+	}
+	else if(flash_flg==false) {
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	}
 		switch (player_state)
@@ -378,9 +441,11 @@ void Player::Draw() const
 
 		case NOMAL:
 			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_img[0], TRUE, direction);
+			DrawFormatString(location.x, location.y - 80, 0x000000, "nomal");
 			break;
 		case ATTACK:
 			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_attack_img[p_imgnum + p_atk_imgnum], TRUE, direction);
+			DrawFormatString(location.x, location.y - 80, 0x000000, "attack");
 
 			if (is_hit_enemy == true)
 			{
@@ -406,9 +471,12 @@ void Player::Draw() const
 			break;
 		case WALK:
 			DrawRotaGraph(location.x, location.y, 1, 0, player_walk_img[walk_num], TRUE, direction);
+			DrawFormatString(location.x, location.y - 80, 0x000000, "walk");
+
 			break;
 		case HITDAMAGE:
 			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_img[1], TRUE, direction);
+			DrawFormatString(location.x, location.y - 80, 0x000000, "hitdamage");
 			break;
 		default:
 			break;
@@ -441,6 +509,7 @@ void Player::Draw() const
 	DrawFormatString(100, 100, 0xffffff, "worldx: %f location.x:%f",world.x,location.x);
 	DrawFormatString(100, 120, 0xffffff, "world_y: %f location.y:%f", world.y,location.y);
 	DrawFormatString(location.x, location.y-20, 0x000000, "hp%f", hp);
+	//DrawFormatString(location.x, location.y-20, 0x000000, "hp%f", hp);
 	/*DrawFormatString(100, 120, 0xffffff, "location.y: %f", location.y);
 	DrawFormatString(100, 140, 0xffffff, "world.x: %f",world.x);
 	DrawFormatString(100, 160, 0xffffff, "world.y: %f",world.y);*/
@@ -508,8 +577,8 @@ void Player::PlayerMove()
 	//壁に当たっていなかったら加算
 	/*if (wall_flg != true)
 	{*/
-		location.x += move_x;
-		world.x += move_x;
+	location.x += move_x;
+	world.x += move_x;
 	//}
 }
 
