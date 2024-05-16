@@ -11,7 +11,8 @@ enum PlayerState {
     NOMAL,//地面に居る：歩くのが可能
     ATTACK,
     WALK,
-    HITDAMAGE
+    HITDAMAGE,
+    DEATH
 };
 
 class Player :
@@ -72,7 +73,10 @@ private:
 
     float walk_velocity_x;
 
-   
+   //死亡アニメーション
+    int death_anim_cnt;
+    int death_num;
+    bool death_flg;//死んだよフラグ
 
 public:
     Player();
@@ -90,6 +94,8 @@ public:
     bool GetAttacking() { return is_atk_putout; }
 
     float GetHp() { return hp; }
+
+    bool GetDeathFlg() { return death_flg; }
 
     void SetGroundFlg(bool set_flg) {
         ground_flg = set_flg;

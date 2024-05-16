@@ -44,6 +44,7 @@ private:
 
     cameraposition screen_origin_position;
 
+    bool pose_flg;
 
     bool player_damage_once;
     bool enemy_damage_once;
