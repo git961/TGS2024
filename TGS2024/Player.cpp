@@ -134,11 +134,11 @@ void Player::Update(GameMainScene* gamemain)
 		}
 		else
 		{
-
+			/*
 			if (wait_flg == false)
 			{
 				//Bおしたら攻撃
-				if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+				if (input.CheckBtn(XINPUT_BUTTON_X) == TRUE)
 				{
 					if (CheckSoundMem(atk_sound) == FALSE)
 					{
@@ -165,9 +165,9 @@ void Player::Update(GameMainScene* gamemain)
 					wait_flg = false;
 				}
 			}
-
+		*/	
 			PlayerAttack();
-
+			
 			/*
 			if (wait_flg==false)
 			{
@@ -418,8 +418,7 @@ void Player::Update(GameMainScene* gamemain)
 				flash_cnt = 0;
 			}
 
-	#ifdef DEBUG
-			if (input.CheckBtn(XINPUT_BUTTON_X) == TRUE)
+			if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 			{
 				//if (CheckSoundMem(atk_sound) == TRUE)
 				//{
@@ -443,6 +442,8 @@ void Player::Update(GameMainScene* gamemain)
 				player_state = ATTACK;
 				wait_flg = false;
 			}
+	#ifdef DEBUG
+
 	#endif // DEBUG
 
 		}
@@ -705,6 +706,7 @@ void Player::PlayerAttack()
 	else {
 		p_imgnum = 0;
 	}
+
 	//何秒か経ったら攻撃中フラグを戻す？
 	if (attacking == true)
 	{
@@ -714,14 +716,14 @@ void Player::PlayerAttack()
 			//そのままやるとそのままcheckBtnの中に入ってしまうので、数フレーム待たせる
 			//受付を１０までにする
 			//123.じゃなくて1,23ってなるときがあるので治す？
-			if (atk_cnt_timer < 20)
+	/*		if (atk_cnt_timer < 20)
 			{
-				if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+				if (input.CheckBtn(XINPUT_BUTTON_X) == TRUE)
 				{
 					color13 = 0x000000;
 					next_attackflg = true;
 				}
-			}
+			}*/
 		}
 		//20フレーム回ったら
 		if (atk_cnt_timer++ > 20)
