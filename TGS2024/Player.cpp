@@ -477,11 +477,12 @@ void Player::Draw() const
 
 		case NOMAL:
 			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_img[0], TRUE, direction);
-			DrawFormatString(location.x, location.y - 80, 0x000000, "nomal");
+			//DrawFormatString(location.x, location.y - 80, 0x000000, "nomal");
+
 			break;
 		case ATTACK:
 			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_attack_img[p_imgnum + p_atk_imgnum], TRUE, direction);
-			DrawFormatString(location.x, location.y - 80, 0x000000, "attack");
+			//DrawFormatString(location.x, location.y - 80, 0x000000, "attack");
 
 			if (is_hit_enemy == true)
 			{
@@ -507,16 +508,16 @@ void Player::Draw() const
 			break;
 		case WALK:
 			DrawRotaGraph(location.x, location.y, 1, 0, player_walk_img[walk_num], TRUE, direction);
-			DrawFormatString(location.x, location.y - 80, 0x000000, "walk");
+			//DrawFormatString(location.x, location.y - 80, 0x000000, "walk");
 
 			break;
 		case HITDAMAGE:
 			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_img[1], TRUE, direction);
-			DrawFormatString(location.x, location.y - 80, 0x000000, "hitdamage");
+			//DrawFormatString(location.x, location.y - 80, 0x000000, "hitdamage");
 			break;
 		case DEATH:
 			DrawRotaGraph(location.x, location.y-25, 1, 0, player_death_img[death_num], TRUE, direction);
-			DrawFormatString(location.x, location.y - 80, 0x000000, "death");
+			//DrawFormatString(location.x, location.y - 80, 0x000000, "death");
 			break;
 		default:
 			break;

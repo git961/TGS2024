@@ -401,8 +401,8 @@ void GameMainScene::Draw() const {
 	// 背景画像描画（仮）
 	DrawGraph(location_x, location_y, back_img,FALSE);
 
-	DrawFormatString(0, 0, 0xffffff, "GameMain");
-	fp.display_fps();
+	//DrawFormatString(0, 0, 0xffffff, "GameMain");
+	//fp.display_fps();
 
 	//if (checkhit == true)
 	//{
