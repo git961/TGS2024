@@ -1,8 +1,6 @@
 ﻿#include "Player.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
-#define DEBUG
-
 
 Player::Player()
 {
@@ -38,7 +36,7 @@ Player::Player()
 	old_worldx = world.x;
 
 	//体力
-	hp = 20;
+	hp = 100;
 
 	//幅と座標
 	width = 40;
@@ -478,7 +476,6 @@ void Player::Draw() const
 		case NOMAL:
 			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_img[0], TRUE, direction);
 			//DrawFormatString(location.x, location.y - 80, 0x000000, "nomal");
-
 			break;
 		case ATTACK:
 			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_attack_img[p_imgnum + p_atk_imgnum], TRUE, direction);
@@ -546,16 +543,16 @@ void Player::Draw() const
 	////DrawFormatString(100, 100, 0xffffff, "Right:%d", a);
 	//DrawFormatString(100, 120, 0xffffff, "btnnum: % d", input.Btnnum);
 
-	//DrawFormatString(100, 150, 0xffffff, "location.x: %f",location.x);
-	DrawFormatString(100, 100, 0xffffff, "worldx: %f location.x:%f",world.x,location.x);
-	DrawFormatString(100, 120, 0xffffff, "world_y: %f location.y:%f", world.y,location.y);
-	DrawFormatString(location.x, location.y-20, 0x000000, "hp%f", hp);
+	////DrawFormatString(100, 150, 0xffffff, "location.x: %f",location.x);
+	//DrawFormatString(100, 100, 0xffffff, "worldx: %f location.x:%f",world.x,location.x);
+	//DrawFormatString(100, 120, 0xffffff, "world_y: %f location.y:%f", world.y,location.y);
 	//DrawFormatString(location.x, location.y-20, 0x000000, "hp%f", hp);
-	/*DrawFormatString(100, 120, 0xffffff, "location.y: %f", location.y);
-	DrawFormatString(100, 140, 0xffffff, "world.x: %f",world.x);
-	DrawFormatString(100, 160, 0xffffff, "world.y: %f",world.y);*/
+	////DrawFormatString(location.x, location.y-20, 0x000000, "hp%f", hp);
+	///*DrawFormatString(100, 120, 0xffffff, "location.y: %f", location.y);
+	//DrawFormatString(100, 140, 0xffffff, "world.x: %f",world.x);
+	//DrawFormatString(100, 160, 0xffffff, "world.y: %f",world.y);*/
 
-	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);			// 中心座標
+	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);			// 中心座標
 
 #endif // DEBUG
 }

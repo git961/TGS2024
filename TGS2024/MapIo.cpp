@@ -157,7 +157,7 @@ void MapIo::Draw() const
 	//	}
 	//}
 
-	DrawFormatString(40, 40, 0xffffff, "Mousex+add_x:%d",mouse_x+add_x);
+	//DrawFormatString(40, 40, 0xffffff, "Mousex+add_x:%d",mouse_x+add_x);
 
 
 }
