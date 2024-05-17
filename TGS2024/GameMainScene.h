@@ -44,7 +44,9 @@ private:
 
     cameraposition screen_origin_position;
 
+    bool pose_flg;
 
+    bool player_damage_once;
     bool enemy_damage_once;
     bool checkhit;
     //bool enemyhit;      // 歩行エネミー同士の当たり判定チェック用、後に削除
@@ -78,7 +80,7 @@ public:
 
     void UpdateCamera(World world);
 
-
+    void SetPlayerDamageOnce(bool set_flg) { player_damage_once = set_flg; }
 
 
     //float GetCameraX() { return camera_x; };
