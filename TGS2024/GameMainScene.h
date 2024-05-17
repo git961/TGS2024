@@ -66,6 +66,7 @@ private:
     int count;//
 
     int defeat_enemy_num;           // 倒した敵の数
+    int map_mode;                   // スペースキーの状態
 
 public:
     GameMainScene();

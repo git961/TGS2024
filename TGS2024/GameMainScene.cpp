@@ -78,6 +78,7 @@ GameMainScene::GameMainScene() {
 	check_num = 0;
 
 	defeat_enemy_num = 0;
+	map_mode = 0;				// 押されていない
 }
 
 
@@ -94,10 +95,42 @@ void GameMainScene::Update() {
 #ifdef DEBUG
 	if (CheckHitKey(KEY_INPUT_SPACE) == 1)
 	{
+		// テスト用
+		map_mode = 1;
+
 		mapio->SaveMapData();
+
+		//// 再読み込み（テスト）
+		// ※　再読み込みをしたらモジュール読込できてないと出て止まる
+		//mapio->LoadMapData();
+		//if (mapio != nullptr) {
+		//	//stage_block = new StageBlock(this->mapio);
+
+		//	for (int i = 0; i < map_blockmax_y; i++)
+		//	{
+		//		for (int j = 0; j < map_blockmax_x; j++)
+		//		{
+		//			//もしマップioのgetマップデータが１だったら
+
+		//			if (mapio->GetMapData(i, j) == 1) {
+		//				stage_block[count++] = new StageBlock(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+		//			}
+		//			//stage_blockdata[i][j] = mapio->GetMapData(i, j);
+		//			//if (stage_blockdata[i][j] != 0)
+		//			//{
+		//			//	block_world.x[j] = j * BLOCKSIZE + BLOCKSIZE / 2;
+		//			//	block_world.y[i] = i * BLOCKSIZE + BLOCKSIZE / 2;
+		//			//}
+
+		//		}
+		//	}
+		//}
 
 	}
 	else {
+		// テスト
+		map_mode = 0;
+
 		mapio->InputTest(this);
 
 	}
@@ -390,6 +423,7 @@ void GameMainScene::Draw() const {
 	//DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
 	//DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
 	//DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
+	DrawFormatString(30, 300, 0xffffff, "m_mode: %d", map_mode);
 
 	mapio->Draw();
 #endif // DEBUG
