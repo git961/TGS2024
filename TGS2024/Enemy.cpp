@@ -44,7 +44,7 @@ Enemy::Enemy(float set_x)
 	player_x = 0.0f;
 	player_y = 0.0f;
 
-	srand((unsigned int)time(NULL));			// 現在時刻の情報で初期化
+	//srand((unsigned int)time(NULL));			// 現在時刻の情報で初期化
 	//num = rand() % 10 + 1;
 	//if (num >= 5)
 	//{
@@ -79,10 +79,12 @@ Enemy::Enemy(float set_x)
 		fragment[i].is_draw = false;
 
 		// 初速度の設定
-		v0[i] = rand() % 5 + 1;
+		//v0[i] = rand() % 5 + 1;
+		v0[i] = 0.0f;
 
 		// 発射角度の設定
-		fragment[i].degree = rand() % 90;
+		//fragment[i].degree = rand() % 90;
+		fragment[i].degree = 0.0;
 
 		if (i < 2)
 		{
@@ -154,7 +156,7 @@ void Enemy::Draw() const
 #ifdef DEBUG
 	DrawFormatString(location.x - 100, 50, 0xffffff, "%f", fragment[0].x);
 	DrawFormatString(location.x - 100, 80, 0xffffff, "%f", v0[0]);
-	//DrawFormatString(location.x - 100, 80, 0xffffff, "y: %f", fragment[0].radian);
+	DrawFormatString(location.x - 100, 110, 0xffffff, "y: %f", fragment[0].radian);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "y: %f", fragment[0].timer);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "y: %f", fragment[0].y);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "k: %d", is_knock_back);
@@ -471,6 +473,23 @@ void Enemy::FragmentEffect()
 	{
 		if (fragment[i].is_draw == false)
 		{
+			srand((unsigned int)time(NULL));			// 現在時刻の情報で初期化
+			for (int i = 0; i < 4; i++)
+			{
+				// 初速度の設定
+				v0[i] = rand() % 5 + 1;
+
+				// 発射角度の設定
+				fragment[i].degree = rand() % 90;
+
+				if (i < 2)
+				{
+					fragment[i].degree += 270;
+				}
+
+				fragment[i].radian = (double)DEGREE_RADIAN(fragment[i].degree);
+			}
+
 			fragment[i].x = location.x;
 			fragment[i].y = location.y - height /  2;				// 画像の中心
 		}
