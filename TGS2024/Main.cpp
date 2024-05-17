@@ -11,7 +11,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	nCmdShow)
 {
 	//タイトルをverminに変更
-	SetMainWindowText("まだタイトル決まってないよ");
+	SetMainWindowText("GanGanCrush");
 	ChangeWindowMode(TRUE);
 
 	SetGraphMode(1280, 720, 32);	//画面サイズ指定
