@@ -134,11 +134,11 @@ void Player::Update(GameMainScene* gamemain)
 		}
 		else
 		{
-
+			/*
 			if (wait_flg == false)
 			{
 				//Bおしたら攻撃
-				if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+				if (input.CheckBtn(XINPUT_BUTTON_X) == TRUE)
 				{
 					if (CheckSoundMem(atk_sound) == FALSE)
 					{
@@ -165,9 +165,9 @@ void Player::Update(GameMainScene* gamemain)
 					wait_flg = false;
 				}
 			}
-
+		*/	
 			PlayerAttack();
-
+			
 			/*
 			if (wait_flg==false)
 			{
@@ -418,8 +418,7 @@ void Player::Update(GameMainScene* gamemain)
 				flash_cnt = 0;
 			}
 
-	#ifdef DEBUG
-			if (input.CheckBtn(XINPUT_BUTTON_X) == TRUE)
+			if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 			{
 				//if (CheckSoundMem(atk_sound) == TRUE)
 				//{
@@ -443,6 +442,8 @@ void Player::Update(GameMainScene* gamemain)
 				player_state = ATTACK;
 				wait_flg = false;
 			}
+	#ifdef DEBUG
+
 	#endif // DEBUG
 
 		}
@@ -476,11 +477,12 @@ void Player::Draw() const
 
 		case NOMAL:
 			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_img[0], TRUE, direction);
-			DrawFormatString(location.x, location.y - 80, 0x000000, "nomal");
+			//DrawFormatString(location.x, location.y - 80, 0x000000, "nomal");
+
 			break;
 		case ATTACK:
 			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_attack_img[p_imgnum + p_atk_imgnum], TRUE, direction);
-			DrawFormatString(location.x, location.y - 80, 0x000000, "attack");
+			//DrawFormatString(location.x, location.y - 80, 0x000000, "attack");
 
 			if (is_hit_enemy == true)
 			{
@@ -506,16 +508,16 @@ void Player::Draw() const
 			break;
 		case WALK:
 			DrawRotaGraph(location.x, location.y, 1, 0, player_walk_img[walk_num], TRUE, direction);
-			DrawFormatString(location.x, location.y - 80, 0x000000, "walk");
+			//DrawFormatString(location.x, location.y - 80, 0x000000, "walk");
 
 			break;
 		case HITDAMAGE:
 			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_img[1], TRUE, direction);
-			DrawFormatString(location.x, location.y - 80, 0x000000, "hitdamage");
+			//DrawFormatString(location.x, location.y - 80, 0x000000, "hitdamage");
 			break;
 		case DEATH:
 			DrawRotaGraph(location.x, location.y-25, 1, 0, player_death_img[death_num], TRUE, direction);
-			DrawFormatString(location.x, location.y - 80, 0x000000, "death");
+			//DrawFormatString(location.x, location.y - 80, 0x000000, "death");
 			break;
 		default:
 			break;
@@ -705,6 +707,7 @@ void Player::PlayerAttack()
 	else {
 		p_imgnum = 0;
 	}
+
 	//何秒か経ったら攻撃中フラグを戻す？
 	if (attacking == true)
 	{
@@ -714,14 +717,14 @@ void Player::PlayerAttack()
 			//そのままやるとそのままcheckBtnの中に入ってしまうので、数フレーム待たせる
 			//受付を１０までにする
 			//123.じゃなくて1,23ってなるときがあるので治す？
-			if (atk_cnt_timer < 20)
+	/*		if (atk_cnt_timer < 20)
 			{
-				if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+				if (input.CheckBtn(XINPUT_BUTTON_X) == TRUE)
 				{
 					color13 = 0x000000;
 					next_attackflg = true;
 				}
-			}
+			}*/
 		}
 		//20フレーム回ったら
 		if (atk_cnt_timer++ > 20)
