@@ -154,10 +154,10 @@ void Enemy::Update(GameMainScene* gamemain)
 void Enemy::Draw() const
 {
 #ifdef DEBUG
-	DrawFormatString(location.x - 100, 50, 0xffffff, "%f", fragment[0].x);
-	DrawFormatString(location.x - 100, 80, 0xffffff, "%f", v0[0]);
-	DrawFormatString(location.x - 100, 110, 0xffffff, "y: %f", fragment[0].radian);
-	//DrawFormatString(location.x - 100, 80, 0xffffff, "y: %f", fragment[0].timer);
+	//DrawFormatString(location.x - 100, 50, 0xffffff, "%f", fragment[0].x);
+	//DrawFormatString(location.x - 100, 80, 0xffffff, "%f", v0[0]);
+	//DrawFormatString(location.x - 100, 110, 0xffffff, "y: %f", fragment[0].radian);
+	////DrawFormatString(location.x - 100, 80, 0xffffff, "y: %f", fragment[0].timer);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "y: %f", fragment[0].y);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "k: %d", is_knock_back);
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "s: %d", is_knock_back_start);

@@ -49,10 +49,10 @@ void AttackCheck::Update(GameMainScene* gamemain,Player* player)
 
 void AttackCheck::Draw() const
 {
-	if (attack_flg == true)
-	{
-		DrawBoxAA(world.x - width / 2, world.y - height / 2, world.x + width / 2, world.y + height / 2, 0x00ffff, false);
-		DrawCircleAA(world.x, world.y, 1, 0xff00ff, true);
+	//if (attack_flg == true)
+	//{
+	//	DrawBoxAA(world.x - width / 2, world.y - height / 2, world.x + width / 2, world.y + height / 2, 0x00ffff, false);
+	//	DrawCircleAA(world.x, world.y, 1, 0xff00ff, true);
 
-	}
+	//}
 }

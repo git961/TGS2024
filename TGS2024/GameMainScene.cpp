@@ -479,6 +479,12 @@ void GameMainScene::Draw() const {
 		}
 	}
 
+
+	if (pose_flg == true)
+	{
+		DrawFormatString(400, 400, 0xffffff, "POSE_NOW");
+	}
+
 #ifdef DEBUG
 
 	//DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
@@ -486,12 +492,8 @@ void GameMainScene::Draw() const {
 	//DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
 	//DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
 	//DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
-	DrawFormatString(30, 300, 0xffffff, "m_mode: %d", map_mode);
+	//DrawFormatString(30, 300, 0xffffff, "m_mode: %d", map_mode);
 
-	if (pose_flg == true)
-	{
-		DrawFormatString(400, 400, 0xffffff, "POSE_NOW");
-	}
 	mapio->Draw();
 #endif // DEBUG
 }
