@@ -50,6 +50,12 @@ private:
     effect fragment[4];
     float v0[4];                      // 斜方投射時の初速度
     float gravity;                    // 重力
+    float start_x;
+    float start_y;
+    float sum_t;
+    float t;
+    float mvx;
+    float mvy;
 
 public:
     Enemy(float set_x);

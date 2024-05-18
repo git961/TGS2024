@@ -94,7 +94,13 @@ Enemy::Enemy(float set_x)
 		fragment[i].radian = (double)DEGREE_RADIAN(fragment[i].degree);
 	}
 
-	gravity = 9.807f;
+	gravity = 980.0f;
+	start_x = 0.0f;
+	start_y = 0.0f;
+	sum_t = 0.0167f;
+	t = 0.0167f;
+	mvx = 0.0f;
+	mvy = 0.0f;
 }
 
 Enemy::~Enemy()
@@ -350,7 +356,7 @@ void Enemy::DeathAnimation()
 	if (death_cnt >= 60)
 	{
 		// 60カウント以上なら削除フラグをtrueに変更
-		is_delete = true;
+		//is_delete = true;
 	}
 
 	// 画像切り替え
@@ -477,44 +483,67 @@ void Enemy::FragmentEffect()
 			for (int i = 0; i < 4; i++)
 			{
 				// 初速度の設定
-				v0[i] = rand() % 5 + 1;
+				//v0[i] = 300.0f;
+				v0[i] = rand() % 200 + 300;
 
 				// 発射角度の設定
-				fragment[i].degree = rand() % 90;
+				fragment[i].degree = rand() % 45 + 45;
 
 				if (i < 2)
 				{
-					fragment[i].degree += 270;
+					fragment[i].degree += 45;
 				}
 
 				fragment[i].radian = (double)DEGREE_RADIAN(fragment[i].degree);
 			}
 
+			start_x = location.x;
+			start_y = location.y - height /  2;				// 画像の中心
 			fragment[i].x = location.x;
 			fragment[i].y = location.y - height /  2;				// 画像の中心
 		}
 
-		if (fragment[i].y <= 608.0f)
-		{
-			// 地面についていないのであれば
-			if (fragment[i].timer++ < 60)
-			{
-				if (i > 1)
-				{
-					// 斜方投射
-					// 右向き
-					fragment[i].x += v0[i] * cosf((float)fragment[i].radian);
-				}
-				else
-				{
-					// 斜方投射
-					// 左向き
-					fragment[i].x -= v0[i] * cosf((float)fragment[i].radian);
-				}
+		mvx = v0[i] * cosf((float)fragment[i].radian) * sum_t;
+		mvy = -v0[i] * sinf((float)fragment[i].radian) * sum_t + (gravity * sum_t * sum_t) / 2;
 
-				fragment[i].y += v0[i] * sinf((float)fragment[i].radian) - gravity;
+
+		if (fragment[i].y  < 608.0f)
+		{
+			if (i > 1)
+			{
+				fragment[i].x = start_x + mvx;
 			}
+			else
+			{
+				fragment[i].x = start_x - mvx;
+			}
+			fragment[i].y = start_y + mvy;
+
 		}
+
+		sum_t += t;
+
+		//if (fragment[i].y <= 608.0f)
+		//{
+		//	// 地面についていないのであれば
+		//	if (fragment[i].timer++ < 60)
+		//	{
+		//		if (i > 1)
+		//		{
+		//			// 斜方投射
+		//			// 右向き
+		//			fragment[i].x += v0[i] * cosf((float)fragment[i].radian);
+		//		}
+		//		else
+		//		{
+		//			// 斜方投射
+		//			// 左向き
+		//			fragment[i].x -= v0[i] * cosf((float)fragment[i].radian);
+		//		}
+
+		//		fragment[i].y += v0[i] * sinf((float)fragment[i].radian) - gravity;
+		//	}
+		//}
 
 		if (fragment[i].is_draw == false)
 		{
