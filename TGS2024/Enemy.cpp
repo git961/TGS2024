@@ -356,7 +356,7 @@ void Enemy::DeathAnimation()
 	if (death_cnt >= 60)
 	{
 		// 60カウント以上なら削除フラグをtrueに変更
-		//is_delete = true;
+		is_delete = true;
 	}
 
 	// 画像切り替え
