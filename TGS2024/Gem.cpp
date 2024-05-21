@@ -13,6 +13,8 @@ Gem::Gem(World set_world)
 
 	// 画像の読み込み
 	gem_img = LoadGraph("images/Gem/Gem.png");
+
+	gem_score = 10;
 }
 
 Gem::~Gem()

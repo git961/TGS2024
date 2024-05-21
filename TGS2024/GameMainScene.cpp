@@ -98,6 +98,8 @@ GameMainScene::~GameMainScene() {
 	delete mapio;
 	delete ac;
 	delete rolling_enemy;
+	delete[] gem;
+	delete score;
 }
 
 void GameMainScene::Update() {
@@ -307,7 +309,7 @@ void GameMainScene::Update() {
 			}
 		}
 
-		// 宝石更新処理
+		// 宝石生成処理
 		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
 			if (enemy[i] != nullptr)
@@ -321,6 +323,30 @@ void GameMainScene::Update() {
 				}
 			}
 		}
+
+		// 宝石更新処理
+		for (int i = 0; i < ENEMYMAXNUM; i++)
+		{
+			if (gem[i] != nullptr)
+			{
+				gem[i]->Update(this);
+			}
+		}
+
+		// 宝石とプレイヤーの当たり判定
+		for (int i = 0; i < ENEMYMAXNUM; i++)
+		{
+			if (player != nullptr && gem[i] != nullptr)
+			{
+				if (player->HitCheck(gem[i]->GetWorldLocation(), gem[i]->GetWidth(), gem[i]->GetHeight()) == true)
+				{
+					score->SetScore(gem[i]->GetGemScore());
+					delete gem[i];
+					gem[i] = nullptr;
+				}
+			}
+		}
+
 
 		if (player != nullptr) {
 			UpdateCamera(player->GetWorldLocation());

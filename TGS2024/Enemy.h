@@ -57,6 +57,8 @@ private:
     float mvx;
     float mvy;
 
+    //bool gem_drop;
+
 public:
     Enemy(float set_x);
     ~Enemy();
@@ -91,5 +93,6 @@ public:
     float GetAttack() const{ return attack; }                 // 攻撃力取得
     bool GetDeleteFlg() const { return is_delete; }           // 削除フラグの取得
     bool GetIsKnockBack() const { return is_knock_back; }     // ノックバックフラグの取得
+    //bool GetGemDropFlg() const { return gem_drop; }
 };
 

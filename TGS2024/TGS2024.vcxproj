@@ -182,7 +182,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="RollingEnemy.h" />
     <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="score.h" />
+    <ClInclude Include="Score.h" />
     <ClInclude Include="StageBlock.h" />
     <ClInclude Include="Vec2I.h" />
   </ItemGroup>

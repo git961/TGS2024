@@ -149,7 +149,7 @@
     <ClInclude Include="Gem.h">
       <Filter>ヘッダー ファイル\JemFile</Filter>
     </ClInclude>
-    <ClInclude Include="score.h">
+    <ClInclude Include="Score.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

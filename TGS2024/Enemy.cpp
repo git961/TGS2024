@@ -101,6 +101,8 @@ Enemy::Enemy(float set_x)
 	t = 0.0167f;
 	mvx = 0.0f;
 	mvy = 0.0f;
+
+	//gem_drop = false;
 }
 
 Enemy::~Enemy()
