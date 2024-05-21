@@ -9,6 +9,7 @@
 #include "MapIo.h"
 #include "StageBlock.h"
 #include "UIHP.h"
+#include "Dynamite.h"
 #include <math.h>
 
 
@@ -20,6 +21,7 @@ class AttackCheck;
 class MapIo;
 class StageBlock;
 class UIHP;
+class Dynamite;
 
 struct cameraposition
 {
@@ -46,6 +48,7 @@ private:
     Enemy** enemy;
     RollingEnemy* rolling_enemy;
     AttackCheck* ac;
+    Dynamite* dynamite;
     fps fp;
 
     MapIo* mapio;

@@ -23,6 +23,7 @@ GameMainScene::GameMainScene() {
 
 	ui_hp = new UIHP(player->GetHp());
 	ac = new AttackCheck;
+	dynamite = nullptr;
 	checkhit = false;
 	enemy_damage_once = false;
 
@@ -292,6 +293,20 @@ void GameMainScene::Update() {
 				ac->Update(this, player);
 			}
 
+			if (dynamite != nullptr) {
+				dynamite->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				dynamite->Update();
+			}
+
+			//ダイナマイト作成
+			if (player->GetAtkDynamite() == true)
+			{
+				dynamite = new Dynamite(player->GetWorldLocation());
+				player->SetAtkDynamite(false);
+			}
+
+
+
 			//プレイヤーの死亡処理
 			if (player->GetDeathFlg() == true)
 			{
@@ -344,6 +359,7 @@ void GameMainScene::Update() {
 			UpdateCamera(player->GetWorldLocation());
 			
 			
+		//UIアップデート
 			if (ui_hp != nullptr)
 			{
 				ui_hp->Update(player->GetHp());
@@ -518,6 +534,11 @@ void GameMainScene::Draw() const {
 		{
 			ac->Draw();
 		}
+	}
+
+	//ダイナマイト描画
+	if (dynamite != nullptr) {
+		dynamite->Draw();
 	}
 
 	for (int j = 0; j < block_count; j++)

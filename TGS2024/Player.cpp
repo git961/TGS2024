@@ -54,6 +54,9 @@ Player::Player()
 	wait_atk_cnt = 0;
 	wait_flg = false;
 
+	//ダイナマイトに使用
+	atk_dynamite = false;
+
 	color13 = 0xffffff;
 
 	is_atk_putout = false;
@@ -128,115 +131,9 @@ void Player::Update(GameMainScene* gamemain)
 		}
 		else
 		{
-			/*
-			if (wait_flg == false)
-			{
-				//Bおしたら攻撃
-				if (input.CheckBtn(XINPUT_BUTTON_X) == TRUE)
-				{
-					if (CheckSoundMem(atk_sound) == FALSE)
-					{
-						PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
-					}
 
-					//右向きだったら
-					if (direction == 0)
-					{
-						world.x += 3;
-					}
-					else {
-						world.x -= 3;
-					}
-					attacking = true;
-					player_state = ATTACK;
-				}
-			}
-			else if (wait_flg == true)
-			{//攻撃がすぐには出来ないように待たせる
-				if (wait_atk_cnt++ > 15) {
-					attack_cnt = 0;
-					wait_atk_cnt = 0;
-					wait_flg = false;
-				}
-			}
-		*/	
 			PlayerAttack();
 			
-			/*
-			if (wait_flg==false)
-			{
-				//Bおしたら攻撃
-				if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
-				{
-					if (CheckSoundMem(atk_sound) == FALSE)
-					{
-						PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
-					}
-
-					//右向きだったら
-					if (direction == 0)
-					{
-						world.x += 3;
-					}
-					else {
-						world.x -= 3;
-					}
-					attacking = true;
-					player_state = ATTACK;
-				}
-			}
-			else if(wait_flg==true)
-			{//攻撃がすぐには出来ないように待たせる
-				if (wait_atk_cnt++ > 15) {
-					attack_cnt = 0;
-					wait_atk_cnt = 0;
-					wait_flg = false;
-				}
-			}
-
-
-
-
-			if (attacking == true)
-			{
-				if (attack_cnt == 1)
-				{
-					p_atk_imgnum = 4;
-				}
-				else if (attack_cnt == 2)
-				{
-					p_atk_imgnum = 8;
-				}
-				else {
-					p_atk_imgnum = 0;
-
-				}
-
-				switch (anim_cnt)
-				{
-				case 0:
-					p_imgnum = 0;
-					break;
-				case 7:
-					p_imgnum = 1;
-					break;
-				case 10:
-					is_atk_putout = true;
-					effect_num = 0;
-					p_imgnum = 2;
-					break;
-				case 13:
-					effect_num = 1;
-					p_imgnum = 3;
-					break;
-				}
-
-			}
-			else {
-				p_imgnum = 0;
-			}
-			*/
-
 			//何秒か経ったら攻撃中フラグを戻す？
 			if (attacking == true)
 			{
@@ -412,6 +309,7 @@ void Player::Update(GameMainScene* gamemain)
 				flash_cnt = 0;
 			}
 
+			//つるはし攻撃
 			if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 			{
 				//if (CheckSoundMem(atk_sound) == TRUE)
@@ -436,7 +334,14 @@ void Player::Update(GameMainScene* gamemain)
 				player_state = ATTACK;
 				wait_flg = false;
 			}
-	#ifdef DEBUG
+
+			//ダイナマイト攻撃
+			if (input.CheckBtn(XINPUT_BUTTON_Y) == TRUE)
+			{
+				atk_dynamite = true;
+			}
+
+#ifdef DEBUG
 
 	#endif // DEBUG
 

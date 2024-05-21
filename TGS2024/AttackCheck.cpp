@@ -45,6 +45,22 @@ void AttackCheck::Update(GameMainScene* gamemain,Player* player)
 		attack_flg = false;
 	}
 
+	if (player->GetAtkDynamite() == true)
+	{
+		//プレイヤーが右を向いてたら
+		if (player->GetDirection() == 0)
+		{
+			world.x = player->GetWorldLocation().x + 30;
+			world.y = player->GetWorldLocation().y;
+		}
+		//プレイヤーが左を向いていたら
+		if (player->GetDirection() == 1)
+		{
+			world.x = player->GetWorldLocation().x - 30;
+			world.y = player->GetWorldLocation().y;
+		}
+	}
+
 }
 
 void AttackCheck::Draw() const

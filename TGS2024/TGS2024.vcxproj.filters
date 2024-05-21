@@ -93,6 +93,9 @@
     <ClCompile Include="UIHP.cpp">
       <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Dynamite.cpp">
+      <Filter>ソース ファイル\PlayerFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fps.h">
@@ -145,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="UIHP.h">
       <Filter>ヘッダー ファイル\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Dynamite.h">
+      <Filter>ヘッダー ファイル\PlayerFile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

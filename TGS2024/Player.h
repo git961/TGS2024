@@ -63,6 +63,8 @@ private:
     //プレイヤーの状態
     bool walk;//true:歩いてる false:止まってる
     bool attacking;//true:攻撃中 false:攻撃してない 
+    bool atk_dynamite;//true:発射 false:発射してない 
+
 
     //ダメージ受けた時に点滅させるよう
     bool hit_damage;//ダメージを受けた
@@ -92,6 +94,9 @@ public:
     void PlayerAttack();
 
     bool GetAttacking() { return is_atk_putout; }
+    
+    bool GetAtkDynamite() { return atk_dynamite; }
+    void SetAtkDynamite(bool set_flg) { atk_dynamite=set_flg; }
 
     float GetHp() { return hp; }
 
