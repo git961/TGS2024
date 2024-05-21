@@ -5,17 +5,17 @@
 
 class GameMainScene;
 
-class Jem : public CharacterBase
+class Gem : public CharacterBase
 {
 private:
-	int jem_img;          // 宝石画像
+	int gem_img;          // 宝石画像
 
 	//float enemy_x;			// 敵の死亡座標
 	//float enemy_y;			// 敵の死亡座標
 
 public:
-	Jem(World set_world);
-	~Jem();
+	Gem(World set_world);
+	~Gem();
 
 	void Update(GameMainScene* gamemain);
 	void Draw() const;

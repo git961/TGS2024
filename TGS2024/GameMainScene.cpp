@@ -74,9 +74,12 @@ GameMainScene::GameMainScene() {
 		}
 	}
 
+	gem = new Gem * [ENEMYMAXNUM];
+
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
 		enemy[i] = new Enemy(i);
+		gem[i] = nullptr;
 	}
 
 	check_num = 0;
@@ -300,6 +303,21 @@ void GameMainScene::Update() {
 			{
 				delete rolling_enemy;
 				rolling_enemy = nullptr;
+			}
+		}
+
+		// 宝石更新処理
+		for (int i = 0; i < ENEMYMAXNUM; i++)
+		{
+			if (enemy[i] != nullptr)
+			{
+				if (enemy[i]->GetHp() <= 0)
+				{
+					if (gem[i] == nullptr)
+					{
+						gem[i] = new Gem(enemy[i]->GetWorldLocation());
+					}
+				}
 			}
 		}
 
@@ -783,7 +801,14 @@ void GameMainScene::Draw() const {
 		}
 	}
 
-
+	for (int i = 0; i < ENEMYMAXNUM; i++)
+	{
+		// 宝石描画処理
+		if (gem[i] != nullptr)
+		{
+			gem[i]->Draw();
+		}
+	}
 
 
 #ifdef DEBUG

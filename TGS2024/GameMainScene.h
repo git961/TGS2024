@@ -8,6 +8,7 @@
 #include "fps.h"
 #include "MapIo.h"
 #include "StageBlock.h"
+#include "Gem.h"
 #include <math.h>
 
 
@@ -18,6 +19,7 @@ class RollingEnemy;
 class AttackCheck;
 class MapIo;
 class StageBlock;
+class Gem;
 
 struct cameraposition
 {
@@ -47,6 +49,7 @@ private:
 
     MapIo *mapio;
     StageBlock **stage_block;
+    Gem** gem;
 
     cameraposition camera_pos;
 

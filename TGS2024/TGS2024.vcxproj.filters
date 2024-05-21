@@ -90,7 +90,7 @@
     <ClCompile Include="RollingEnemy.cpp">
       <Filter>ソース ファイル\EnemyFile</Filter>
     </ClCompile>
-    <ClCompile Include="Jem.cpp">
+    <ClCompile Include="Gem.cpp">
       <Filter>ソース ファイル\JemFile</Filter>
     </ClCompile>
   </ItemGroup>
@@ -143,7 +143,7 @@
     <ClInclude Include="Vec2I.h">
       <Filter>ヘッダー ファイル\SystemFile</Filter>
     </ClInclude>
-    <ClInclude Include="Jem.h">
+    <ClInclude Include="Gem.h">
       <Filter>ヘッダー ファイル\JemFile</Filter>
     </ClInclude>
   </ItemGroup>
