@@ -9,9 +9,8 @@
 #include "MapIo.h"
 #include "StageBlock.h"
 #include "Gem.h"
+#include "Score.h"
 #include <math.h>
-
-
 
 class Player;
 class Enemy;
@@ -50,6 +49,7 @@ private:
     MapIo *mapio;
     StageBlock **stage_block;
     Gem** gem;
+    Score* score;
 
     cameraposition camera_pos;
 

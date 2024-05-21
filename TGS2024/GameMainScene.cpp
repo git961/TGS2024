@@ -75,6 +75,7 @@ GameMainScene::GameMainScene() {
 	}
 
 	gem = new Gem * [ENEMYMAXNUM];
+	score = new Score;
 
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
@@ -810,6 +811,10 @@ void GameMainScene::Draw() const {
 		}
 	}
 
+	if (score != nullptr)
+	{
+		score->Draw();
+	}
 
 #ifdef DEBUG
 
