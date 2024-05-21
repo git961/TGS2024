@@ -39,12 +39,13 @@ void MapIo::InputTest(GameMainScene* gamemain)
 
 	GetMousePoint(&mouse_x, &mouse_y);
 
+	//小さいほう
 	if (input.CheckBtn(XINPUT_BUTTON_RIGHT_SHOULDER) == TRUE)
 	{
 		add_x += 1280;
 
 	}
-
+	//小さいほう
 	if (input.CheckBtn(XINPUT_BUTTON_LEFT_SHOULDER) == TRUE)
 	{
 		if (add_x > 0)
@@ -129,35 +130,35 @@ void MapIo::SaveMapData()
 void MapIo::Draw() const
 {
 
-	//for (int i = 0; i < map_blockmax_y; i++)
-	//{
-	//	for (int j = 0; j < map_blockmax_x; j++)
-	//	{
-	//		if (map_array[i][j] != 0)
-	//		{
-	//			DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
-	//		}
-	//	}
-	//}
+	for (int i = 0; i < map_blockmax_y; i++)
+	{
+		for (int j = 0; j < map_blockmax_x; j++)
+		{
+			if (map_array[i][j] != 0)
+			{
+				DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
+			}
+		}
+	}
 
-	//for (int i = 0; i < map_blockmax_y; i++)
-	//{
-	//	for (int j = 0; j < map_blockmax_x; j++)
-	//	{
-	//		//もしこの範囲に居たら
-	//		//ワールド座標とマウスの座標を比べる
+	for (int i = 0; i < map_blockmax_y; i++)
+	{
+		for (int j = 0; j < map_blockmax_x; j++)
+		{
+			//もしこの範囲に居たら
+			//ワールド座標とマウスの座標を比べる
 
-	//		if (j* BLOCKSIZE < mouse_x && j * BLOCKSIZE+BLOCKSIZE > mouse_x) {
-	//			if (i * BLOCKSIZE < mouse_y && i * BLOCKSIZE+BLOCKSIZE > mouse_y)
-	//			{
-	//				DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
+			if (j* BLOCKSIZE < mouse_x && j * BLOCKSIZE+BLOCKSIZE > mouse_x) {
+				if (i * BLOCKSIZE < mouse_y && i * BLOCKSIZE+BLOCKSIZE > mouse_y)
+				{
+					DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
 
-	//			}
-	//		}
-	//	}
-	//}
+				}
+			}
+		}
+	}
 
-	//DrawFormatString(40, 40, 0xffffff, "Mousex+add_x:%d",mouse_x+add_x);
+	DrawFormatString(40, 40, 0xffffff, "add_x:%d",add_x);
 
 
 }
