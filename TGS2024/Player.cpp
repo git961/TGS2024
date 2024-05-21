@@ -4,10 +4,6 @@
 
 Player::Player()
 {
-
-
-
-
 	//画像読込
 	player_img[0] = LoadGraph("images/Player/player.png");
 	player_img[1] = LoadGraph("images/Player/damage.png");
@@ -36,7 +32,7 @@ Player::Player()
 	old_worldx = world.x;
 
 	//体力
-	hp = 100;
+	hp = 50;
 
 	//幅と座標
 	width = 40;

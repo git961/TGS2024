@@ -8,6 +8,7 @@
 #include "fps.h"
 #include "MapIo.h"
 #include "StageBlock.h"
+#include "UIHP.h"
 #include <math.h>
 
 
@@ -18,6 +19,7 @@ class RollingEnemy;
 class AttackCheck;
 class MapIo;
 class StageBlock;
+class UIHP;
 
 struct cameraposition
 {
@@ -29,7 +31,8 @@ struct cameraposition
 enum GameState {
     EDITOR,
     POSE,
-    PLAY,
+    GOAL,
+    PLAY
 };
 
 class GameMainScene :
@@ -48,11 +51,14 @@ private:
     MapIo* mapio;
     StageBlock** stage_block;
 
+    UIHP* ui_hp;
+
     cameraposition camera_pos;
 
     cameraposition screen_origin_position;
 
-    bool pose_flg;
+    bool pose_flg;//ポーズ中か
+    bool goal_flg;//ゴールしたか
 
     bool player_damage_once;
     bool enemy_damage_once;
@@ -78,7 +84,6 @@ private:
     int map_old_array[map_blockmax_y][map_blockmax_x];//配置したエネミーを消したかチェック用
 
     int defeat_enemy_num;           // 倒した敵の数
-    int map_mode;                   // スペースキーの状態
 
 public:
     GameMainScene();

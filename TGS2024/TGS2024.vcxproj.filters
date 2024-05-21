@@ -46,6 +46,12 @@
     <Filter Include="ヘッダー ファイル\StageFile">
       <UniqueIdentifier>{12e94412-d881-465b-9799-0a039c7757e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\UI">
+      <UniqueIdentifier>{97f5c3f5-5d09-4dd9-8e46-7f467ea66bf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\UI">
+      <UniqueIdentifier>{32392257-384e-48ab-a8e4-2aa6d1f227ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -83,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="RollingEnemy.cpp">
       <Filter>ソース ファイル\EnemyFile</Filter>
+    </ClCompile>
+    <ClCompile Include="UIHP.cpp">
+      <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +142,9 @@
     </ClInclude>
     <ClInclude Include="Vec2I.h">
       <Filter>ヘッダー ファイル\SystemFile</Filter>
+    </ClInclude>
+    <ClInclude Include="UIHP.h">
+      <Filter>ヘッダー ファイル\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

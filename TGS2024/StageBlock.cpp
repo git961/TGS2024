@@ -1,7 +1,7 @@
 #include "StageBlock.h"
 
 
-StageBlock::StageBlock(float set_x, float set_y)
+StageBlock::StageBlock(int set_block_num,float set_x, float set_y)
 {
 	height = BLOCKSIZE;
 	width= BLOCKSIZE;
@@ -10,9 +10,14 @@ StageBlock::StageBlock(float set_x, float set_y)
 	world.y = set_y;
 	location.x = set_x;
 	location.y = set_y;
+	block_num = set_block_num;
 
-	block_img = LoadGraph("images/Stage/block.png");
-
+	if (block_num == 1) {
+		block_img = LoadGraph("images/Stage/block.png");
+	}
+	else {
+		block_img = LoadGraph("images/Stage/Goal.png");
+	}
 	/*
 	for (int i = 0; i < map_blockmax_y; i++)
 	{

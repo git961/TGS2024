@@ -34,7 +34,7 @@ private:
 
 	int add_x;
 
-	int map_data_num;//0:何もなし 1:マップチップ　2:エネミー
+	int map_data_num;//0:何もなし 1:マップチップ　2:エネミー 3:ゴール
 
 public:
 	MapIo();

@@ -66,6 +66,10 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		map_data_num = 2;
 	}
 
+	if (CheckHitKey(KEY_INPUT_3) == TRUE)
+	{
+		map_data_num = 3;
+	}
 
 	//ブロック追加
 	if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0) {
@@ -153,6 +157,10 @@ void MapIo::Draw() const
 			{
 				DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0x000000, FALSE);
 			}
+			else if (map_array[i][j] == 3)
+			{
+				DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0xffff00, FALSE);
+			}
 		}
 	}
 
@@ -182,8 +190,10 @@ void MapIo::Draw() const
 
 		break;
 	case 2:
-		DrawFormatString(40, 100, 0xffffff, "PUT_ENEMY");
-
+		DrawFormatString(40, 80, 0xffffff, "PUT_ENEMY");
+		break;
+	case 3:
+		DrawFormatString(40, 80, 0xffffff, "PUT_Goal");
 		break;
 	}
 
