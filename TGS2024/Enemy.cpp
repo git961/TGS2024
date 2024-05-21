@@ -1,13 +1,13 @@
 ﻿#include "Enemy.h"
 
-Enemy::Enemy(float set_x)
+Enemy::Enemy(float set_x, float set_y)
 {
 	// 中心座標
-	location.x = 400 + (40 * set_x);
-	location.y = 600;
+	location.x = set_x;
+	location.y = set_y;
 
-	world.x = 400.0f + (120.0f * set_x);
-	world.y = 608.0f;
+	world.x = set_x;
+	world.y = set_y + 8.0f;
 
 	width = 45.0f;
 	height = 64.0f;
@@ -491,7 +491,7 @@ void Enemy::FragmentEffect()
 			}
 
 			fragment[i].x = location.x;
-			fragment[i].y = location.y - height /  2;				// 画像の中心
+			fragment[i].y = location.y - height / 2;				// 画像の中心
 		}
 
 		if (fragment[i].y <= 608.0f)

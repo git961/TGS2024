@@ -15,7 +15,7 @@ GameMainScene::GameMainScene() {
 	mapio = new MapIo;
 
 
-	player=new Player();
+	player = new Player();
 
 	enemy = new Enemy * [ENEMYMAXNUM];
 	rolling_enemy = new RollingEnemy;
@@ -24,11 +24,11 @@ GameMainScene::GameMainScene() {
 
 	ac = new AttackCheck;
 	checkhit = false;
-	enemy_damage_once=false;
+	enemy_damage_once = false;
 
 	player_damage_once = false;
 	//back.png
-	back_img=LoadGraph("images/background_test.png", TRUE);
+	back_img = LoadGraph("images/background_test.png", TRUE);
 
 
 	game_state = PLAY;
@@ -48,9 +48,16 @@ GameMainScene::GameMainScene() {
 	camera_pos.x - SCREEN_WIDTH / 2.0f,
 	camera_pos.y - SCREEN_HEIGHT / 2.0f
 	};
-	count = 0;
+
+	block_count = 0;
+	enemy_count = 0;
 
 	mapio->LoadMapData();
+	for (int i = 0; i < ENEMYMAXNUM; i++)
+	{
+		enemy[i] = nullptr;
+	}
+
 	if (mapio != nullptr) {
 		//stage_block = new StageBlock(this->mapio);
 
@@ -61,23 +68,20 @@ GameMainScene::GameMainScene() {
 				//もしマップioのgetマップデータが１だったら
 
 				if (mapio->GetMapData(i, j) == 1) {
-					stage_block[count++] = new StageBlock(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+					stage_block[block_count++] = new StageBlock(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 				}
-				//stage_blockdata[i][j] = mapio->GetMapData(i, j);
-				//if (stage_blockdata[i][j] != 0)
-				//{
-				//	block_world.x[j] = j * BLOCKSIZE + BLOCKSIZE / 2;
-				//	block_world.y[i] = i * BLOCKSIZE + BLOCKSIZE / 2;
-				//}
 
+				if (mapio->GetMapData(i, j) == 2) {
+					if (enemy_count < ENEMYMAXNUM)
+					{
+						enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+					}
+				}
 			}
 		}
 	}
 
-	for (int i = 0; i < ENEMYMAXNUM; i++)
-	{
-		enemy[i] = new Enemy(i);
-	}
+
 
 	check_num = 0;
 
@@ -106,38 +110,49 @@ void GameMainScene::Update() {
 	{
 	case EDITOR:
 
-			mapio->InputTest(this);
-			
-			//右スティック押し込み
-			if (input.CheckBtn(XINPUT_BUTTON_RIGHT_THUMB) == TRUE)
+		mapio->InputTest(this);
+
+		//右スティック押し込み
+		if (input.CheckBtn(XINPUT_BUTTON_RIGHT_THUMB) == TRUE)
+		{
+			//Inputを保存
+			mapio->SaveMapData();
+			block_count = 0;
+
+
+
+			//マップチップに反映する
+			for (int i = 0; i < map_blockmax_y; i++)
 			{
-				//Inputを保存
-				mapio->SaveMapData();
-				count = 0;
-
-				//マップチップに反映する
-				for (int i = 0; i < map_blockmax_y; i++)
+				for (int j = 0; j < map_blockmax_x; j++)
 				{
-					for (int j = 0; j < map_blockmax_x; j++)
-					{
-						//もしマップioのgetマップデータが１だったら
+					//もしマップioのgetマップデータが１だったら
 
-						if (mapio->GetMapData(i, j) == 1) {
-							stage_block[count++] = new StageBlock(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
-						}
-			
-
+					if (mapio->GetMapData(i, j) == 1) {
+						stage_block[block_count++] = new StageBlock(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 					}
-				}
+					if (enemy_count < ENEMYMAXNUM)
+					{
+						if (enemy[enemy_count] == nullptr)
+						{
+							//data==0だったらエネミー消す処理
+							if (mapio->GetMapData(i, j) == 2) {
+								enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+							}
+						}
+					}
 
-				game_state = PLAY;
+				}
 			}
+
+			game_state = PLAY;
+		}
 
 		break;
 	case POSE:
 		if (input.CheckBtn(XINPUT_BUTTON_START) == TRUE)
 		{
-			game_state=PLAY;
+			game_state = PLAY;
 		}
 		break;
 	case PLAY:
@@ -154,14 +169,15 @@ void GameMainScene::Update() {
 		}
 
 		// 生成された歩行エネミーをすべて倒したら
-		if (defeat_enemy_num == ENEMYMAXNUM)
+		if (defeat_enemy_num == enemy_count)
 		{
+			enemy_count = 0;
 			// 歩行エネミーの生成
 			for (int i = 0; i < ENEMYMAXNUM; i++)
 			{
-				if (enemy[i] == nullptr)
+				if (enemy[enemy_count] == nullptr)
 				{
-					enemy[i] = new Enemy(i);
+					//enemy[enemy_count++] = new Enemy(i);
 				}
 			}
 			defeat_enemy_num = 0;
@@ -174,7 +190,7 @@ void GameMainScene::Update() {
 
 		if (input.CheckBtn(XINPUT_BUTTON_START) == TRUE)
 		{
-			game_state=POSE;
+			game_state = POSE;
 		}
 
 		// 歩行エネミーとプレイヤーの当たり判定
@@ -394,7 +410,7 @@ void GameMainScene::Update() {
 			camera_pos.y - SCREEN_HEIGHT / 2.0f
 		};
 
-		for (int j = 0; j < count; j++)
+		for (int j = 0; j < block_count; j++)
 		{
 			if (stage_block[j] != nullptr)
 			{
@@ -716,7 +732,7 @@ void GameMainScene::Update() {
 					//{
 					//	//各頂点の座標を確保しておく
 					//	player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
-					//	
+					//
 					//}
 
 					if (stage_block[j]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
@@ -730,13 +746,13 @@ void GameMainScene::Update() {
 			}
 		}
 		*/
-	//}
+		//}
 
 }
 
 void GameMainScene::Draw() const {
 	// 背景画像描画（仮）
-	DrawGraph(location_x, location_y, back_img,FALSE);
+	DrawGraph(location_x, location_y, back_img, FALSE);
 
 	//DrawFormatString(0, 0, 0xffffff, "GameMain");
 	//fp.display_fps();
@@ -774,8 +790,8 @@ void GameMainScene::Draw() const {
 			ac->Draw();
 		}
 	}
-		
-	for (int j = 0; j < count; j++)
+
+	for (int j = 0; j < block_count; j++)
 	{
 		if (stage_block[j] != nullptr)
 		{
@@ -794,7 +810,7 @@ void GameMainScene::Draw() const {
 	//DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
 	//DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
 	//DrawFormatString(30, 300, 0xffffff, "m_mode: %d", map_mode);
-	
+
 	switch (game_state)
 	{
 	case EDITOR:
@@ -826,28 +842,28 @@ void GameMainScene::UpdateCamera(World world)
 	//X軸のステージの内外判定
 
 	//ワールド左端に到達したらカメラが移動しないように
-	if (camera_pos.x - WINDOW_HALFX<= 0.0f)
+	if (camera_pos.x - WINDOW_HALFX <= 0.0f)
 	{
 		camera_pos.x = WINDOW_HALFX;
 	}
-	else if (camera_pos.x +WINDOW_HALFX>= FIELD_WIDTH)
+	else if (camera_pos.x + WINDOW_HALFX >= FIELD_WIDTH)
 	{
 		//ワールド右端に到達したらカメラが移動しないように
-		camera_pos.x =FIELD_WIDTH - WINDOW_HALFX;
+		camera_pos.x = FIELD_WIDTH - WINDOW_HALFX;
 	}
 
 
 	//Y軸のステージの内外判定
 
 	//ワールドの底に到達したらカメラが移動しないように
-	if (camera_pos.y -  WINDOW_HALFY<= 0.0f)
+	if (camera_pos.y - WINDOW_HALFY <= 0.0f)
 	{
 		camera_pos.y = WINDOW_HALFY;
 	}
 	else if (camera_pos.y + WINDOW_HALFY >= FIELD_HEIGHT)
 	{
 		//ワールドのてっぺんに到達したらカメラが移動しないように
-		camera_pos.y = FIELD_HEIGHT-WINDOW_HALFY;
+		camera_pos.y = FIELD_HEIGHT - WINDOW_HALFY;
 	}
 
 }

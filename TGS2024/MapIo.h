@@ -25,7 +25,7 @@ private:
 	int map_array[map_blockmax_y][map_blockmax_x];
 	//真ん中の座標を手に居れる
 	int stage_block_pos[map_blockmax_x][map_blockmax_y];
-	
+
 	FILE* fp;
 	int map_get;
 
@@ -34,12 +34,14 @@ private:
 
 	int add_x;
 
+	int map_data_num;//0:何もなし 1:マップチップ　2:エネミー
+
 public:
 	MapIo();
 	~MapIo();
 
 	void LoadMapData();//マップデータ読込
-	void InputTest(GameMainScene *gamemain);//エディタテスト
+	void InputTest(GameMainScene* gamemain);//エディタテスト
 	void SaveMapData();//マップデータ保存
 	void Draw() const;
 	int GetMapData(int j, int i) { return map_array[j][i]; }

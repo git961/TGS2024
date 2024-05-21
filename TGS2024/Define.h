@@ -15,7 +15,7 @@
 #define WINDOW_HALFX SCREEN_WIDTH/2
 #define WINDOW_HALFY SCREEN_HEIGHT/2
 
-#define ENEMYMAXNUM 2
+#define ENEMYMAXNUM 10
 
 #define _USE_MATH_DEFINES       // M_PI使用用
 

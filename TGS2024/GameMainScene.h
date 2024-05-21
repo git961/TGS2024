@@ -39,14 +39,14 @@ private:
 
     GameState game_state;
 
-    Player *player;
-    Enemy **enemy;
+    Player* player;
+    Enemy** enemy;
     RollingEnemy* rolling_enemy;
-    AttackCheck *ac;
+    AttackCheck* ac;
     fps fp;
 
-    MapIo *mapio;
-    StageBlock **stage_block;
+    MapIo* mapio;
+    StageBlock** stage_block;
 
     cameraposition camera_pos;
 
@@ -73,7 +73,8 @@ private:
     //camera_x - 1280 / 2;
     //camera_y - 720 / 2;
 
-    int count;//
+    int block_count;//配置したブロックの数
+    int enemy_count;//配置したエネミーの数
 
     int defeat_enemy_num;           // 倒した敵の数
     int map_mode;                   // スペースキーの状態

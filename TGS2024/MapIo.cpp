@@ -7,6 +7,7 @@ MapIo::MapIo()
 	fp = NULL;
 	count = 0;
 	add_x = 0;
+	map_data_num = 1;
 }
 
 MapIo::~MapIo()
@@ -55,8 +56,19 @@ void MapIo::InputTest(GameMainScene* gamemain)
 	}
 	//1280
 
+	if (CheckHitKey(KEY_INPUT_1) == TRUE)
+	{
+		map_data_num = 1;
+	}
+
+	if (CheckHitKey(KEY_INPUT_2) == TRUE)
+	{
+		map_data_num = 2;
+	}
+
+
 	//ブロック追加
-	if ((GetMouseInput() & MOUSE_INPUT_LEFT)!=0){
+	if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0) {
 		//押されてる
 		//i=ｙ座標
 		for (int i = 0; i < map_blockmax_y; i++)
@@ -66,10 +78,10 @@ void MapIo::InputTest(GameMainScene* gamemain)
 			{
 				//もしこの範囲に居たら
 				//ワールド座標とマウスの座標を比べる
-				if (j * BLOCKSIZE < mouse_x+add_x && j * BLOCKSIZE + BLOCKSIZE > mouse_x+add_x) {
+				if (j * BLOCKSIZE < mouse_x + add_x && j * BLOCKSIZE + BLOCKSIZE > mouse_x + add_x) {
 					if (i * BLOCKSIZE < mouse_y && i * BLOCKSIZE + BLOCKSIZE > mouse_y)
 					{
-						map_array[i][j] = 1;
+						map_array[i][j] = map_data_num;
 
 						//j*BLOCKSIZE=左上の座標＋幅/２すれば真ん中のY
 						//i*BLOCKSIZE=左上の座標＋幅/２すれば真ん中のY
@@ -81,7 +93,7 @@ void MapIo::InputTest(GameMainScene* gamemain)
 
 
 	}
-	
+
 	//ブロック消去
 	if ((GetMouseInput() & MOUSE_INPUT_RIGHT) != 0)
 	{
@@ -92,10 +104,9 @@ void MapIo::InputTest(GameMainScene* gamemain)
 			{
 				//もしこの範囲に居たら
 				//ワールド座標とマウスの座標を比べる
-				if (j * BLOCKSIZE < mouse_x+add_x && j * BLOCKSIZE + BLOCKSIZE > mouse_x+add_x) {
+				if (j * BLOCKSIZE < mouse_x + add_x && j * BLOCKSIZE + BLOCKSIZE > mouse_x + add_x) {
 					if (i * BLOCKSIZE < mouse_y && i * BLOCKSIZE + BLOCKSIZE > mouse_y)
 					{
-
 						map_array[i][j] = 0;
 					}
 				}
@@ -134,9 +145,13 @@ void MapIo::Draw() const
 	{
 		for (int j = 0; j < map_blockmax_x; j++)
 		{
-			if (map_array[i][j] != 0)
+			if (map_array[i][j] == 1)
 			{
 				DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
+			}
+			else if (map_array[i][j] == 2)
+			{
+				DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0x000000, FALSE);
 			}
 		}
 	}
@@ -148,8 +163,8 @@ void MapIo::Draw() const
 			//もしこの範囲に居たら
 			//ワールド座標とマウスの座標を比べる
 
-			if (j* BLOCKSIZE < mouse_x && j * BLOCKSIZE+BLOCKSIZE > mouse_x) {
-				if (i * BLOCKSIZE < mouse_y && i * BLOCKSIZE+BLOCKSIZE > mouse_y)
+			if (j * BLOCKSIZE < mouse_x && j * BLOCKSIZE + BLOCKSIZE > mouse_x) {
+				if (i * BLOCKSIZE < mouse_y && i * BLOCKSIZE + BLOCKSIZE > mouse_y)
 				{
 					DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
 
@@ -158,7 +173,18 @@ void MapIo::Draw() const
 		}
 	}
 
-	DrawFormatString(40, 40, 0xffffff, "add_x:%d",add_x);
+	DrawFormatString(40, 40, 0xffffff, "add_x:%d", add_x);
 
+	switch (map_data_num)
+	{
+	case 1:
+		DrawFormatString(40, 80, 0xffffff, "PUT_MAPChip");
+
+		break;
+	case 2:
+		DrawFormatString(40, 100, 0xffffff, "PUT_ENEMY");
+
+		break;
+	}
 
 }
