@@ -65,8 +65,9 @@ GameMainScene::GameMainScene() {
 		{
 			for (int j = 0; j < map_blockmax_x; j++)
 			{
-				//もしマップioのgetマップデータが１だったら
+				map_old_array[i][j] = mapio->GetMapData(i, j);
 
+				//もしマップioのgetマップデータが１だったら
 				if (mapio->GetMapData(i, j) == 1) {
 					stage_block[block_count++] = new StageBlock(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 				}
@@ -77,6 +78,9 @@ GameMainScene::GameMainScene() {
 						enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 					}
 				}
+
+				
+
 			}
 		}
 	}
@@ -112,14 +116,18 @@ void GameMainScene::Update() {
 
 		mapio->InputTest(this);
 
+		for (int i = 0; i < ENEMYMAXNUM; i++)
+		{
+			enemy[i] = nullptr;
+		}
+
 		//右スティック押し込み
 		if (input.CheckBtn(XINPUT_BUTTON_RIGHT_THUMB) == TRUE)
 		{
 			//Inputを保存
 			mapio->SaveMapData();
 			block_count = 0;
-
-
+			enemy_count = 0;
 
 			//マップチップに反映する
 			for (int i = 0; i < map_blockmax_y; i++)
@@ -131,15 +139,14 @@ void GameMainScene::Update() {
 					if (mapio->GetMapData(i, j) == 1) {
 						stage_block[block_count++] = new StageBlock(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 					}
+
 					if (enemy_count < ENEMYMAXNUM)
 					{
-						if (enemy[enemy_count] == nullptr)
-						{
-							//data==0だったらエネミー消す処理
-							if (mapio->GetMapData(i, j) == 2) {
-								enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
-							}
+
+						if (mapio->GetMapData(i, j) == 2) {
+							enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 						}
+
 					}
 
 				}
