@@ -46,6 +46,12 @@
     <Filter Include="ヘッダー ファイル\StageFile">
       <UniqueIdentifier>{12e94412-d881-465b-9799-0a039c7757e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\JemFile">
+      <UniqueIdentifier>{576f5eea-c131-414d-be93-6e1d0dfffdaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\JemFile">
+      <UniqueIdentifier>{68208c42-f972-49d9-9c67-8ae847f9271d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -83,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="RollingEnemy.cpp">
       <Filter>ソース ファイル\EnemyFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Jem.cpp">
+      <Filter>ソース ファイル\JemFile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +142,9 @@
     </ClInclude>
     <ClInclude Include="Vec2I.h">
       <Filter>ヘッダー ファイル\SystemFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Jem.h">
+      <Filter>ヘッダー ファイル\JemFile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
