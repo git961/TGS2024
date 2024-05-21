@@ -26,10 +26,18 @@ struct cameraposition
 
 };
 
+enum GameState {
+    EDITOR,
+    POSE,
+    PLAY,
+};
+
 class GameMainScene :
     public AbstractScene
 {
 private:
+
+    GameState game_state;
 
     Player *player;
     Enemy **enemy;
