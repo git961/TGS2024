@@ -10,6 +10,7 @@ Player::Player()
 	LoadDivGraph("images/Player/player_walk.png", 4, 4, 1, 64, 64, player_walk_img);
 	LoadDivGraph("images/Player/p_death.png", 4, 4, 1, 128, 128, player_death_img);
 	LoadDivGraph("images/Player/p_attack.png", 12, 4, 3, 128, 128, player_attack_img);
+	LoadDivGraph("images/Player/throw.png", 3, 3, 1, 128, 128, player_throw_img);
 	LoadDivGraph("images/Player/pickaxe.png", 12, 4, 3, 128, 128, pickaxe_img);
 	LoadDivGraph("images/Player/soil_effect.png", 2, 2, 1, 128, 128, soil_effect);
 
@@ -56,6 +57,8 @@ Player::Player()
 
 	//ダイナマイトに使用
 	atk_dynamite = false;
+	dyna_throw_num = 0;
+	dyna_anmcnt = 0;
 
 	color13 = 0xffffff;
 
@@ -83,11 +86,210 @@ void Player::Update(GameMainScene* gamemain)
 {
 	//プレイヤー状態によってスイッチで変えよう
 
+
 	input.InputUpdate();
+	
+	/*
+	NOMAL,//地面に居る：歩くのが可能
+    ATTACK,
+    WALK,
+    HITDAMAGE,
+    DYNAMITE,
+    DEATH
+	*/
+
+	switch (player_state)
+	{
+	case DEATH:
+		death_anim_cnt++;
+		switch (death_anim_cnt)
+		{
+		case 0:
+			death_num = 0;
+			break;
+		case 5:
+			death_num = 1;
+			break;
+		case 15:
+			death_num = 2;
+			break;
+		case 20:
+			death_num = 3;
+			break;
+		case 25:
+			death_flg = true;
+			break;
+		default:
+			break;
+		}
+		break;
+	case DYNAMITE:
+		dyna_anmcnt++;
+		switch (dyna_anmcnt)
+		{
+		case 0:
+			dyna_throw_num = 0;
+			break;
+		case 5:
+			dyna_throw_num = 1;
+			break;
+		case 10:
+			dyna_throw_num = 2;
+			atk_dynamite = true;
+			break;
+		case 15:
+			dyna_anmcnt = 0;
+			dyna_throw_num = 0;
+			player_state = NOMAL;
+			break;
+		default:
+			break;
+		}
+		break;
+	case HITDAMAGE:
+
+		if ((unsigned)move_x > 0) {
+			move_x *= 0.9;
+			location.x += move_x;
+			world.x += move_x;
+		}
+		else
+		{
+			player_state = NOMAL;
+			hit_damage = false;
+			flash_start = true;
+		}
+
+		break;
+	case ATTACK:
+	case WALK:
+	case NOMAL:
+		PlayerAttack();
+
+		SetVertex();
+
+		if (player_state != ATTACK)
+		{
+			//プレイヤーの移動処理
+			PlayerMove();
+		}
+		else
+		{
+			move_x = 0;
+		}
+
+		if (player_state == WALK)
+		{
+			if (abs((int)world.x - (int)old_worldx) > 61)
+			{
+				old_worldx = world.x;
+			}
+
+			walk_abs = abs((int)world.x - (int)old_worldx);
+			// 歩行
+			// 5カウントごとに変わる
+			if (walk_abs != 0)
+			{
+				walk_num = walk_abs / 20;
+			}
+		}
+
+
+		// 端に来たら跳ね返る
+		if (world.x + width / 2 > FIELD_WIDTH)
+		{
+			world.x = FIELD_WIDTH - 20;
+
+		}
+		else if (world.x - width / 2 < 0) {
+			world.x = width / 2;
+		}
+
+		//敵からダメージを食らったら
+		if (hit_damage == true)
+		{
+			player_state = HITDAMAGE;
+
+			//ノックバック処理
+					//右向きだったら
+			if (direction == 0)
+			{
+				move_x = -4;
+			}
+			else
+			{
+				move_x = 4;
+			}
+		}
+
+		//点滅処理
+		if (flash_start == true)
+		{
+			if ((flash_cnt % 20) == 0)
+			{
+				flash_flg = true;
+			}
+			else if ((flash_cnt % 10) == 0) {
+				flash_flg = false;
+			}
+
+			if (flash_cnt > 90)
+			{
+				flash_flg = false;
+				flash_start = false;
+				gamemain->SetPlayerDamageOnce(false);
+			}
+
+
+			flash_cnt++;
+		}
+		else
+		{
+			flash_cnt = 0;
+		}
+
+		//つるはし攻撃
+		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+		{
+			//if (CheckSoundMem(atk_sound) == TRUE)
+			//{
+			//	StopSoundMem(atk_sound);
+			//}
+
+			if (CheckSoundMem(atk_sound) == FALSE)
+			{
+				PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+			}
+
+			//右向きだったら
+			if (direction == 0)
+			{
+				world.x += 3;
+			}
+			else {
+				world.x -= 3;
+			}
+			attacking = true;
+			player_state = ATTACK;
+			wait_flg = false;
+		}
+
+		//ダイナマイト攻撃
+		if (input.CheckBtn(XINPUT_BUTTON_Y) == TRUE)
+		{
+			player_state = DYNAMITE;
+		}
+
+		break;
+	default:
+		break;
+	}
+	
 	if (hp <= 0) {
 		player_state = DEATH;
 	}
 
+	/*
 	if(player_state==DEATH)
 	{
 		death_anim_cnt++;
@@ -111,6 +313,8 @@ void Player::Update(GameMainScene* gamemain)
 		default:
 			break;
 		}
+	
+	
 	}
 	else
 	{
@@ -131,13 +335,13 @@ void Player::Update(GameMainScene* gamemain)
 		}
 		else
 		{
-
-			PlayerAttack();
+			
 			
 			//何秒か経ったら攻撃中フラグを戻す？
+			
 			if (attacking == true)
 			{
-				/*
+				
 				anim_cnt++;
 				if (anim_cnt > 1)
 				{
@@ -188,7 +392,7 @@ void Player::Update(GameMainScene* gamemain)
 					}
 				}
 
-				*/
+				
 
 			}
 			else
@@ -208,6 +412,9 @@ void Player::Update(GameMainScene* gamemain)
 					reset_timer = 0;
 				}
 			}
+
+			PlayerAttack();
+
 
 			SetVertex();
 
@@ -338,16 +545,16 @@ void Player::Update(GameMainScene* gamemain)
 			//ダイナマイト攻撃
 			if (input.CheckBtn(XINPUT_BUTTON_Y) == TRUE)
 			{
-				atk_dynamite = true;
+				//atk_dynamite = true;
+				player_state = DYNAMITE;
 			}
-
+			*/
 #ifdef DEBUG
 
 	#endif // DEBUG
-
-		}
-	}
+	
 }
+
 void Player::Draw() const
 {
 
@@ -412,6 +619,9 @@ void Player::Draw() const
 		case HITDAMAGE:
 			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_img[1], TRUE, direction);
 			//DrawFormatString(location.x, location.y - 80, 0x000000, "hitdamage");
+			break;
+		case DYNAMITE:
+			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_throw_img[dyna_throw_num], TRUE, direction);
 			break;
 		case DEATH:
 			DrawRotaGraph(location.x, location.y-25, 1, 0, player_death_img[death_num], TRUE, direction);

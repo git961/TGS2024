@@ -12,6 +12,7 @@ enum PlayerState {
     ATTACK,
     WALK,
     HITDAMAGE,
+    DYNAMITE,
     DEATH
 };
 
@@ -25,6 +26,7 @@ private:
     int player_img[10];
     int player_walk_img[10];
     int player_attack_img[15];
+    int player_throw_img[15];
     int player_death_img[15];
     int pickaxe_img[15];
     int soil_effect[10];
@@ -63,7 +65,13 @@ private:
     //プレイヤーの状態
     bool walk;//true:歩いてる false:止まってる
     bool attacking;//true:攻撃中 false:攻撃してない 
-    bool atk_dynamite;//true:発射 false:発射してない 
+
+    //ダイナマイト投擲用
+
+    int dyna_anmcnt;//ダイナマイト投擲アニメーション切り替え用
+    int dyna_throw_num;
+    bool dyna_anm_start;
+    bool atk_dynamite;//true:発射する false:発射してない 
 
 
     //ダメージ受けた時に点滅させるよう

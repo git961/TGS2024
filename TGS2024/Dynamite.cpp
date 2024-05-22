@@ -1,6 +1,6 @@
 #include "Dynamite.h"
 
-Dynamite::Dynamite(World set_xy)
+Dynamite::Dynamite(World set_xy,int set_direction)
 {
 	width = 60;
 	height = 50;
@@ -11,7 +11,11 @@ Dynamite::Dynamite(World set_xy)
 	move_x = 3;
 	rotation = 0;
 	dynamite_img = LoadGraph("images/Player/dynamite.png");
-
+	LoadDivGraph("images/Player/explosion.png", 3, 3, 1, 200,200, explosion_img);
+	direction = set_direction;
+	dynamite_flg = false;
+	explosion_cnt = 0;
+	explosion_num = 0;
 }
 
 Dynamite::~Dynamite()
@@ -20,12 +24,52 @@ Dynamite::~Dynamite()
 
 void Dynamite::Update()
 {
-	world.x+=move_x;
-	rotation+=0.3;
+	if (dynamite_flg == false)
+	{
+		if (direction == 0) {
+			world.x += move_x;
+			rotation += 0.3;
+		}
+		else {
+			world.x -= move_x;
+			rotation -= 0.3;
+		}
+	}
+	else if (dynamite_flg == true)
+	{
+		explosion_cnt++;
+		switch (explosion_cnt)
+		{
+		case 0:
+			explosion_num = 0;
+			break;
+		case 10:
+			explosion_num = 1;
+			break;
+		case 15:
+			explosion_num = 2;
+			width = 200;
+			height = 200;
+			break;
+		case 20:
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 void Dynamite::Draw() const
 {
-	DrawRotaGraph(location.x, location.y, 1,rotation, dynamite_img, TRUE, 0);
+	DrawBoxAA(world.x - width / 2, world.y - height / 2, world.x + width / 2, world.y + height / 2, 0x00ffff, false);
 
+	if (dynamite_flg == false)
+	{
+		DrawRotaGraph(location.x, location.y, 1, rotation, dynamite_img, TRUE, direction);
+	}
+	else
+	{
+		DrawRotaGraph(location.x, location.y, 1, 0, explosion_img[explosion_num], TRUE, direction);
+
+	}
 }

@@ -221,38 +221,61 @@ void GameMainScene::Update() {
 			{
 				if (enemy[i]->GetHp() > 0)
 				{
-					// 歩行エネミーとの当たり判定
-					if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
-						checkhit = true;
-					}
-					else {
-						checkhit = false;
+					if (player != nullptr)
+					{
+						// 歩行エネミーとの当たり判定
+						if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
+							checkhit = true;
+						}
+						else {
+							checkhit = false;
+						}
+
+						//つるはしを振るってる時だけ
+						if (player->GetAttacking() == true)
+						{
+							//ダメージを一回だけ与える
+							if (enemy_damage_once == false)
+							{
+								//つるはしとエネミーと当たってるかのチェック
+								if (ac->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {//checkhit = true;
+									enemy[i]->Damege(10);
+									// 歩行エネミーのノックバック処理
+									enemy[i]->SetKnockBackStartFlg(true);
+									enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+									enemy_damage_once = true;
+								}
+								else {
+									//checkhit = false;
+								}
+							}
+						}
+						else
+						{
+							//プレイヤーがつるはし振ってなかったら
+							enemy_damage_once = false;
+						}
 					}
 
-					//つるはしを振るってる時だけ
-					if (player->GetAttacking() == true)
+					if (dynamite != nullptr)
 					{
-						//ダメージを一回だけ与える
-						if (enemy_damage_once == false)
+						//ダイナマイトとエネミーと当たってるかのチェック
+						if (dynamite->GetDynamite() == false)
 						{
-							//つるはしとエネミーと当たってるかのチェック
-							if (ac->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {//checkhit = true;
-								enemy[i]->Damege(10);
-								// 歩行エネミーのノックバック処理
-								enemy[i]->SetKnockBackStartFlg(true);
-								enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
-								enemy_damage_once = true;
+							if (dynamite->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true)
+							{
+								dynamite->SetDynamite(true);
 							}
-							else {
-								//checkhit = false;
+						}
+						else if (dynamite->GetDynamite() == true)
+						{
+							if (dynamite->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true)
+							{
+								enemy[i]->Damege(10);
 							}
 						}
 					}
-					else
-					{
-						//プレイヤーがつるはし振ってなかったら
-						enemy_damage_once = false;
-					}
+
 				}
 			}
 		}
@@ -301,7 +324,7 @@ void GameMainScene::Update() {
 			//ダイナマイト作成
 			if (player->GetAtkDynamite() == true)
 			{
-				dynamite = new Dynamite(player->GetWorldLocation());
+				dynamite = new Dynamite(player->GetWorldLocation(),player->GetDirection());
 				player->SetAtkDynamite(false);
 			}
 
@@ -370,6 +393,8 @@ void GameMainScene::Update() {
 			camera_pos.x - SCREEN_WIDTH / 2.0f,
 			camera_pos.y - SCREEN_HEIGHT / 2.0f
 		};
+
+
 
 		// 転がるエネミーとプレイヤーの当たり判定
 		if (rolling_enemy != nullptr)
