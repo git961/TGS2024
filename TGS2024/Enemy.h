@@ -54,10 +54,11 @@ private:
     float start_y;
     float sum_t;
     float t;
-    float mvx;
-    float mvy;
+    float mvx[4];
+    float mvy[4];
 
     bool gem_drop;
+    bool draw_death_img;
 
 public:
     Enemy(float set_x);

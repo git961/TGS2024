@@ -92,6 +92,9 @@ Enemy::Enemy(float set_x)
 		}
 
 		fragment[i].radian = (double)DEGREE_RADIAN(fragment[i].degree);
+
+		mvx[i] = 0.0f;
+		mvy[i] = 0.0f;
 	}
 
 	gravity = 980.0f;
@@ -99,10 +102,9 @@ Enemy::Enemy(float set_x)
 	start_y = 0.0f;
 	sum_t = 0.0167f;
 	t = 0.0167f;
-	mvx = 0.0f;
-	mvy = 0.0f;
 
 	gem_drop = false;
+	draw_death_img = true;
 }
 
 Enemy::~Enemy()
@@ -162,11 +164,11 @@ void Enemy::Update(GameMainScene* gamemain)
 void Enemy::Draw() const
 {
 #ifdef DEBUG
-	//DrawFormatString(location.x - 100, 50, 0xffffff, "%f", fragment[0].x);
-	//DrawFormatString(location.x - 100, 80, 0xffffff, "%f", v0[0]);
-	//DrawFormatString(location.x - 100, 110, 0xffffff, "y: %f", fragment[0].radian);
-	////DrawFormatString(location.x - 100, 80, 0xffffff, "y: %f", fragment[0].timer);
-	//DrawFormatString(location.x - 100, 80, 0xffffff, "y: %f", fragment[0].y);
+	DrawFormatString(location.x - 100, 50, 0xffffff, "f: %d", death_cnt);
+	//DrawFormatString(location.x - 100, 80, 0xffffff, "s: %.1f", fragment[1].x);
+	//DrawFormatString(location.x - 100, 110, 0xffffff, "m: %.1f", fragment[2].x);
+	//DrawFormatString(location.x - 100, 140, 0xffffff, "lx: %.1f", fragment[3].x);
+	//DrawFormatString(location.x - 100, 170, 0xffffff, "+: %f", start_x + mvx);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "k: %d", is_knock_back);
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "s: %d", is_knock_back_start);
 	//DrawFormatString(100, 20, 0xffffff, "opacity: %d", opacity);
@@ -208,8 +210,11 @@ void Enemy::Draw() const
 	}
 	else
 	{
-		// 死亡画像
-		DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_death_img[image_num], TRUE, direction);
+		if (draw_death_img == true)
+		{
+			// 死亡画像
+			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_death_img[image_num], TRUE, direction);
+		}
 
 		for (int i = 0; i < 4; i++)
 		{
@@ -222,7 +227,6 @@ void Enemy::Draw() const
 #ifdef DEBUG
 	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);			// 中心座標
 #endif // DEBUG
-
 }
 
 // 移動処理
@@ -355,23 +359,32 @@ void Enemy::DeathAnimation()
 {
 	death_cnt++;
 
-	if (death_cnt >= 60)
+	if (death_cnt >= 120)
 	{
-		// 60カウント以上なら削除フラグをtrueに変更
+		// 120カウント以上なら削除フラグをtrueに変更
 		is_delete = true;
 	}
 
-	// 画像切り替え
-	if (death_cnt != 0)
+	if (draw_death_img == true)
 	{
-		// 死亡
-		// 5カウントごとに変わる
-		image_num = death_cnt / 5;
-
-		if (image_num > 3)
+		if (death_cnt >= 60)
 		{
-			// 最終画像で止める
-			image_num = 3;
+			// 死亡画像を非表示に
+			draw_death_img = false;
+		}
+
+		// 画像切り替え
+		if (death_cnt != 0)
+		{
+			// 死亡
+			// 5カウントごとに変わる
+			image_num = death_cnt / 5;
+
+			if (image_num > 3)
+			{
+				// 最終画像で止める
+				image_num = 3;
+			}
 		}
 	}
 }
@@ -499,8 +512,6 @@ void Enemy::FragmentEffect()
 				fragment[i].radian = (double)DEGREE_RADIAN(fragment[i].degree);
 			}
 
-			start_x = location.x;
-			start_y = location.y - height /  2;				// 画像の中心
 			fragment[i].x = location.x;
 			fragment[i].y = location.y - height /  2;				// 画像の中心
 
@@ -508,22 +519,29 @@ void Enemy::FragmentEffect()
 			gem_drop = true;
 		}
 
-		mvx = v0[i] * cosf((float)fragment[i].radian) * sum_t;
-		mvy = -v0[i] * sinf((float)fragment[i].radian) * sum_t + (gravity * sum_t * sum_t) / 2;
+		start_x = location.x;
+		start_y = location.y - height / 2;				// 画像の中心
 
-
-		if (fragment[i].y  < 608.0f)
+		if (fragment[i].y  < 608.f)
 		{
-			if (i > 1)
-			{
-				fragment[i].x = start_x + mvx;
-			}
-			else
-			{
-				fragment[i].x = start_x - mvx;
-			}
-			fragment[i].y = start_y + mvy;
+			// 地面についていない間は値の計算を行う
+			mvx[i] = v0[i] * cosf((float)fragment[i].radian) * sum_t;
+			mvy[i] = -v0[i] * sinf((float)fragment[i].radian) * sum_t + (gravity * sum_t * sum_t) / 2;
 
+			fragment[i].y = start_y + mvy[i];
+		}
+		else
+		{
+			fragment[i].y = 608.0f;
+		}
+
+		if (i > 1)
+		{
+			fragment[i].x = start_x + mvx[i];
+		}
+		else
+		{
+			fragment[i].x = start_x - mvx[i];
 		}
 
 		sum_t += t;
