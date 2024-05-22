@@ -314,7 +314,7 @@ void GameMainScene::Update() {
 		{
 			if (enemy[i] != nullptr)
 			{
-				if (enemy[i]->GetHp() <= 0)
+				if (enemy[i]->GetGemDropFlg() == true)
 				{
 					if (gem[i] == nullptr)
 					{
@@ -329,6 +329,7 @@ void GameMainScene::Update() {
 		{
 			if (gem[i] != nullptr)
 			{
+				gem[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				gem[i]->Update(this);
 			}
 		}

@@ -102,7 +102,7 @@ Enemy::Enemy(float set_x)
 	mvx = 0.0f;
 	mvy = 0.0f;
 
-	//gem_drop = false;
+	gem_drop = false;
 }
 
 Enemy::~Enemy()
@@ -151,6 +151,13 @@ void Enemy::Update(GameMainScene* gamemain)
 	}
 	else
 	{
+		if (gem_drop == false)
+		{
+			// フラグは1回だけtrueになるようにしたい
+			// 破片エフェクト処理内でtrueにしている
+			gem_drop = true;
+		}
+
 		// 死亡アニメーション
 		DeathAnimation();
 
@@ -503,6 +510,9 @@ void Enemy::FragmentEffect()
 			start_y = location.y - height /  2;				// 画像の中心
 			fragment[i].x = location.x;
 			fragment[i].y = location.y - height /  2;				// 画像の中心
+
+			// 宝石を落とす
+			gem_drop = true;
 		}
 
 		mvx = v0[i] * cosf((float)fragment[i].radian) * sum_t;
@@ -552,7 +562,6 @@ void Enemy::FragmentEffect()
 			fragment[i].is_draw = true;
 		}
 	}
-
 }
 
 // 被ダメージ処理
