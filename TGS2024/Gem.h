@@ -12,7 +12,7 @@ private:
 	int gem_score;			// 宝石のスコア
 
 public:
-	Gem(World set_world);
+	Gem(World set_world, int set_score);
 	~Gem();
 
 	void Update(GameMainScene* gamemain);

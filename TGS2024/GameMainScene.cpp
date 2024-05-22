@@ -74,13 +74,14 @@ GameMainScene::GameMainScene() {
 		}
 	}
 
-	gem = new Gem * [ENEMYMAXNUM];
+	walk_gem = new Gem * [ENEMYMAXNUM];
+	roll_gem = nullptr;
 	score = new Score;
 
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
 		enemy[i] = new Enemy(i);
-		gem[i] = nullptr;
+		walk_gem[i] = nullptr;
 	}
 
 	check_num = 0;
@@ -88,6 +89,9 @@ GameMainScene::GameMainScene() {
 	defeat_enemy_num = 0;
 	pose_flg = false;
 	map_mode = 0;				// 押されていない
+
+	walk_gem_score = 10;
+	roll_gem_score = 50;
 }
 
 
@@ -98,7 +102,8 @@ GameMainScene::~GameMainScene() {
 	delete mapio;
 	delete ac;
 	delete rolling_enemy;
-	delete[] gem;
+	delete[] walk_gem;
+	delete roll_gem;
 	delete score;
 }
 
@@ -309,46 +314,75 @@ void GameMainScene::Update() {
 			}
 		}
 
-		// 宝石生成処理
+		// 歩行エネミーの宝石生成処理
 		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
 			if (enemy[i] != nullptr)
 			{
 				if (enemy[i]->GetGemDropFlg() == true)
 				{
-					if (gem[i] == nullptr)
+					if (walk_gem[i] == nullptr)
 					{
-						gem[i] = new Gem(enemy[i]->GetWorldLocation());
+						walk_gem[i] = new Gem(enemy[i]->GetWorldLocation(), walk_gem_score);
 						enemy[i]->SetGemDropFlg(false);
 					}
 				}
 			}
 		}
 
-		// 宝石更新処理
+		// 歩行エネミーの宝石更新処理
 		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
-			if (gem[i] != nullptr)
+			if (walk_gem[i] != nullptr)
 			{
-				gem[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-				gem[i]->Update(this);
+				walk_gem[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				walk_gem[i]->Update(this);
 			}
 		}
 
-		// 宝石とプレイヤーの当たり判定
+		// 歩行エネミーの宝石とプレイヤーの当たり判定
 		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
-			if (player != nullptr && gem[i] != nullptr)
+			if (player != nullptr && walk_gem[i] != nullptr)
 			{
-				if (player->HitCheck(gem[i]->GetWorldLocation(), gem[i]->GetWidth(), gem[i]->GetHeight()) == true)
+				if (player->HitCheck(walk_gem[i]->GetWorldLocation(), walk_gem[i]->GetWidth(), walk_gem[i]->GetHeight()) == true)
 				{
-					score->SetScore(gem[i]->GetGemScore());
-					delete gem[i];
-					gem[i] = nullptr;
+					score->SetScore(walk_gem[i]->GetGemScore());
+					delete walk_gem[i];
+					walk_gem[i] = nullptr;
 				}
 			}
 		}
 
+		// 転がるエネミーの宝石生成処理
+		if (rolling_enemy != nullptr)
+		{
+			if (rolling_enemy->GetGemDropFlg() == true)
+			{
+				if (roll_gem == nullptr)
+				{
+					roll_gem = new Gem(rolling_enemy->GetWorldLocation(), roll_gem_score);
+				}
+			}
+		}
+
+		// 転がるエネミーの宝石更新処理
+		if (roll_gem != nullptr)
+		{
+			roll_gem->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			roll_gem->Update(this);
+		}
+
+		// 転がるエネミーの宝石とプレイヤーの当たり判定
+		if (player != nullptr && roll_gem != nullptr)
+		{
+			if (player->HitCheck(roll_gem->GetWorldLocation(), roll_gem->GetWidth(), roll_gem->GetHeight()) == true)
+			{
+				score->SetScore(roll_gem->GetGemScore());
+				delete roll_gem;
+				roll_gem = nullptr;
+			}
+		}
 
 		if (player != nullptr) {
 			UpdateCamera(player->GetWorldLocation());
@@ -832,11 +866,17 @@ void GameMainScene::Draw() const {
 
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
-		// 宝石描画処理
-		if (gem[i] != nullptr)
+		// 歩行エネミーの宝石描画処理
+		if (walk_gem[i] != nullptr)
 		{
-			gem[i]->Draw();
+			walk_gem[i]->Draw();
 		}
+	}
+
+	if (roll_gem != nullptr)
+	{
+		// 転がるエネミーの宝石描画処理
+		roll_gem->Draw();
 	}
 
 	if (score != nullptr)

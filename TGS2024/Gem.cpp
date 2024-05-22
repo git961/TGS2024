@@ -1,6 +1,6 @@
 #include "Gem.h"
 
-Gem::Gem(World set_world)
+Gem::Gem(World set_world, int set_score)
 {
 	location.x = set_world.x;
 	location.y = set_world.y;
@@ -14,7 +14,7 @@ Gem::Gem(World set_world)
 	// 画像の読み込み
 	gem_img = LoadGraph("images/Gem/Gem.png");
 
-	gem_score = 10;
+	gem_score = set_score;
 }
 
 Gem::~Gem()

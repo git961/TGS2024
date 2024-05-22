@@ -48,7 +48,8 @@ private:
 
     MapIo *mapio;
     StageBlock **stage_block;
-    Gem** gem;
+    Gem** walk_gem;             // 配列
+    Gem* roll_gem;
     Score* score;
 
     cameraposition camera_pos;
@@ -80,6 +81,8 @@ private:
 
     int defeat_enemy_num;           // 倒した敵の数
     int map_mode;                   // スペースキーの状態
+    int walk_gem_score;             // 歩行エネミーの宝石スコア
+    int roll_gem_score;             // 転がるエネミーの宝石スコア
 
 public:
     GameMainScene();
