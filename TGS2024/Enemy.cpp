@@ -151,13 +151,6 @@ void Enemy::Update(GameMainScene* gamemain)
 	}
 	else
 	{
-		if (gem_drop == false)
-		{
-			// フラグは1回だけtrueになるようにしたい
-			// 破片エフェクト処理内でtrueにしている
-			gem_drop = true;
-		}
-
 		// 死亡アニメーション
 		DeathAnimation();
 

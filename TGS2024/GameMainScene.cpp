@@ -319,6 +319,7 @@ void GameMainScene::Update() {
 					if (gem[i] == nullptr)
 					{
 						gem[i] = new Gem(enemy[i]->GetWorldLocation());
+						enemy[i]->SetGemDropFlg(false);
 					}
 				}
 			}

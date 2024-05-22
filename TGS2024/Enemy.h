@@ -88,6 +88,11 @@ public:
         is_knock_back_start = set_flg;
     }
 
+    void SetGemDropFlg(bool set_flg)
+    {
+        gem_drop = set_flg;
+    }
+
     // get関数
     float GetHp() const { return hp; }                        // hp取得
     float GetAttack() const{ return attack; }                 // 攻撃力取得
