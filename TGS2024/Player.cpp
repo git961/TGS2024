@@ -275,7 +275,7 @@ void Player::Update(GameMainScene* gamemain)
 		}
 
 		//ダイナマイト攻撃
-		if (input.CheckBtn(XINPUT_BUTTON_Y) == TRUE)
+		if (input.CheckBtn(XINPUT_BUTTON_Y) == TRUE|| CheckHitKey(KEY_INPUT_S)==TRUE)
 		{
 			player_state = DYNAMITE;
 		}

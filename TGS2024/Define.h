@@ -9,7 +9,7 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
-#define FIELD_WIDTH 2560 //ワールド全体の幅
+#define FIELD_WIDTH 10240 //ワールド全体の幅 1280*8
 #define FIELD_HEIGHT 720 //ワールド全体の高さ
 
 #define WINDOW_HALFX SCREEN_WIDTH/2
