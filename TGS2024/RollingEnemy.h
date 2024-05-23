@@ -25,6 +25,9 @@ private:
     double degree;       // 角度計算用
 
     bool is_delete;      // 削除するか？
+    bool just_death;     // 死亡したばかりか？
+    bool gem_drop;       // 宝石を落とすか？
+
 
 public:
 
@@ -36,8 +39,9 @@ public:
 
     void Damege(int damege);                // 被ダメージ処理
 
-    float GetHp() { return hp; }            // hp取得
+    float GetHp() const { return hp; }            // hp取得
     float GetAttack() const { return attack; }// 攻撃力取得
-    bool GetDeleteFlg() { return is_delete; } // 削除フラグの取得
+    bool GetDeleteFlg() const { return is_delete; } // 削除フラグの取得
+    bool GetGemDropFlg() const { return gem_drop; }
 };
 

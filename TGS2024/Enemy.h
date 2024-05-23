@@ -50,6 +50,15 @@ private:
     effect fragment[4];
     float v0[4];                      // 斜方投射時の初速度
     float gravity;                    // 重力
+    float start_x;
+    float start_y;
+    float sum_t;
+    float t;
+    float mvx[4];
+    float mvy[4];
+
+    bool gem_drop;
+    bool draw_death_img;
 
 public:
     Enemy(float set_x, float set_y);
@@ -86,10 +95,16 @@ public:
         is_knock_back_start = set_flg;
     }
 
+    void SetGemDropFlg(bool set_flg)
+    {
+        gem_drop = set_flg;
+    }
+
     // get関数
     float GetHp() const { return hp; }                        // hp取得
     float GetAttack() const { return attack; }                 // 攻撃力取得
     bool GetDeleteFlg() const { return is_delete; }           // 削除フラグの取得
     bool GetIsKnockBack() const { return is_knock_back; }     // ノックバックフラグの取得
+    bool GetGemDropFlg() const { return gem_drop; }
 };
 

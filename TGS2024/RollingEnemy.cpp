@@ -33,6 +33,9 @@ RollingEnemy::RollingEnemy()
 
 	is_delete = false;
 
+	just_death = false;
+	gem_drop = false;
+
 	//death_cnt = 90;
 
 	//srand(time(NULL));
@@ -127,6 +130,29 @@ void RollingEnemy::Update(GameMainScene* gamemain)
 				effect_image_num = (75 - anim_cnt) / 15;
 			}
 		}
+
+		if (anim_cnt < 2)
+		{
+			just_death = true;
+		}
+		else
+		{
+			if (just_death == true)
+			{
+				just_death = false;
+			}
+		}
+
+		if (just_death == true)
+		{
+			// 宝石を落とす
+			gem_drop = true;
+		}
+		else
+		{
+			gem_drop = false;
+		}
+
 		angle = 0.0;
 	}
 

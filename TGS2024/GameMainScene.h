@@ -8,11 +8,11 @@
 #include "fps.h"
 #include "MapIo.h"
 #include "StageBlock.h"
+#include "Gem.h"
+#include "Score.h"
 #include "UIHP.h"
 #include "Dynamite.h"
 #include <math.h>
-
-
 
 class Player;
 class Enemy;
@@ -22,6 +22,7 @@ class MapIo;
 class StageBlock;
 class UIHP;
 class Dynamite;
+class Gem;
 
 struct cameraposition
 {
@@ -51,8 +52,11 @@ private:
     Dynamite* dynamite;
     fps fp;
 
-    MapIo* mapio;
-    StageBlock** stage_block;
+    MapIo *mapio;
+    StageBlock **stage_block;
+    Gem** walk_gem;             // 配列
+    Gem* roll_gem;
+    Score* score;
 
     UIHP* ui_hp;
 
@@ -87,6 +91,8 @@ private:
     int map_old_array[map_blockmax_y][map_blockmax_x];//配置したエネミーを消したかチェック用
 
     int defeat_enemy_num;           // 倒した敵の数
+    int walk_gem_score;             // 歩行エネミーの宝石スコア
+    int roll_gem_score;             // 転がるエネミーの宝石スコア
 
 public:
     GameMainScene();
