@@ -649,6 +649,12 @@ void GameMainScene::Update()
 			}
 
 
+			if (player != nullptr && mapio!=nullptr)
+			{
+				mapio->SetPlayerLocal(player->GetLocation().x);
+				mapio->SetPlayerWorld(player->GetWorldLocation().x);
+			}
+
 		break;
 	default:
 		break;

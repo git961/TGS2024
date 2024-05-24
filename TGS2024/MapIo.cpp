@@ -8,6 +8,9 @@ MapIo::MapIo()
 	count = 0;
 	add_x = 0;
 	map_data_num = 1;
+	p_localx = 0;
+	p_worldx = 0;
+	world_mouse_x = 0;
 }
 
 MapIo::~MapIo()
@@ -71,6 +74,20 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		map_data_num = 3;
 	}
 
+
+	now_abs = fabsf(mouse_x - p_localx);
+	//マウスがプレイヤーの右に居たら
+	if (mouse_x > p_localx)
+	{
+		world_mouse_x = p_worldx+now_abs;
+	}
+
+	if (mouse_x < p_localx)
+	{
+		world_mouse_x = p_worldx - now_abs;
+	}
+
+
 	//ブロック追加
 	if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0) {
 		//押されてる
@@ -82,7 +99,7 @@ void MapIo::InputTest(GameMainScene* gamemain)
 			{
 				//もしこの範囲に居たら
 				//ワールド座標とマウスの座標を比べる
-				if (j * BLOCKSIZE < mouse_x + add_x && j * BLOCKSIZE + BLOCKSIZE > mouse_x + add_x) {
+				if (j * BLOCKSIZE < world_mouse_x && j * BLOCKSIZE + BLOCKSIZE >world_mouse_x) {
 					if (i * BLOCKSIZE < mouse_y && i * BLOCKSIZE + BLOCKSIZE > mouse_y)
 					{
 						map_array[i][j] = map_data_num;
@@ -108,7 +125,7 @@ void MapIo::InputTest(GameMainScene* gamemain)
 			{
 				//もしこの範囲に居たら
 				//ワールド座標とマウスの座標を比べる
-				if (j * BLOCKSIZE < mouse_x + add_x && j * BLOCKSIZE + BLOCKSIZE > mouse_x + add_x) {
+				if (j * BLOCKSIZE < world_mouse_x && j * BLOCKSIZE + BLOCKSIZE >world_mouse_x) {
 					if (i * BLOCKSIZE < mouse_y && i * BLOCKSIZE + BLOCKSIZE > mouse_y)
 					{
 						map_array[i][j] = 0;
@@ -118,7 +135,6 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		}
 
 	}
-
 
 
 }

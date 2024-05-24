@@ -5,6 +5,7 @@
 #include "stdio.h"
 #include "Define.h"
 #include "padinput.h"
+#include <math.h>
 
 
 class GameMainScene;
@@ -32,6 +33,14 @@ private:
 	int mouse_x;
 	int mouse_y;
 
+	float world_mouse_x;
+
+	float p_localx;
+	float p_worldx;
+
+
+	float now_abs;
+
 	int add_x;
 
 	int map_data_num;//0:何もなし 1:マップチップ　2:エネミー 3:ゴール
@@ -45,5 +54,11 @@ public:
 	void SaveMapData();//マップデータ保存
 	void Draw() const;
 	int GetMapData(int j, int i) { return map_array[j][i]; }
+
+	void SetPlayerLocal(float set_localx) { p_localx = set_localx; }
+	void SetPlayerWorld(float set_worldx) { p_worldx = set_worldx; }
+
+
+
 };
 
