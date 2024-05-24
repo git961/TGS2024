@@ -72,6 +72,9 @@ private:
     int dyna_throw_num;
     bool dyna_anm_start;
     bool atk_dynamite;//true:発射する false:発射してない 
+    
+    int dyna_stock_num;//残弾数
+    int dyna_stock_cnt;//残弾補充のカウント
 
 
     //ダメージ受けた時に点滅させるよう
@@ -94,7 +97,6 @@ public:
 
     void Update(GameMainScene* gamemain);
     void Draw() const;
-
 
     //プレイヤー移動用
     void PlayerMove();
@@ -128,11 +130,3 @@ public:
     void SetDamageFlg(bool set_damageflg) { hit_damage = set_damageflg; }
 
 };
-
-//void Player::AttackPickaxe()
-//{
-//    if (input.CheckBtn(XINPUT_BUTTON_Y) == TRUE)
-//    {
-//        //Yおしたら攻撃
-//    }
-//}

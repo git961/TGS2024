@@ -10,7 +10,7 @@
 #include "StageBlock.h"
 #include "Gem.h"
 #include "Score.h"
-#include "UIHP.h"
+#include "UI.h"
 #include "Dynamite.h"
 #include <math.h>
 
@@ -20,7 +20,7 @@ class RollingEnemy;
 class AttackCheck;
 class MapIo;
 class StageBlock;
-class UIHP;
+class UI;
 class Dynamite;
 class Gem;
 
@@ -58,7 +58,7 @@ private:
     Gem* roll_gem;
     Score* score;
 
-    UIHP* ui_hp;
+    UI* ui;
 
     cameraposition camera_pos;
 

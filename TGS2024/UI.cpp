@@ -1,6 +1,6 @@
-#include "UIHP.h"
+#include "UI.h"
 
-UIHP::UIHP(int set_hp)
+UI::UI(int set_hp)
 {
 	heart_img[0] = LoadGraph("images/UI/heart.png");
 	p_img[0] = LoadGraph("images/UI/player.png");
@@ -10,17 +10,17 @@ UIHP::UIHP(int set_hp)
 	y = 100;
 }
 
-UIHP::~UIHP()
+UI::~UI()
 {
 }
 
-void UIHP::Update(int set_hp)
+void UI::Update(int set_hp)
 {
 	heart_num = set_hp / 10;
 
 }
 
-void UIHP::Draw() const
+void UI::Draw() const
 {
 	for (int i = 0; i < heart_num; i++)
 	{

@@ -24,7 +24,7 @@ GameMainScene::GameMainScene() {
 	rolling_enemy = new RollingEnemy;
 	stage_block = new StageBlock * [map_blockmax_y * map_blockmax_x];
 
-	ui_hp = new UIHP(player->GetHp());
+	ui = new UI(player->GetHp());
 	ac = new AttackCheck;
 
 	walk_gem = new Gem * [ENEMYMAXNUM];
@@ -312,7 +312,6 @@ void GameMainScene::Update()
 
 
 								}
-								//now_abs = fabsf(mouse_x - p_localx);
 
 							}
 							//爆発の中心座標から近いかとおいかでダメージが変わる
@@ -632,9 +631,9 @@ void GameMainScene::Update()
 
 
 				//UIアップデート
-				if (ui_hp != nullptr)
+				if (ui != nullptr)
 				{
-					ui_hp->Update(player->GetHp());
+					ui->Update(player->GetHp());
 				}
 			}
 
@@ -760,9 +759,9 @@ void GameMainScene::Draw() const {
 
 
 
-	if (ui_hp != nullptr)
+	if (ui != nullptr)
 	{
-		ui_hp->Draw();
+		ui->Draw();
 	}
 
 

@@ -60,6 +60,9 @@ Player::Player()
 	dyna_throw_num = 0;
 	dyna_anmcnt = 0;
 
+	dyna_stock_num = 3;
+	dyna_stock_cnt = 0;
+
 	color13 = 0xffffff;
 
 	is_atk_putout = false;
@@ -89,14 +92,6 @@ void Player::Update(GameMainScene* gamemain)
 
 	input.InputUpdate();
 	
-	/*
-	NOMAL,//地面に居る：歩くのが可能
-    ATTACK,
-    WALK,
-    HITDAMAGE,
-    DYNAMITE,
-    DEATH
-	*/
 
 	switch (player_state)
 	{
@@ -124,27 +119,30 @@ void Player::Update(GameMainScene* gamemain)
 		}
 		break;
 	case DYNAMITE:
-		dyna_anmcnt++;
-		switch (dyna_anmcnt)
-		{
-		case 0:
-			dyna_throw_num = 0;
-			break;
-		case 5:
-			dyna_throw_num = 1;
-			break;
-		case 10:
-			dyna_throw_num = 2;
-			atk_dynamite = true;
-			break;
-		case 15:
-			dyna_anmcnt = 0;
-			dyna_throw_num = 0;
-			player_state = NOMAL;
-			break;
-		default:
-			break;
-		}
+
+			switch (dyna_anmcnt)
+			{
+			case 1:
+				dyna_stock_num-=1;
+				dyna_throw_num = 0;
+				break;
+			case 5:
+				dyna_throw_num = 1;
+				break;
+			case 10:
+				dyna_throw_num = 2;
+				atk_dynamite = true;
+				break;
+			case 15:
+				dyna_anmcnt = 0;
+				dyna_throw_num = 0;
+				player_state = NOMAL;
+				break;
+			default:
+				break;
+			}
+			dyna_anmcnt++;
+
 		break;
 	case HITDAMAGE:
 
@@ -211,7 +209,7 @@ void Player::Update(GameMainScene* gamemain)
 			player_state = HITDAMAGE;
 
 			//ノックバック処理
-					//右向きだったら
+			//右向きだったら
 			if (direction == 0)
 			{
 				move_x = -4;
@@ -274,11 +272,15 @@ void Player::Update(GameMainScene* gamemain)
 			wait_flg = false;
 		}
 
-		//ダイナマイト攻撃
-		if (input.CheckBtn(XINPUT_BUTTON_Y) == TRUE|| CheckHitKey(KEY_INPUT_S)==TRUE)
+		if (dyna_stock_num > 0)
 		{
-			player_state = DYNAMITE;
+			//ダイナマイト攻撃
+			if (input.CheckBtn(XINPUT_BUTTON_Y) == TRUE || CheckHitKey(KEY_INPUT_S) == TRUE)
+			{
+				player_state = DYNAMITE;
+			}
 		}
+
 
 		break;
 	default:
@@ -288,6 +290,8 @@ void Player::Update(GameMainScene* gamemain)
 	if (hp <= 0) {
 		player_state = DEATH;
 	}
+
+	
 
 	/*
 	if(player_state==DEATH)
@@ -654,6 +658,7 @@ void Player::Draw() const
 	////DrawFormatString(100, 100, 0xffffff, "Right:%d", a);
 	//DrawFormatString(100, 120, 0xffffff, "btnnum: % d", input.Btnnum);
 
+	DrawFormatString(100, 150, 0xffffff, "stock: %d",dyna_stock_num);
 	////DrawFormatString(100, 150, 0xffffff, "location.x: %f",location.x);
 	//DrawFormatString(100, 100, 0xffffff, "worldx: %f location.x:%f",world.x,location.x);
 	//DrawFormatString(100, 120, 0xffffff, "world_y: %f location.y:%f", world.y,location.y);

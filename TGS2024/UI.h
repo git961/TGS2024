@@ -5,7 +5,7 @@
 #include "Define.h"
 
 
-class UIHP
+class UI
 {
 private:
 	int heart_img[5];//Hp画像
@@ -15,8 +15,8 @@ private:
 	int heart_num;//表示するhpの数
 
 public:
-	UIHP(int set_hp);
-	~UIHP();
+	UI(int set_hp);
+	~UI();
 
 	void Update(int set_hp);
 	void Draw() const;

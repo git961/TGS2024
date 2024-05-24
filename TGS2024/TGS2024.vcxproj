@@ -166,7 +166,7 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="StageBlock.cpp" />
-    <ClCompile Include="UIHP.cpp" />
+    <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractScene.h" />
@@ -187,7 +187,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Score.h" />
     <ClInclude Include="StageBlock.h" />
-    <ClInclude Include="UIHP.h" />
+    <ClInclude Include="UI.h" />
     <ClInclude Include="Vec2I.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
