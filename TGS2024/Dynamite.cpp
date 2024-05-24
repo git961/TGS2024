@@ -43,15 +43,15 @@ void Dynamite::Update()
 		case 0:
 			explosion_num = 0;
 			break;
-		case 10:
+		case 5:
 			explosion_num = 1;
 			break;
-		case 15:
+		case 10:
 			explosion_num = 2;
 			width = 200;
 			height = 200;
 			break;
-		case 20:
+		case 15:
 			break;
 		default:
 			break;

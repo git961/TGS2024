@@ -152,7 +152,7 @@ void GameMainScene::Update()
 		}
 
 		//右スティック押し込み
-		if (input.CheckBtn(XINPUT_BUTTON_RIGHT_THUMB) == TRUE)
+		if (input.CheckBtn(XINPUT_BUTTON_RIGHT_THUMB) == TRUE||CheckHitKey(KEY_INPUT_P)==TRUE)
 		{
 			//Inputを保存
 			mapio->SaveMapData();
@@ -499,15 +499,6 @@ void GameMainScene::Update()
 				}
 			}
 
-			if (player != nullptr)
-			{
-				UpdateCamera(player->GetWorldLocation());
-			}
-			screen_origin_position = {
-				camera_pos.x - SCREEN_WIDTH / 2.0f,
-				camera_pos.y - SCREEN_HEIGHT / 2.0f
-			};
-
 			// 歩行エネミーとプレイヤーの当たり判定
 			for (int i = 0; i < ENEMYMAXNUM; i++)
 			{
@@ -590,7 +581,7 @@ void GameMainScene::Update()
 
 
 
-
+			//カメラとUIのアップデート
 			if (player != nullptr) {
 
 				UpdateCamera(player->GetWorldLocation());
@@ -603,12 +594,6 @@ void GameMainScene::Update()
 				}
 			}
 
-
-
-			if (player != nullptr)
-			{
-				UpdateCamera(player->GetWorldLocation());
-			}
 			screen_origin_position = {
 				camera_pos.x - SCREEN_WIDTH / 2.0f,
 				camera_pos.y - SCREEN_HEIGHT / 2.0f

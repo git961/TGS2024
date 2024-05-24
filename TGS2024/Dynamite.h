@@ -13,7 +13,7 @@ private:
     float rotation;
     int dynamite_img;
     int explosion_img[10];
-    int dynamite_flg;
+    int dynamite_flg;//爆発したらTRUE
     int direction;
 
     int explosion_num;

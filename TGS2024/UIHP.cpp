@@ -2,8 +2,8 @@
 
 UIHP::UIHP(int set_hp)
 {
-	heart_img[0] = LoadGraph("images/UI/h.png");
-	heart_img[1] = LoadGraph("images/UI/hf.png");
+	heart_img[0] = LoadGraph("images/UI/heart.png");
+	p_img[0] = LoadGraph("images/UI/player.png");
 	player_hp = set_hp;
 	heart_num = set_hp / 10;
 	x = 70;
