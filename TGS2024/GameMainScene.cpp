@@ -12,6 +12,9 @@ static cameraposition screen_origin_position = {
 
 GameMainScene::GameMainScene() {
 
+
+	check_abs = 0;
+
 	mapio = new MapIo;
 
 
@@ -288,13 +291,48 @@ void GameMainScene::Update()
 							if (dynamite->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true)
 							{
 								dynamite->SetDynamite(true);
-								if (player->GetHp() < 0)
-								{
-
-								}
+								
 							}
 						}
+
+						//ダイナマイトの爆発とエネミーの当たり判定
+						if (dynamite->Getdamage_flg() == true)
+						{
+							if (dynamite->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true)
+							{
+								check_abs=fabsf(dynamite->GetWorldLocation().x - enemy[i]->GetWorldLocation().x);
+
+								//爆発の中心座標から近いかとおいかでダメージが変わる
+								if (fabsf(dynamite->GetWorldLocation().x - enemy[i]->GetWorldLocation().x) < 35)
+								{
+									enemy[i]->Damege(30);
+									// 歩行エネミーのノックバック処理
+									enemy[i]->SetKnockBackStartFlg(true);
+									enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+
+
+								}
+								//now_abs = fabsf(mouse_x - p_localx);
+
+							}
+							//爆発の中心座標から近いかとおいかでダメージが変わる
+							if (fabsf(dynamite->GetWorldLocation().x - enemy[i]->GetWorldLocation().x) < 100)
+							{
+								enemy[i]->Damege(20);
+								// 歩行エネミーのノックバック処理
+								enemy[i]->SetKnockBackStartFlg(true);
+								enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+
+
+							}else if (fabsf(dynamite->GetWorldLocation().x - enemy[i]->GetWorldLocation().x) < 200)
+							{
+								enemy[i]->Damege(10);
+							}
+						}
+					
 					}
+
+					
 				}
 
 
@@ -312,9 +350,11 @@ void GameMainScene::Update()
 					player = new Player();
 				}
 			}
+		
+
 		}
 
-			for (int i = 0; i < ENEMYMAXNUM; i++)
+		for (int i = 0; i < ENEMYMAXNUM; i++)
 			{
 				// エネミー更新処理
 				if (enemy[i] != nullptr)
@@ -351,8 +391,6 @@ void GameMainScene::Update()
 			}
 	
 
-			//
-			
 			// 歩行エネミーの宝石生成処理
 			for (int i = 0; i < ENEMYMAXNUM; i++)
 			{
@@ -558,6 +596,12 @@ void GameMainScene::Update()
 				if (dynamite != nullptr) {
 					dynamite->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 					dynamite->Update();
+
+					if (dynamite->Getdeath_flg() == true)
+					{
+						dynamite = nullptr;
+					}
+
 				}
 
 				//ダイナマイト作成
@@ -647,215 +691,6 @@ void GameMainScene::Update()
 	}
 
 }
-	/*
-	if (pose_flg == true)
-	{
-		if (input.CheckBtn(XINPUT_BUTTON_START) == TRUE)
-		{
-			pose_flg = false;
-		}
-	}
-	else
-	{
-
-#ifdef DEBUG
-	//if (CheckHitKey(KEY_INPUT_SPACE) == 1)
-	//{
-	//	// テスト用
-	//	map_mode = 1;
-
-	//	mapio->SaveMapData();
-
-
-	//}
-	//else {
-	//	// テスト
-	//	map_mode = 0;
-
-	//	mapio->InputTest(this);
-
-	//	}
-
-		if (rolling_enemy == nullptr)
-		{
-			// 転がるエネミーが消えたら新しく出現させる
-			rolling_enemy = new RollingEnemy;
-		}
-
-		// 生成された歩行エネミーをすべて倒したら
-		if (defeat_enemy_num == ENEMYMAXNUM)
-		{
-			// 歩行エネミーの生成
-			for (int i = 0; i < ENEMYMAXNUM; i++)
-			{
-				if (enemy[i] == nullptr)
-				{
-					enemy[i] = new Enemy(i);
-				}
-			}
-			defeat_enemy_num = 0;
-		}
-
-
-#endif // DEBUG
-		/*
-		//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
-		location_x = world_x - screen_origin_position.x;
-		location_y = world_y - screen_origin_position.y;
-
-		if (input.CheckBtn(XINPUT_BUTTON_START) == TRUE)
-		{
-			pose_flg = true;
-		}
-
-		// 歩行エネミーとプレイヤーの当たり判定
-		for (int i = 0; i < ENEMYMAXNUM; i++)
-		{
-			if (enemy[i] != nullptr)
-			{
-				if (enemy[i]->GetHp() > 0)
-				{
-					// 歩行エネミーとの当たり判定
-					if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
-						checkhit = true;
-					}
-					else {
-						checkhit = false;
-						checkhit = false;
-					}
-
-				}
-			}
-		}
-
-		//プレイヤー
-		if (player != nullptr)
-		{
-			player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-			player->Update(this);
-
-			//プレイヤーと歩行の敵との当たり判定
-			for (int i = 0; i < ENEMYMAXNUM; i++)
-			{
-				if (enemy[i] != nullptr) {
-					//もしプレイヤーとエネミーが当たったら
-					if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight() == true))
-					{
-						if (enemy[i]->GetHp() > 0)
-						{
-							if (player_damage_once == false)
-							{
-								player_damage_once = true;
-								player->SetDamageFlg(player_damage_once);
-								player->SetDamage(10);
-							}
-							if (player->GetHp() < 0)
-							{
-
-							}
-						}
-					}
-				}
-			}
-
-
-			//プレイヤーの攻撃
-			if (ac != nullptr) {
-				ac->Update(this, player);
-			}
-
-			if (dynamite != nullptr) {
-				dynamite->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-				dynamite->Update();
-			}
-
-			//ダイナマイト作成
-			if (player->GetAtkDynamite() == true)
-			{
-				dynamite = new Dynamite(player->GetWorldLocation(),player->GetDirection());
-				player->SetAtkDynamite(false);
-			}
-
-
-
-			//プレイヤーの死亡処理
-			if (player->GetDeathFlg() == true)
-			{
-				delete player;
-				player_damage_once = false;
-				player = nullptr;
-				player = new Player();
-			}
-		}
-
-
-	
-
-		if (player != nullptr) {
-			
-			UpdateCamera(player->GetWorldLocation());
-			
-			
-		//UIアップデート
-			if (ui_hp != nullptr)
-			{
-				ui_hp->Update(player->GetHp());
-			}
-		}
-
-
-
-		if (player != nullptr)
-		{
-			UpdateCamera(player->GetWorldLocation());
-		}
-		screen_origin_position = {
-			camera_pos.x - SCREEN_WIDTH / 2.0f,
-			camera_pos.y - SCREEN_HEIGHT / 2.0f
-		};
-
-		for (int j = 0; j < block_count; j++)
-		{
-			if (stage_block[j] != nullptr)
-			{
-				stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-
-				if (player != nullptr)
-				{
-					//if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-					//{
-					//	//各頂点の座標を確保しておく
-					//	player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
-					//	
-					//}
-					//if (stage_block[j]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
-					//{
-					//	//各頂点の座標を確保しておく
-					//	player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
-					//}
-
-					if (stage_block[j]->GetBlockNum() == 3)
-					{
-						if (stage_block[j]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
-						{
-							game_state = GOAL;
-						}
-					}
-
-				}
-
-				
-			}
-		}
-
-
-		break;
-	default:
-		break;
-	}
-
-}
-*/
 
 void GameMainScene::Draw() const {
 	// 背景画像描画（仮）
@@ -898,10 +733,6 @@ void GameMainScene::Draw() const {
 		}
 	}
 
-	//ダイナマイト描画
-	if (dynamite != nullptr) {
-		dynamite->Draw();
-	}
 
 	for (int j = 0; j < block_count; j++)
 	{
@@ -940,8 +771,15 @@ void GameMainScene::Draw() const {
 		score->Draw();
 	}
 
+	//ダイナマイト描画
+	if (dynamite != nullptr) {
+		dynamite->Draw();
+	}
+
+
 #ifdef DEBUG
 
+	DrawFormatString(300, 180, 0xffffff, "abs: %f", check_abs);
 	//DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
 	//DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
 	//DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);

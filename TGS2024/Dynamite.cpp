@@ -11,9 +11,12 @@ Dynamite::Dynamite(World set_xy,int set_direction)
 	move_x = 3;
 	rotation = 0;
 	dynamite_img = LoadGraph("images/Player/dynamite.png");
-	LoadDivGraph("images/Player/explosion.png", 3, 3, 1, 200,200, explosion_img);
+	LoadDivGraph("images/Player/explosion.png", 3, 3, 1, 128,128, explosion_img);
+
 	direction = set_direction;
 	dynamite_flg = false;
+	damage_flg = false;
+	dynamite_death = false;
 	explosion_cnt = 0;
 	explosion_num = 0;
 }
@@ -48,15 +51,24 @@ void Dynamite::Update()
 			break;
 		case 10:
 			explosion_num = 2;
-			width = 200;
-			height = 200;
+			width = 150;
+			height = 128;
+			damage_flg = true;
 			break;
-		case 15:
+		case 11:
+			damage_flg = false;
+			break;
+		case 25:
+			dynamite_death = true;
 			break;
 		default:
 			break;
 		}
 	}
+
+
+	
+
 }
 
 void Dynamite::Draw() const

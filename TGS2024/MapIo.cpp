@@ -76,6 +76,7 @@ void MapIo::InputTest(GameMainScene* gamemain)
 
 
 	now_abs = fabsf(mouse_x - p_localx);
+
 	//マウスがプレイヤーの右に居たら
 	if (mouse_x > p_localx)
 	{
