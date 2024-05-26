@@ -17,11 +17,12 @@ private:
 	float x, y;
 	int player_hp;
 	int heart_num;//表示するhpの数
+	int dyna_num;//表示するダイナマイトの数
 
 public:
-	UI(int set_hp);
+	UI(int set_hp,int set_dyna_num);
 	~UI();
 
-	void Update(int set_hp);
+	void Update(int set_hp,int set_dyna_num);
 	void Draw() const;
 };

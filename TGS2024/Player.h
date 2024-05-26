@@ -107,6 +107,7 @@ public:
     
     bool GetAtkDynamite() { return atk_dynamite; }
     void SetAtkDynamite(bool set_flg) { atk_dynamite=set_flg; }
+    int GetDynaNum() { return dyna_stock_num; }
 
     float GetHp() { return hp; }
 

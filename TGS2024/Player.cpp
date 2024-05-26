@@ -25,7 +25,7 @@ Player::Player()
 	anim_cnt = 0;
 
 	world.x = 200;
-	world.y = 600.0f-60;
+	world.y = 600.0f-30;
 
 	location.x = 200;
 	location.y = 600.0f;

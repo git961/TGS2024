@@ -49,7 +49,7 @@ private:
     Enemy** enemy;
     RollingEnemy* rolling_enemy;
     AttackCheck* ac;
-    Dynamite* dynamite;
+    Dynamite** dynamite;
     fps fp;
 
     MapIo *mapio;
