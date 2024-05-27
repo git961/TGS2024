@@ -4,6 +4,7 @@
 #include "AbstractScene.h"
 #include "SceneManager.h"
 #include "GameMainScene.h"
+#include "AnimScene.h"
 
 
 // プログラムは WinMain から始まります
@@ -20,7 +21,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	SetDrawScreen(DX_SCREEN_BACK);	// 描画先画面を裏にする
 
-	SceneManager SceneManager(dynamic_cast<AbstractScene*>(new GameMainScene));
+	SceneManager SceneManager(dynamic_cast<AbstractScene*>(new AnimScene));
 	Input input;
 	fps fp;
 	//ループ前にFPS計測を初期化

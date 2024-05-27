@@ -120,28 +120,28 @@ void Player::Update(GameMainScene* gamemain)
 		break;
 	case DYNAMITE:
 
-			switch (dyna_anmcnt)
-			{
-			case 1:
-				dyna_stock_num-=1;
-				dyna_throw_num = 0;
-				break;
-			case 5:
-				dyna_throw_num = 1;
-				break;
-			case 10:
-				dyna_throw_num = 2;
-				atk_dynamite = true;
-				break;
-			case 15:
-				dyna_anmcnt = 0;
-				dyna_throw_num = 0;
-				player_state = NOMAL;
-				break;
-			default:
-				break;
-			}
-			dyna_anmcnt++;
+		switch (dyna_anmcnt)
+		{
+		case 1:
+			dyna_stock_num-=1;
+			dyna_throw_num = 0;
+			break;
+		case 5:
+			dyna_throw_num = 1;
+			break;
+		case 10:
+			dyna_throw_num = 2;
+			atk_dynamite = true;
+			break;
+		case 15:
+			dyna_anmcnt = 0;
+			dyna_throw_num = 0;
+			player_state = NOMAL;
+			break;
+		default:
+			break;
+		}
+		dyna_anmcnt++;
 
 		break;
 	case HITDAMAGE:

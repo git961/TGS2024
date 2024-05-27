@@ -829,10 +829,10 @@ void GameMainScene::Draw() const {
 #ifdef DEBUG
 
 	DrawFormatString(300, 180, 0xffffff, "abs: %f", check_abs);
-	//DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
-	//DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
-	//DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
-	//DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
+	DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
+	DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
+	DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
+	DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
 	//DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
 	//DrawFormatString(30, 300, 0xffffff, "m_mode: %d", map_mode);
 

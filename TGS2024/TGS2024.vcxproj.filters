@@ -78,9 +78,6 @@
     <ClCompile Include="GameMainScene.cpp">
       <Filter>ソース ファイル\SceneFile</Filter>
     </ClCompile>
-    <ClCompile Include="CharacterBase.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>ソース ファイル\PlayerFile</Filter>
     </ClCompile>
@@ -111,11 +108,14 @@
     <ClCompile Include="UI.cpp">
       <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
+    <ClCompile Include="FallingRock.cpp">
+      <Filter>ソース ファイル\AnimS</Filter>
+    </ClCompile>
     <ClCompile Include="Dynamite.cpp">
       <Filter>ソース ファイル\PlayerFile</Filter>
     </ClCompile>
-    <ClCompile Include="FallingRock.cpp">
-      <Filter>ソース ファイル\AnimS</Filter>
+    <ClCompile Include="AnimScene.cpp">
+      <Filter>ソース ファイル\SceneFile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="FallingRock.h">
       <Filter>ヘッダー ファイル\AnimS</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimScene.h">
+      <Filter>ヘッダー ファイル\SceneFile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

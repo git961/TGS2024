@@ -151,9 +151,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimScene.cpp" />
     <ClCompile Include="AttackCheck.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CharacterBase.cpp" />
     <ClCompile Include="Dynamite.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FallingRock.cpp" />
@@ -171,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractScene.h" />
+    <ClInclude Include="AnimScene.h" />
     <ClInclude Include="AttackCheck.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="FallingRock.h" />
