@@ -13,10 +13,12 @@ private:
 	int gem_score;			// 宝石のスコア
 	int count;				// sin用
 	int move_x_timer;		// 座標xが動く時間
+	double size;			// 画像の大きさ
 
 	float player_x;
 	float player_y;
 
+	bool just_generated;
 public:
 	Gem(World set_world, int set_score);
 	~Gem();

@@ -165,9 +165,14 @@ void Enemy::Draw() const
 {
 #ifdef DEBUG
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "f: %d", death_cnt);
-	//DrawFormatString(location.x - 100, 80, 0xffffff, "s: %.1f", fragment[1].x);
-	//DrawFormatString(location.x - 100, 110, 0xffffff, "m: %.1f", fragment[2].x);
-	//DrawFormatString(location.x - 100, 140, 0xffffff, "lx: %.1f", fragment[3].x);
+	//DrawFormatString(location.x - 100, 50, 0xffffff, "0: %.1f", fragment[0].x);
+	//DrawFormatString(location.x - 100, 80, 0xffffff, "1: %.1f", fragment[1].x);
+	//DrawFormatString(location.x - 100, 110, 0xffffff, "2: %.1f", fragment[2].x);
+	//DrawFormatString(location.x - 100, 140, 0xffffff, "3: %.1f", fragment[3].x);
+	//DrawFormatString(location.x - 100, 170, 0xffffff, "L: %.1f", location.x);
+	//DrawFormatString(location.x - 100, 230, 0xffffff, "m0: %.1f", mvx[0]);
+	//DrawFormatString(location.x - 100, 260, 0xffffff, "m1: %.1f", mvx[1]);
+	//DrawFormatString(location.x - 100, 290, 0xffffff, "m2: %.1f", mvx[2]);
 	//DrawFormatString(location.x - 100, 170, 0xffffff, "+: %f", start_x + mvx);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "k: %d", is_knock_back);
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "s: %d", is_knock_back_start);
@@ -362,7 +367,7 @@ void Enemy::DeathAnimation()
 	if (death_cnt >= 120)
 	{
 		// 120カウント以上なら削除フラグをtrueに変更
-		is_delete = true;
+		//is_delete = true;
 	}
 
 	if (draw_death_img == true)
@@ -535,14 +540,7 @@ void Enemy::FragmentEffect()
 			fragment[i].y = 608.0f;
 		}
 
-		if (i > 1)
-		{
-			fragment[i].x = start_x + mvx[i];
-		}
-		else
-		{
-			fragment[i].x = start_x - mvx[i];
-		}
+		fragment[i].x = start_x + mvx[i];
 
 		sum_t += t;
 

@@ -112,7 +112,6 @@ GameMainScene::GameMainScene() {
 
 	check_num = 0;
 
-	defeat_enemy_num = 0;
 	pose_flg = false;
 
 	walk_gem_score = 10;
@@ -209,21 +208,6 @@ void GameMainScene::Update()
 		{
 			// 転がるエネミーが消えたら新しく出現させる
 			rolling_enemy = new RollingEnemy;
-		}
-
-		// 生成された歩行エネミーをすべて倒したら
-		if (defeat_enemy_num == enemy_count)
-		{
-			enemy_count = 0;
-			// 歩行エネミーの生成
-			for (int i = 0; i < ENEMYMAXNUM; i++)
-			{
-				if (enemy[enemy_count] == nullptr)
-				{
-					//enemy[enemy_count++] = new Enemy(i);
-				}
-			}
-			defeat_enemy_num = 0;
 		}
 #endif
 
@@ -331,7 +315,6 @@ void GameMainScene::Update()
 					}
 					delete enemy[i];
 					enemy[i] = nullptr;
-					defeat_enemy_num++;
 				}
 			}
 		}
@@ -349,10 +332,7 @@ void GameMainScene::Update()
 				rolling_enemy = nullptr;
 			}
 		}
-	
-
-		//
-			
+				
 		// 歩行エネミーの宝石生成処理
 		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
@@ -371,7 +351,7 @@ void GameMainScene::Update()
 		}
 
 		// 歩行エネミーの宝石更新処理
-		for (int i = 0; i < enemy_count; i++)
+		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
 			//walk i=2番目でif文入った
 			if (walk_gem[i] != nullptr)

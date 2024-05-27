@@ -90,7 +90,6 @@ private:
     int enemy_count;//配置したエネミーの数
     int map_old_array[map_blockmax_y][map_blockmax_x];//配置したエネミーを消したかチェック用
 
-    int defeat_enemy_num;           // 倒した敵の数
     int walk_gem_score;             // 歩行エネミーの宝石スコア
     int roll_gem_score;             // 転がるエネミーの宝石スコア
 
