@@ -60,6 +60,8 @@ private:
     bool gem_drop;
     bool draw_death_img;
 
+    float hit_enemy_x;
+
 public:
     Enemy(float set_x, float set_y);
     ~Enemy();
@@ -95,9 +97,19 @@ public:
         is_knock_back_start = set_flg;
     }
 
+    void SetStarDrawFlg(bool set_flg)
+    {
+        star.is_draw = set_flg;
+    }
+
     void SetGemDropFlg(bool set_flg)
     {
         gem_drop = set_flg;
+    }
+
+    void SetHitEnemyX(float set_x)
+    {
+        hit_enemy_x = set_x;
     }
 
     // get関数

@@ -141,13 +141,11 @@ GameMainScene::GameMainScene() {
 
 	check_num = 0;
 
-	defeat_enemy_num = 0;
 	pose_flg = false;
 
-	walk_gem_score = 10;
-	roll_gem_score = 50;
+	walk_gem_score = 100;
+	roll_gem_score = 500;
 	goal_flg = false;
-
 	
 }
 
@@ -245,21 +243,6 @@ void GameMainScene::Update()
 			// 転がるエネミーが消えたら新しく出現させる
 			rolling_enemy = new RollingEnemy;
 		}
-
-		// 生成された歩行エネミーをすべて倒したら
-		if (defeat_enemy_num == enemy_count)
-		{
-			enemy_count = 0;
-			// 歩行エネミーの生成
-			for (int i = 0; i < ENEMYMAXNUM; i++)
-			{
-				if (enemy[enemy_count] == nullptr)
-				{
-					//enemy[enemy_count++] = new Enemy(i);
-				}
-			}
-			defeat_enemy_num = 0;
-		}
 #endif
 
 		//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
@@ -300,6 +283,7 @@ void GameMainScene::Update()
 									enemy[i]->Damege(10);
 									// 歩行エネミーのノックバック処理
 									enemy[i]->SetKnockBackStartFlg(true);
+									enemy[i]->SetStarDrawFlg(true);
 									enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
 									enemy_damage_once = true;
 								}
@@ -395,243 +379,260 @@ void GameMainScene::Update()
 		}
 
 		for (int i = 0; i < ENEMYMAXNUM; i++)
+		{
+			// エネミー更新処理
+			if (enemy[i] != nullptr)
 			{
-				// エネミー更新処理
-				if (enemy[i] != nullptr)
+				if (enemy[i]->GetWorldLocation().x > screen_origin_position.x - 100 && enemy[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 				{
 					enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
 					enemy[i]->Update(this);
+				}
 
-					// エネミー削除処理
-					if (enemy[i]->GetDeleteFlg() == true)
-					{
-						if (player != nullptr) {
-							player->SetEnemyHit(false);
-						}
-						delete enemy[i];
-						enemy[i] = nullptr;
-						defeat_enemy_num++;
+				// エネミー削除処理
+				if (enemy[i]->GetDeleteFlg() == true)
+				{
+					if (player != nullptr) {
+						player->SetEnemyHit(false);
 					}
+					delete enemy[i];
+					enemy[i] = nullptr;
 				}
 			}
+		}
 
-			// 転がるエネミー更新処理
-			if (rolling_enemy != nullptr)
+		// 転がるエネミー更新処理
+		if (rolling_enemy != nullptr)
+		{
+			rolling_enemy->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+			rolling_enemy->Update(this);
+
+			if (rolling_enemy->GetDeleteFlg() == true)
 			{
-				rolling_enemy->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				delete rolling_enemy;
+				rolling_enemy = nullptr;
+			}
+		}
 
-				rolling_enemy->Update(this);
-
-				if (rolling_enemy->GetDeleteFlg() == true)
+		// 転がるエネミーが画面外に行ったら削除
+		if (rolling_enemy != nullptr)
+		{
+			if (player != nullptr)
+			{
+				if (rolling_enemy->GetLocation().x > player->GetLocation().x + SCREEN_WIDTH)
 				{
 					delete rolling_enemy;
 					rolling_enemy = nullptr;
 				}
 			}
-	
-
-			// 歩行エネミーの宝石生成処理
-			for (int i = 0; i < ENEMYMAXNUM; i++)
+		}
+				
+		// 歩行エネミーの宝石生成処理
+		for (int i = 0; i < ENEMYMAXNUM; i++)
+		{
+			if (enemy[i] != nullptr)
 			{
-				if (enemy[i] != nullptr)
+				if (enemy[i]->GetGemDropFlg() == true)
 				{
-					if (enemy[i]->GetGemDropFlg() == true)
+					if (walk_gem[i] == nullptr)
 					{
-						if (walk_gem[i] == nullptr)
+						walk_gem[i] = new Gem(enemy[i]->GetWorldLocation(), walk_gem_score);
+						walk_gem[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+						enemy[i]->SetGemDropFlg(false);
+					}
+				}
+			}
+		}
+
+		// 歩行エネミーの宝石更新処理
+		for (int i = 0; i < ENEMYMAXNUM; i++)
+		{
+			//walk i=2番目でif文入った
+			if (walk_gem[i] != nullptr)
+			{
+				walk_gem[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				walk_gem[i]->Update(this);
+			}
+		}
+
+		// 歩行エネミーの宝石とプレイヤーの当たり判定
+		for (int i = 0; i < ENEMYMAXNUM; i++)
+		{
+			if (player != nullptr && walk_gem[i] != nullptr)
+			{
+				if (player->HitCheck(walk_gem[i]->GetWorldLocation(), walk_gem[i]->GetWidth(), walk_gem[i]->GetHeight()) == true)
+				{
+					score->SetScore(walk_gem[i]->GetGemScore());
+					delete walk_gem[i];
+					walk_gem[i] = nullptr;
+				}
+			}
+		}
+
+		// 転がるエネミーの宝石生成処理
+		if (rolling_enemy != nullptr)
+		{
+			if (rolling_enemy->GetGemDropFlg() == true)
+			{
+				if (roll_gem == nullptr)
+				{
+					roll_gem = new Gem(rolling_enemy->GetWorldLocation(), roll_gem_score);
+					roll_gem->SetFromRollingEnemyFlg(true);
+					roll_gem->SetPlayerWorldLocation(player->GetWorldLocation());
+				}
+			}
+		}
+
+		// 転がるエネミーの宝石更新処理
+		if (roll_gem != nullptr)
+		{
+			roll_gem->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			roll_gem->Update(this);
+		}
+
+		// 転がるエネミーの宝石とプレイヤーの当たり判定
+		if (player != nullptr && roll_gem != nullptr)
+		{
+			if (player->HitCheck(roll_gem->GetWorldLocation(), roll_gem->GetWidth(), roll_gem->GetHeight()) == true)
+			{
+				score->SetScore(roll_gem->GetGemScore());
+				delete roll_gem;
+				roll_gem = nullptr;
+			}
+		}
+
+
+		// 転がるエネミーとプレイヤーの当たり判定
+		if (rolling_enemy != nullptr)
+		{
+			if (rolling_enemy->GetHp() > 0)
+			{
+				if (player != nullptr) {
+
+					// 転がるエネミーとの当たり判定
+					if (player->HitCheck(rolling_enemy->GetWorldLocation(), rolling_enemy->GetWidth(), rolling_enemy->GetHeight()) == true) {
+						checkhit = true;
+					}
+					else {
+						checkhit = false;
+					}
+
+					//つるはしを振るってる時だけ
+					if (player->GetAttacking() == true)
+					{
+						//ダメージを一回だけ与える
+						if (enemy_damage_once == false)
 						{
-							walk_gem[i] = new Gem(enemy[i]->GetWorldLocation(), walk_gem_score);
-							enemy[i]->SetGemDropFlg(false);
-						}
-					}
-				}
-			}
-
-			// 歩行エネミーの宝石更新処理
-			for (int i = 0; i < enemy_count; i++)
-			{
-				//walk i=2番目でif文入った
-				if (walk_gem[i] != nullptr)
-				{
-					walk_gem[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-					walk_gem[i]->Update(this);
-				}
-			}
-
-
-			// 歩行エネミーの宝石とプレイヤーの当たり判定
-			for (int i = 0; i < ENEMYMAXNUM; i++)
-			{
-				if (player != nullptr && walk_gem[i] != nullptr)
-				{
-					if (player->HitCheck(walk_gem[i]->GetWorldLocation(), walk_gem[i]->GetWidth(), walk_gem[i]->GetHeight()) == true)
-					{
-						score->SetScore(walk_gem[i]->GetGemScore());
-						delete walk_gem[i];
-						walk_gem[i] = nullptr;
-					}
-				}
-			}
-
-			// 転がるエネミーの宝石生成処理
-			if (rolling_enemy != nullptr)
-			{
-				if (rolling_enemy->GetGemDropFlg() == true)
-				{
-					if (roll_gem == nullptr)
-					{
-						roll_gem = new Gem(rolling_enemy->GetWorldLocation(), roll_gem_score);
-					}
-				}
-			}
-
-			// 転がるエネミーの宝石更新処理
-			if (roll_gem != nullptr)
-			{
-				roll_gem->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-				roll_gem->Update(this);
-			}
-
-			// 転がるエネミーの宝石とプレイヤーの当たり判定
-			if (player != nullptr && roll_gem != nullptr)
-			{
-				if (player->HitCheck(roll_gem->GetWorldLocation(), roll_gem->GetWidth(), roll_gem->GetHeight()) == true)
-				{
-					score->SetScore(roll_gem->GetGemScore());
-					delete roll_gem;
-					roll_gem = nullptr;
-				}
-			}
-
-
-			// 転がるエネミーとプレイヤーの当たり判定
-			if (rolling_enemy != nullptr)
-			{
-				if (rolling_enemy->GetHp() > 0)
-				{
-					if (player != nullptr) {
-
-						// 転がるエネミーとの当たり判定
-						if (player->HitCheck(rolling_enemy->GetWorldLocation(), rolling_enemy->GetWidth(), rolling_enemy->GetHeight()) == true) {
-							checkhit = true;
-						}
-						else {
-							checkhit = false;
-						}
-
-						//つるはしを振るってる時だけ
-						if (player->GetAttacking() == true)
-						{
-							//ダメージを一回だけ与える
-							if (enemy_damage_once == false)
-							{
-								//つるはしとエネミーと当たってるかのチェック
-								if (ac->HitCheck(rolling_enemy->GetWorldLocation(), rolling_enemy->GetWidth(), rolling_enemy->GetHeight()) == true) {//checkhit = true;
-									rolling_enemy->Damege(10);
-									enemy_damage_once = true;
-								}
-								else {
-									//checkhit = false;
-								}
+							//つるはしとエネミーと当たってるかのチェック
+							if (ac->HitCheck(rolling_enemy->GetWorldLocation(), rolling_enemy->GetWidth(), rolling_enemy->GetHeight()) == true) {//checkhit = true;
+								rolling_enemy->Damege(10);
+								enemy_damage_once = true;
+							}
+							else {
+								//checkhit = false;
 							}
 						}
-						else
-						{
-							//プレイヤーがつるはし振ってなかったら
-							enemy_damage_once = false;
-						}
+					}
+					else
+					{
+						//プレイヤーがつるはし振ってなかったら
+						enemy_damage_once = false;
 					}
 				}
 			}
+		}
 
-			// 歩行エネミー同士の当たり判定
-			for (int i = 0; i < ENEMYMAXNUM; i++)
+		// 歩行エネミー同士の当たり判定
+		for (int i = 0; i < ENEMYMAXNUM; i++)
+		{
+			if (enemy[i] != nullptr && enemy[i]->GetHp() > 0)
 			{
-				if (enemy[i] != nullptr && enemy[i]->GetHp() > 0)
+				for (int j = i + 1; j < ENEMYMAXNUM; j++)
 				{
-					for (int j = i + 1; j < ENEMYMAXNUM; j++)
+					if (enemy[j] != nullptr && enemy[j]->GetHp() > 0)
 					{
-						if (enemy[j] != nullptr && enemy[j]->GetHp() > 0)
+						if (enemy[i]->HitCheck(enemy[j]->GetWorldLocation(), enemy[j]->GetWidth(), enemy[j]->GetHeight()) == true)
 						{
-							if (enemy[i]->HitCheck(enemy[j]->GetWorldLocation(), enemy[j]->GetWidth(), enemy[j]->GetHeight()) == true)
+							if (enemy[i]->GetIsKnockBack() == true)
 							{
-								if (enemy[i]->GetIsKnockBack() == true)
-								{
-									// ノックバックしている敵に当たったら自身もノックバックを開始する
-									enemy[j]->SetKnockBackStartFlg(true);
-								}
-								else
-								{
-									// 当たっていたら２体とも進行方向を反対に変更する
-									enemy[j]->ChangeDirection();
-									enemy[i]->ChangeDirection();
-								}
-								//enemyhit = true;
+								// ノックバックしている敵に当たったら自身もノックバックを開始する
+								enemy[j]->SetKnockBackStartFlg(true);
 							}
 							else
 							{
-								//enemyhit = false;
+								// 当たっていたら２体とも進行方向を反対に変更する
+								enemy[j]->SetHitEnemyX(enemy[i]->GetWorldLocation().x);
+								enemy[i]->SetHitEnemyX(enemy[j]->GetWorldLocation().x);
+								enemy[j]->ChangeDirection();
+								enemy[i]->ChangeDirection();
 							}
+							//enemyhit = true;
+						}
+						else
+						{
+							//enemyhit = false;
 						}
 					}
 				}
 			}
+		}
 
-			// 歩行エネミーとプレイヤーの当たり判定
+		// 歩行エネミーとプレイヤーの当たり判定
+		for (int i = 0; i < ENEMYMAXNUM; i++)
+		{
+			if (enemy[i] != nullptr)
+			{
+				if (enemy[i]->GetHp() > 0)
+				{
+					// 歩行エネミーとの当たり判定
+					if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
+						checkhit = true;
+					}
+					else {
+						checkhit = false;
+						checkhit = false;
+					}
+				}
+			}
+		}
+
+		//プレイヤー
+		if (player != nullptr)
+		{
+			player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			player->Update(this);
+
+			//プレイヤーと歩行の敵との当たり判定
 			for (int i = 0; i < ENEMYMAXNUM; i++)
 			{
-				if (enemy[i] != nullptr)
-				{
-					if (enemy[i]->GetHp() > 0)
+				if (enemy[i] != nullptr) {
+					//もしプレイヤーとエネミーが当たったら
+					if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight() == true))
 					{
-						// 歩行エネミーとの当たり判定
-						if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
-							checkhit = true;
-						}
-						else {
-							checkhit = false;
-							checkhit = false;
-						}
-
-					}
-				}
-			}
-
-			//プレイヤー
-			if (player != nullptr)
-			{
-				player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-				player->Update(this);
-
-				//プレイヤーと歩行の敵との当たり判定
-				for (int i = 0; i < ENEMYMAXNUM; i++)
-				{
-					if (enemy[i] != nullptr) {
-						//もしプレイヤーとエネミーが当たったら
-						if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight() == true))
+						if (enemy[i]->GetHp() > 0)
 						{
-							if (enemy[i]->GetHp() > 0)
+							if (player_damage_once == false)
 							{
-								if (player_damage_once == false)
-								{
-									player_damage_once = true;
-									player->SetDamageFlg(player_damage_once);
-									player->SetDamage(10);
-								}
-								if (player->GetHp() < 0)
-								{
+								player_damage_once = true;
+								player->SetDamageFlg(player_damage_once);
+								player->SetDamage(10);
+							}
+							if (player->GetHp() < 0)
+							{
 
-								}
 							}
 						}
 					}
 				}
+			}
 
 
-				//プレイヤーの攻撃
-				if (ac != nullptr) {
-					ac->Update(this, player);
-				}
+			//プレイヤーの攻撃
+			if (ac != nullptr) {
+				ac->Update(this, player);
+			}
 
 			for (int i = 0; i < DYNAMITE_MAXNUM; i++)
 			{
@@ -672,10 +673,10 @@ void GameMainScene::Update()
 
 
 
-			//カメラとUIのアップデート
-			if (player != nullptr) {
+		//カメラとUIのアップデート
+		if (player != nullptr) {
 
-				UpdateCamera(player->GetWorldLocation());
+			UpdateCamera(player->GetWorldLocation());
 
 
 				//UIアップデート
@@ -685,51 +686,51 @@ void GameMainScene::Update()
 				}
 			}
 
-			screen_origin_position = {
-				camera_pos.x - SCREEN_WIDTH / 2.0f,
-				camera_pos.y - SCREEN_HEIGHT / 2.0f
-			};
+		screen_origin_position = {
+			camera_pos.x - SCREEN_WIDTH / 2.0f,
+			camera_pos.y - SCREEN_HEIGHT / 2.0f
+		};
 
-			for (int j = 0; j < block_count; j++)
+		for (int j = 0; j < block_count; j++)
+		{
+			if (stage_block[j] != nullptr)
 			{
-				if (stage_block[j] != nullptr)
+				stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+				if (player != nullptr)
 				{
-					stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+					//if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+					//{
+					//	//各頂点の座標を確保しておく
+					//	player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
+					//	
+					//}
+					//if (stage_block[j]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
+					//{
+					//	//各頂点の座標を確保しておく
+					//	player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
+					//}
 
-					if (player != nullptr)
+					if (stage_block[j]->GetBlockNum() == 3)
 					{
-						//if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-						//{
-						//	//各頂点の座標を確保しておく
-						//	player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
-						//	
-						//}
-						//if (stage_block[j]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
-						//{
-						//	//各頂点の座標を確保しておく
-						//	player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
-						//}
-
-						if (stage_block[j]->GetBlockNum() == 3)
+						if (stage_block[j]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
 						{
-							if (stage_block[j]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
-							{
-								game_state = GOAL;
-							}
+							game_state = GOAL;
 						}
-
 					}
 
-
 				}
-			}
 
 
-			if (player != nullptr && mapio!=nullptr)
-			{
-				mapio->SetPlayerLocal(player->GetLocation().x);
-				mapio->SetPlayerWorld(player->GetWorldLocation().x);
 			}
+		}
+
+
+		if (player != nullptr && mapio!=nullptr)
+		{
+			mapio->SetPlayerLocal(player->GetLocation().x);
+			mapio->SetPlayerWorld(player->GetWorldLocation().x);
+		}
 
 		break;
 	default:
@@ -743,7 +744,7 @@ void GameMainScene::Draw() const {
 	// 背景画像描画（仮）
 	DrawGraph(location_x, location_y, back_img, FALSE);
 
-	//DrawFormatString(0, 0, 0xffffff, "GameMain");
+	//DrawFormatString(0, 0, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
 	//fp.display_fps();
 
 	//if (checkhit == true)
@@ -762,7 +763,10 @@ void GameMainScene::Draw() const {
 		// エネミー描画処理
 		if (enemy[i] != nullptr)
 		{
-			enemy[i]->Draw();
+			if (enemy[i]->GetWorldLocation().x > screen_origin_position.x - 100 && enemy[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+			{
+				enemy[i]->Draw();
+			}
 		}
 	}
 
