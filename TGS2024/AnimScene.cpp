@@ -14,10 +14,11 @@ AnimScene::AnimScene()
 	p_backimg[1]=LoadGraph("images/Animscene/startanim2.png", TRUE);
 	p_backimg[2]=LoadGraph("images/Animscene/startanim3.png", TRUE);
 	p_ase_img= LoadGraph("images/Animscene/fukidashi_ase_white.png", TRUE);
+	p_exc_img= LoadGraph("images/Animscene/fukidashi_exclamation_white.png", TRUE);
 	x = 0;
 	shake_cnt = 0;
-	shake_x1=20;
-	shake_x2=40;
+	shake_x1=0;
+	shake_x2=0;
 	p_backimg_num = 0;
 
 	cameraposition camera_pos{ SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f };
@@ -28,36 +29,21 @@ AnimScene::AnimScene()
 	};
 
 	anim_scene = 0;
+	//anim_scene = 5;
 	alpha = 255;
-
+	exc_flg = false;
 	ase_flg = false;
+	shake_flg = false;
 }
 
 AnimScene::~AnimScene()
 {
 }
 
-void AnimScene::UpdateCamera()
-{
-
-	//ワールドの底に到達したらカメラが移動しないように
-	if (camera_pos.y - WINDOW_HALFY <= 0.0f)
-	{
-		camera_pos.y = WINDOW_HALFY;
-	}
-	else if (camera_pos.y + WINDOW_HALFY >= FIELD_HEIGHT)
-	{
-		//ワールドのてっぺんに到達したらカメラが移動しないように
-		camera_pos.y = FIELD_HEIGHT - WINDOW_HALFY;
-	}
-
-	
-}
-
-
 void AnimScene::Update()
 {
-	//UpdateCamera();
+
+	player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
 	switch (anim_scene)
 	{
@@ -80,7 +66,6 @@ void AnimScene::Update()
 
 		break;
 	case 2:
-		player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 		//プレイヤーが歩いてくる
 		player->OpAnimUpdate(this, anim_scene);
 
@@ -119,8 +104,22 @@ void AnimScene::Update()
 			alpha -= 1;
 		}
 
+		if (ase_flg == true)
+		{
+			if (cnt++ > 250)
+			{
+				ase_flg = false;
+				anim_scene = 5;
+				shake_flg = true;
+			}
+		}
+
 		break;
 	case 5:
+
+		//画面の揺れ
+		ShakeCamera(shake_flg,1);
+		player->OpAnimUpdate(this, anim_scene);
 
 		break;
 	case 6:
@@ -131,15 +130,16 @@ void AnimScene::Update()
 			fallingrock->Update();
 		}
 		//画面の揺れ
-		ShakeCamera(fallingrock->GetLanding());
+		ShakeCamera(fallingrock->GetLanding(),2);
 
 	break;
-	case 7:
-		//逃げる
-		break;
 	}
 	
+	if (run_flg == true)
+	{
+		player->OpAnimUpdate(this, 6);
 
+	}
 
 
 	//screen_origin_position = {
@@ -167,6 +167,11 @@ void AnimScene::Draw() const
 		{
 			DrawGraph(player->GetLocation().x-60, player->GetLocation().y-60, p_ase_img, TRUE);
 		}
+
+		if (exc_flg == true)
+		{
+			DrawGraph(player->GetLocation().x - 60, player->GetLocation().y - 60, p_exc_img, TRUE);
+		}
 	}
 
 	DrawGraph(x, 640,block_img, FALSE);
@@ -193,38 +198,80 @@ void AnimScene::Draw() const
 	DrawFormatString(300, 300, 0xffffff, "anim_scene%d", anim_scene);
 }
 
-void AnimScene::ShakeCamera(bool set_true)
+void AnimScene::ShakeCamera(bool set_true, int set_num)
 {
-	if (set_true == true)
+	if (set_num == 1)
 	{
-		//画面の揺れ
-		switch (shake_cnt)
+		shake_x1 = 5;
+		shake_x2 = 10;
+		if (set_true == true)
 		{
-		case 0:
-			screen_origin_position.x += shake_x1;
-			break;
-		case 10:
-			screen_origin_position.x -= shake_x2;
-			break;
-		case 20:
-			screen_origin_position.x = 0;
-			break;
-		case 30:
-			screen_origin_position.x += shake_x1;
-			break;
-		case 40:
-			screen_origin_position.x -= shake_x2;
-			break;
-		case 50:
-			screen_origin_position.x = 0;
-			shake_cnt = 0;
-			break;
+			//画面の揺れ
+			switch (shake_cnt)
+			{
+			case 0:
+				screen_origin_position.x += shake_x1;
+				break;
+			case 10:
+				screen_origin_position.x -= shake_x2;
+				break;
+			case 20:
+				screen_origin_position.x = 0;
+				break;
+			case 30:
+				screen_origin_position.x += shake_x1;
+				break;
+			case 40:
+				screen_origin_position.x -= shake_x2;
+				break;
+			case 50:
+				screen_origin_position.x = 0;
+				shake_cnt = 0;
+				break;
+			}
+			shake_cnt++;
 		}
-		shake_cnt++;
+		else
+		{
+			shake_cnt = 0;
+		}
+
 	}
 	else
 	{
-		shake_cnt = 0;
+		if (set_true == true)
+		{
+			shake_x1 = 20;
+			shake_x2 = 40;
+			//画面の揺れ
+			switch (shake_cnt)
+			{
+			case 0:
+				screen_origin_position.x += shake_x1;
+				break;
+			case 10:
+				screen_origin_position.x -= shake_x2;
+				break;
+			case 20:
+				screen_origin_position.x = 0;
+				break;
+			case 30:
+				screen_origin_position.x += shake_x1;
+				break;
+			case 40:
+				screen_origin_position.x -= shake_x2;
+				break;
+			case 50:
+				screen_origin_position.x = 0;
+				shake_cnt = 0;
+				break;
+			}
+			shake_cnt++;
+		}
+		else
+		{
+			shake_cnt = 0;
+		}
 	}
 }
 

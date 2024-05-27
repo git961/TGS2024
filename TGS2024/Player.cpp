@@ -688,6 +688,7 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 				if (op_cnt++ > 140)
 				{
 					anim_scene->SetAnimScene(3);
+					op_cnt = 0;
 				}
 			}
 			else
@@ -700,6 +701,59 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 	break;
 	case 4:
 		op_num = 3;
+
+		break;
+	case 5:
+		player_state = NOMAL;
+		op_cnt++;
+		switch (op_cnt)
+		{
+		case 60:
+			direction = 1;
+			break;
+		case 120:
+			direction = 0;
+			break;
+		case 160:
+			anim_scene->SetShakeFlg(false);
+			break;
+		case 180:
+			direction = 1;
+			anim_scene->SetExc(true);
+			break;
+		case 240:
+			anim_scene->SetExc(false);
+			anim_scene->SetRun(true);
+			direction = 0;
+			break;
+		case 300:
+			anim_scene->SetAnimScene(6);
+			op_cnt = 0;
+			break;
+		}
+
+		break;
+	case 6:
+		
+		if (1400> world.x) {
+			player_state = WALK;
+			location.x += 1;
+			world.x += 1;
+
+			if (abs((int)world.x - (int)old_worldx) > 61)
+			{
+				old_worldx = world.x;
+			}
+
+			walk_abs = abs((int)world.x - (int)old_worldx);
+			// 歩行
+			// 5カウントごとに変わる
+			if (walk_abs != 0)
+			{
+				walk_num = walk_abs / 20;
+			}
+
+		}
 
 		break;
 	}
