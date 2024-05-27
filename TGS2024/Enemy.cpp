@@ -105,6 +105,8 @@ Enemy::Enemy(float set_x, float set_y)
 
 	gem_drop = false;
 	draw_death_img = true;
+
+	hit_enemy_x = 0.0f;
 }
 
 Enemy::~Enemy()
@@ -277,15 +279,23 @@ void Enemy::ChangeDirection()
 	{
 		// 左向きに変更
 		direction = true;
-		world.x += 4;
 	}
 	else
 	{
 		// 右向きに変更
 		direction = false;
-		world.x -= 4;
+	}
+
+	if (world.x > hit_enemy_x)
+	{
+		world.x += 5;
+	}
+	else
+	{
+		world.x -= 5;
 	}
 }
+
 
 // ノックバック処理
 void Enemy::KnockBack()

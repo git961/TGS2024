@@ -108,16 +108,13 @@ GameMainScene::GameMainScene() {
 	//	enemy[i] = new Enemy(i);
 	//}
 
-
-
 	check_num = 0;
 
 	pose_flg = false;
 
-	walk_gem_score = 10;
-	roll_gem_score = 50;
+	walk_gem_score = 100;
+	roll_gem_score = 500;
 	goal_flg = false;
-
 	
 }
 
@@ -304,9 +301,12 @@ void GameMainScene::Update()
 			// エネミー更新処理
 			if (enemy[i] != nullptr)
 			{
-				enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				if (enemy[i]->GetWorldLocation().x > screen_origin_position.x - 100 && enemy[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+				{
+					enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
-				enemy[i]->Update(this);
+					enemy[i]->Update(this);
+				}
 
 				// エネミー削除処理
 				if (enemy[i]->GetDeleteFlg() == true)
@@ -331,6 +331,19 @@ void GameMainScene::Update()
 			{
 				delete rolling_enemy;
 				rolling_enemy = nullptr;
+			}
+		}
+
+		// 転がるエネミーが画面外に行ったら削除
+		if (rolling_enemy != nullptr)
+		{
+			if (player != nullptr)
+			{
+				if (rolling_enemy->GetLocation().x > player->GetLocation().x + SCREEN_WIDTH)
+				{
+					delete rolling_enemy;
+					rolling_enemy = nullptr;
+				}
 			}
 		}
 				
@@ -384,6 +397,7 @@ void GameMainScene::Update()
 				if (roll_gem == nullptr)
 				{
 					roll_gem = new Gem(rolling_enemy->GetWorldLocation(), roll_gem_score);
+					roll_gem->SetFromRollingEnemyFlg(true);
 					roll_gem->SetPlayerWorldLocation(player->GetWorldLocation());
 				}
 			}
@@ -467,6 +481,8 @@ void GameMainScene::Update()
 							else
 							{
 								// 当たっていたら２体とも進行方向を反対に変更する
+								enemy[j]->SetHitEnemyX(enemy[i]->GetWorldLocation().x);
+								enemy[i]->SetHitEnemyX(enemy[j]->GetWorldLocation().x);
 								enemy[j]->ChangeDirection();
 								enemy[i]->ChangeDirection();
 							}
@@ -496,7 +512,6 @@ void GameMainScene::Update()
 						checkhit = false;
 						checkhit = false;
 					}
-
 				}
 			}
 		}
@@ -843,7 +858,7 @@ void GameMainScene::Draw() const {
 	// 背景画像描画（仮）
 	DrawGraph(location_x, location_y, back_img, FALSE);
 
-	//DrawFormatString(0, 0, 0xffffff, "GameMain");
+	//DrawFormatString(0, 0, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
 	//fp.display_fps();
 
 	//if (checkhit == true)
@@ -862,7 +877,10 @@ void GameMainScene::Draw() const {
 		// エネミー描画処理
 		if (enemy[i] != nullptr)
 		{
-			enemy[i]->Draw();
+			if (enemy[i]->GetWorldLocation().x > screen_origin_position.x - 100 && enemy[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+			{
+				enemy[i]->Draw();
+			}
 		}
 	}
 
@@ -908,8 +926,6 @@ void GameMainScene::Draw() const {
 		// 転がるエネミーの宝石描画処理
 		roll_gem->Draw();
 	}
-
-
 
 	if (ui_hp != nullptr)
 	{

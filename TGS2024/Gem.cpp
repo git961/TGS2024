@@ -23,6 +23,7 @@ Gem::Gem(World set_world, int set_score)
 	player_y = 0.0f;
 
 	just_generated = true;
+	from_rolling_enemy = false;
 }
 
 Gem::~Gem()
@@ -71,14 +72,29 @@ void Gem::Update(GameMainScene* gamemain)
 		world.x += width / 2;
 	}
 
-	// だんだんサイズが大きくなる
-	if (size < 1.0)
+	if (from_rolling_enemy == true)
 	{
-		size += 0.1;
+		// だんだんサイズが大きくなる
+		if (size < 1.3)
+		{
+			size += 0.1;
+		}
+		else
+		{
+			size = 1.3;
+		}
 	}
 	else
 	{
-		size = 1.0;
+		// だんだんサイズが大きくなる
+		if (size < 1.0)
+		{
+			size += 0.1;
+		}
+		else
+		{
+			size = 1.0;
+		}
 	}
 
 

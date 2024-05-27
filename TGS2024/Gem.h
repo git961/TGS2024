@@ -19,6 +19,7 @@ private:
 	float player_y;
 
 	bool just_generated;
+	bool from_rolling_enemy;	// 転がるエネミーからドロップしたか？
 public:
 	Gem(World set_world, int set_score);
 	~Gem();
@@ -30,6 +31,11 @@ public:
 	{
 		player_x = set_world.x;
 		player_y = set_world.y;
+	}
+
+	void SetFromRollingEnemyFlg(bool set_flg)
+	{
+		from_rolling_enemy = set_flg;
 	}
 
 	int GetGemScore() const { return gem_score; }
