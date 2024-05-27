@@ -35,7 +35,6 @@ private:
     int soil_effect[10];
 
 
-    int color13;
 
 
     float img_down;//画像の表示位置を下げる用

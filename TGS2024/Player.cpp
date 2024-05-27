@@ -13,7 +13,7 @@ Player::Player()
 	LoadDivGraph("images/Player/p_death.png", 4, 4, 1, 170, 170, player_death_img);
 	LoadDivGraph("images/Player/p_attack.png", 4, 4, 1, 170, 170, player_attack_img);
 	LoadDivGraph("images/Player/throw.png", 3, 3, 1, 170, 170, player_throw_img);
-	LoadDivGraph("images/Player/pickaxe.png", 12, 4, 3, 170, 170, pickaxe_img);
+	LoadDivGraph("images/Player/pickaxe.png", 4, 4, 1, 170, 170, pickaxe_img);
 	LoadDivGraph("images/Player/soil_effect.png", 2, 2, 1, 170, 170, soil_effect);
 
 	atk_sound = LoadSoundMem("sounds/Attack.mp3");
@@ -40,8 +40,8 @@ Player::Player()
 	hp = 50;
 
 	//幅と座標
-	width = 40;
-	height = 50;
+	width = 50;
+	height = 100;
 
 	direction = 0;
 
@@ -67,7 +67,6 @@ Player::Player()
 	dyna_stock_num = 3;
 	dyna_stock_cnt = 0;
 
-	color13 = 0xffffff;
 
 	is_atk_putout = false;
 
@@ -299,267 +298,6 @@ void Player::Update(GameMainScene* gamemain)
 	}
 
 	
-
-	/*
-	if(player_state==DEATH)
-	{
-		death_anim_cnt++;
-		switch (death_anim_cnt)
-		{
-		case 0:
-			death_num = 0;
-			break;
-		case 5:
-			death_num = 1;
-			break;
-		case 15:
-			death_num = 2;
-			break;
-		case 20:
-			death_num = 3;
-			break;
-		case 25:
-			death_flg = true;
-			break;
-		default:
-			break;
-		}
-	
-	
-	}
-	else
-	{
-		if (player_state == HITDAMAGE)
-		{
-
-			if ((unsigned)move_x > 0) {
-				move_x *= 0.9;
-				location.x += move_x;
-				world.x += move_x;
-			}
-			else
-			{
-				player_state = NOMAL;
-				hit_damage = false;
-				flash_start = true;
-			}
-		}
-		else
-		{
-			
-			
-			//何秒か経ったら攻撃中フラグを戻す？
-			
-			if (attacking == true)
-			{
-				
-				anim_cnt++;
-				if (anim_cnt > 1)
-				{
-					//そのままやるとそのままcheckBtnの中に入ってしまうので、数フレーム待たせる
-					//受付を１０までにする
-					//123.じゃなくて1,23ってなるときがあるので治す？
-					if (atk_cnt_timer < 15)
-					{
-						if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
-						{
-							color13 = 0x000000;
-							next_attackflg = true;
-						}
-					}
-				}
-				//20フレーム回ったら
-				if (atk_cnt_timer++ > 20)
-				{
-					if (CheckSoundMem(atk_sound) == TRUE)
-					{
-						StopSoundMem(atk_sound);
-					}
-
-
-					if (next_attackflg == false || attack_cnt>=2)
-					{
-						attack_cnt = 0;
-						anim_cnt = 0;
-						atk_cnt_timer = 0;
-						is_atk_putout = false;
-						next_attackflg = false;
-						attacking = false;
-						wait_flg = true;
-						player_state = NOMAL;
-						color13 = 0x000000;
-
-					}
-					else
-					{
-						//次の攻撃をする準備
-						anim_cnt = 0;
-						atk_cnt_timer = 0;
-						attack_cnt++;
-						is_atk_putout = false;
-						attacking = false;
-						next_attackflg = false;
-
-					}
-				}
-
-				
-
-			}
-			else
-			{
-
-				player_state = NOMAL;
-				if (attack_cnt != 0)
-				{
-					if (reset_timer++ > 20)
-					{
-						reset_timer = 0;
-						attack_cnt = 0;
-					}
-				}
-				else
-				{
-					reset_timer = 0;
-				}
-			}
-
-			PlayerAttack();
-
-
-			SetVertex();
-
-			if (player_state != ATTACK)
-			{
-				//プレイヤーの移動処理
-				PlayerMove();
-			}
-			else
-			{
-				move_x = 0;
-			}
-
-			if (player_state == WALK)
-			{
-				if (abs((int)world.x - (int)old_worldx) > 61)
-				{
-					old_worldx = world.x;
-				}
-
-				walk_abs = abs((int)world.x - (int)old_worldx);
-				// 歩行
-				// 5カウントごとに変わる
-				if (walk_abs != 0)
-				{
-					walk_num = walk_abs / 20;
-				}
-			}
-
-
-			// 端に来たら跳ね返る
-			if (world.x + width / 2 > FIELD_WIDTH)
-			{
-				world.x = FIELD_WIDTH - 20;
-
-			}
-			else if (world.x - width / 2 < 0) {
-				world.x = width / 2;
-			}
-
-			//敵からダメージを食らったら
-			if (hit_damage == true)
-			{
-				player_state = HITDAMAGE;
-
-				//ノックバック処理
-						//右向きだったら
-				if (direction == 0)
-				{
-					move_x = -4;
-				}
-				else
-				{
-					move_x = 4;
-				}
-			}
-
-			//点滅処理
-			if (flash_start == true)
-			{
-				if ((flash_cnt % 20) == 0)
-				{
-					flash_flg = true;
-				}
-				else if ((flash_cnt % 10) == 0) {
-					flash_flg = false;
-				}
-
-				if (flash_cnt > 90)
-				{
-					flash_flg = false;
-					flash_start = false;
-					gamemain->SetPlayerDamageOnce(false);
-				}
-
-				//switch (flash_cnt)
-				//{
-				//case 0:
-				//	flash_flg = true;
-				//	break;
-				//case 10:
-				//	flash_flg = false;
-				//	break;
-				//case 20:
-				//	flash_flg = true;
-				//	break;
-				//case 60:
-				//	flash_flg = false;
-				//	flash_start = false;
-				//	break;
-				//default:
-				//	break;
-				//}
-
-				flash_cnt++;
-			}
-			else
-			{
-				flash_cnt = 0;
-			}
-
-			//つるはし攻撃
-			if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
-			{
-				//if (CheckSoundMem(atk_sound) == TRUE)
-				//{
-				//	StopSoundMem(atk_sound);
-				//}
-
-				if (CheckSoundMem(atk_sound) == FALSE)
-				{
-					PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
-				}
-
-				//右向きだったら
-				if (direction == 0)
-				{
-					world.x += 3;
-				}
-				else {
-					world.x -= 3;
-				}
-				attacking = true;
-				player_state = ATTACK;
-				wait_flg = false;
-			}
-
-			//ダイナマイト攻撃
-			if (input.CheckBtn(XINPUT_BUTTON_Y) == TRUE)
-			{
-				//atk_dynamite = true;
-				player_state = DYNAMITE;
-			}
-			*/
 #ifdef DEBUG
 
 	#endif // DEBUG
@@ -570,8 +308,8 @@ void Player::Draw() const
 {
 
 
-	//DrawBoxAA(location.x - width/2, location.y - height/2, location.x + width / 2, location.y + height / 2, color13,true);
-	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
+	//DrawBoxAA(location.x - width/2, location.y - height/2, location.x + width / 2, location.y + height / 2, 0xffffff,true);
+	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 
 
 	//プレイヤー画像表示
@@ -868,7 +606,6 @@ void Player::PlayerAttack()
 				attacking = false;
 				wait_flg = true;
 				player_state = NOMAL;
-				color13 = 0x000000;
 
 			}
 			else
