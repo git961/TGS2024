@@ -31,6 +31,8 @@ private:
     int shake_cnt;
     int shake_x1;
     int shake_x2;
+    
+    int anim_scene;
 
     int back_img;//背景入れるよう
     int block_img;//ブロック画像
@@ -40,7 +42,7 @@ public:
 
     void UpdateCamera();
 
-
+    void ShakeCamera(bool set_true);
     void Update() override;
     void Draw() const override;
     AbstractScene* Change() override;

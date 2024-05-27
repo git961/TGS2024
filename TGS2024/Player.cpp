@@ -7,14 +7,16 @@ Player::Player()
 	//画像読込
 	player_img[0] = LoadGraph("images/Player/player.png");
 	player_img[1] = LoadGraph("images/Player/damage.png");
-	LoadDivGraph("images/Player/player_walk.png", 4, 4, 1, 64, 64, player_walk_img);
-	LoadDivGraph("images/Player/p_death.png", 4, 4, 1, 128, 128, player_death_img);
-	LoadDivGraph("images/Player/p_attack.png", 12, 4, 3, 128, 128, player_attack_img);
-	LoadDivGraph("images/Player/throw.png", 3, 3, 1, 128, 128, player_throw_img);
-	LoadDivGraph("images/Player/pickaxe.png", 12, 4, 3, 128, 128, pickaxe_img);
-	LoadDivGraph("images/Player/soil_effect.png", 2, 2, 1, 128, 128, soil_effect);
+	LoadDivGraph("images/Player/player_walk.png", 4, 4, 1, 170, 170, player_walk_img);
+	LoadDivGraph("images/Player/p_death.png", 4, 4, 1, 170, 170, player_death_img);
+	LoadDivGraph("images/Player/p_attack.png", 4, 4, 1, 170, 170, player_attack_img);
+	LoadDivGraph("images/Player/throw.png", 3, 3, 1, 170, 170, player_throw_img);
+	LoadDivGraph("images/Player/pickaxe.png", 12, 4, 3, 170, 170, pickaxe_img);
+	LoadDivGraph("images/Player/soil_effect.png", 2, 2, 1, 170, 170, soil_effect);
 
 	atk_sound = LoadSoundMem("sounds/Attack.mp3");
+
+	img_down = 15;
 
 	reset_timer = 0;
 	p_imgnum = 0;
@@ -586,49 +588,49 @@ void Player::Draw() const
 		{
 
 		case NOMAL:
-			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_img[0], TRUE, direction);
+			DrawRotaGraph(location.x, location.y - img_down, 1, 0, player_img[0], TRUE, direction);
 			//DrawFormatString(location.x, location.y - 80, 0x000000, "nomal");
 			break;
 		case ATTACK:
-			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_attack_img[p_imgnum + p_atk_imgnum], TRUE, direction);
+			DrawRotaGraph(location.x, location.y - img_down, 1, 0, player_attack_img[p_imgnum + p_atk_imgnum], TRUE, direction);
 			//DrawFormatString(location.x, location.y - 80, 0x000000, "attack");
 
 			if (is_hit_enemy == true)
 			{
 				if (p_imgnum > 2)
 				{
-					DrawRotaGraph(location.x, location.y - 25, 1, 0, pickaxe_img[2 + p_atk_imgnum], TRUE, direction);
+					DrawRotaGraph(location.x, location.y - img_down, 1, 0, pickaxe_img[2 + p_atk_imgnum], TRUE, direction);
 				}
 				else
 				{
-					DrawRotaGraph(location.x, location.y - 25, 1, 0, pickaxe_img[p_imgnum + p_atk_imgnum], TRUE, direction);
+					DrawRotaGraph(location.x, location.y - img_down, 1, 0, pickaxe_img[p_imgnum + p_atk_imgnum], TRUE, direction);
 				}
 			}
 			else {
 
-				DrawRotaGraph(location.x, location.y - 25, 1, 0, pickaxe_img[p_imgnum + p_atk_imgnum], TRUE, direction);
+				DrawRotaGraph(location.x, location.y - img_down, 1, 0, pickaxe_img[p_imgnum + p_atk_imgnum], TRUE, direction);
 				if (p_imgnum > 2)
 				{
-					//DrawRotaGraph(location.x, location.y - 25, 1, 0, effect_img[effect_num], TRUE, direction);
-					DrawRotaGraph(location.x, location.y - 25, 1, 0, soil_effect[effect_num], TRUE, direction);
+					//DrawRotaGraph(location.x, location.y - img_down, 1, 0, effect_img[effect_num], TRUE, direction);
+					DrawRotaGraph(location.x, location.y - img_down, 1, 0, soil_effect[effect_num], TRUE, direction);
 				}
 			}
 
 			break;
 		case WALK:
-			DrawRotaGraph(location.x, location.y, 1, 0, player_walk_img[walk_num], TRUE, direction);
+			DrawRotaGraph(location.x, location.y-img_down, 1, 0, player_walk_img[walk_num], TRUE, direction);
 			//DrawFormatString(location.x, location.y - 80, 0x000000, "walk");
 
 			break;
 		case HITDAMAGE:
-			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_img[1], TRUE, direction);
+			DrawRotaGraph(location.x, location.y - img_down, 1, 0, player_img[1], TRUE, direction);
 			//DrawFormatString(location.x, location.y - 80, 0x000000, "hitdamage");
 			break;
 		case DYNAMITE:
-			DrawRotaGraph(location.x, location.y - 25, 1, 0, player_throw_img[dyna_throw_num], TRUE, direction);
+			DrawRotaGraph(location.x, location.y - img_down, 1, 0, player_throw_img[dyna_throw_num], TRUE, direction);
 			break;
 		case DEATH:
-			DrawRotaGraph(location.x, location.y-25, 1, 0, player_death_img[death_num], TRUE, direction);
+			DrawRotaGraph(location.x, location.y-img_down, 1, 0, player_death_img[death_num], TRUE, direction);
 			//DrawFormatString(location.x, location.y - 80, 0x000000, "death");
 			break;
 		default:
@@ -873,6 +875,33 @@ void Player::PlayerAttack()
 
 			}
 		}
+	}
+
+
+}
+
+
+void Player::OpAnimUpdate()
+{
+
+	//画面の中心まで歩いてくる
+	if (640 > world.x) {
+		location.x += 1;
+		world.x += 1;
+
+		if (abs((int)world.x - (int)old_worldx) > 61)
+		{
+			old_worldx = world.x;
+		}
+
+		walk_abs = abs((int)world.x - (int)old_worldx);
+		// 歩行
+		// 5カウントごとに変わる
+		if (walk_abs != 0)
+		{
+			walk_num = walk_abs / 20;
+		}
+
 	}
 
 

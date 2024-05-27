@@ -35,7 +35,7 @@ private:
     int color13;
 
 
-    
+    float img_down;//画像の表示位置を下げる用
     int p_imgnum;//プレイヤーの画像番号切り替え用
 
     int p_atk_imgnum;//攻撃画像切り替え用
@@ -130,4 +130,6 @@ public:
 
     void SetDamageFlg(bool set_damageflg) { hit_damage = set_damageflg; }
 
+
+    void OpAnimUpdate();//最初のアニメーション用
 };
