@@ -9,11 +9,16 @@ AnimScene::AnimScene()
 	player = new Player();
 	back_img = LoadGraph("images/Animscene/backimg.png", TRUE);
 	block_img = LoadGraph("images/Animscene/block.png", TRUE);
-
+	black_img = LoadGraph("images/Animscene/blackimg.png", TRUE);
+	p_backimg[0]=LoadGraph("images/Animscene/startanim1.png", TRUE);
+	p_backimg[1]=LoadGraph("images/Animscene/startanim2.png", TRUE);
+	p_backimg[2]=LoadGraph("images/Animscene/startanim3.png", TRUE);
+	p_ase_img= LoadGraph("images/Animscene/fukidashi_ase_white.png", TRUE);
 	x = 0;
 	shake_cnt = 0;
 	shake_x1=20;
 	shake_x2=40;
+	p_backimg_num = 0;
 
 	cameraposition camera_pos{ SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f };
 
@@ -23,6 +28,9 @@ AnimScene::AnimScene()
 	};
 
 	anim_scene = 0;
+	alpha = 255;
+
+	ase_flg = false;
 }
 
 AnimScene::~AnimScene()
@@ -49,19 +57,73 @@ void AnimScene::UpdateCamera()
 
 void AnimScene::Update()
 {
-	UpdateCamera();
+	//UpdateCamera();
 
 	switch (anim_scene)
 	{
 	case 0:
+		//暗い画面で
+		//カンカン鳴らす
+		player->OpAnimUpdate(this,anim_scene);
+
+
+		break;
+	case 1:
+
+		if (alpha < 0) {
+			alpha = 0;
+			anim_scene = 2;
+		}
+		else {
+			alpha -= 1;
+		}
+
+		break;
+	case 2:
+		player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 		//プレイヤーが歩いてくる
-		
+		player->OpAnimUpdate(this, anim_scene);
 
 		//画面の揺れ
 		//ShakeCamera(fallingrock->GetLanding());
 
-	break;
-	case 1:
+		break;
+	case 3:
+
+		if (alpha++ > 255) {
+			if (alpha > 300) {
+				p_backimg_num = 1;
+			}
+			
+			if (alpha > 350) {
+				p_backimg_num = 2;
+
+			}
+
+			if (alpha > 400) {
+				anim_scene = 4;
+				alpha = 255;
+			}
+		}
+
+		break;
+	case 4:
+
+		player->OpAnimUpdate(this, anim_scene);
+
+		if (alpha < 0) {
+			alpha = 0;
+			ase_flg = true;
+		}
+		else {
+			alpha -= 1;
+		}
+
+		break;
+	case 5:
+
+		break;
+	case 6:
 		//でかい岩が落ちてくる
 		if (fallingrock != nullptr)
 		{
@@ -72,7 +134,7 @@ void AnimScene::Update()
 		ShakeCamera(fallingrock->GetLanding());
 
 	break;
-	case 2:
+	case 7:
 		//逃げる
 		break;
 	}
@@ -88,6 +150,7 @@ void AnimScene::Update()
 
 void AnimScene::Draw() const
 {
+
 	DrawGraph(screen_origin_position.x, 0, back_img, FALSE);
 
 	if (fallingrock != nullptr)
@@ -99,12 +162,35 @@ void AnimScene::Draw() const
 	if (player != nullptr)
 	{
 		player->Draw();
+
+		if (ase_flg == true)
+		{
+			DrawGraph(player->GetLocation().x-60, player->GetLocation().y-60, p_ase_img, TRUE);
+		}
 	}
 
 	DrawGraph(x, 640,block_img, FALSE);
 
+	if (anim_scene == 1)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+		DrawGraph(screen_origin_position.x, 0, black_img, FALSE);
+
+	}
+
+	if (anim_scene == 3||anim_scene==4)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+		DrawGraph(screen_origin_position.x, 0, p_backimg[p_backimg_num], FALSE);
+	}
+
+
+
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND,0);
+
 	//DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
-	//DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
+	//DrawFormatString(300, 300, 0xffffff, "alpha%d", alpha);
+	DrawFormatString(300, 300, 0xffffff, "anim_scene%d", anim_scene);
 }
 
 void AnimScene::ShakeCamera(bool set_true)

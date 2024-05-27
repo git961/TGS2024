@@ -2,10 +2,12 @@
 #include "CharacterBase.h"
 #include "GameMainScene.h"
 #include "StageBlock.h"
+#include "AnimScene.h"
 #include "padinput.h"
 
 class GameMainScene;
 class StageBlock;
+class AnimScene;
 
 enum PlayerState {
     NOMAL,//地面に居る：歩くのが可能
@@ -13,7 +15,8 @@ enum PlayerState {
     WALK,
     HITDAMAGE,
     DYNAMITE,
-    DEATH
+    DEATH,
+    PANIM
 };
 
 class Player :
@@ -91,6 +94,10 @@ private:
     int death_num;
     bool death_flg;//死んだよフラグ
 
+
+    int op_num;
+    int op_cnt;
+
 public:
     Player();
     ~Player();
@@ -131,5 +138,7 @@ public:
     void SetDamageFlg(bool set_damageflg) { hit_damage = set_damageflg; }
 
 
-    void OpAnimUpdate();//最初のアニメーション用
+
+    void OpAnimUpdate(AnimScene *anim_scene,int set_case);//最初のアニメーション用
+    
 };

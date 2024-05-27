@@ -7,7 +7,8 @@ Player::Player()
 	//画像読込
 	player_img[0] = LoadGraph("images/Player/player.png");
 	player_img[1] = LoadGraph("images/Player/damage.png");
-	player_img[2] = LoadGraph("images/Animscene/bagopen.png");
+	player_img[2] = LoadGraph("images/Player/bagopen.png");
+	player_img[3] = LoadGraph("images/Player/bagopen2.png");
 	LoadDivGraph("images/Player/player_walk.png", 4, 4, 1, 170, 170, player_walk_img);
 	LoadDivGraph("images/Player/p_death.png", 4, 4, 1, 170, 170, player_death_img);
 	LoadDivGraph("images/Player/p_attack.png", 4, 4, 1, 170, 170, player_attack_img);
@@ -82,6 +83,9 @@ Player::Player()
 	death_anim_cnt = 0;
 	death_num = 0;
 	death_flg = false;
+
+	op_num = 2;
+	op_cnt = 0;
 }
 
 Player::~Player()
@@ -634,6 +638,9 @@ void Player::Draw() const
 			DrawRotaGraph(location.x, location.y-img_down, 1, 0, player_death_img[death_num], TRUE, direction);
 			//DrawFormatString(location.x, location.y - 80, 0x000000, "death");
 			break;
+		case PANIM:
+			DrawRotaGraph(location.x, location.y - img_down, 1, 0, player_img[op_num], TRUE, direction);
+			break;
 		default:
 			break;
 		}
@@ -882,28 +889,84 @@ void Player::PlayerAttack()
 }
 
 
-void Player::OpAnimUpdate()
+void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 {
 
-	//画面の中心まで歩いてくる
-	if (640 > world.x) {
-		location.x += 1;
-		world.x += 1;
+	switch (set_case)
+	{
+	case 0:
 
-		if (abs((int)world.x - (int)old_worldx) > 61)
+		world.x = -50;
+		location.x = -50;
+
+		if (CheckSoundMem(atk_sound) == FALSE)
 		{
-			old_worldx = world.x;
+			PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
 		}
 
-		walk_abs = abs((int)world.x - (int)old_worldx);
-		// 歩行
-		// 5カウントごとに変わる
-		if (walk_abs != 0)
+		while (CheckSoundMem(atk_sound) == 1)
 		{
-			walk_num = walk_abs / 20;
+
 		}
 
+		if (CheckSoundMem(atk_sound) == FALSE)
+		{
+			PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+		}
+
+		while (CheckSoundMem(atk_sound) == 1)
+		{
+
+		}
+
+		anim_scene->SetAnimScene(1);
+
+
+	break;
+	case 2:
+		//画面の中心まで歩いてくる
+		if (640 > world.x) {
+			player_state = WALK;
+			location.x += 1;
+			world.x += 1;
+
+			if (abs((int)world.x - (int)old_worldx) > 61)
+			{
+				old_worldx = world.x;
+			}
+
+			walk_abs = abs((int)world.x - (int)old_worldx);
+			// 歩行
+			// 5カウントごとに変わる
+			if (walk_abs != 0)
+			{
+				walk_num = walk_abs / 20;
+			}
+
+		}
+		else {
+			if (op_cnt++ >120)
+			{
+				player_state = PANIM;
+				if (op_cnt++ > 140)
+				{
+					anim_scene->SetAnimScene(3);
+				}
+			}
+			else
+			{
+				player_state = NOMAL;
+			}
+		}
+		
+		
+	break;
+	case 4:
+		op_num = 3;
+
+		break;
 	}
+	
 
 
 }
