@@ -16,7 +16,8 @@ enum PlayerState {
     HITDAMAGE,
     DYNAMITE,
     DEATH,
-    PANIM
+    PANIM,
+    ASE
 };
 
 class Player :
@@ -34,6 +35,7 @@ private:
     int pickaxe_img[15];
     int soil_effect[10];
 
+    int player_ase_img[10];
 
 
 

@@ -9,7 +9,9 @@ Player::Player()
 	player_img[1] = LoadGraph("images/Player/damage.png");
 	player_img[2] = LoadGraph("images/Player/bagopen.png");
 	player_img[3] = LoadGraph("images/Player/bagopen2.png");
+	player_img[4] = LoadGraph("images/Player/plookup.png");
 	LoadDivGraph("images/Player/player_walk.png", 4, 4, 1, 170, 170, player_walk_img);
+	LoadDivGraph("images/Player/player_ase.png", 4, 4, 1, 170, 170, player_ase_img);
 	LoadDivGraph("images/Player/p_death.png", 4, 4, 1, 170, 170, player_death_img);
 	LoadDivGraph("images/Player/p_attack.png", 4, 4, 1, 170, 170, player_attack_img);
 	LoadDivGraph("images/Player/throw.png", 3, 3, 1, 170, 170, player_throw_img);
@@ -379,6 +381,9 @@ void Player::Draw() const
 		case PANIM:
 			DrawRotaGraph(location.x, location.y - img_down, 1, 0, player_img[op_num], TRUE, direction);
 			break;
+		case ASE:
+			DrawRotaGraph(location.x, location.y - img_down, 1, 0, player_ase_img[walk_num], TRUE, direction);
+			break;
 		default:
 			break;
 		}
@@ -704,7 +709,10 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 
 		break;
 	case 5:
-		player_state = NOMAL;
+		world.x = 600;
+		location.x = 600;
+		player_state =PANIM;
+		op_num = 4;
 		op_cnt++;
 		switch (op_cnt)
 		{
@@ -736,7 +744,7 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 	case 6:
 		
 		if (1400> world.x) {
-			player_state = WALK;
+			player_state = ASE;
 			location.x += 1;
 			world.x += 1;
 

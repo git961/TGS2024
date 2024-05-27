@@ -31,7 +31,7 @@ private:
     int shake_cnt;
     int shake_x1;
     int shake_x2;
-    int alpha;
+    float alpha;
 
     int anim_scene;
 
@@ -50,6 +50,8 @@ private:
 
     bool shake_flg;
     bool run_flg;
+
+    bool next_scene_flg;
 
 public:
     AnimScene();

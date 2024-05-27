@@ -18,6 +18,7 @@ private:
 
     int rock_state;
     bool landing_flg;
+    bool black_out_flg;
 
     int shake_x1;
     int shake_x2;
@@ -30,6 +31,7 @@ public:
     void Draw() const;
 
     bool GetLanding() { return landing_flg; }
+    bool GetBlackOut() { return black_out_flg; }
 
 };
 

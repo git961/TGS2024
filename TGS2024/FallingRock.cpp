@@ -17,6 +17,7 @@ FallingRock::FallingRock()
 	angle = 0;
 	degree = 0;
 	landing_flg = false;
+	black_out_flg = false;
 
 	shake_x1 = 5;
 	shake_x2 = 10;
@@ -47,6 +48,7 @@ void FallingRock::Update()
 		}
 	break;
 	case 1:
+		
 		//地面に着地したら
 		anim_cnt++;
 		switch (anim_cnt)
@@ -85,6 +87,9 @@ void FallingRock::Update()
 
 		break;
 	case 2:
+		
+		landing_flg = false;
+		black_out_flg = true;
 		//転がる右回り
 
 		if (degree < 360)

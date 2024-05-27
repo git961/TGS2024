@@ -34,6 +34,7 @@ AnimScene::AnimScene()
 	exc_flg = false;
 	ase_flg = false;
 	shake_flg = false;
+	next_scene_flg = false;
 }
 
 AnimScene::~AnimScene()
@@ -120,9 +121,11 @@ void AnimScene::Update()
 		//画面の揺れ
 		ShakeCamera(shake_flg,1);
 		player->OpAnimUpdate(this, anim_scene);
+		alpha = 0;
 
 		break;
 	case 6:
+		
 		//でかい岩が落ちてくる
 		if (fallingrock != nullptr)
 		{
@@ -131,6 +134,7 @@ void AnimScene::Update()
 		}
 		//画面の揺れ
 		ShakeCamera(fallingrock->GetLanding(),2);
+
 
 	break;
 	}
@@ -141,6 +145,14 @@ void AnimScene::Update()
 
 	}
 
+	if (fallingrock->GetBlackOut() == true)
+	{
+		alpha += 0.5;
+		if (alpha > 255) {
+			next_scene_flg = true;
+		}
+
+	}
 
 	//screen_origin_position = {
 	//camera_pos.x - SCREEN_WIDTH / 2.0f,
@@ -176,7 +188,7 @@ void AnimScene::Draw() const
 
 	DrawGraph(x, 640,block_img, FALSE);
 
-	if (anim_scene == 1)
+	if (anim_scene == 1||fallingrock->GetBlackOut() == true)
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 		DrawGraph(screen_origin_position.x, 0, black_img, FALSE);
@@ -277,9 +289,9 @@ void AnimScene::ShakeCamera(bool set_true, int set_num)
 
 
 AbstractScene* AnimScene::Change() {
-	//if(shake_cnt>60)
-	//{
-	//	return new GameMainScene;
-	//}
+	if(next_scene_flg==true)
+	{
+		return new GameMainScene;
+	}
 	return this;
 }
