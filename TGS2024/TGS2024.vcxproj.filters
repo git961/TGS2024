@@ -58,6 +58,12 @@
     <Filter Include="ヘッダー ファイル\UI">
       <UniqueIdentifier>{32392257-384e-48ab-a8e4-2aa6d1f227ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\AnimS">
+      <UniqueIdentifier>{ba933a93-de73-4832-9fba-459e6b8c2f96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\AnimS">
+      <UniqueIdentifier>{29436ef8-94bf-437a-980e-282514109fde}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -107,6 +113,9 @@
     </ClCompile>
     <ClCompile Include="Dynamite.cpp">
       <Filter>ソース ファイル\PlayerFile</Filter>
+    </ClCompile>
+    <ClCompile Include="FallingRock.cpp">
+      <Filter>ソース ファイル\AnimS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="Dynamite.h">
       <Filter>ヘッダー ファイル\PlayerFile</Filter>
+    </ClInclude>
+    <ClInclude Include="FallingRock.h">
+      <Filter>ヘッダー ファイル\AnimS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

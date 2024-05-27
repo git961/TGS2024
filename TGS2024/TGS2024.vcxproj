@@ -156,6 +156,7 @@
     <ClCompile Include="CharacterBase.cpp" />
     <ClCompile Include="Dynamite.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="FallingRock.cpp" />
     <ClCompile Include="fps.cpp" />
     <ClCompile Include="GameMainScene.cpp" />
     <ClCompile Include="Gem.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="AbstractScene.h" />
     <ClInclude Include="AttackCheck.h" />
     <ClInclude Include="Define.h" />
+    <ClInclude Include="FallingRock.h" />
     <ClInclude Include="Gem.h" />
     <ClInclude Include="Dynamite.h" />
     <ClInclude Include="ObjectBase.h" />

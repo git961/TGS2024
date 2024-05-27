@@ -74,6 +74,12 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		map_data_num = 3;
 	}
 
+	//岩
+	if (CheckHitKey(KEY_INPUT_4) == TRUE)
+	{
+		map_data_num = 4;
+	}
+
 
 	now_abs = fabsf(mouse_x - p_localx);
 
@@ -178,6 +184,10 @@ void MapIo::Draw() const
 			{
 				DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0xffff00, FALSE);
 			}
+			else if (map_array[i][j] == 4)
+			{
+				DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0x00fff0, FALSE);
+			}
 		}
 	}
 
@@ -211,6 +221,9 @@ void MapIo::Draw() const
 		break;
 	case 3:
 		DrawFormatString(40, 80, 0xffffff, "PUT_Goal");
+		break;
+	case 4:
+		DrawFormatString(40, 80, 0xffffff, "PUT_ROCK");
 		break;
 	}
 

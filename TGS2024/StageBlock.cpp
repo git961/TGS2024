@@ -12,12 +12,27 @@ StageBlock::StageBlock(int set_block_num,float set_x, float set_y)
 	location.y = set_y;
 	block_num = set_block_num;
 
-	if (block_num == 1) {
+	//if (block_num == 1) {
+	//	block_img = LoadGraph("images/Stage/block.png");
+	//}
+	//else {
+	//	block_img = LoadGraph("images/Stage/Goal.png");
+	//}
+
+
+	switch (block_num)
+	{
+	case 1:
 		block_img = LoadGraph("images/Stage/block.png");
-	}
-	else {
+		break;
+	case 3:
 		block_img = LoadGraph("images/Stage/Goal.png");
+		break;
+	case 4:
+		block_img = LoadGraph("images/Stage/rock.png");
+		break;
 	}
+
 	/*
 	for (int i = 0; i < map_blockmax_y; i++)
 	{

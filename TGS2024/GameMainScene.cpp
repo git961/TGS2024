@@ -38,7 +38,8 @@ GameMainScene::GameMainScene() {
 
 	player_damage_once = false;
 	//back.png
-	back_img = LoadGraph("images/background_test.png", TRUE);
+	back_img = LoadGraph("images/backimg.png", TRUE);
+	//back_img = LoadGraph("images/background_test.png", TRUE);
 
 
 	game_state = PLAY;
@@ -77,6 +78,24 @@ GameMainScene::GameMainScene() {
 			{
 				map_old_array[i][j] = mapio->GetMapData(i, j);
 
+				switch (mapio->GetMapData(i, j))
+				{
+				case 1:
+					stage_block[block_count++] = new StageBlock(1, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+					break;
+				case 2:
+					enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+					break;
+				case 3:
+					stage_block[block_count++] = new StageBlock(3, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+					break;
+				case 4:
+					stage_block[block_count++] = new StageBlock(4, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+					break;
+
+				}
+
+				/*
 				//もしマップioのgetマップデータが１だったら
 				if (mapio->GetMapData(i, j) == 1) {
 					stage_block[block_count++] = new StageBlock(1,j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
@@ -87,6 +106,10 @@ GameMainScene::GameMainScene() {
 				}
 
 
+				if (mapio->GetMapData(i, j) == 4) {
+					stage_block[block_count++] = new StageBlock(4, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+				}
+
 				if (mapio->GetMapData(i, j) == 2) {
 					if (enemy_count < ENEMYMAXNUM)
 					{
@@ -94,7 +117,7 @@ GameMainScene::GameMainScene() {
 					}
 				}
 
-				
+				*/
 
 			}
 		}
@@ -170,13 +193,19 @@ void GameMainScene::Update()
 			{
 				for (int j = 0; j < map_blockmax_x; j++)
 				{
-					//もしマップioのgetマップデータが１だったら
 
-					if (mapio->GetMapData(i, j) == 1) {
+					switch (mapio->GetMapData(i, j))
+					{
+					case 1:
 						stage_block[block_count++] = new StageBlock(1, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
-					}
-					if (mapio->GetMapData(i, j) == 3) {
+						break;
+					case 3:
 						stage_block[block_count++] = new StageBlock(3, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+					case 4:
+						stage_block[block_count++] = new StageBlock(4, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+
 					}
 
 					if (enemy_count < ENEMYMAXNUM)
