@@ -95,6 +95,11 @@ public:
         is_knock_back_start = set_flg;
     }
 
+    void SetStarDrawFlg(bool set_flg)
+    {
+        star.is_draw = set_flg;
+    }
+
     void SetGemDropFlg(bool set_flg)
     {
         gem_drop = set_flg;

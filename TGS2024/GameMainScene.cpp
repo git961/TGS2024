@@ -249,6 +249,7 @@ void GameMainScene::Update()
 									enemy[i]->Damege(10);
 									// 歩行エネミーのノックバック処理
 									enemy[i]->SetKnockBackStartFlg(true);
+									enemy[i]->SetStarDrawFlg(true);
 									enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
 									enemy_damage_once = true;
 								}

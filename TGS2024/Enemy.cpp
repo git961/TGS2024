@@ -122,7 +122,6 @@ void Enemy::Update(GameMainScene* gamemain)
 		if (is_knock_back_start == true)
 		{
 			is_knock_back = true;
-			star.is_draw = true;
 		}
 
 		if (is_knock_back == true)
@@ -367,7 +366,7 @@ void Enemy::DeathAnimation()
 	if (death_cnt >= 120)
 	{
 		// 120カウント以上なら削除フラグをtrueに変更
-		//is_delete = true;
+		is_delete = true;
 	}
 
 	if (draw_death_img == true)
