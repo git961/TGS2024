@@ -7,6 +7,7 @@ Player::Player()
 	//画像読込
 	player_img[0] = LoadGraph("images/Player/player.png");
 	player_img[1] = LoadGraph("images/Player/damage.png");
+	player_img[2] = LoadGraph("images/Animscene/bagopen.png");
 	LoadDivGraph("images/Player/player_walk.png", 4, 4, 1, 170, 170, player_walk_img);
 	LoadDivGraph("images/Player/p_death.png", 4, 4, 1, 170, 170, player_death_img);
 	LoadDivGraph("images/Player/p_attack.png", 4, 4, 1, 170, 170, player_attack_img);
