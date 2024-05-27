@@ -18,5 +18,5 @@ void Score::Update()
 void Score::Draw() const
 {
 	SetFontSize(20);
-	DrawFormatString(20, 20, 0x000000, "Score %d", score);
+	DrawFormatString(20, 20, 0xffffff, "Score %d", score);
 }
