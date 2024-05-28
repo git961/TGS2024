@@ -249,7 +249,7 @@ void GameMainScene::Update()
 			}
 			else
 			{
-				
+
 			}
 
 		}
@@ -798,10 +798,10 @@ void GameMainScene::Update()
 								stage_block[j] = nullptr;
 							}
 
-							
+
 						}
 
-	
+
 
 					}
 
@@ -810,7 +810,7 @@ void GameMainScene::Update()
 			}
 
 
-			if (player != nullptr && mapio!=nullptr)
+			if (player != nullptr && mapio != nullptr)
 			{
 				mapio->SetPlayerLocal(player->GetLocation().x);
 				mapio->SetPlayerWorld(player->GetWorldLocation().x);
@@ -819,9 +819,10 @@ void GameMainScene::Update()
 			break;
 	default:
 		break;
-		
-	}
 
+		}
+
+	}
 
 }
 

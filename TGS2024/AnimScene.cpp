@@ -29,7 +29,7 @@ AnimScene::AnimScene()
 	};
 
 	anim_scene = 0;
-	anim_scene = 6;
+	//anim_scene = 6;
 	alpha = 255;
 	exc_flg = false;
 	ase_flg = false;
