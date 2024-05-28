@@ -33,6 +33,7 @@ struct cameraposition
 
 enum GameState {
     EDITOR,
+    TUTORIAL,
     POSE,
     GOAL,
     PLAY
@@ -97,6 +98,12 @@ private:
 
     float check_abs;//debug用
 
+    //画面揺らす用
+    int shake_cnt;
+    int shake_x1;
+    int shake_x2;
+    bool shake_flg;
+
 public:
     GameMainScene();
     ~GameMainScene();
@@ -109,6 +116,7 @@ public:
 
     void SetPlayerDamageOnce(bool set_flg) { player_damage_once = set_flg; }
 
+    void ShakeCamera(bool set_true, int set_num);
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };

@@ -17,7 +17,6 @@ GameMainScene::GameMainScene() {
 
 	mapio = new MapIo;
 
-
 	player = new Player();
 
 	enemy = new Enemy * [ENEMYMAXNUM];
@@ -42,7 +41,8 @@ GameMainScene::GameMainScene() {
 	//back_img = LoadGraph("images/background_test.png", TRUE);
 
 
-	game_state = PLAY;
+	game_state = TUTORIAL;
+	//game_state = PLAY;
 
 	//enemyhit = false;		// 当たっていない
 
@@ -129,11 +129,6 @@ GameMainScene::GameMainScene() {
 		walk_gem[i] = nullptr;
 	}
 
-	//for (int i = 0; i < ENEMYMAXNUM; i++)
-	//{
-	//	enemy[i] = new Enemy(i);
-	//}
-
 	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
 	{
 		dynamite[i] = nullptr;
@@ -148,6 +143,11 @@ GameMainScene::GameMainScene() {
 	roll_gem_score = 50;
 	goal_flg = false;
 
+
+	shake_cnt=0;
+	shake_x1=0;
+	shake_x2=0;
+	shake_flg=false;
 	
 }
 
@@ -222,6 +222,9 @@ void GameMainScene::Update()
 
 			game_state = PLAY;
 		}
+
+		break;
+	case TUTORIAL:
 
 		break;
 	case POSE:
@@ -750,91 +753,100 @@ void GameMainScene::Draw() const {
 	//{
 	//	DrawFormatString(0, 10, 0xffffff, "hit");
 	//}
-
-	//プレイヤー描画
-	if (player != nullptr)
-	{
-		player->Draw();
-	}
-
-	for (int i = 0; i < ENEMYMAXNUM; i++)
-	{
-		// エネミー描画処理
-		if (enemy[i] != nullptr)
-		{
-			enemy[i]->Draw();
-		}
-	}
-
-	if (rolling_enemy != nullptr)
-	{
-		// 転がるエネミー描画
-		rolling_enemy->Draw();
-	}
-
-	//プレイヤー攻撃描画
-	if (ac != nullptr) {
-		if (ac->GetAttackFlg() == true)
-		{
-			ac->Draw();
-		}
-	}
-
-
-	for (int j = 0; j < block_count; j++)
-	{
-		if (stage_block[j] != nullptr)
-		{
-			stage_block[j]->Draw();
-		}
-	}
-
-
-	for (int i = 0; i < ENEMYMAXNUM; i++)
-	{
-		// 歩行エネミーの宝石描画処理
-		if (walk_gem[i] != nullptr)
-		{
-			walk_gem[i]->Draw();
-		}
-	}
 	
-		if (roll_gem != nullptr)
+	if (game_state == TUTORIAL)
 	{
-		// 転がるエネミーの宝石描画処理
-		roll_gem->Draw();
+
 	}
-
-
-
-	if (ui != nullptr)
+	else
 	{
-		ui->Draw();
-	}
 
-
-	if (score != nullptr)
-	{
-		score->Draw();
-	}
-
-	//ダイナマイト描画
-	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
-	{
-		if (dynamite[i] != nullptr) {
-			dynamite[i]->Draw();
+		//プレイヤー描画
+		if (player != nullptr)
+		{
+			player->Draw();
 		}
-	}
 
+		for (int i = 0; i < ENEMYMAXNUM; i++)
+		{
+			// エネミー描画処理
+			if (enemy[i] != nullptr)
+			{
+				enemy[i]->Draw();
+			}
+		}
+
+		if (rolling_enemy != nullptr)
+		{
+			// 転がるエネミー描画
+			rolling_enemy->Draw();
+		}
+
+		//プレイヤー攻撃描画
+		if (ac != nullptr) {
+			if (ac->GetAttackFlg() == true)
+			{
+				ac->Draw();
+			}
+		}
+
+
+		for (int j = 0; j < block_count; j++)
+		{
+			if (stage_block[j] != nullptr)
+			{
+				stage_block[j]->Draw();
+			}
+		}
+
+
+		for (int i = 0; i < ENEMYMAXNUM; i++)
+		{
+			// 歩行エネミーの宝石描画処理
+			if (walk_gem[i] != nullptr)
+			{
+				walk_gem[i]->Draw();
+			}
+		}
+
+		if (roll_gem != nullptr)
+		{
+			// 転がるエネミーの宝石描画処理
+			roll_gem->Draw();
+		}
+
+
+
+		if (ui != nullptr)
+		{
+			ui->Draw();
+		}
+
+
+		if (score != nullptr)
+		{
+			score->Draw();
+		}
+
+		//ダイナマイト描画
+		for (int i = 0; i < DYNAMITE_MAXNUM; i++)
+		{
+			if (dynamite[i] != nullptr) {
+				dynamite[i]->Draw();
+			}
+		}
+
+	}
 #ifdef DEBUG
 
-	DrawFormatString(300, 180, 0xffffff, "abs: %f", check_abs);
-	DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
-	DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
-	DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
-	DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
+	//DrawFormatString(300, 180, 0xffffff, "abs: %f", check_abs);
+	//DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
+	//DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
+	//DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
+	//DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
 	//DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
 	//DrawFormatString(30, 300, 0xffffff, "m_mode: %d", map_mode);
+
 
 	switch (game_state)
 	{
@@ -843,9 +855,13 @@ void GameMainScene::Draw() const {
 		mapio->Draw();
 
 		break;
+	case TUTORIAL:
+		DrawFormatString(400, 100, 0xffffff, "TUTORIAL_NOW");
+		break;
 	case POSE:
 		DrawFormatString(400, 100, 0xffffff, "POSE_NOW");
 		break;
+		
 	case GOAL:
 		DrawFormatString(400, 100, 0xffffff, "GOAL!!");
 		break;
@@ -855,6 +871,7 @@ void GameMainScene::Draw() const {
 	default:
 		break;
 	}
+
 
 #endif // DEBUG
 }
@@ -895,6 +912,86 @@ void GameMainScene::UpdateCamera(World world)
 	}
 
 }
+
+
+
+void GameMainScene::ShakeCamera(bool set_true, int set_num)
+{
+	if (set_num == 1)
+	{
+		shake_x1 = 5;
+		shake_x2 = 10;
+		if (set_true == true)
+		{
+			//画面の揺れ
+			switch (shake_cnt)
+			{
+			case 0:
+				screen_origin_position.x += shake_x1;
+				break;
+			case 10:
+				screen_origin_position.x -= shake_x2;
+				break;
+			case 20:
+				screen_origin_position.x = 0;
+				break;
+			case 30:
+				screen_origin_position.x += shake_x1;
+				break;
+			case 40:
+				screen_origin_position.x -= shake_x2;
+				break;
+			case 50:
+				screen_origin_position.x = 0;
+				shake_cnt = 0;
+				break;
+			}
+			shake_cnt++;
+		}
+		else
+		{
+			shake_cnt = 0;
+		}
+
+	}
+	else
+	{
+		if (set_true == true)
+		{
+			shake_x1 = 20;
+			shake_x2 = 40;
+			//画面の揺れ
+			switch (shake_cnt)
+			{
+			case 0:
+				screen_origin_position.x += shake_x1;
+				break;
+			case 10:
+				screen_origin_position.x -= shake_x2;
+				break;
+			case 20:
+				screen_origin_position.x = 0;
+				break;
+			case 30:
+				screen_origin_position.x += shake_x1;
+				break;
+			case 40:
+				screen_origin_position.x -= shake_x2;
+				break;
+			case 50:
+				screen_origin_position.x = 0;
+				shake_cnt = 0;
+				break;
+			}
+			shake_cnt++;
+		}
+		else
+		{
+			shake_cnt = 0;
+		}
+	}
+}
+
 
 
 AbstractScene* GameMainScene::Change() {
