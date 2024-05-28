@@ -28,13 +28,18 @@ struct Blockvertex
 };
 
 class StageBlock
-	:public ObjectBase
+	:public CharacterBase
 {
 private:
 	Blockvertex block_vertex;
 	int stage_blockdata[map_blockmax_y][map_blockmax_x];
 	int block_num;//1:ステージブロック　3:Goal
 	int block_img;
+
+	float shakex;
+	int shake_cnt;
+	bool shake_flg;
+
 public:
 	int direction;
 
@@ -44,6 +49,11 @@ public:
 	void Update();
 	void Draw() const;
 	int GetBlockNum() { return block_num; }
+
+	void SetDamage(float damage) { hp = hp - damage; }
+	void SetShakeFlg(bool set_flg) { shake_flg=set_flg; }
+	float GetHp() { return hp; }
+	
 
 	//ブロックのlocationとスクリーンの原点を引いてスクリーン座標上の位置に変換
 	//void SetBlockLocalPosition(float set_origin_posx, float set_origin_posy)

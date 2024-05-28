@@ -30,6 +30,10 @@ StageBlock::StageBlock(int set_block_num,float set_x, float set_y)
 		break;
 	case 4:
 		block_img = LoadGraph("images/Stage/rock.png");
+		hp = 30;
+		shake_cnt = 0;
+		shakex = 0;
+		shake_flg = false;
 		break;
 	}
 
@@ -66,6 +70,31 @@ StageBlock::~StageBlock()
 
 void StageBlock::Update()
 {
+	if(block_num==4){
+		if (shake_flg == true)
+		{
+			shake_cnt++;
+			switch (shake_cnt)
+			{
+			case 1:
+				shakex = -5;
+				break;
+			case 3:
+				shakex = 5;
+				break;
+			case 5:
+				shake_cnt = 0;
+				shake_flg = false;
+				break;
+			default:
+				shakex = 0;
+				break;
+			}
+			world.x += shakex;
+		}
+	}
+		
+	
 }
 
 void StageBlock::Draw() const
@@ -74,7 +103,13 @@ void StageBlock::Draw() const
 	//DrawBox(location.x-BLOCK_HALFSIZE, location.y-BLOCK_HALFSIZE, location.x + BLOCK_HALFSIZE, location.y + BLOCK_HALFSIZE,0xffffff,TRUE);
 	DrawRotaGraph(location.x, location.y, 1, 0,block_img, TRUE, 0);
 
+	switch (block_num)
+	{
+	case 4:
+		//DrawFormatString(location.x, location.y-40, 0xffffff, "hp%f",hp);
 
+		break;
+	}
 	//DrawCircle(box_vertex.upper_leftx, box_vertex.upper_lefty, 2, 0xff00ff, TRUE);
 	//DrawCircle(box_vertex.lower_leftx, box_vertex.lower_lefty, 2, 0xff00ff, TRUE);
 	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);			// 中心座標

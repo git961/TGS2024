@@ -87,6 +87,8 @@ Player::Player()
 
 	op_num = 2;
 	op_cnt = 0;
+
+	hit_rock_flg = false;
 }
 
 Player::~Player()
@@ -440,8 +442,6 @@ void Player::PlayerMove()
 		}
 
 		direction = 0;
-		vector.x = 1;
-		vector.y = 0;
 
 		if (player_state != ATTACK)
 		{
@@ -456,9 +456,8 @@ void Player::PlayerMove()
 		{
 			move_x -= 1;
 		}
+
 		direction = 1;
-		vector.x = -1;
-		vector.y = 0;
 
 		if (player_state != ATTACK)
 		{
@@ -481,12 +480,11 @@ void Player::PlayerMove()
 		}
 	}
 
-	//壁に当たっていなかったら加算
-	/*if (wall_flg != true)
-	{*/
+
 	location.x += move_x;
 	world.x += move_x;
-	//}
+	
+
 }
 
 void Player::PlayerAttack()
@@ -768,4 +766,33 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 	
 
 
+}
+
+void Player::TutorialAnimUpdate(int set_case)
+{
+	switch (set_case)
+	{
+	case 0:
+		if (1400 > world.x) {
+			player_state = ASE;
+			location.x += 1;
+			world.x += 1;
+
+			if (abs((int)world.x - (int)old_worldx) > 61)
+			{
+				old_worldx = world.x;
+			}
+
+			walk_abs = abs((int)world.x - (int)old_worldx);
+			// 歩行
+			// 5カウントごとに変わる
+			if (walk_abs != 0)
+			{
+				walk_num = walk_abs / 20;
+			}
+
+		}
+
+		break;
+	}
 }

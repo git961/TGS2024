@@ -29,16 +29,19 @@ AnimScene::AnimScene()
 	};
 
 	anim_scene = 0;
-	//anim_scene = 5;
+	anim_scene = 6;
 	alpha = 255;
 	exc_flg = false;
 	ase_flg = false;
 	shake_flg = false;
 	next_scene_flg = false;
+
+	
 }
 
 AnimScene::~AnimScene()
 {
+	delete player;
 }
 
 void AnimScene::Update()
@@ -134,8 +137,11 @@ void AnimScene::Update()
 		}
 		//画面の揺れ
 		ShakeCamera(fallingrock->GetLanding(),2);
-
-
+	break;
+	case 7:
+		//ドガン！って音と
+		//吹き飛ばされる画像
+		//次のシーンで眼が罰点の状態で走って来て、岩にぶつかったら、ダメージ受けた時の奴をやる
 	break;
 	}
 	
@@ -150,9 +156,11 @@ void AnimScene::Update()
 		alpha += 0.5;
 		if (alpha > 255) {
 			next_scene_flg = true;
+			anim_scene = 7;
 		}
 
 	}
+
 
 	//screen_origin_position = {
 	//camera_pos.x - SCREEN_WIDTH / 2.0f,

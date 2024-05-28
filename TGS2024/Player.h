@@ -138,8 +138,18 @@ public:
 
     void SetDamageFlg(bool set_damageflg) { hit_damage = set_damageflg; }
 
+    void SetX(float set_x) {
+        // 端に来たら跳ね返る
+        if (world.x + width / 2 > set_x)
+        {
+            world.x = set_x - 64;
 
+        }
+    }
+
+    
 
     void OpAnimUpdate(AnimScene *anim_scene,int set_case);//最初のアニメーション用
-    
+    void TutorialAnimUpdate(int set_case);//チュートリアル用アップデート
+
 };

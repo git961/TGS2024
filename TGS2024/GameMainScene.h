@@ -70,6 +70,7 @@ private:
 
     bool player_damage_once;
     bool enemy_damage_once;
+    bool rock_damage_once;
     bool checkhit;
     //bool enemyhit;      // 歩行エネミー同士の当たり判定チェック用、後に削除
 
@@ -103,6 +104,10 @@ private:
     int shake_x1;
     int shake_x2;
     bool shake_flg;
+
+    //チュートリアル用
+    bool play_start_flg;//アニメーション終
+    
 
 public:
     GameMainScene();

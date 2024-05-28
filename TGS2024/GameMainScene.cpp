@@ -41,8 +41,8 @@ GameMainScene::GameMainScene() {
 	//back_img = LoadGraph("images/background_test.png", TRUE);
 
 
-	game_state = TUTORIAL;
-	//game_state = PLAY;
+	//game_state = TUTORIAL;
+	game_state = PLAY;
 
 	//enemyhit = false;		// 当たっていない
 
@@ -149,6 +149,7 @@ GameMainScene::GameMainScene() {
 	shake_x2=0;
 	shake_flg=false;
 	
+	play_start_flg = false;
 }
 
 
@@ -225,6 +226,49 @@ void GameMainScene::Update()
 
 		break;
 	case TUTORIAL:
+		if (CheckHitKey(KEY_INPUT_SPACE) == 1)
+		{
+			game_state = EDITOR;
+		}
+		//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
+		location_x = world_x - screen_origin_position.x;
+		location_y = world_y - screen_origin_position.y;
+
+
+
+		//プレイヤー
+		if (player != nullptr)
+		{
+			if (play_start_flg == true)
+			{
+				player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				player->Update(this);
+			}
+			else
+			{
+				
+			}
+
+		}
+
+		//カメラとUIのアップデート
+		if (player != nullptr) {
+
+			UpdateCamera(player->GetWorldLocation());
+		}
+
+		for (int j = 0; j < block_count; j++)
+		{
+			if (stage_block[j] != nullptr)
+			{
+				stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			}
+		}
+
+		screen_origin_position = {
+		camera_pos.x - SCREEN_WIDTH / 2.0f,
+		camera_pos.y - SCREEN_HEIGHT / 2.0f
+		};
 
 		break;
 	case POSE:
@@ -306,9 +350,7 @@ void GameMainScene::Update()
 									enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
 									enemy_damage_once = true;
 								}
-								else {
-									//checkhit = false;
-								}
+
 							}
 						}
 						else
@@ -701,17 +743,6 @@ void GameMainScene::Update()
 
 					if (player != nullptr)
 					{
-						//if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-						//{
-						//	//各頂点の座標を確保しておく
-						//	player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
-						//	
-						//}
-						//if (stage_block[j]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
-						//{
-						//	//各頂点の座標を確保しておく
-						//	player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
-						//}
 
 						if (stage_block[j]->GetBlockNum() == 3)
 						{
@@ -720,6 +751,47 @@ void GameMainScene::Update()
 								game_state = GOAL;
 							}
 						}
+
+						if (stage_block[j]->GetBlockNum() == 4)
+						{
+
+							stage_block[j]->Update();
+
+							//プレイヤが右向きだったら
+							if (player->GetDirection() == 0)
+							{
+								player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
+							}
+
+							//つるはしを振るってる時だけ
+							if (player->GetAttacking() == true)
+							{
+								//ダメージを一回だけ与える
+								if (rock_damage_once == false)
+								{
+									//つるはしとエネミーと当たってるかのチェック
+									if (ac->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true) {
+										stage_block[j]->SetDamage(10);
+										stage_block[j]->SetShakeFlg(true);
+										rock_damage_once = true;
+									}
+								}
+							}
+							else
+							{
+								//プレイヤーがつるはし振ってなかったら
+								rock_damage_once = false;
+							}
+
+							if (stage_block[j]->GetHp() <= 0)
+							{
+								stage_block[j] = nullptr;
+							}
+
+							
+						}
+
+	
 
 					}
 
@@ -740,6 +812,7 @@ void GameMainScene::Update()
 		
 	}
 
+
 }
 
 void GameMainScene::Draw() const {
@@ -756,6 +829,34 @@ void GameMainScene::Draw() const {
 	
 	if (game_state == TUTORIAL)
 	{
+
+		//プレイヤー描画
+		if (player != nullptr)
+		{
+			player->Draw();
+		}
+		//プレイヤー攻撃描画
+		if (ac != nullptr) {
+			if (ac->GetAttackFlg() == true)
+			{
+				ac->Draw();
+			}
+		}
+
+
+		for (int j = 0; j < block_count; j++)
+		{
+			if (stage_block[j] != nullptr)
+			{
+				stage_block[j]->Draw();
+			}
+		}
+
+		//if (ui != nullptr)
+		//{
+		//	ui->Draw();
+		//}
+
 
 	}
 	else

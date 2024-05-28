@@ -31,12 +31,14 @@ protected:
 
 	float speed;
 	bool direction;//向き　0:右 1:左
+	bool old_direction;//向き　0:右 1:左
 
 	int chara_image[10];//キャラクタ画像入れる用
 
 	bool ground_flg;//地面に当たってるか
 	bool wall_flg;//壁に当たってるか
 	bool hit_block_flg;//ブロックに当たっているか
+	bool hit_rock_flg;//岩に当たったか
 
 public:
 	//コンストラクタとデストラクタ
@@ -46,6 +48,7 @@ public:
 
 	bool GetDirection() { return direction; }//キャラの向きを返す　0:右 1:左
 
+	void SetRockFlg(bool set_flg) { hit_rock_flg = set_flg; }
 
 	/*
 	//当たり判定:何かに当たったかどうかだけ返す
@@ -108,10 +111,11 @@ public:
 	}
 
 
-	void HitCheckB(Boxvertex set_box_vertex,World set_world)
+	void HitCheckB(Boxvertex set_box_vertex, World set_world)
 	{
 		hit_block_flg = true;
 
+		/*
 		//もしキャラクタがブロックのｘ座標の幅の内側に居たら
 		if (world.x >= set_box_vertex.lower_leftx && world.x <= set_box_vertex.lower_rightx)
 		{
@@ -122,7 +126,7 @@ public:
 				if (box_vertex.lower_righty > set_box_vertex.upper_lefty)
 				{
 					//右下の頂点の方が高かったら上に居るという事になる。
-					
+
 					world.y = set_world.y - height/2-BLOCKSIZE;
 					ground_flg = true;
 				}
@@ -139,40 +143,42 @@ public:
 				}
 				else
 				{
-					
+
 				}
 			}
 		}
-		
+
 		//もしキャラクタがブロックのｙ座標の幅の内側に居たら
 		if (world.y<=set_box_vertex.lower_lefty && world.y>=set_box_vertex.upper_lefty)
 		{
-			//キャラがブロックの右に居る場合
-			if (world.x >= set_world.x)
-				{
+		*/
+		//キャラがブロックの右に居る場合
+		if (world.x >= set_world.x)
+		{
 
-					//ブロックの右にぶつかる処理
-					if (box_vertex.lower_leftx < set_box_vertex.upper_rightx)
-					{
-						//wall_flg = true;
-						world.x = set_world.x + width/2+BLOCKSIZE;
-					}
-				}
-
-			//キャラがブロックの左に居る場合
-			if (world.x <= set_world.x)
-				{
-					//ブロックの左にぶつかる処理
-					if (box_vertex.lower_rightx > set_box_vertex.upper_leftx)
-					{
-						wall_flg = true;
-						world.x = set_world.x - width/2-BLOCKSIZE;
-					}
-				}
-
+			//ブロックの右にぶつかる処理
+			if (box_vertex.lower_leftx < set_box_vertex.upper_rightx)
+			{
+				//wall_flg = true;
+				world.x = set_world.x + width / 2 + BLOCKSIZE;
+			}
 		}
-			
-		
+
+		//キャラがブロックの左に居る場合
+		if (world.x <= set_world.x)
+		{
+			//ブロックの左にぶつかる処理
+			if (box_vertex.lower_rightx > set_box_vertex.upper_leftx)
+			{
+				wall_flg = true;
+				world.x = set_world.x - width / 2 - 35;
+			}
+		}
+
+		//}
+
+
+	//
 	}
 
 
