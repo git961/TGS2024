@@ -60,6 +60,8 @@ private:
     bool gem_drop;
     bool draw_death_img;
 
+    float hit_enemy_x;
+
 public:
     Enemy(float set_x, float set_y);
     ~Enemy();
@@ -83,22 +85,15 @@ public:
         world.x = set_world.x;
         world.y = set_world.y;
     }
-
     void SetPlayerWorldLocation(World set_world)
     {
         player_x = set_world.x;
         player_y = set_world.y;
     }
-
-    void SetKnockBackStartFlg(bool set_flg)
-    {
-        is_knock_back_start = set_flg;
-    }
-
-    void SetGemDropFlg(bool set_flg)
-    {
-        gem_drop = set_flg;
-    }
+    void SetKnockBackStartFlg(bool set_flg) { is_knock_back_start = set_flg; }
+    void SetStarDrawFlg(bool set_flg) { star.is_draw = set_flg; }       
+    void SetGemDropFlg(bool set_flg){ gem_drop = set_flg; }
+    void SetHitEnemyX(float set_x){ hit_enemy_x = set_x; }
 
     // get関数
     float GetHp() const { return hp; }                        // hp取得

@@ -19,6 +19,10 @@ Dynamite::Dynamite(World set_xy,int set_direction)
 	dynamite_death = false;
 	explosion_cnt = 0;
 	explosion_num = 0;
+
+	attack = 30;
+	enemy_x = 0.0f;
+	tmp_abs = 0.0f;
 }
 
 Dynamite::~Dynamite()
@@ -65,10 +69,6 @@ void Dynamite::Update()
 			break;
 		}
 	}
-
-
-	
-
 }
 
 void Dynamite::Draw() const
@@ -83,5 +83,25 @@ void Dynamite::Draw() const
 	{
 		DrawRotaGraph(location.x, location.y, 1, 0, explosion_img[explosion_num], TRUE, direction);
 
+	}
+}
+
+// ダメージの計算
+void Dynamite::DamageCalculation()
+{
+	// 敵との距離
+	tmp_abs = fabsf(world.x - enemy_x);
+
+	if (tmp_abs < 35)
+	{
+		attack = 30;
+	}
+	else if (tmp_abs < 100)
+	{
+		attack = 20;
+	}
+	else if (tmp_abs < 200)
+	{
+		attack = 10;
 	}
 }

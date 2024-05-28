@@ -6,17 +6,17 @@ RollingEnemy::RollingEnemy()
 	//location.x = 200;
 	//location.y = 600;
 
-	world.x = 30;
-	world.y = 606;
+	world.x = 30.0f;
+	world.y = 606.0f;
 
-	width = 60;
-	height = 60;
+	width = 60.0f;
+	height = 60.0f;
 
-	move_x = 1;			// 移動量
-	move_y = 0;			// 未使用
-	hp = 10;
-	attack = 10;
-	speed = 0;
+	move_x = 1.0f;			// 移動量
+	move_y = 0.0f;			// 未使用
+	hp = 10.0f;
+	attack = 10.0f;
+	speed = 8.0f;
 	direction = true;	// 左向き
 
 	//画像読込
@@ -35,27 +35,6 @@ RollingEnemy::RollingEnemy()
 
 	just_death = false;
 	gem_drop = false;
-
-	//death_cnt = 90;
-
-	//srand(time(NULL));
-	//num = rand() % 10 + 1;
-	//if (num >= 5)
-	//{
-	//	direction = true;
-	//}
-	//else
-	//{
-	//	direction = false;
-	//}
-
-	//// 進行方法が左ならx座標と移動方向が変わる
-	//if (direction == false)
-	//{
-	//	x = 1260;
-	//	move_x *= -1;
-	//}
-
 }
 
 RollingEnemy::~RollingEnemy()
@@ -70,25 +49,25 @@ void RollingEnemy::Update(GameMainScene* gamemain)
 		if (direction == true)
 		{
 			// 右回り
-			if (degree < 360.0f)
+			if (degree < 360.0)
 			{
-				degree += speed;
+				degree += (double)speed;
 			}
 			else
 			{
-				degree = 0.0f;
+				degree = 0.0;
 			}
 		}
 		else
 		{
 			// 左回り
-			if (degree > 0.0f)
+			if (degree > 0.0)
 			{
-				degree -= speed;
+				degree -= (double)speed;
 			}
 			else
 			{
-				degree = 360.0f;
+				degree = 360.0;
 			}
 		}
 

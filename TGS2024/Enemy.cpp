@@ -105,6 +105,8 @@ Enemy::Enemy(float set_x, float set_y)
 
 	gem_drop = false;
 	draw_death_img = true;
+
+	hit_enemy_x = 0.0f;
 }
 
 Enemy::~Enemy()
@@ -122,7 +124,6 @@ void Enemy::Update(GameMainScene* gamemain)
 		if (is_knock_back_start == true)
 		{
 			is_knock_back = true;
-			star.is_draw = true;
 		}
 
 		if (is_knock_back == true)
@@ -164,10 +165,16 @@ void Enemy::Update(GameMainScene* gamemain)
 void Enemy::Draw() const
 {
 #ifdef DEBUG
-	//DrawFormatString(location.x - 100, 50, 0xffffff, "f: %d", death_cnt);
-	//DrawFormatString(location.x - 100, 80, 0xffffff, "s: %.1f", fragment[1].x);
-	//DrawFormatString(location.x - 100, 110, 0xffffff, "m: %.1f", fragment[2].x);
-	//DrawFormatString(location.x - 100, 140, 0xffffff, "lx: %.1f", fragment[3].x);
+	DrawFormatString(location.x - 100, 50, 0xffffff, "hp: %.2f", hp);
+	DrawFormatString(location.x - 100, 30, 0xffffff, "knock: %d", is_knock_back);
+	//DrawFormatString(location.x - 100, 50, 0xffffff, "0: %.1f", fragment[0].x);
+	//DrawFormatString(location.x - 100, 80, 0xffffff, "1: %.1f", fragment[1].x);
+	//DrawFormatString(location.x - 100, 110, 0xffffff, "2: %.1f", fragment[2].x);
+	//DrawFormatString(location.x - 100, 140, 0xffffff, "3: %.1f", fragment[3].x);
+	//DrawFormatString(location.x - 100, 170, 0xffffff, "L: %.1f", location.x);
+	//DrawFormatString(location.x - 100, 230, 0xffffff, "m0: %.1f", mvx[0]);
+	//DrawFormatString(location.x - 100, 260, 0xffffff, "m1: %.1f", mvx[1]);
+	//DrawFormatString(location.x - 100, 290, 0xffffff, "m2: %.1f", mvx[2]);
 	//DrawFormatString(location.x - 100, 170, 0xffffff, "+: %f", start_x + mvx);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "k: %d", is_knock_back);
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "s: %d", is_knock_back_start);
@@ -273,15 +280,23 @@ void Enemy::ChangeDirection()
 	{
 		// 左向きに変更
 		direction = true;
-		world.x += 4;
 	}
 	else
 	{
 		// 右向きに変更
 		direction = false;
-		world.x -= 4;
+	}
+
+	if (world.x > hit_enemy_x)
+	{
+		world.x += 5;
+	}
+	else
+	{
+		world.x -= 5;
 	}
 }
+
 
 // ノックバック処理
 void Enemy::KnockBack()
@@ -535,14 +550,7 @@ void Enemy::FragmentEffect()
 			fragment[i].y = 608.0f;
 		}
 
-		if (i > 1)
-		{
-			fragment[i].x = start_x + mvx[i];
-		}
-		else
-		{
-			fragment[i].x = start_x - mvx[i];
-		}
+		fragment[i].x = start_x + mvx[i];
 
 		sum_t += t;
 
