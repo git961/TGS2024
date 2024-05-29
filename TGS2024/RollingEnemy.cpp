@@ -24,6 +24,7 @@ RollingEnemy::RollingEnemy()
 	LoadDivGraph("images/Enemy/EffectTest.png", 4, 4, 1, 64, 64, enemy_effect_img);
 
 	// サウンド読込
+	roll_sound = LoadSoundMem("sounds/se/enemy/roll.mp3");
 	death_sount = LoadSoundMem("sounds/se/enemy/death04.mp3");
 	sound_play = true;
 
@@ -41,7 +42,8 @@ RollingEnemy::RollingEnemy()
 	gem_drop = false;
 
 	// サウンドの音量設定
-	ChangeVolumeSoundMem(255, death_sount);
+	ChangeVolumeSoundMem(255, roll_sound);
+	ChangeVolumeSoundMem(100, death_sount);
 }
 
 RollingEnemy::~RollingEnemy()
@@ -58,6 +60,7 @@ RollingEnemy::~RollingEnemy()
 	}
 
 	// サウンド削除
+	DeleteSoundMem(roll_sound);
 	DeleteSoundMem(death_sount);
 }
 
@@ -65,6 +68,12 @@ void RollingEnemy::Update(GameMainScene* gamemain)
 {
 	if (hp > 0)
 	{
+		if (CheckSoundMem(roll_sound) == FALSE)
+		{
+			// 転がるse
+			PlaySoundMem(roll_sound, DX_PLAYTYPE_BACK);
+		}
+
 		if (direction == true)
 		{
 			// 右回り

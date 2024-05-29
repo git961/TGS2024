@@ -23,10 +23,17 @@ Dynamite::Dynamite(World set_xy,int set_direction)
 	attack = 30;
 	enemy_x = 0.0f;
 	tmp_abs = 0.0f;
+	bomb_sound = LoadSoundMem("sounds/se/player/bomb.mp3");
+	// サウンドの音量設定
+	ChangeVolumeSoundMem(200, bomb_sound);
+
 }
 
 Dynamite::~Dynamite()
-{
+{	
+	// サウンド削除
+	DeleteSoundMem(bomb_sound);
+
 }
 
 void Dynamite::Update()
@@ -44,6 +51,11 @@ void Dynamite::Update()
 	}
 	else if (dynamite_flg == true)
 	{
+		if (CheckSoundMem(bomb_sound) == FALSE)
+		{
+			PlaySoundMem(bomb_sound, DX_PLAYTYPE_BACK);
+		}
+
 		explosion_cnt++;
 		switch (explosion_cnt)
 		{

@@ -53,6 +53,11 @@ private:
 
     bool next_scene_flg;
 
+    int cloth_rubbing_sound;//布擦れse
+    int shake_sound;//揺れse
+    int anim_bgm;
+    int op_sad_sound;//悲しい音
+    bool play_sad_sound;
 public:
     AnimScene();
     ~AnimScene();

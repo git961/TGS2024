@@ -197,9 +197,9 @@ void GameMainScene::Update()
 	}
 	else
 	{
-		if (volume != 180)
+		if (volume != 150)
 		{
-			volume = 180;
+			volume = 150;
 			ChangeVolumeSoundMem(volume, main_bgm);
 		}
 	}

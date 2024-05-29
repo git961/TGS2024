@@ -65,6 +65,11 @@ private:
     bool is_atk_putout;//攻撃判定を出すか？
 
     int atk_sound;//つるはし攻撃音
+    int op_run_sound;//オープニング走る音
+    int damage_sound;//被ダメージ音
+    int throw_dynamite_sound;//ダイナマイト投げる音
+    int death_sound;//死亡音
+
 
     //プレイヤーの状態
     bool walk;//true:歩いてる false:止まってる

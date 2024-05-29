@@ -102,9 +102,6 @@
     <ClCompile Include="Gem.cpp">
       <Filter>ソース ファイル\GemFile</Filter>
     </ClCompile>
-    <ClCompile Include="Score.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="UI.cpp">
       <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
@@ -116,6 +113,9 @@
     </ClCompile>
     <ClCompile Include="AnimScene.cpp">
       <Filter>ソース ファイル\SceneFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Score.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

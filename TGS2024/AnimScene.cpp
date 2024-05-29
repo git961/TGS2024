@@ -36,17 +36,33 @@ AnimScene::AnimScene()
 	shake_flg = false;
 	next_scene_flg = false;
 
-	
+	cloth_rubbing_sound = LoadSoundMem("sounds/se/op/cloth_rubbing.mp3");
+	shake_sound = LoadSoundMem("sounds/se/op/shake.mp3");
+	anim_bgm = LoadSoundMem("sounds/bgm/opening.mp3");
+	op_sad_sound = LoadSoundMem("sounds/se/player/sad.mp3");
+	play_sad_sound = true;
+
+
+	// サウンドの音量設定
+	ChangeVolumeSoundMem(255, cloth_rubbing_sound);
+	ChangeVolumeSoundMem(150, shake_sound);
+	ChangeVolumeSoundMem(100, anim_bgm);
+	ChangeVolumeSoundMem(180, op_sad_sound);
 }
 
 AnimScene::~AnimScene()
 {
 	delete player;
+	// サウンド削除
+	DeleteSoundMem(cloth_rubbing_sound);
+	DeleteSoundMem(shake_sound);
+	DeleteSoundMem(anim_bgm);
+	DeleteSoundMem(op_sad_sound);
+
 }
 
 void AnimScene::Update()
 {
-
 	player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
 	switch (anim_scene)
@@ -59,6 +75,10 @@ void AnimScene::Update()
 
 		break;
 	case 1:
+		if (CheckSoundMem(anim_bgm) == FALSE)
+		{
+			PlaySoundMem(anim_bgm, DX_PLAYTYPE_LOOP);
+		}
 
 		if (alpha < 0) {
 			alpha = 0;
@@ -82,6 +102,11 @@ void AnimScene::Update()
 		if (alpha++ > 255) {
 			if (alpha > 300) {
 				p_backimg_num = 1;
+				//布擦れ音
+				if (CheckSoundMem(cloth_rubbing_sound) == FALSE)
+				{
+					PlaySoundMem(cloth_rubbing_sound, DX_PLAYTYPE_BACK);
+				}
 			}
 			
 			if (alpha > 350) {
@@ -103,6 +128,15 @@ void AnimScene::Update()
 		if (alpha < 0) {
 			alpha = 0;
 			ase_flg = true;
+			//悲しいse
+			if (play_sad_sound == true)
+			{
+				if (CheckSoundMem(op_sad_sound) == FALSE)
+				{
+					PlaySoundMem(op_sad_sound, DX_PLAYTYPE_BACK);
+				}
+				play_sad_sound = false;
+			}
 		}
 		else {
 			alpha -= 1;
@@ -121,8 +155,14 @@ void AnimScene::Update()
 		break;
 	case 5:
 
+		StopSoundMem(anim_bgm);
 		//画面の揺れ
 		ShakeCamera(shake_flg,1);
+		//揺れse
+		if (CheckSoundMem(shake_sound) == FALSE)
+		{
+			PlaySoundMem(shake_sound, DX_PLAYTYPE_BACK);
+		}
 		player->OpAnimUpdate(this, anim_scene);
 		alpha = 0;
 
@@ -299,6 +339,7 @@ void AnimScene::ShakeCamera(bool set_true, int set_num)
 AbstractScene* AnimScene::Change() {
 	if(next_scene_flg==true)
 	{
+		StopSoundMem(anim_bgm);
 		return new GameMainScene;
 	}
 	return this;
