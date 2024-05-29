@@ -16,6 +16,9 @@ private:
     int enemy_roll_img[5];  // エネミー画像
     int enemy_effect_img[5];  // エフェクト画像
 
+    int death_sount;                // 死亡se
+    bool sound_play;                // 1回だけサウンドを鳴らす用
+
     int anim_cnt;       // アニメーション用カウント
     bool decrease;      // アニメーション用カウント減少フラグ
     int enemy_image_num;       // エネミー画像表示番号

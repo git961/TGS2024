@@ -23,6 +23,9 @@ RollingEnemy::RollingEnemy()
 	LoadDivGraph("images/Enemy/RollingTest.png", 5, 5, 1, 64, 64, enemy_roll_img);
 	LoadDivGraph("images/Enemy/EffectTest.png", 4, 4, 1, 64, 64, enemy_effect_img);
 
+	death_sount = LoadSoundMem("sounds/se/enemy/death04.mp3");
+	sound_play = true;
+
 	anim_cnt = 0;       // アニメーション用カウント
 	decrease = false;      // アニメーション用カウント減少フラグ
 	enemy_image_num = 0;       // 表示する画像番号
@@ -79,6 +82,17 @@ void RollingEnemy::Update(GameMainScene* gamemain)
 	}
 	else
 	{
+
+		if (sound_play == true)
+		{
+			if (CheckSoundMem(death_sount) == FALSE)
+			{
+				// 死亡se
+				PlaySoundMem(death_sount, DX_PLAYTYPE_BACK);
+				sound_play = false;
+			}
+		}
+
 		if (anim_cnt < 74)
 		{
 			// アニメーション用カウント増加

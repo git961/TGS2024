@@ -26,6 +26,12 @@ Enemy::Enemy(float set_x, float set_y)
 	star_img = LoadGraph("images/Enemy/star.png");
 	LoadDivGraph("images/Enemy/fragment.png", 4, 4, 1, 64, 64, fragment_img);
 
+	// サウンド読込
+	footsteps_sound = LoadSoundMem("sounds/se/walk04.mp3");
+	knock_back_sount = LoadSoundMem("sounds/se/enemy/knockback.mp3");
+	death_sount = LoadSoundMem("sounds/se/enemy/death04.mp3");
+	sound_play = true;
+
 	anim_cnt = 0;
 	anim_max_cnt = 19;
 
@@ -107,6 +113,11 @@ Enemy::Enemy(float set_x, float set_y)
 	draw_death_img = true;
 
 	hit_enemy_x = 0.0f;
+
+	// サウンドの音量設定
+	ChangeVolumeSoundMem(80, footsteps_sound);
+	ChangeVolumeSoundMem(200, knock_back_sount);
+	ChangeVolumeSoundMem(255, death_sount);
 }
 
 Enemy::~Enemy()
@@ -128,10 +139,26 @@ void Enemy::Update(GameMainScene* gamemain)
 
 		if (is_knock_back == true)
 		{
+			// 足音を止める
+			if (CheckSoundMem(footsteps_sound) == TRUE)
+			{
+				StopSoundMem(footsteps_sound);
+			}
+
 			if (is_knock_back_start == true)
 			{
 				// ノックバックの準備
 				KnockBackPreparation();
+			}
+
+			if (sound_play == true)
+			{
+				if (CheckSoundMem(knock_back_sount) == FALSE)
+				{
+					// 死亡se
+					PlaySoundMem(knock_back_sount, DX_PLAYTYPE_BACK);
+					sound_play = false;
+				}
 			}
 
 			// ノックバック処理
@@ -139,11 +166,23 @@ void Enemy::Update(GameMainScene* gamemain)
 		}
 		else
 		{
+			if (sound_play == false)
+			{
+				sound_play = true;
+			}
+
 			// 移動処理
 			Move();
 
 			// 歩行アニメーション
 			WalkingAnimation();
+
+			// 足音を鳴らす
+			if (CheckSoundMem(footsteps_sound) == FALSE)
+			{
+				PlaySoundMem(footsteps_sound, DX_PLAYTYPE_BACK);
+			}
+
 		}
 
 		// 星を描画するのであれば
@@ -154,6 +193,16 @@ void Enemy::Update(GameMainScene* gamemain)
 	}
 	else
 	{
+		if (sound_play == true)
+		{
+			if (CheckSoundMem(death_sount) == FALSE)
+			{
+				// 死亡se
+				PlaySoundMem(death_sount, DX_PLAYTYPE_BACK);
+				sound_play = false;
+			}
+		}
+
 		// 死亡アニメーション
 		DeathAnimation();
 
@@ -165,8 +214,8 @@ void Enemy::Update(GameMainScene* gamemain)
 void Enemy::Draw() const
 {
 #ifdef DEBUG
-	DrawFormatString(location.x - 100, 50, 0xffffff, "hp: %.2f", hp);
-	DrawFormatString(location.x - 100, 30, 0xffffff, "knock: %d", is_knock_back);
+	//DrawFormatString(location.x - 100, 50, 0xffffff, "hp: %.2f", hp);
+	//DrawFormatString(location.x - 100, 30, 0xffffff, "crack: %d", crack_image_num);
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "0: %.1f", fragment[0].x);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "1: %.1f", fragment[1].x);
 	//DrawFormatString(location.x - 100, 110, 0xffffff, "2: %.1f", fragment[2].x);
@@ -296,7 +345,6 @@ void Enemy::ChangeDirection()
 		world.x -= 5;
 	}
 }
-
 
 // ノックバック処理
 void Enemy::KnockBack()
