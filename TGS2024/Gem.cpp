@@ -14,6 +14,12 @@ Gem::Gem(World set_world, int set_score)
 	// 画像の読み込み
 	gem_img = LoadGraph("images/Gem/Gem.png");
 
+	// サウンド読込
+	get_gem_sound = LoadSoundMem("sounds/se/gem/get.mp3");
+	drop_sound = LoadSoundMem("sounds/se/gem/drop.mp3");
+	//sparkling_sound = LoadSoundMem("sounds/se/gem/sparkling.mp3");
+	play_drop_sound = true;
+
 	gem_score = set_score;
 	count = 0;
 	move_x_timer = 0;
@@ -24,15 +30,38 @@ Gem::Gem(World set_world, int set_score)
 
 	just_generated = true;
 	from_rolling_enemy = false;
+
+	//is_deete = false;
+
+	// サウンドの音量設定
+	ChangeVolumeSoundMem(255, get_gem_sound);
+	ChangeVolumeSoundMem(255, drop_sound);
+	//ChangeVolumeSoundMem(200, sparkling_sound);
 }
 
 Gem::~Gem()
 {
+	// 画像削除
+	DeleteGraph(gem_img);
+
+	// サウンド削除
+	DeleteSoundMem(get_gem_sound);
+	DeleteSoundMem(drop_sound);
 
 }
 
 void Gem::Update(GameMainScene* gamemain)
 {
+	if (play_drop_sound == true)
+	{
+		if (CheckSoundMem(drop_sound) == FALSE)
+		{
+			// ドロップse
+			PlaySoundMem(drop_sound, DX_PLAYTYPE_BACK);
+			play_drop_sound = false;
+		}
+	}
+
 	// 宝石が上下に揺れる
 	world.y = world.y - sinf(M_PI * 2 / 60 * count) * 0.5;
 
@@ -123,4 +152,15 @@ void Gem::Draw() const
 
 	// 宝石画像
 	DrawRotaGraph((int)location.x, (int)location.y, size, 0.0, gem_img, TRUE, direction);
+}
+
+void Gem::PlayGetSound()
+{
+	//is_deete = true;
+
+	if (CheckSoundMem(get_gem_sound) == FALSE)
+	{
+		// ゲットse
+		PlaySoundMem(get_gem_sound, DX_PLAYTYPE_BACK);
+	}
 }

@@ -172,6 +172,12 @@ GameMainScene::~GameMainScene()
 	delete[] walk_gem;
 	delete roll_gem;
 	delete score;
+
+	// 画像削除
+	DeleteGraph(back_img);
+
+	// サウンド削除
+	DeleteSoundMem(main_bgm);
 }
 
 void GameMainScene::Update()
@@ -557,6 +563,7 @@ void GameMainScene::Update()
 				{
 					if (player->HitCheck(walk_gem[i]->GetWorldLocation(), walk_gem[i]->GetWidth(), walk_gem[i]->GetHeight()) == true)
 					{
+						walk_gem[i]->PlayGetSound();
 						score->SetScore(walk_gem[i]->GetGemScore());
 						delete walk_gem[i];
 						walk_gem[i] = nullptr;
@@ -590,12 +597,12 @@ void GameMainScene::Update()
 			{
 				if (player->HitCheck(roll_gem->GetWorldLocation(), roll_gem->GetWidth(), roll_gem->GetHeight()) == true)
 				{
+					roll_gem->PlayGetSound();
 					score->SetScore(roll_gem->GetGemScore());
 					delete roll_gem;
 					roll_gem = nullptr;
 				}
 			}
-
 
 			// 転がるエネミーとプレイヤーの当たり判定
 			if (rolling_enemy != nullptr)
@@ -763,7 +770,6 @@ void GameMainScene::Update()
 				}
 			}
 
-
 			//カメラとUIのアップデート
 			if (player != nullptr) {
 
@@ -845,13 +851,16 @@ void GameMainScene::Update()
 				}
 			}
 
-
 			if (player != nullptr && mapio != nullptr)
 			{
 				mapio->SetPlayerLocal(player->GetLocation().x);
 				mapio->SetPlayerWorld(player->GetWorldLocation().x);
 			}
 
+			if (score != nullptr)
+			{
+				score->Update();
+			}
 			break;
 	default:
 		break;
@@ -916,21 +925,6 @@ void GameMainScene::Draw() const
 			player->Draw();
 		}
 
-		for (int i = 0; i < ENEMYMAXNUM; i++)
-		{
-			// エネミー描画処理
-			if (enemy[i] != nullptr)
-			{
-				enemy[i]->Draw();
-			}
-		}
-
-		if (rolling_enemy != nullptr)
-		{
-			// 転がるエネミー描画
-			rolling_enemy->Draw();
-		}
-
 	//プレイヤー攻撃描画
 	if (ac != nullptr)
 	{
@@ -993,6 +987,12 @@ void GameMainScene::Draw() const
 				enemy[i]->Draw();
 			}
 		}
+	}
+
+	if (rolling_enemy != nullptr)
+	{
+		// 転がるエネミー描画
+		rolling_enemy->Draw();
 	}
 
 	}

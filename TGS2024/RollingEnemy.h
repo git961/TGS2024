@@ -14,7 +14,7 @@ private:
 	//int num;        // スポーン位置設定用
 	//int death_cnt;  // 死亡アニメーションが終わるまでの時間
     int enemy_roll_img[5];  // エネミー画像
-    int enemy_effect_img[5];  // エフェクト画像
+    int enemy_effect_img[4];  // エフェクト画像
 
     int death_sount;                // 死亡se
     bool sound_play;                // 1回だけサウンドを鳴らす用

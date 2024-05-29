@@ -46,12 +46,6 @@
     <Filter Include="ヘッダー ファイル\StageFile">
       <UniqueIdentifier>{12e94412-d881-465b-9799-0a039c7757e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\JemFile">
-      <UniqueIdentifier>{576f5eea-c131-414d-be93-6e1d0dfffdaa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\JemFile">
-      <UniqueIdentifier>{68208c42-f972-49d9-9c67-8ae847f9271d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\UI">
       <UniqueIdentifier>{97f5c3f5-5d09-4dd9-8e46-7f467ea66bf7}</UniqueIdentifier>
     </Filter>
@@ -63,6 +57,12 @@
     </Filter>
     <Filter Include="ヘッダー ファイル\AnimS">
       <UniqueIdentifier>{29436ef8-94bf-437a-980e-282514109fde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GemFile">
+      <UniqueIdentifier>{576f5eea-c131-414d-be93-6e1d0dfffdaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GemFile">
+      <UniqueIdentifier>{68208c42-f972-49d9-9c67-8ae847f9271d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -100,7 +100,7 @@
       <Filter>ソース ファイル\EnemyFile</Filter>
     </ClCompile>
     <ClCompile Include="Gem.cpp">
-      <Filter>ソース ファイル\JemFile</Filter>
+      <Filter>ソース ファイル\GemFile</Filter>
     </ClCompile>
     <ClCompile Include="Score.cpp">
       <Filter>ソース ファイル</Filter>
@@ -168,7 +168,7 @@
       <Filter>ヘッダー ファイル\SystemFile</Filter>
     </ClInclude>
     <ClInclude Include="Gem.h">
-      <Filter>ヘッダー ファイル\JemFile</Filter>
+      <Filter>ヘッダー ファイル\GemFile</Filter>
     </ClInclude>
     <ClInclude Include="Score.h">
       <Filter>ヘッダー ファイル</Filter>
