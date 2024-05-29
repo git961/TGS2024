@@ -165,8 +165,8 @@ void Enemy::Update(GameMainScene* gamemain)
 void Enemy::Draw() const
 {
 #ifdef DEBUG
-	DrawFormatString(location.x - 100, 50, 0xffffff, "hp: %.2f", hp);
-	DrawFormatString(location.x - 100, 30, 0xffffff, "knock: %d", is_knock_back);
+	//DrawFormatString(location.x - 100, 50, 0xffffff, "hp: %.2f", hp);
+	//DrawFormatString(location.x - 100, 30, 0xffffff, "crack: %d", crack_image_num);
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "0: %.1f", fragment[0].x);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "1: %.1f", fragment[1].x);
 	//DrawFormatString(location.x - 100, 110, 0xffffff, "2: %.1f", fragment[2].x);

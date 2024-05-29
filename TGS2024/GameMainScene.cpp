@@ -397,6 +397,10 @@ void GameMainScene::Update()
 								{
 									dynamite[i]->SetEnemyX(enemy[j]->GetWorldLocation().x);
 									dynamite[i]->DamageCalculation();
+
+									enemy[j]->SetKnockBackStartFlg(true);
+									enemy[j]->SetStarDrawFlg(true);
+									enemy[j]->SetPlayerWorldLocation(player->GetWorldLocation());
 									enemy[j]->Damege(dynamite[i]->GetAttack());
 
 
