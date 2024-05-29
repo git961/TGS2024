@@ -254,6 +254,7 @@ void Player::Update(GameMainScene* gamemain)
 		}
 		else if (world.x - width / 2 < 0) {
 			world.x = width / 2;
+
 		}
 
 		//敵からダメージを食らったら
@@ -501,10 +502,13 @@ void Player::PlayerMove()
 		{
 			player_state = WALK;
 		}
-		//走る音
-		if (CheckSoundMem(op_run_sound) == FALSE)
+		if (world.x + width / 2 < FIELD_WIDTH)
 		{
-			PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+			//走る音
+			if (CheckSoundMem(op_run_sound) == FALSE)
+			{
+				PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+			}
 		}
 	}
 
@@ -522,10 +526,12 @@ void Player::PlayerMove()
 		{
 			player_state = WALK;
 		}
-		//走る音
-		if (CheckSoundMem(op_run_sound) == FALSE)
-		{
-			PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+		if (world.x - width / 2 > 0) {
+			//走る音
+			if (CheckSoundMem(op_run_sound) == FALSE)
+			{
+				PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+			}
 		}
 	}
 
@@ -826,13 +832,13 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 			if (walk_abs != 0)
 			{
 				walk_num = walk_abs / 20;
-				//走る音
-				if (CheckSoundMem(op_run_sound) == FALSE)
-				{
-					PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
-				}
-
 			}
+			//走る音
+			if (CheckSoundMem(op_run_sound) == FALSE)
+			{
+				PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+			}
+
 
 		}
 
@@ -875,6 +881,12 @@ void Player::TutorialAnimUpdate()
 				{
 					walk_num = walk_abs / 20;
 				}
+				//走る音
+				if (CheckSoundMem(op_run_sound) == FALSE)
+				{
+					PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+				}
+
 
 			}
 
@@ -894,6 +906,11 @@ void Player::TutorialAnimUpdate()
 					death_num = 1;
 					break;
 				case 15:
+					if (CheckSoundMem(death_sound) == FALSE)
+					{
+						PlaySoundMem(death_sound, DX_PLAYTYPE_BACK);
+					}
+
 					death_num = 2;
 					break;
 				case 20:
