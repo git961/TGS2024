@@ -151,6 +151,13 @@ GameMainScene::GameMainScene()
 	shake_flg=false;
 	
 	play_start_flg = false;
+
+	// サウンド読込
+	main_bgm = LoadSoundMem("sounds/bgm/gamemain.mp3");
+	volume = 150;
+
+	// サウンドの音量設定
+	ChangeVolumeSoundMem(volume, main_bgm);
 }
 
 
@@ -171,6 +178,31 @@ void GameMainScene::Update()
 {
 	input.InputUpdate();
 	fp.fpsUpdate();
+
+	// ゲームメインbgmの音量設定
+	if (game_state == POSE)
+	{
+		// ポーズ中は音量が小さくなる
+		if (volume != 100)
+		{
+			volume = 100;
+			ChangeVolumeSoundMem(volume, main_bgm);
+		}
+	}
+	else
+	{
+		if (volume != 180)
+		{
+			volume = 180;
+			ChangeVolumeSoundMem(volume, main_bgm);
+		}
+	}
+
+	// ゲームメインbgmループ再生
+	if (CheckSoundMem(main_bgm) == FALSE)
+	{
+		PlaySoundMem(main_bgm, DX_PLAYTYPE_LOOP);
+	}
 
 	switch (game_state)
 	{

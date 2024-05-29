@@ -116,7 +116,7 @@ Enemy::Enemy(float set_x, float set_y)
 
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(80, footsteps_sound);
-	ChangeVolumeSoundMem(200, knock_back_sount);
+	ChangeVolumeSoundMem(150, knock_back_sount);
 	ChangeVolumeSoundMem(255, death_sount);
 }
 

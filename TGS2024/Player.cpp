@@ -89,6 +89,10 @@ Player::Player()
 	op_cnt = 0;
 
 	hit_rock_flg = false;
+
+	// サウンドの音量設定
+	ChangeVolumeSoundMem(200, atk_sound);
+
 }
 
 Player::~Player()

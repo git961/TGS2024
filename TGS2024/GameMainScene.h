@@ -106,7 +106,9 @@ private:
 
     //チュートリアル用
     bool play_start_flg;//アニメーション終
-    
+
+    int main_bgm;
+    int volume;
 
 public:
     GameMainScene();
