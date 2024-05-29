@@ -43,8 +43,8 @@ GameMainScene::GameMainScene()
 	//back_img = LoadGraph("images/background_test.png", TRUE);
 
 
-	//game_state = TUTORIAL;
-	game_state = PLAY;
+	game_state = TUTORIAL;
+	//game_state = PLAY;
 
 	//enemyhit = false;		// 当たっていない
 
@@ -151,6 +151,7 @@ GameMainScene::GameMainScene()
 	shake_flg=false;
 	
 	play_start_flg = false;
+	
 }
 
 
@@ -229,49 +230,13 @@ void GameMainScene::Update()
 
 		break;
 	case TUTORIAL:
+
 		if (CheckHitKey(KEY_INPUT_SPACE) == 1)
 		{
 			game_state = EDITOR;
 		}
-		//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
-		location_x = world_x - screen_origin_position.x;
-		location_y = world_y - screen_origin_position.y;
-
-
-
-		//プレイヤー
-		if (player != nullptr)
-		{
-			if (play_start_flg == true)
-			{
-				player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-				player->Update(this);
-			}
-			else
-			{
-
-			}
-
-		}
-
-		//カメラとUIのアップデート
-		if (player != nullptr) {
-
-			UpdateCamera(player->GetWorldLocation());
-		}
-
-		for (int j = 0; j < block_count; j++)
-		{
-			if (stage_block[j] != nullptr)
-			{
-				stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-			}
-		}
-
-		screen_origin_position = {
-		camera_pos.x - SCREEN_WIDTH / 2.0f,
-		camera_pos.y - SCREEN_HEIGHT / 2.0f
-		};
+		
+		Tutorial();
 
 		break;
 	case POSE:
@@ -864,10 +829,13 @@ void GameMainScene::Draw() const
 			}
 		}
 
-		//if (ui != nullptr)
-		//{
-		//	ui->Draw();
-		//}
+		if (ui != nullptr)
+		{
+			if (player != nullptr)
+			{
+				ui->DrawTutorial(player);
+			}
+		}
 
 
 	}
@@ -929,7 +897,7 @@ void GameMainScene::Draw() const
 
 	if (ui != nullptr)
 	{
-		ui->Draw();
+			ui->Draw();
 	}
 
 	if (score != nullptr)
@@ -1114,6 +1082,109 @@ void GameMainScene::ShakeCamera(bool set_true, int set_num)
 			shake_cnt = 0;
 		}
 	}
+}
+
+void GameMainScene::Tutorial()
+{
+	//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
+	location_x = world_x - screen_origin_position.x;
+	location_y = world_y - screen_origin_position.y;
+
+	//プレイヤー
+	if (player != nullptr)
+	{
+			player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+			player->TutorialAnimUpdate();
+		
+
+		
+		if (ui != nullptr)
+		{
+			ui->UpdateTutorial(player);
+		}
+	}
+
+	for (int j = 0; j < block_count; j++)
+	{
+		if (stage_block[j] != nullptr)
+		{
+			stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+			if (player != nullptr)
+			{
+
+				if (stage_block[j]->GetBlockNum() == 4)
+				{
+
+					stage_block[j]->Update();
+
+					//プレイヤが右向きだったら
+					if (player->GetDirection() == 0)
+					{
+						player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
+					}
+
+					//つるはしを振るってる時だけ
+					if (player->GetAttacking() == true)
+					{
+						//ダメージを一回だけ与える
+						if (rock_damage_once == false)
+						{
+							//つるはしとエネミーと当たってるかのチェック
+							if (ac->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true) {
+								stage_block[j]->SetDamage(10);
+								stage_block[j]->SetShakeFlg(true);
+								rock_damage_once = true;
+							}
+						}
+					}
+					else
+					{
+						//プレイヤーがつるはし振ってなかったら
+						rock_damage_once = false;
+					}
+
+					if (stage_block[j]->GetHp() <= 0)
+					{
+						stage_block[j] = nullptr;
+					}
+
+
+				}
+
+
+
+			}
+
+
+		}
+	}
+
+	//プレイヤーの攻撃
+	if (ac != nullptr) {
+		ac->Update(this, player);
+	}
+
+	//カメラとUIのアップデート
+	if (player != nullptr) {
+
+		UpdateCamera(player->GetWorldLocation());
+	}
+
+	for (int j = 0; j < block_count; j++)
+	{
+		if (stage_block[j] != nullptr)
+		{
+			stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+		}
+	}
+
+	screen_origin_position = {
+	camera_pos.x - SCREEN_WIDTH / 2.0f,
+	camera_pos.y - SCREEN_HEIGHT / 2.0f
+	};
+
 }
 
 

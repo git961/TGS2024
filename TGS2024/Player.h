@@ -99,6 +99,14 @@ private:
     int op_num;
     int op_cnt;
 
+    bool tuto_anim_flg;
+    bool tuto_num;
+    bool tuto_atk_flg;//つるはしのチュートリアル用フラグ
+    int tuto_ui_num;//表示するUI
+    bool rock_break_flg;
+    int rock_cnt;
+    int tuto_cnt;
+
 public:
     Player();
     ~Player();
@@ -121,9 +129,7 @@ public:
 
     bool GetDeathFlg() { return death_flg; }
 
-    void SetGroundFlg(bool set_flg) {
-        ground_flg = set_flg;
-    }
+
 
     void SetLocationY(float set_y) {
         location.y = set_y;
@@ -150,6 +156,7 @@ public:
     
 
     void OpAnimUpdate(AnimScene *anim_scene,int set_case);//最初のアニメーション用
-    void TutorialAnimUpdate(int set_case);//チュートリアル用アップデート
+    void TutorialAnimUpdate();//チュートリアル用アップデート
 
+    int GetTutoUiNum() { return tuto_ui_num; }
 };

@@ -10,6 +10,7 @@ Player::Player()
 	player_img[2] = LoadGraph("images/Player/bagopen.png");
 	player_img[3] = LoadGraph("images/Player/bagopen2.png");
 	player_img[4] = LoadGraph("images/Player/plookup.png");
+	player_img[5] = LoadGraph("images/Player/wakeup.png");
 	LoadDivGraph("images/Player/player_walk.png", 4, 4, 1, 170, 170, player_walk_img);
 	LoadDivGraph("images/Player/player_ase.png", 4, 4, 1, 170, 170, player_ase_img);
 	LoadDivGraph("images/Player/p_death.png", 4, 4, 1, 170, 170, player_death_img);
@@ -30,11 +31,11 @@ Player::Player()
 
 	anim_cnt = 0;
 
-	world.x = 200;
+	world.x = 0;
 	world.y = 600.0f-30;
 
-	location.x = 200;
-	location.y = 600.0f;
+	location.x = 0;
+	location.y = 600.0f-30;
 
 	old_worldx = world.x;
 
@@ -87,7 +88,13 @@ Player::Player()
 
 	op_num = 2;
 	op_cnt = 0;
-
+	tuto_anim_flg=false;
+	tuto_atk_flg = false;
+	tuto_num = 0;
+	tuto_cnt=0;
+	tuto_ui_num = 0;
+	rock_break_flg = false;
+	rock_cnt = 0;
 	hit_rock_flg = false;
 }
 
@@ -250,6 +257,7 @@ void Player::Update(GameMainScene* gamemain)
 
 
 			flash_cnt++;
+
 		}
 		else
 		{
@@ -390,6 +398,11 @@ void Player::Draw() const
 			break;
 		}
 	
+		//if (tuto_atk_flg == true)
+		//{
+		//	DrawFormatString(location.x, location.y-20, 0xffffff, "PUSH:B!!!");
+
+		//}
 
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -413,7 +426,6 @@ void Player::Draw() const
 	////DrawFormatString(100, 100, 0xffffff, "Right:%d", a);
 	//DrawFormatString(100, 120, 0xffffff, "btnnum: % d", input.Btnnum);
 
-	DrawFormatString(100, 150, 0xffffff, "stock: %d",dyna_stock_num);
 	////DrawFormatString(100, 150, 0xffffff, "location.x: %f",location.x);
 	//DrawFormatString(100, 100, 0xffffff, "worldx: %f location.x:%f",world.x,location.x);
 	//DrawFormatString(100, 120, 0xffffff, "world_y: %f location.y:%f", world.y,location.y);
@@ -768,16 +780,185 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 
 }
 
-void Player::TutorialAnimUpdate(int set_case)
+void Player::TutorialAnimUpdate()
 {
-	switch (set_case)
+	input.InputUpdate();
+
+	switch (tuto_num)
 	{
 	case 0:
-		if (1400 > world.x) {
-			player_state = ASE;
-			location.x += 1;
-			world.x += 1;
+		if (tuto_atk_flg == false)
+		{
+			if (tuto_anim_flg == false) {
 
+				if (370 < world.x)
+				{
+					tuto_anim_flg = true;
+				}
+
+				player_state = ASE;
+				location.x += 3;
+				world.x += 3;
+
+				if (abs((int)world.x - (int)old_worldx) > 61)
+				{
+					old_worldx = world.x;
+				}
+
+				walk_abs = abs((int)world.x - (int)old_worldx);
+				// 歩行
+				// 5カウントごとに変わる
+				if (walk_abs != 0)
+				{
+					walk_num = walk_abs / 20;
+				}
+
+			}
+
+			if (tuto_anim_flg == true) {
+				death_anim_cnt++;
+				switch (death_anim_cnt)
+				{
+				case 1:
+					player_state = DEATH;
+					world.x += -10;
+					location.x += -10;
+					death_num = 0;
+					break;
+				case 5:
+					world.x += -10;
+					location.x += -10;
+					death_num = 1;
+					break;
+				case 15:
+					death_num = 2;
+					break;
+				case 20:
+					death_num = 3;
+					break;
+				case 80:
+					world.x += 1;
+					location.x += 1;
+					break;
+				case 85:
+					world.x -= 2;
+					location.x -= 2;
+					break;
+				case 90:
+					world.x += 1;
+					location.x += 1;
+
+					break;
+				case 100:
+					player_state = PANIM;
+					op_num = 5;
+					break;
+				case 150:
+					player_state = ATTACK;
+					tuto_atk_flg = true;
+					tuto_ui_num = 1;
+					break;
+				default:
+					break;
+				}
+			}
+
+		}
+		else
+		{
+
+			if (rock_break_flg==true)
+			{
+
+					tuto_ui_num = 0;
+					tuto_num = 1;
+					rock_cnt=0;
+					player_state = NOMAL;
+				
+			}
+			else
+			{
+				if (tuto_cnt >= 3)
+				{
+					if (rock_cnt++ > 20)
+					{
+						rock_break_flg = true;
+					}
+				}
+				//つるはし攻撃
+				if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+				{
+					tuto_cnt++;
+					if (CheckSoundMem(atk_sound) == FALSE)
+					{
+
+						PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+					}
+
+					//右向きだったら
+					if (direction == 0)
+					{
+						world.x += 3;
+					}
+					else {
+						world.x -= 3;
+					}
+
+					attacking = true;
+					player_state = ATTACK;
+					wait_flg = false;
+				}
+
+				PlayerAttack();
+
+			}
+	
+		
+
+
+		}
+	break;
+	case 1:
+
+		SetVertex();
+
+		//つるはし攻撃
+		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+		{
+			if (CheckSoundMem(atk_sound) == FALSE)
+			{
+
+				PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+			}
+
+			//右向きだったら
+			if (direction == 0)
+			{
+				world.x += 3;
+			}
+			else {
+				world.x -= 3;
+			}
+
+			attacking = true;
+			player_state = ATTACK;
+			wait_flg = false;
+		}
+		PlayerAttack();
+
+
+		if (player_state != ATTACK)
+		{
+			//プレイヤーの移動処理
+			PlayerMove();
+		}
+		else
+		{
+			move_x = 0;
+		}
+
+		if (player_state == WALK)
+		{
 			if (abs((int)world.x - (int)old_worldx) > 61)
 			{
 				old_worldx = world.x;
@@ -790,9 +971,20 @@ void Player::TutorialAnimUpdate(int set_case)
 			{
 				walk_num = walk_abs / 20;
 			}
-
 		}
 
-		break;
+	break;
 	}
+
+
+	// 端に来たら跳ね返る
+	if (world.x + width / 2 > FIELD_WIDTH)
+	{
+		world.x = FIELD_WIDTH - 20;
+
+	}
+	else if (world.x - width / 2 < 0) {
+		world.x = width / 2;
+	}
+
 }

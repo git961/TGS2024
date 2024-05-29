@@ -122,6 +122,8 @@ public:
 
     void ShakeCamera(bool set_true, int set_num);
 
+    void Tutorial();
+
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };
 };
