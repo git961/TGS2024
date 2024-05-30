@@ -94,7 +94,9 @@ GameMainScene::GameMainScene()
 				case 4:
 					stage_block[block_count++] = new StageBlock(4, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 					break;
-
+				case 5:
+					stage_block[block_count++] = new StageBlock(5, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+					break;
 				}
 
 				/*
@@ -209,7 +211,9 @@ void GameMainScene::Update()
 					case 4:
 						stage_block[block_count++] = new StageBlock(4, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
-
+					case 5:
+						stage_block[block_count++] = new StageBlock(5, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
 					}
 
 					if (enemy_count < ENEMYMAXNUM)
@@ -337,8 +341,7 @@ void GameMainScene::Update()
 		}
 
 		//ダイナマイトと歩行エネミーの当たり判定
-		if (player != nullptr)
-		{
+
 			for (int i = 0; i < DYNAMITE_MAXNUM; i++)
 			{
 				if (dynamite[i] != nullptr)
@@ -789,7 +792,7 @@ void GameMainScene::Update()
 	default:
 		break;
 
-		}
+		
 
 	}
 
@@ -1118,6 +1121,18 @@ void GameMainScene::Tutorial()
 			if (player != nullptr)
 			{
 
+				if (stage_block[j]->GetBlockNum() == 5)
+				{
+					//プレイヤが右向きだったら
+					if (player->GetDirection() == 0)
+					{
+						if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+						{
+							player->SetMoveStop(true);
+						}
+					}
+				}
+
 				if (stage_block[j]->GetBlockNum() == 4)
 				{
 
@@ -1156,8 +1171,6 @@ void GameMainScene::Tutorial()
 
 
 				}
-
-
 
 			}
 

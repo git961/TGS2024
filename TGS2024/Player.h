@@ -100,12 +100,13 @@ private:
     int op_cnt;
 
     bool tuto_anim_flg;
-    bool tuto_num;
+    int tuto_num;
     bool tuto_atk_flg;//つるはしのチュートリアル用フラグ
     int tuto_ui_num;//表示するUI
     bool rock_break_flg;
     int rock_cnt;
     int tuto_cnt;
+    bool walk_stop_flg;
 
 public:
     Player();
@@ -159,4 +160,5 @@ public:
     void TutorialAnimUpdate();//チュートリアル用アップデート
 
     int GetTutoUiNum() { return tuto_ui_num; }
+    void SetMoveStop(bool set_flg) { walk_stop_flg = set_flg; }
 };

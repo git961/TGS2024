@@ -96,6 +96,7 @@ Player::Player()
 	rock_break_flg = false;
 	rock_cnt = 0;
 	hit_rock_flg = false;
+	walk_stop_flg = false;
 }
 
 Player::~Player()
@@ -888,10 +889,9 @@ void Player::TutorialAnimUpdate()
 				//つるはし攻撃
 				if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 				{
-					tuto_cnt++;
 					if (CheckSoundMem(atk_sound) == FALSE)
 					{
-
+						tuto_cnt++;
 						PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
 					}
 
@@ -919,6 +919,11 @@ void Player::TutorialAnimUpdate()
 		}
 	break;
 	case 1:
+
+		if (world.x > 1100)
+		{
+			tuto_num = 2;
+		}
 
 		SetVertex();
 
@@ -974,6 +979,35 @@ void Player::TutorialAnimUpdate()
 		}
 
 	break;
+	case 2:
+		//袋に近づいて開ける
+		if (walk_stop_flg == true)
+		{
+
+		}
+		else{
+			location.x += 1;
+			world.x += 1;
+
+			if (player_state == WALK)
+			{
+				if (abs((int)world.x - (int)old_worldx) > 61)
+				{
+					old_worldx = world.x;
+				}
+
+				walk_abs = abs((int)world.x - (int)old_worldx);
+				// 歩行
+				// 5カウントごとに変わる
+				if (walk_abs != 0)
+				{
+					walk_num = walk_abs / 20;
+				}
+			}
+
+		}
+
+		break;
 	}
 
 
