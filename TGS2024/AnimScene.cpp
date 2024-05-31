@@ -200,7 +200,6 @@ void AnimScene::Draw() const
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 		DrawGraph(screen_origin_position.x, 0, black_img, FALSE);
-
 	}
 
 	if (anim_scene == 3||anim_scene==4)

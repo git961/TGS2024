@@ -153,7 +153,9 @@ GameMainScene::GameMainScene()
 	shake_flg=false;
 	
 	play_start_flg = false;
-	
+	camera_resetx.x = 0;
+	camera_resetflg = false;
+	camera_old_x = 0;
 }
 
 
@@ -341,7 +343,6 @@ void GameMainScene::Update()
 		}
 
 		//ダイナマイトと歩行エネミーの当たり判定
-
 			for (int i = 0; i < DYNAMITE_MAXNUM; i++)
 			{
 				if (dynamite[i] != nullptr)
@@ -370,7 +371,6 @@ void GameMainScene::Update()
 									enemy[j]->SetStarDrawFlg(true);
 									enemy[j]->SetPlayerWorldLocation(player->GetWorldLocation());
 									enemy[j]->Damege(dynamite[i]->GetAttack());
-
 
 
 
@@ -722,7 +722,7 @@ void GameMainScene::Update()
 				if (stage_block[j] != nullptr)
 				{
 					stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-
+					/*
 					if (player != nullptr)
 					{
 
@@ -776,6 +776,104 @@ void GameMainScene::Update()
 
 
 					}
+					*/
+
+
+
+					if (player != nullptr)
+					{
+
+						if (stage_block[j]->GetBlockNum() == 3)
+						{
+							if (stage_block[j]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
+							{
+								game_state = GOAL;
+							}
+						}
+
+						if (stage_block[j]->GetBlockNum() == 4)
+						{
+
+							stage_block[j]->Update();
+
+							//プレイヤが右向きだったら
+							if (player->GetDirection() == 0)
+							{
+								player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
+							}
+
+							//つるはしを振るってる時だけ
+							if (player->GetAttacking() == true)
+							{
+								//ダメージを一回だけ与える
+								if (rock_damage_once == false)
+								{
+									//つるはしと岩と当たってるかのチェック
+									if (ac->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true) {
+										stage_block[j]->SetDamage(10);
+										stage_block[j]->SetShakeFlg(true);
+										rock_damage_once = true;
+									}
+								}
+							}
+							else
+							{
+								//プレイヤーがつるはし振ってなかったら
+								rock_damage_once = false;
+							}
+
+							//ダメージを一回だけ与える
+							if (rock_damage_once == false)
+							{
+								//つるはしとエネミーと当たってるかのチェック
+								//if (ac->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true) {
+								for (int i = 0; i < DYNAMITE_MAXNUM; i++)
+								{
+
+									if (dynamite[i] != nullptr)
+									{
+										//ダイナマイトが岩と当たってるかのチェック
+										if (dynamite[i]->GetDynamite() == false)
+										{
+											if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+											{
+												dynamite[i]->SetDynamite(true);
+
+											}
+										}
+										//ダイナマイトの爆発とエネミーの当たり判定
+										if (dynamite[i]->Getdamage_flg() == true)
+										{
+											if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+											{
+												dynamite[i]->SetEnemyX(stage_block[j]->GetWorldLocation().x);
+												dynamite[i]->DamageCalculation();
+												stage_block[j]->SetDamage(30);
+												stage_block[j]->SetShakeFlg(true);
+
+
+
+												rock_damage_once = true;
+
+											}
+										}
+									}
+
+									if (stage_block[j] != nullptr)
+									{
+										if (stage_block[j]->GetHp() <= 0)
+										{
+											stage_block[j] = nullptr;
+										}
+									}
+
+
+								}
+
+							}
+
+						}
+					}
 
 
 				}
@@ -824,6 +922,15 @@ void GameMainScene::Draw() const
 			if (ac->GetAttackFlg() == true)
 			{
 				ac->Draw();
+			}
+		}
+		//ダイナマイト描画
+		for (int i = 0; i < DYNAMITE_MAXNUM; i++)
+		{
+			if (dynamite[i] != nullptr)
+			{
+				dynamite[i]->Draw();
+				DrawFormatString(300 * i, 0, 0xff0000, "tmp_abs: %f", dynamite[i]->GetTmpAbs());
 			}
 		}
 
@@ -1104,8 +1211,6 @@ void GameMainScene::Tutorial()
 
 			player->TutorialAnimUpdate();
 		
-
-		
 		if (ui != nullptr)
 		{
 			ui->UpdateTutorial(player);
@@ -1120,18 +1225,6 @@ void GameMainScene::Tutorial()
 
 			if (player != nullptr)
 			{
-
-				if (stage_block[j]->GetBlockNum() == 5)
-				{
-					//プレイヤが右向きだったら
-					if (player->GetDirection() == 0)
-					{
-						if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-						{
-							player->SetMoveStop(true);
-						}
-					}
-				}
 
 				if (stage_block[j]->GetBlockNum() == 4)
 				{
@@ -1172,8 +1265,55 @@ void GameMainScene::Tutorial()
 
 				}
 
+				for (int i = 0; i < DYNAMITE_MAXNUM; i++)
+				{
+					if (dynamite[i] != nullptr)
+					{
+						//ダイナマイトが岩と当たってるかのチェック
+						if (dynamite[i]->GetDynamite() == false)
+						{
+							if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+							{
+								dynamite[i]->SetDynamite(true);
+
+							}
+						}
+						//ダイナマイトの爆発とエネミーの当たり判定
+						if (dynamite[i]->Getdamage_flg() == true)
+						{
+							if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+							{
+								dynamite[i]->SetEnemyX(stage_block[j]->GetWorldLocation().x);
+								dynamite[i]->DamageCalculation();
+								stage_block[j]->SetDamage(30);
+								stage_block[j]->SetShakeFlg(true);
+								rock_damage_once = true;
+
+							}
+						}
+					}
+				}
 			}
 
+
+		}
+
+		//わけないと４番目壊した時GetBlockNumでエラーが起きるため
+		if (stage_block[j] != nullptr)
+		{
+			stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			if (stage_block[j]->GetBlockNum() == 5)
+			{
+				//プレイヤが右向きだったら
+				if (player->GetDirection() == 0)
+				{
+					if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+					{
+						player->SetMoveStop(true);
+						stage_block[j] = nullptr;
+					}
+				}
+			}
 
 		}
 	}
@@ -1183,10 +1323,60 @@ void GameMainScene::Tutorial()
 		ac->Update(this, player);
 	}
 
-	//カメラとUIのアップデート
-	if (player != nullptr) {
+	//ダイナマイト
+	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
+	{
+		if (dynamite[i] != nullptr)
+		{
+			dynamite[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			dynamite[i]->Update();
 
-		UpdateCamera(player->GetWorldLocation());
+			if (dynamite[i]->Getdeath_flg() == true)
+			{
+				dynamite[i] = nullptr;
+			}
+		}
+
+		//ダイナマイト作成
+		if (player->GetAtkDynamite() == true)
+		{
+			if (dynamite[i] == nullptr)
+			{
+				dynamite[i] = new Dynamite(player->GetWorldLocation(), player->GetDirection());
+				player->SetAtkDynamite(false);
+			}
+		}
+	}
+
+	//カメラとUIのアップデート
+	
+	if (player != nullptr) {
+		if (player->GetTutoAnimDynaFlg() == true)
+		{
+			camera_resetflg = true;
+			if (dynamite[0] != nullptr)
+			{
+				UpdateCamera(dynamite[0]->GetWorldLocation());
+				camera_resetx = dynamite[0]->GetWorldLocation();
+			}
+
+		}
+
+		//元のプレイヤーの位置までカメラを戻す
+		if (camera_resetflg == true&& player->GetTutoAnimDynaFlg() == false)
+		{
+			camera_resetx.x += -10;
+			UpdateCamera(camera_resetx);
+			if (camera_old_x > camera_resetx.x)
+			{
+				camera_resetflg = false;
+			}
+		}
+		
+		if(camera_resetflg==false && player->GetTutoAnimDynaFlg() == false) {
+			UpdateCamera(player->GetWorldLocation());
+			camera_old_x = player->GetWorldLocation().x;
+		}
 	}
 
 	for (int j = 0; j < block_count; j++)

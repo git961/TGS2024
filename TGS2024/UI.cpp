@@ -7,8 +7,9 @@ UI::UI(int set_hp, int set_dyna_num)
 	score_img = LoadGraph("images/UI/score_Icon.png");
 	dyna_img= LoadGraph("images/UI/dynamite.png");
 	LoadDivGraph("images/UI/UIB.png", 2, 2, 1, 128, 128, btnB_img);
-
-	btnY_img= LoadGraph("images/UI/buttonY.png");
+	LoadDivGraph("images/UI/UIY.png", 2, 2, 1, 128, 128, btnY_img);
+	tuto_backimg= LoadGraph("images/Animscene/dynapic.png");
+	//btnY_img= LoadGraph("images/UI/buttonY.png");
 	player_hp = set_hp;
 	heart_num = set_hp / 10;
 	dyna_num=set_dyna_num;
@@ -16,6 +17,8 @@ UI::UI(int set_hp, int set_dyna_num)
 	y = 40;
 	btn_num = 0;
 	btn_cnt = 0;
+	alpha = 0;
+	alpha_flg = false;
 }
 
 UI::~UI()
@@ -79,6 +82,39 @@ void UI::UpdateTutorial(Player* player)
 		}
 
 		break;
+	case 2:
+		if (alpha_flg == false)
+		{
+			if (alpha > 400)
+			{
+				alpha_flg = true;
+			}
+			else
+			{
+				alpha += 4;
+			}
+		}
+		else {
+			alpha -= 4;
+			if (alpha < 0)
+			{
+				player->SetMoveStop(true);
+			}
+		}
+		break;
+	case 3:
+		if (btn_cnt++ > 10)
+		{
+			btn_num = 1;
+		}
+
+		if (btn_cnt > 20)
+		{
+			btn_cnt = 0;
+			btn_num = 0;
+		}
+
+		break;
 	}
 }
 
@@ -89,8 +125,15 @@ void UI::DrawTutorial(Player* player) const
 	case 0:
 		break;
 	case 1:
-
 		DrawRotaGraph(player->GetLocation().x, player->GetLocation().y-100, 1, 0, btnB_img[btn_num], TRUE, 0);
+		break;
+	case 2:
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+		DrawGraph(0, 0, tuto_backimg, TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		break;
+	case 3:
+		DrawRotaGraph(player->GetLocation().x, player->GetLocation().y - 100, 1, 0, btnY_img[btn_num], TRUE, 0);
 		break;
 	}
 }

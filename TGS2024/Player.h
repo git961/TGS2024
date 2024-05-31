@@ -107,6 +107,8 @@ private:
     int rock_cnt;
     int tuto_cnt;
     bool walk_stop_flg;
+    bool tuto_anim_dynaflg;//カメラをダイナマイトに追従させる用
+
 
 public:
     Player();
@@ -161,4 +163,6 @@ public:
 
     int GetTutoUiNum() { return tuto_ui_num; }
     void SetMoveStop(bool set_flg) { walk_stop_flg = set_flg; }
+    bool GetTutoAnimDynaFlg() { return tuto_anim_dynaflg; }
+
 };

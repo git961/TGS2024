@@ -67,7 +67,7 @@ Player::Player()
 	dyna_throw_num = 0;
 	dyna_anmcnt = 0;
 
-	dyna_stock_num = 3;
+	dyna_stock_num = 5;
 	dyna_stock_cnt = 0;
 
 
@@ -97,6 +97,7 @@ Player::Player()
 	rock_cnt = 0;
 	hit_rock_flg = false;
 	walk_stop_flg = false;
+	tuto_anim_dynaflg = false;
 }
 
 Player::~Player()
@@ -410,13 +411,6 @@ void Player::Draw() const
 #ifdef DEBUG
 
 
-	//DrawCircle(box_vertex.upper_leftx, box_vertex.upper_lefty, 2, 0x0000ff, TRUE);
-	//DrawCircle(box_vertex.lower_leftx, box_vertex.lower_lefty, 2, 0x0000ff, TRUE);
-	//DrawCircle(box_vertex.upper_rightx, box_vertex.upper_righty, 2, 0x0000ff, TRUE);
-	//DrawCircle(box_vertex.lower_rightx, box_vertex.lower_righty, 2, 0x0000ff, TRUE);
-	//
-	//
-
 	//////// 画面に XINPUT_STATE の中身を描画
 	//color = GetColor(255, 255, 255);
 	//for (int i = 0; i < 16; i++)
@@ -428,15 +422,7 @@ void Player::Draw() const
 	//DrawFormatString(100, 120, 0xffffff, "btnnum: % d", input.Btnnum);
 
 	////DrawFormatString(100, 150, 0xffffff, "location.x: %f",location.x);
-	//DrawFormatString(100, 100, 0xffffff, "worldx: %f location.x:%f",world.x,location.x);
-	//DrawFormatString(100, 120, 0xffffff, "world_y: %f location.y:%f", world.y,location.y);
-	//DrawFormatString(location.x, location.y-20, 0x000000, "hp%f", hp);
-	////DrawFormatString(location.x, location.y-20, 0x000000, "hp%f", hp);
-	///*DrawFormatString(100, 120, 0xffffff, "location.y: %f", location.y);
-	//DrawFormatString(100, 140, 0xffffff, "world.x: %f",world.x);
-	//DrawFormatString(100, 160, 0xffffff, "world.y: %f",world.y);*/
 
-	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);			// 中心座標
 
 #endif // DEBUG
 }
@@ -870,7 +856,7 @@ void Player::TutorialAnimUpdate()
 
 			if (rock_break_flg==true)
 			{
-
+					tuto_cnt = 0;
 					tuto_ui_num = 0;
 					tuto_num = 1;
 					rock_cnt=0;
@@ -879,6 +865,7 @@ void Player::TutorialAnimUpdate()
 			}
 			else
 			{
+				//三回攻撃したら
 				if (tuto_cnt >= 3)
 				{
 					if (rock_cnt++ > 20)
@@ -983,7 +970,14 @@ void Player::TutorialAnimUpdate()
 		//袋に近づいて開ける
 		if (walk_stop_flg == true)
 		{
-
+			player_state = PANIM;
+			op_num = 2;
+			if (tuto_cnt++ > 60)
+			{
+				tuto_ui_num = 2;
+				walk_stop_flg = false;
+				tuto_num = 3;
+			}
 		}
 		else{
 			location.x += 1;
@@ -1005,6 +999,116 @@ void Player::TutorialAnimUpdate()
 				}
 			}
 
+		}
+
+		break;
+	case 3:
+		if (walk_stop_flg == true)
+		{
+			tuto_ui_num = 3;
+
+			if (player_state!=DYNAMITE)
+			{
+				//ダイナマイト攻撃
+				if (input.CheckBtn(XINPUT_BUTTON_Y) == TRUE || CheckHitKey(KEY_INPUT_S) == TRUE)
+				{
+					player_state = DYNAMITE;
+					tuto_anim_dynaflg = true;
+				}
+			}
+
+			if (player_state == DYNAMITE)
+			{
+				tuto_ui_num = 0;
+
+				move_x = 0;
+				switch (dyna_anmcnt)
+				{
+				case 1:
+					dyna_stock_num -= 1;
+					dyna_throw_num = 0;
+					break;
+				case 5:
+					dyna_throw_num = 1;
+					break;
+				case 10:
+					dyna_throw_num = 2;
+					atk_dynamite = true;
+					break;
+				case 150:
+
+					tuto_anim_dynaflg = false;
+					break;
+				case 200:
+					dyna_anmcnt = 0;
+					dyna_throw_num = 0;
+					player_state = NOMAL;
+					tuto_num = 4;
+					break;
+				default:
+					break;
+				}
+				dyna_anmcnt++;
+
+			}
+		}
+
+		break;
+	case 4:
+
+		//そのまま歩いて行って、看板を見る　この先出口ですが危険！！
+
+		SetVertex();
+
+		//つるはし攻撃
+		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+		{
+			if (CheckSoundMem(atk_sound) == FALSE)
+			{
+
+				PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+			}
+
+			//右向きだったら
+			if (direction == 0)
+			{
+				world.x += 3;
+			}
+			else {
+				world.x -= 3;
+			}
+
+			attacking = true;
+			player_state = ATTACK;
+			wait_flg = false;
+		}
+		PlayerAttack();
+
+
+		if (player_state != ATTACK)
+		{
+			//プレイヤーの移動処理
+			PlayerMove();
+		}
+		else
+		{
+			move_x = 0;
+		}
+
+		if (player_state == WALK)
+		{
+			if (abs((int)world.x - (int)old_worldx) > 61)
+			{
+				old_worldx = world.x;
+			}
+
+			walk_abs = abs((int)world.x - (int)old_worldx);
+			// 歩行
+			// 5カウントごとに変わる
+			if (walk_abs != 0)
+			{
+				walk_num = walk_abs / 20;
+			}
 		}
 
 		break;

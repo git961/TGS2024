@@ -95,6 +95,9 @@ private:
     int walk_gem_score;             // 歩行エネミーの宝石スコア
     int roll_gem_score;             // 転がるエネミーの宝石スコア
 
+    float camera_old_x;
+    World camera_resetx;//カメラの位置リセットに
+    bool camera_resetflg;
 
     //float check_abs;//debug用
 

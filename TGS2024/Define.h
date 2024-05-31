@@ -19,7 +19,7 @@
 
 #define ENEMYMAXNUM 10
 
-#define DYNAMITE_MAXNUM 3
+#define DYNAMITE_MAXNUM 5
 
 #define _USE_MATH_DEFINES       // M_PI使用用
 
