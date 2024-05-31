@@ -56,6 +56,13 @@ void Dynamite::Update()
 			PlaySoundMem(bomb_sound, DX_PLAYTYPE_BACK);
 		}
 
+		if (direction == 0) {
+			world.x += move_x + 3;
+		}
+		else {
+			world.x -= move_x;
+		}
+
 		explosion_cnt++;
 		switch (explosion_cnt)
 		{

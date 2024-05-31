@@ -31,7 +31,6 @@ public:
     Dynamite(World set_xy,int set_direction);
     ~Dynamite();
     void Update();
-    void TutoUpdate();
     void Draw() const;
     void DamageCalculation();       // ダメージの計算
 

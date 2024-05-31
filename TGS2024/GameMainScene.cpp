@@ -914,8 +914,8 @@ void GameMainScene::Update()
 					}
 
 
-			//	}
-			//}なにこれ？
+				}
+			}
 
 
 			if (player != nullptr && mapio != nullptr)
