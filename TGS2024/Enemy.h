@@ -33,7 +33,7 @@ private:
     int footsteps_sound;            // 足音se
     int knock_back_sount;           // ノックバックse
     int death_sount;                // 死亡se
-    bool sound_play;                // 1回だけサウンドを鳴らす用
+    bool play_sound;                // 1回だけサウンドを鳴らす用
 
     int death_cnt;                  // 死亡アニメーションが終わるまでの時間
     bool is_delete;                 // 削除するか？

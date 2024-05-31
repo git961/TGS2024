@@ -20,6 +20,11 @@ Player::Player()
 	LoadDivGraph("images/Player/soil_effect.png", 2, 2, 1, 170, 170, soil_effect);
 
 	atk_sound = LoadSoundMem("sounds/Attack.mp3");
+	op_run_sound = LoadSoundMem("sounds/se/player/run.mp3");
+	damage_sound = LoadSoundMem("sounds/se/player/damage.mp3");
+	throw_dynamite_sound = LoadSoundMem("sounds/se/player/Throw.mp3");
+	death_sound = LoadSoundMem("sounds/se/player/death.mp3");
+
 
 	img_down = 15;
 
@@ -96,12 +101,28 @@ Player::Player()
 	rock_break_flg = false;
 	rock_cnt = 0;
 	hit_rock_flg = false;
+
+	// サウンドの音量設定
+	ChangeVolumeSoundMem(200, atk_sound);
+	ChangeVolumeSoundMem(180, op_run_sound);
+	ChangeVolumeSoundMem(180, damage_sound);
+	ChangeVolumeSoundMem(180, throw_dynamite_sound);
+	ChangeVolumeSoundMem(230, death_sound);
+
+
 	walk_stop_flg = false;
 	tuto_anim_dynaflg = false;
 }
 
 Player::~Player()
 {
+	// サウンド削除
+	DeleteSoundMem(atk_sound);
+	DeleteSoundMem(op_run_sound);
+	DeleteSoundMem(damage_sound);
+	DeleteSoundMem(throw_dynamite_sound);
+	DeleteSoundMem(death_sound);
+
 }
 
 void Player::Update(GameMainScene* gamemain)
@@ -115,6 +136,7 @@ void Player::Update(GameMainScene* gamemain)
 	switch (player_state)
 	{
 	case DEATH:
+
 		death_anim_cnt++;
 		switch (death_anim_cnt)
 		{
@@ -125,6 +147,10 @@ void Player::Update(GameMainScene* gamemain)
 			death_num = 1;
 			break;
 		case 15:
+			if (CheckSoundMem(death_sound) == FALSE)
+			{
+				PlaySoundMem(death_sound, DX_PLAYTYPE_BACK);
+			}
 			death_num = 2;
 			break;
 		case 20:
@@ -138,6 +164,11 @@ void Player::Update(GameMainScene* gamemain)
 		}
 		break;
 	case DYNAMITE:
+		if (CheckSoundMem(throw_dynamite_sound) == FALSE)
+		{
+			PlaySoundMem(throw_dynamite_sound, DX_PLAYTYPE_BACK);
+		}
+
 
 		switch (dyna_anmcnt)
 		{
@@ -164,6 +195,11 @@ void Player::Update(GameMainScene* gamemain)
 
 		break;
 	case HITDAMAGE:
+		if (CheckSoundMem(damage_sound) == FALSE)
+		{
+			PlaySoundMem(damage_sound, DX_PLAYTYPE_BACK);
+		}
+
 
 		if ((unsigned)move_x > 0) {
 			move_x *= 0.9;
@@ -220,6 +256,7 @@ void Player::Update(GameMainScene* gamemain)
 		}
 		else if (world.x - width / 2 < 0) {
 			world.x = width / 2;
+
 		}
 
 		//敵からダメージを食らったら
@@ -308,6 +345,12 @@ void Player::Update(GameMainScene* gamemain)
 	}
 	
 	if (hp <= 0) {
+		if (CheckSoundMem(damage_sound) == FALSE)
+		{
+			PlaySoundMem(damage_sound, DX_PLAYTYPE_BACK);
+		}
+
+
 		player_state = DEATH;
 	}
 
@@ -446,6 +489,14 @@ void Player::PlayerMove()
 		{
 			player_state = WALK;
 		}
+		if (world.x + width / 2 < FIELD_WIDTH)
+		{
+			//走る音
+			if (CheckSoundMem(op_run_sound) == FALSE)
+			{
+				PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+			}
+		}
 	}
 
 	//左移動
@@ -461,6 +512,13 @@ void Player::PlayerMove()
 		if (player_state != ATTACK)
 		{
 			player_state = WALK;
+		}
+		if (world.x - width / 2 > 0) {
+			//走る音
+			if (CheckSoundMem(op_run_sound) == FALSE)
+			{
+				PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+			}
 		}
 	}
 
@@ -665,6 +723,12 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 	case 2:
 		//画面の中心まで歩いてくる
 		if (640 > world.x) {
+			//走る音
+			if (CheckSoundMem(op_run_sound) == FALSE)
+			{
+				PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+			}
+
 			player_state = WALK;
 			location.x += 1;
 			world.x += 1;
@@ -703,7 +767,6 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 	break;
 	case 4:
 		op_num = 3;
-
 		break;
 	case 5:
 		world.x = 600;
@@ -757,6 +820,12 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 			{
 				walk_num = walk_abs / 20;
 			}
+			//走る音
+			if (CheckSoundMem(op_run_sound) == FALSE)
+			{
+				PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+			}
+
 
 		}
 
@@ -799,6 +868,12 @@ void Player::TutorialAnimUpdate()
 				{
 					walk_num = walk_abs / 20;
 				}
+				//走る音
+				if (CheckSoundMem(op_run_sound) == FALSE)
+				{
+					PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+				}
+
 
 			}
 
@@ -818,6 +893,11 @@ void Player::TutorialAnimUpdate()
 					death_num = 1;
 					break;
 				case 15:
+					if (CheckSoundMem(death_sound) == FALSE)
+					{
+						PlaySoundMem(death_sound, DX_PLAYTYPE_BACK);
+					}
+
 					death_num = 2;
 					break;
 				case 20:

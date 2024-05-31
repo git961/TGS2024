@@ -23,12 +23,17 @@ Dynamite::Dynamite(World set_xy,int set_direction)
 	attack = 30;
 	enemy_x = 0.0f;
 	tmp_abs = 0.0f;
+	bomb_sound = LoadSoundMem("sounds/se/player/bomb.mp3");
+	// サウンドの音量設定
+	ChangeVolumeSoundMem(200, bomb_sound);
 
-	tuto_anim_dynaflg = false;
 }
 
 Dynamite::~Dynamite()
-{
+{	
+	// サウンド削除
+	DeleteSoundMem(bomb_sound);
+
 }
 
 void Dynamite::Update()
@@ -46,60 +51,11 @@ void Dynamite::Update()
 	}
 	else if (dynamite_flg == true)
 	{
-		if (direction == 0) {
-			world.x += move_x+3;
-		}
-		else {
-			world.x -= move_x;
-		}
-		explosion_cnt++;
-		switch (explosion_cnt)
+		if (CheckSoundMem(bomb_sound) == FALSE)
 		{
-		case 0:
-			explosion_num = 0;
-			break;
-		case 5:
-			explosion_num = 1;
-			break;
-		case 10:
-			explosion_num = 2;
-			width = 200;
-			height = 128;
-			damage_flg = true;
-			break;
-		case 11:
-			damage_flg = false;
-			break;
-		case 25:
-			dynamite_death = true;
-			break;
-		default:
-			break;
+			PlaySoundMem(bomb_sound, DX_PLAYTYPE_BACK);
 		}
-	}
-}
 
-void Dynamite::TutoUpdate()
-{
-	if (dynamite_flg == false)
-	{
-		if (direction == 0) {
-			world.x += move_x;
-			rotation += 0.3;
-		}
-		else {
-			world.x -= move_x;
-			rotation -= 0.3;
-		}
-	}
-	else if (dynamite_flg == true)
-	{
-		if (direction == 0) {
-			world.x += move_x + 3;
-		}
-		else {
-			world.x -= move_x;
-		}
 		explosion_cnt++;
 		switch (explosion_cnt)
 		{

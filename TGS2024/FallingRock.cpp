@@ -21,11 +21,20 @@ FallingRock::FallingRock()
 
 	shake_x1 = 5;
 	shake_x2 = 10;
+	rocks_fall_sound = LoadSoundMem("sounds/se/op/rocks_fall.mp3");
+	roll_sound = LoadSoundMem("sounds/se/op/roll.mp3");
+	// サウンドの音量設定
+	ChangeVolumeSoundMem(255, rocks_fall_sound);
+	ChangeVolumeSoundMem(255, roll_sound);
 
 }
 
 FallingRock::~FallingRock()
 {
+	// サウンド削除
+	DeleteSoundMem(rocks_fall_sound);
+	DeleteSoundMem(roll_sound);
+
 }
 
 void FallingRock::Update()
@@ -48,7 +57,12 @@ void FallingRock::Update()
 		}
 	break;
 	case 1:
-		
+		//岩落ちる音
+		if (CheckSoundMem(rocks_fall_sound) == FALSE)
+		{
+			PlaySoundMem(rocks_fall_sound, DX_PLAYTYPE_BACK);
+		}
+
 		//地面に着地したら
 		anim_cnt++;
 		switch (anim_cnt)
@@ -88,6 +102,12 @@ void FallingRock::Update()
 		break;
 	case 2:
 		
+		//転がる音
+		if (CheckSoundMem(roll_sound) == FALSE)
+		{
+			PlaySoundMem(roll_sound, DX_PLAYTYPE_BACK);
+		}
+
 		landing_flg = false;
 		black_out_flg = true;
 		//転がる右回り

@@ -30,7 +30,7 @@ Enemy::Enemy(float set_x, float set_y)
 	footsteps_sound = LoadSoundMem("sounds/se/walk04.mp3");
 	knock_back_sount = LoadSoundMem("sounds/se/enemy/knockback.mp3");
 	death_sount = LoadSoundMem("sounds/se/enemy/death04.mp3");
-	sound_play = true;
+	play_sound = true;
 
 	anim_cnt = 0;
 	anim_max_cnt = 19;
@@ -116,16 +116,41 @@ Enemy::Enemy(float set_x, float set_y)
 
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(80, footsteps_sound);
-	ChangeVolumeSoundMem(200, knock_back_sount);
+	ChangeVolumeSoundMem(150, knock_back_sount);
 	ChangeVolumeSoundMem(255, death_sount);
 }
 
 Enemy::~Enemy()
 {
 	// 画像の削除
-	//for (int i = 0; i < 10; i++) {
-	//	DeleteGraph(chara_image[i]);
-	//}
+	for (int i = 0; i < 5; i++)
+	{
+		DeleteGraph(enemy_walk_img[i]);
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		DeleteGraph(enemy_death_img[i]);
+	}
+
+	DeleteGraph(knock_back_img);
+
+	for (int i = 0; i < 2; i++)
+	{
+		DeleteGraph(crack_img[i]);
+	}
+
+	DeleteGraph(star_img);
+
+	for (int i = 0; i < 4; i++)
+	{
+		DeleteGraph(fragment_img[i]);
+	}
+
+	// サウンド削除
+	DeleteSoundMem(footsteps_sound);
+	DeleteSoundMem(knock_back_sount);
+	DeleteSoundMem(death_sount);
 }
 
 void Enemy::Update(GameMainScene* gamemain)
@@ -151,13 +176,13 @@ void Enemy::Update(GameMainScene* gamemain)
 				KnockBackPreparation();
 			}
 
-			if (sound_play == true)
+			if (play_sound == true)
 			{
 				if (CheckSoundMem(knock_back_sount) == FALSE)
 				{
-					// 死亡se
+					// ノックバックse
 					PlaySoundMem(knock_back_sount, DX_PLAYTYPE_BACK);
-					sound_play = false;
+					play_sound = false;
 				}
 			}
 
@@ -166,9 +191,9 @@ void Enemy::Update(GameMainScene* gamemain)
 		}
 		else
 		{
-			if (sound_play == false)
+			if (play_sound == false)
 			{
-				sound_play = true;
+				play_sound = true;
 			}
 
 			// 移動処理
@@ -193,13 +218,13 @@ void Enemy::Update(GameMainScene* gamemain)
 	}
 	else
 	{
-		if (sound_play == true)
+		if (play_sound == true)
 		{
 			if (CheckSoundMem(death_sount) == FALSE)
 			{
 				// 死亡se
 				PlaySoundMem(death_sount, DX_PLAYTYPE_BACK);
-				sound_play = false;
+				play_sound = false;
 			}
 		}
 

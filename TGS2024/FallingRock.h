@@ -23,6 +23,8 @@ private:
     int shake_x1;
     int shake_x2;
 
+    int rocks_fall_sound;//岩が落ちる音
+    int roll_sound;//転がる音
 
 public:
     FallingRock();

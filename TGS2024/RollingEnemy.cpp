@@ -7,7 +7,7 @@ RollingEnemy::RollingEnemy()
 	//location.y = 600;
 
 	world.x = 30.0f;
-	world.y = 606.0f;
+	world.y = 608.0f;
 
 	width = 60.0f;
 	height = 60.0f;
@@ -23,6 +23,8 @@ RollingEnemy::RollingEnemy()
 	LoadDivGraph("images/Enemy/RollingTest.png", 5, 5, 1, 64, 64, enemy_roll_img);
 	LoadDivGraph("images/Enemy/EffectTest.png", 4, 4, 1, 64, 64, enemy_effect_img);
 
+	// サウンド読込
+	roll_sound = LoadSoundMem("sounds/se/enemy/roll.mp3");
 	death_sount = LoadSoundMem("sounds/se/enemy/death04.mp3");
 	sound_play = true;
 
@@ -38,17 +40,40 @@ RollingEnemy::RollingEnemy()
 
 	just_death = false;
 	gem_drop = false;
+
+	// サウンドの音量設定
+	ChangeVolumeSoundMem(255, roll_sound);
+	ChangeVolumeSoundMem(100, death_sount);
 }
 
 RollingEnemy::~RollingEnemy()
 {
+	// 画像削除
+	for (int i = 0; i < 5; i++)
+	{
+		DeleteGraph(enemy_roll_img[i]);
+	}
 
+	for (int i = 0; i < 4; i++)
+	{
+		DeleteGraph(enemy_effect_img[i]);
+	}
+
+	// サウンド削除
+	DeleteSoundMem(roll_sound);
+	DeleteSoundMem(death_sount);
 }
 
 void RollingEnemy::Update(GameMainScene* gamemain)
 {
 	if (hp > 0)
 	{
+		if (CheckSoundMem(roll_sound) == FALSE)
+		{
+			// 転がるse
+			PlaySoundMem(roll_sound, DX_PLAYTYPE_BACK);
+		}
+
 		if (direction == true)
 		{
 			// 右回り

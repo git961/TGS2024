@@ -26,8 +26,7 @@ private:
     float enemy_x;          // 当たった敵の座標
     float tmp_abs;
 
-    bool tuto_anim_dynaflg;//カメラをダイナマイトに追従させる用
-
+    int bomb_sound;//爆発音
 public:
     Dynamite(World set_xy,int set_direction);
     ~Dynamite();
@@ -44,6 +43,5 @@ public:
     bool Getdeath_flg() { return dynamite_death; }
     int GetAttack() { return attack; }
     float GetTmpAbs()const { return tmp_abs; }
-    bool TutoAnimDynaFlg() { return tuto_anim_dynaflg; }
 };
 
