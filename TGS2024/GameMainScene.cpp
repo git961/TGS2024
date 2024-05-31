@@ -22,7 +22,7 @@ GameMainScene::GameMainScene()
 	player = new Player();
 
 	enemy = new Enemy * [ENEMYMAXNUM];
-	rolling_enemy = new RollingEnemy;
+	//rolling_enemy = new RollingEnemy;
 	stage_block = new StageBlock * [map_blockmax_y * map_blockmax_x];
 
 	ui = new UI(player->GetHp(),player->GetDynaNum());
@@ -302,7 +302,7 @@ void GameMainScene::Update()
 		if (rolling_enemy == nullptr)
 		{
 			// 転がるエネミーが消えたら新しく出現させる
-			rolling_enemy = new RollingEnemy;
+			//rolling_enemy = new RollingEnemy;
 		}
 #endif
 
@@ -941,7 +941,11 @@ void GameMainScene::Update()
 void GameMainScene::Draw() const
 {
 	// 背景画像描画（仮）
-	DrawGraph(location_x, location_y, back_img, FALSE);
+	for (int i = 0; i < 8; i++)
+	{
+		DrawGraph(location_x+1280*i, location_y, back_img, FALSE);
+
+	}
 
 	//DrawFormatString(0, 0, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
 	//fp.display_fps();
@@ -972,7 +976,7 @@ void GameMainScene::Draw() const
 			if (dynamite[i] != nullptr)
 			{
 				dynamite[i]->Draw();
-				DrawFormatString(300 * i, 0, 0xff0000, "tmp_abs: %f", dynamite[i]->GetTmpAbs());
+				//DrawFormatString(300 * i, 0, 0xff0000, "tmp_abs: %f", dynamite[i]->GetTmpAbs());
 			}
 		}
 
@@ -1052,7 +1056,7 @@ void GameMainScene::Draw() const
 		if (dynamite[i] != nullptr)
 		{
 			dynamite[i]->Draw();
-			DrawFormatString(300 * i , 0, 0xff0000, "tmp_abs: %f", dynamite[i]->GetTmpAbs());
+			//DrawFormatString(300 * i , 0, 0xff0000, "tmp_abs: %f", dynamite[i]->GetTmpAbs());
 		}
 	}
 
@@ -1084,7 +1088,7 @@ void GameMainScene::Draw() const
 	//DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
 	//DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
 	//DrawFormatString(30, 300, 0xffffff, "m_mode: %d", map_mode);
-	DrawFormatString(30, 300, 0xffffff, "e_cnt: %d", enemy_count);
+	//DrawFormatString(30, 300, 0xffffff, "e_cnt: %d", enemy_count);
 
 
 	switch (game_state)
@@ -1095,7 +1099,7 @@ void GameMainScene::Draw() const
 
 		break;
 	case TUTORIAL:
-		DrawFormatString(400, 100, 0xffffff, "TUTORIAL_NOW");
+		//DrawFormatString(400, 100, 0xffffff, "TUTORIAL_NOW");
 		break;
 	case POSE:
 		DrawFormatString(400, 100, 0xffffff, "POSE_NOW");
@@ -1105,7 +1109,7 @@ void GameMainScene::Draw() const
 		DrawFormatString(400, 100, 0xffffff, "GOAL!!");
 		break;
 	case PLAY:
-		DrawFormatString(400, 100, 0xffffff, "PLAY_NOW");
+		//DrawFormatString(400, 100, 0xffffff, "PLAY_NOW");
 		break;
 	default:
 		break;
@@ -1403,6 +1407,8 @@ void GameMainScene::Tutorial()
 			if (camera_old_x > camera_resetx.x)
 			{
 				camera_resetflg = false;
+				//とりあえず仮
+				game_state = PLAY;
 			}
 		}
 		

@@ -36,7 +36,7 @@ void UI::Draw() const
 {
 	int ax, ay;
 	GetMousePoint(&ax, &ay);
-	DrawFormatString(1000, 10, 0xffff00, "%d,%d", ax, ay);
+	//DrawFormatString(1000, 10, 0xffff00, "%d,%d", ax, ay);
 
 	DrawRotaGraph(620, 30, 1, 0, score_img, TRUE, 0);
 

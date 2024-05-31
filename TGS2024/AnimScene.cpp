@@ -254,7 +254,7 @@ void AnimScene::Draw() const
 
 	//DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
 	//DrawFormatString(300, 300, 0xffffff, "alpha%d", alpha);
-	DrawFormatString(300, 300, 0xffffff, "anim_scene%d", anim_scene);
+	//DrawFormatString(300, 300, 0xffffff, "anim_scene%d", anim_scene);
 }
 
 void AnimScene::ShakeCamera(bool set_true, int set_num)
