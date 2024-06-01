@@ -13,6 +13,7 @@ AnimScene::AnimScene()
 	p_backimg[0]=LoadGraph("images/Animscene/startanim1.png", TRUE);
 	p_backimg[1]=LoadGraph("images/Animscene/startanim2.png", TRUE);
 	p_backimg[2]=LoadGraph("images/Animscene/startanim3.png", TRUE);
+	p_backimg[3]=LoadGraph("images/Animscene/startanim4.png", TRUE);
 	p_ase_img= LoadGraph("images/Animscene/fukidashi_ase_white.png", TRUE);
 	p_exc_img= LoadGraph("images/Animscene/fukidashi_exclamation_white.png", TRUE);
 	x = 0;
@@ -114,7 +115,12 @@ void AnimScene::Update()
 
 			}
 
-			if (alpha > 400) {
+			if (alpha > 450)
+			{
+				p_backimg_num = 3;
+			}
+
+			if (alpha > 600) {
 				anim_scene = 4;
 				alpha = 255;
 			}

@@ -1253,6 +1253,11 @@ void GameMainScene::Tutorial()
 			player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
 			player->TutorialAnimUpdate();
+
+			if (player->GetStartFlg() == true)
+			{
+				game_state = PLAY;
+			}
 		
 		if (ui != nullptr)
 		{

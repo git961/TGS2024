@@ -11,6 +11,8 @@ Player::Player()
 	player_img[3] = LoadGraph("images/Player/bagopen2.png");
 	player_img[4] = LoadGraph("images/Player/plookup.png");
 	player_img[5] = LoadGraph("images/Player/wakeup.png");
+	player_img[6] = LoadGraph("images/Player/player_Nomal2.png");
+	player_img[7] = LoadGraph("images/Player/player_Nomal3.png");
 	LoadDivGraph("images/Player/player_walk.png", 4, 4, 1, 170, 170, player_walk_img);
 	LoadDivGraph("images/Player/player_ase.png", 4, 4, 1, 170, 170, player_ase_img);
 	LoadDivGraph("images/Player/p_death.png", 4, 4, 1, 170, 170, player_death_img);
@@ -101,6 +103,7 @@ Player::Player()
 	rock_break_flg = false;
 	rock_cnt = 0;
 	hit_rock_flg = false;
+	p_nomal_num = 0;
 
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(200, atk_sound);
@@ -112,6 +115,7 @@ Player::Player()
 
 	walk_stop_flg = false;
 	tuto_anim_dynaflg = false;
+	start_flg = false;
 }
 
 Player::~Player()
@@ -388,7 +392,7 @@ void Player::Draw() const
 		{
 
 		case NOMAL:
-			DrawRotaGraph(location.x, location.y - img_down, 1, 0, player_img[0], TRUE, direction);
+			DrawRotaGraph(location.x, location.y - img_down, 1, 0, player_img[p_nomal_num], TRUE, direction);
 			//DrawFormatString(location.x, location.y - 80, 0x000000, "nomal");
 			break;
 		case ATTACK:
@@ -1206,11 +1210,13 @@ void Player::TutorialAnimUpdate()
 		if (walk_stop_flg == true)
 		{
 			player_state = NOMAL;
-			tuto_ui_num=5;
-			if (tuto_cnt++ > 60)
+			tuto_ui_num=4;
+			if (tuto_cnt++ > 500)
 			{
 				walk_stop_flg = false;
+				tuto_cnt = 0;
 				tuto_num = 6;
+				tuto_ui_num = 0;
 			}
 		}
 		else {
@@ -1235,7 +1241,20 @@ void Player::TutorialAnimUpdate()
 
 		}
 
+		break;
+	case 6:
+		if (tuto_cnt++>60)
+		{
+			p_nomal_num = 7;
+		}else if(tuto_cnt>30) {
+			p_nomal_num = 6;
+		}
 
+		if (tuto_cnt > 100)
+		{
+
+			start_flg = true;
+		}
 		break;
 	}
 
