@@ -97,6 +97,9 @@ GameMainScene::GameMainScene()
 				case 5:
 					stage_block[block_count++] = new StageBlock(5, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 					break;
+				case 6:
+					stage_block[block_count++] = new StageBlock(6, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+					break;
 				}
 
 				/*
@@ -253,6 +256,9 @@ void GameMainScene::Update()
 						break;
 					case 5:
 						stage_block[block_count++] = new StageBlock(5, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+					case 6:
+						stage_block[block_count++] = new StageBlock(6, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					}
 
@@ -1263,6 +1269,17 @@ void GameMainScene::Tutorial()
 			if (player != nullptr)
 			{
 
+
+				if (stage_block[j]->GetBlockNum() == 6)
+				{
+					
+					if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+					{
+						player->SetMoveStop(true);
+					}
+					
+				}
+
 				if (stage_block[j]->GetBlockNum() == 4)
 				{
 
@@ -1408,7 +1425,7 @@ void GameMainScene::Tutorial()
 			{
 				camera_resetflg = false;
 				//とりあえず仮
-				game_state = PLAY;
+				//game_state = PLAY;
 			}
 		}
 		

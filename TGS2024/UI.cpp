@@ -8,7 +8,9 @@ UI::UI(int set_hp, int set_dyna_num)
 	dyna_img= LoadGraph("images/UI/dynamite.png");
 	LoadDivGraph("images/UI/UIB.png", 2, 2, 1, 128, 128, btnB_img);
 	LoadDivGraph("images/UI/UIY.png", 2, 2, 1, 128, 128, btnY_img);
-	tuto_backimg= LoadGraph("images/Animscene/dynapic.png");
+	tuto_backimg[0] = LoadGraph("images/Animscene/dynapic.png");
+	tuto_backimg[1] = LoadGraph("images/Animscene/kanbananim1.png");
+	tuto_backimg[2] = LoadGraph("images/Animscene/kanbananim2.png");
 	//btnY_img= LoadGraph("images/UI/buttonY.png");
 	player_hp = set_hp;
 	heart_num = set_hp / 10;
@@ -115,6 +117,20 @@ void UI::UpdateTutorial(Player* player)
 		}
 
 		break;
+	case 4:
+		if (alpha_flg == false)
+		{
+			if (alpha > 400)
+			{
+				alpha_flg = true;
+			}
+			else
+			{
+				alpha += 4;
+			}
+		}
+
+		break;
 	}
 }
 
@@ -129,11 +145,16 @@ void UI::DrawTutorial(Player* player) const
 		break;
 	case 2:
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
-		DrawGraph(0, 0, tuto_backimg, TRUE);
+		DrawGraph(0, 0, tuto_backimg[0], TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		break;
 	case 3:
 		DrawRotaGraph(player->GetLocation().x, player->GetLocation().y - 100, 1, 0, btnY_img[btn_num], TRUE, 0);
+		break;
+	case 4:
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+		DrawGraph(0, 0, tuto_backimg[0], TRUE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		break;
 	}
 }

@@ -1054,6 +1054,7 @@ void Player::TutorialAnimUpdate()
 			op_num = 2;
 			if (tuto_cnt++ > 60)
 			{
+				tuto_cnt = 0;
 				tuto_ui_num = 2;
 				walk_stop_flg = false;
 				tuto_num = 3;
@@ -1190,6 +1191,49 @@ void Player::TutorialAnimUpdate()
 				walk_num = walk_abs / 20;
 			}
 		}
+
+
+		if (world.x > 1900)
+		{
+			tuto_num = 5;
+		}
+
+
+		break;
+	case 5:
+		//袋に近づいて開ける
+		if (walk_stop_flg == true)
+		{
+			player_state = NOMAL;
+			tuto_ui_num=5;
+			if (tuto_cnt++ > 60)
+			{
+				walk_stop_flg = false;
+				tuto_num = 6;
+			}
+		}
+		else {
+			location.x += 1;
+			world.x += 1;
+
+			if (player_state == WALK)
+			{
+				if (abs((int)world.x - (int)old_worldx) > 61)
+				{
+					old_worldx = world.x;
+				}
+
+				walk_abs = abs((int)world.x - (int)old_worldx);
+				// 歩行
+				// 5カウントごとに変わる
+				if (walk_abs != 0)
+				{
+					walk_num = walk_abs / 20;
+				}
+			}
+
+		}
+
 
 		break;
 	}

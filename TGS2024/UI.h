@@ -15,7 +15,7 @@ private:
 	int dyna_img;//ダイナマイト残弾
 	int btnB_img[2];
 	int btnY_img[2];
-	int tuto_backimg;
+	int tuto_backimg[4];
 	float alpha;
 	float alpha_flg;
 

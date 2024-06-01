@@ -85,6 +85,11 @@ void MapIo::InputTest(GameMainScene* gamemain)
 	{
 		map_data_num = 5;
 	}
+	//看板:チュートリアル用
+	if (CheckHitKey(KEY_INPUT_6) == TRUE)
+	{
+		map_data_num = 6;
+	}
 
 	now_abs = fabsf(mouse_x - p_localx);
 

@@ -38,6 +38,9 @@ StageBlock::StageBlock(int set_block_num,float set_x, float set_y)
 	case 5:
 		block_img = LoadGraph("images/Stage/fukuro.png");
 		break;
+	case 6:
+		block_img = LoadGraph("images/Stage/kanban.png");
+		break;
 	}
 
 	/*
