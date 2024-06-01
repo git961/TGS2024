@@ -1196,6 +1196,7 @@ void Player::TutorialAnimUpdate()
 		if (world.x > 1900)
 		{
 			tuto_num = 5;
+			walk_stop_flg = false;
 		}
 
 
