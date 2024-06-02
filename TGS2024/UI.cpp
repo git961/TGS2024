@@ -9,10 +9,10 @@ UI::UI(int set_hp, int set_dyna_num)
 	LoadDivGraph("images/UI/UIB.png", 2, 2, 1, 128, 128, btnB_img);
 	LoadDivGraph("images/UI/UIY.png", 2, 2, 1, 128, 128, btnY_img);
 	tuto_backimg[0] = LoadGraph("images/Animscene/dynapic.png");
-	tuto_backimg[1] = LoadGraph("images/Animscene/kanbananim1.png");
-	tuto_backimg[2] = LoadGraph("images/Animscene/kanbananim2.png");
-	tuto_backimg[3] = LoadGraph("images/Animscene/kanbananim3.png");
-	tuto_backimg[4] = LoadGraph("images/Animscene/kanbananim4.png");
+	tuto_backimg[1] = LoadGraph("images/Animscene/kanbananim.png");
+	//tuto_backimg[2] = LoadGraph("images/Animscene/kanbananim2.png");
+	//tuto_backimg[3] = LoadGraph("images/Animscene/kanbananim3.png");
+	//tuto_backimg[4] = LoadGraph("images/Animscene/kanbananim4.png");
 	//btnY_img= LoadGraph("images/UI/buttonY.png");
 	player_hp = set_hp;
 	heart_num = set_hp / 10;
@@ -125,21 +125,19 @@ void UI::UpdateTutorial(Player* player)
 		break;
 	case 4:
 		alpha += 5;
-		i++;
-		switch (i)
-		{
-		case 100:
-			kanban_anim_num = 2;
-			break;
-		case 200:
-			kanban_anim_num = 3;
-
-			break;
-		case 300:
-			kanban_anim_num = 4;
-
-			break;
-		}
+		//i++;
+		//switch (i)
+		//{
+		//case 100:
+		//	kanban_anim_num = 2;
+		//	break;
+		//case 200:
+		//	kanban_anim_num = 3;
+		//	break;
+		//case 300:
+		//	kanban_anim_num = 4;
+		//	break;
+		//}
 
 		break;
 
@@ -165,7 +163,7 @@ void UI::DrawTutorial(Player* player) const
 		break;
 	case 4:
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
-		DrawGraph(0, 0, tuto_backimg[kanban_anim_num], TRUE);
+		DrawGraph(0, 0, tuto_backimg[1], TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		break;
 	}

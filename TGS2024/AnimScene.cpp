@@ -32,6 +32,7 @@ AnimScene::AnimScene()
 	anim_scene = 0;
 	//anim_scene = 6;
 	alpha = 255;
+	alpha2 = 0;
 	exc_flg = false;
 	ase_flg = false;
 	shake_flg = false;
@@ -115,13 +116,15 @@ void AnimScene::Update()
 
 			}
 
-			if (alpha > 450)
+			if (alpha > 400)
 			{
-				p_backimg_num = 3;
+				//p_backimg_num = 3;
+				alpha2++;
 			}
 
-			if (alpha > 600) {
+			if (alpha > 800) {
 				anim_scene = 4;
+				alpha2 = 255;
 				alpha = 255;
 			}
 		}
@@ -133,6 +136,7 @@ void AnimScene::Update()
 
 		if (alpha < 0) {
 			alpha = 0;
+			alpha2 = 0;
 			ase_flg = true;
 			//悲しいse
 			if (play_sad_sound == true)
@@ -252,6 +256,8 @@ void AnimScene::Draw() const
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 		DrawGraph(screen_origin_position.x, 0, p_backimg[p_backimg_num], FALSE);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha2);
+		DrawGraph(screen_origin_position.x, 0, p_backimg[3], FALSE);
 	}
 
 
