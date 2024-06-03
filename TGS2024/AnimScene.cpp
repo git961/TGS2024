@@ -13,7 +13,6 @@ AnimScene::AnimScene()
 	p_backimg[0]=LoadGraph("images/Animscene/startanim1.png", TRUE);
 	p_backimg[1]=LoadGraph("images/Animscene/startanim2.png", TRUE);
 	p_backimg[2]=LoadGraph("images/Animscene/startanim3.png", TRUE);
-	p_backimg[3]=LoadGraph("images/Animscene/startanim4.png", TRUE);
 	p_ase_img= LoadGraph("images/Animscene/fukidashi_ase_white.png", TRUE);
 	p_exc_img= LoadGraph("images/Animscene/fukidashi_exclamation_white.png", TRUE);
 	x = 0;
@@ -119,7 +118,6 @@ void AnimScene::Update()
 			if (alpha > 400)
 			{
 				//p_backimg_num = 3;
-				alpha2++;
 			}
 
 			if (alpha > 800) {
@@ -257,7 +255,6 @@ void AnimScene::Draw() const
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 		DrawGraph(screen_origin_position.x, 0, p_backimg[p_backimg_num], FALSE);
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha2);
-		DrawGraph(screen_origin_position.x, 0, p_backimg[3], FALSE);
 	}
 
 
