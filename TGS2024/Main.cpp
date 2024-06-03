@@ -28,13 +28,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	fp.Reset_fps();
 
 	//ゲームループ
-	while (ProcessMessage() != -1) {
+	while (ProcessMessage() != -1)
+	{
+		//fps固定
+		fp.fpsUpdate();
+
 		SceneManager.Update();
 		SceneManager.Draw();
 		input.InputUpdate();
-
-		//fps固定
-		//fp.fpsUpdate();
 
 		if (input.CheckBtn(XINPUT_BUTTON_BACK) == TRUE) {
 			break;

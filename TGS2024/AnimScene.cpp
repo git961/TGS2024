@@ -252,6 +252,8 @@ void AnimScene::Draw() const
 
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND,0);
 
+
+
 	//DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
 	//DrawFormatString(300, 300, 0xffffff, "alpha%d", alpha);
 	//DrawFormatString(300, 300, 0xffffff, "anim_scene%d", anim_scene);

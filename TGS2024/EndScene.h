@@ -4,6 +4,10 @@
 class EndScene : public AbstractScene
 {
 private:
+	int end_cnt;
+	bool endflg;
+
+	int fps;
 
 public:
 	EndScene();
