@@ -44,7 +44,7 @@ GameMainScene::GameMainScene()
 
 
 	game_state = TUTORIAL;
-	//game_state = PLAY;
+	game_state = PLAY;
 
 	//enemyhit = false;		// 当たっていない
 
@@ -226,6 +226,7 @@ void GameMainScene::Update()
 	case EDITOR:
 
 		mapio->InputTest(this);
+		mapio->SetOriginPosx(screen_origin_position.x);
 
 		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{

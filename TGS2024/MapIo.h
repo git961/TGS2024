@@ -39,11 +39,21 @@ private:
 	float p_worldx;
 
 
+
 	float now_abs;
 
 	int add_x;
 
 	int map_data_num;//0:何もなし 1:マップチップ　2:エネミー 3:ゴール
+
+	float posx;
+		//キャラのlocationとスクリーンの原点を引いてスクリーン座標上の位置に変換
+	//void SetLocalPosition(float set_origin_posx, float set_origin_posy)
+	//{
+	//	//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
+	//	location.x= world.x - set_origin_posx;
+	//	location.y = world.y - set_origin_posy;
+	//};
 
 public:
 	MapIo();
@@ -58,7 +68,7 @@ public:
 	void SetPlayerLocal(float set_localx) { p_localx = set_localx; }
 	void SetPlayerWorld(float set_worldx) { p_worldx = set_worldx; }
 
-
+	void SetOriginPosx(float set_origin_posx) { posx = set_origin_posx; }
 
 };
 
