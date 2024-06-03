@@ -194,7 +194,7 @@ GameMainScene::~GameMainScene()
 void GameMainScene::Update()
 {
 	input.InputUpdate();
-	fp.fpsUpdate();
+	//fp.fpsUpdate();
 
 	// ゲームメインbgmの音量設定
 	if (game_state == POSE)

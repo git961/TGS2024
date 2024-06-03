@@ -156,6 +156,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Dynamite.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="FallingEnemy.cpp" />
     <ClCompile Include="FallingRock.cpp" />
     <ClCompile Include="fps.cpp" />
     <ClCompile Include="GameMainScene.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="AnimScene.h" />
     <ClInclude Include="AttackCheck.h" />
     <ClInclude Include="Define.h" />
+    <ClInclude Include="FallingEnemy.h" />
     <ClInclude Include="FallingRock.h" />
     <ClInclude Include="Gem.h" />
     <ClInclude Include="Dynamite.h" />
