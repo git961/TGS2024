@@ -1252,7 +1252,7 @@ void Player::TutorialAnimUpdate()
 
 		if (tuto_cnt > 100)
 		{
-
+			move_x = 0;
 			start_flg = true;
 		}
 		break;
