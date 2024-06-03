@@ -100,6 +100,9 @@ GameMainScene::GameMainScene()
 				case 6:
 					stage_block[block_count++] = new StageBlock(6, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 					break;
+				case 7:
+					stage_block[block_count++] = new StageBlock(7, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+					break;
 				}
 
 				/*
@@ -260,6 +263,10 @@ void GameMainScene::Update()
 					case 6:
 						stage_block[block_count++] = new StageBlock(6, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
+					case 7:
+						stage_block[block_count++] = new StageBlock(7, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+
 					}
 
 					if (enemy_count < ENEMYMAXNUM)
@@ -960,6 +967,13 @@ void GameMainScene::Draw() const
 	//{
 	//	DrawFormatString(0, 10, 0xffffff, "hit");
 	//}
+	for (int j = 0; j < block_count; j++)
+	{
+		if (stage_block[j] != nullptr)
+		{
+			stage_block[j]->DrawKanban();
+		}
+	}
 	
 	if (game_state == TUTORIAL)
 	{
@@ -976,6 +990,16 @@ void GameMainScene::Draw() const
 				ac->Draw();
 			}
 		}
+
+
+		for (int j = 0; j < block_count; j++)
+		{
+			if (stage_block[j] != nullptr)
+			{
+				stage_block[j]->Draw();
+			}
+		}
+
 		//ダイナマイト描画
 		for (int i = 0; i < DYNAMITE_MAXNUM; i++)
 		{
@@ -987,13 +1011,7 @@ void GameMainScene::Draw() const
 		}
 
 
-		for (int j = 0; j < block_count; j++)
-		{
-			if (stage_block[j] != nullptr)
-			{
-				stage_block[j]->Draw();
-			}
-		}
+
 
 		if (ui != nullptr)
 		{
@@ -1023,13 +1041,6 @@ void GameMainScene::Draw() const
 		}
 	}
 
-	for (int j = 0; j < block_count; j++)
-	{
-		if (stage_block[j] != nullptr)
-		{
-			stage_block[j]->Draw();
-		}
-	}
 
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
@@ -1040,31 +1051,15 @@ void GameMainScene::Draw() const
 		}
 	}
 	
+
+
 	if (roll_gem != nullptr)
 	{
 		// 転がるエネミーの宝石描画処理
 		roll_gem->Draw();
 	}
 
-	if (ui != nullptr)
-	{
-			ui->Draw();
-	}
 
-	if (score != nullptr)
-	{
-		score->Draw();
-	}
-
-	//ダイナマイト描画
-	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
-	{
-		if (dynamite[i] != nullptr)
-		{
-			dynamite[i]->Draw();
-			//DrawFormatString(300 * i , 0, 0xff0000, "tmp_abs: %f", dynamite[i]->GetTmpAbs());
-		}
-	}
 
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
@@ -1083,6 +1078,36 @@ void GameMainScene::Draw() const
 		// 転がるエネミー描画
 		rolling_enemy->Draw();
 	}
+
+	//ステージブロック描画
+	for (int j = 0; j < block_count; j++)
+	{
+		if (stage_block[j] != nullptr)
+		{
+			stage_block[j]->Draw();
+		}
+	}
+
+	//ダイナマイト描画
+	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
+	{
+		if (dynamite[i] != nullptr)
+		{
+			dynamite[i]->Draw();
+			//DrawFormatString(300 * i , 0, 0xff0000, "tmp_abs: %f", dynamite[i]->GetTmpAbs());
+		}
+	}
+
+	if (ui != nullptr)
+	{
+		ui->Draw();
+	}
+
+	if (score != nullptr)
+	{
+		score->Draw();
+	}
+
 
 	}
 #ifdef DEBUG
@@ -1374,6 +1399,28 @@ void GameMainScene::Tutorial()
 				}
 			}
 
+		}
+
+		if (stage_block[j] != nullptr)
+		{
+			stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+			if (player != nullptr)
+			{
+				stage_block[j]->Update();
+
+
+				if (stage_block[j]->GetBlockNum() == 7)
+				{
+
+					if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+					{
+						stage_block[j]->SetUp(true);
+
+					}
+
+				}
+			}
 		}
 	}
 

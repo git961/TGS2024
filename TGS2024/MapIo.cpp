@@ -91,6 +91,12 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		map_data_num = 6;
 	}
 
+	//ヘルメット:チュートリアル用
+	if (CheckHitKey(KEY_INPUT_7) == TRUE)
+	{
+		map_data_num = 7;
+	}
+
 	now_abs = fabsf(mouse_x - p_localx);
 
 	//マウスがプレイヤーの右に居たら

@@ -116,6 +116,9 @@ private:
     bool tuto_anim_dynaflg;//カメラをダイナマイトに追従させる用
     bool start_flg;
 
+    bool helmet_flg;//ヘルメットを落とすフラグ
+    float helmet_down;
+    int helmet_img;//
 
 public:
     Player();

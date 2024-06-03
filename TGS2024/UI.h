@@ -23,6 +23,7 @@ private:
 	int i;
 
 	float x, y;
+
 	int player_hp;
 	int heart_num;//表示するhpの数
 	int dyna_num;//表示するダイナマイトの数

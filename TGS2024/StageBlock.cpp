@@ -11,7 +11,6 @@ StageBlock::StageBlock(int set_block_num,float set_x, float set_y)
 	location.x = set_x;
 	location.y = set_y;
 	block_num = set_block_num;
-
 	//if (block_num == 1) {
 	//	block_img = LoadGraph("images/Stage/block.png");
 	//}
@@ -39,7 +38,13 @@ StageBlock::StageBlock(int set_block_num,float set_x, float set_y)
 		block_img = LoadGraph("images/Stage/fukuro.png");
 		break;
 	case 6:
-		block_img = LoadGraph("images/Stage/kanban.png");
+		block_img = LoadGraph("images/Stage/kanban02.png");
+		break;
+	case 7:
+		block_img = LoadGraph("images/UI/helmet.png");
+		angle = 0;
+		is_up = false;
+		hely = location.y;
 		break;
 	}
 
@@ -99,20 +104,41 @@ void StageBlock::Update()
 			world.x += shakex;
 		}
 	}
-		
-	
+
+	if (is_up==true)
+	{
+		hely -= 10;
+		angle += 0.3;
+
+	}
 }
 
 void StageBlock::Draw() const
 {
 	//DrawBox(world.x, world.y, width, world.x + 20, world.y + 20,TRUE);
 	//DrawBox(location.x-BLOCK_HALFSIZE, location.y-BLOCK_HALFSIZE, location.x + BLOCK_HALFSIZE, location.y + BLOCK_HALFSIZE,0xffffff,TRUE);
-	DrawRotaGraph(location.x, location.y, 1, 0,block_img, TRUE, 0);
 
+	if (block_num == 7)
+	{
+		DrawRotaGraph(location.x, hely + 10, 1, angle, block_img, TRUE, 0);
+	}
+	else if (block_num != 6)
+	{
+		DrawRotaGraph(location.x, location.y, 1, 0, block_img, TRUE, 0);
+	}
+	
 
 	//DrawCircle(box_vertex.upper_leftx, box_vertex.upper_lefty, 2, 0xff00ff, TRUE);
 	//DrawCircle(box_vertex.lower_leftx, box_vertex.lower_lefty, 2, 0xff00ff, TRUE);
 	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);			// 中心座標
 
 
+}
+
+void StageBlock::DrawKanban() const
+{
+	if (block_num == 6)
+	{
+		DrawRotaGraph(location.x, location.y - 60, 1, 0, block_img, TRUE, 0);
+	}
 }

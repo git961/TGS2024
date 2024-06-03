@@ -19,6 +19,7 @@ UI::UI(int set_hp, int set_dyna_num)
 	dyna_num=set_dyna_num;
 	x = 100;
 	y = 40;
+
 	btn_num = 0;
 	btn_cnt = 0;
 	alpha = 0;
@@ -124,7 +125,7 @@ void UI::UpdateTutorial(Player* player)
 
 		break;
 	case 4:
-		alpha += 5;
+		//alpha += 5;
 		//i++;
 		//switch (i)
 		//{
@@ -162,9 +163,13 @@ void UI::DrawTutorial(Player* player) const
 		DrawRotaGraph(player->GetLocation().x, player->GetLocation().y - 100, 1, 0, btnY_img[btn_num], TRUE, 0);
 		break;
 	case 4:
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
-		DrawGraph(0, 0, tuto_backimg[1], TRUE);
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		//SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+		//DrawGraph(0, 0, tuto_backimg[1], TRUE);
+		//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 		break;
+
 	}
+
+
 }

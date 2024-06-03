@@ -7,7 +7,7 @@ Enemy::Enemy(float set_x, float set_y)
 	location.y = set_y;
 
 	world.x = set_x;
-	world.y = set_y + 8.0f;
+	world.y = set_y;
 
 	width = 45.0f;
 	height = 64.0f;
