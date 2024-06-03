@@ -8,6 +8,7 @@ class Input
 private:
 
 public:
+
 	XINPUT_STATE getkey;
 
 	int Btnflg[BUTTON_NUMMAX] = { 0 };
@@ -16,8 +17,6 @@ public:
 	int oldBtn[BUTTON_NUMMAX] = { 0 };
 	int Btnnum = 0;
 	int LongBtnnum = 0;
-
-	
 
 	//単押しアップデート
 	void InputUpdate() {
@@ -39,15 +38,22 @@ public:
 				Btnnum = i;
 			}
 
-			//左十字キーチェック
+			if (Btnflg[0] == 1) {
+				//上十字キーチェック
+				LongBtnnum = 0;
+			}
+			if (Btnflg[1] == 1) {
+				//下十字キーチェック
+				LongBtnnum = 1;
+			}
 			if (Btnflg[2] == 1) {
+				//左十字キーチェック
 				LongBtnnum = 2;
 			}
-			//右十字キーチェック
 			if (Btnflg[3] == 1) {
+				//右十字キーチェック
 				LongBtnnum = 3;
 			}
-
 		}
 
 	}
@@ -71,7 +77,7 @@ public:
 	}
 
 	//押し続けている間用
-	int LongPressBtn(int getbtn)
+	int LongPressBtn(int getbtn)const
 	{
 		if (LongPressBtnflg[LongBtnnum] == 1) {
 			//押されたボタンの番号==受け取った値だったら
@@ -79,12 +85,13 @@ public:
 				return TRUE;
 			}
 		}
-
+		return FALSE;
 	}
 
 	int GetPadThumbLX() { return getkey.ThumbLX; }
-
+	int GetPadThumbLY()const { return getkey.ThumbLY; }
+	int GetLongButtonNum() const { return LongBtnnum; }
+	int GetLongPressBtnflg() const { return LongPressBtnflg[LongBtnnum]; }
+	int GetBtnnum() const { return Btnnum; }
 
 };
-
-

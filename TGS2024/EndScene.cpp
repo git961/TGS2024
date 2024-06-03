@@ -17,6 +17,8 @@ void EndScene::Update()
 
 void EndScene::Draw() const
 {
+	SetFontSize(20);
+	DrawFormatString(10, 10, 0xffffff, "End");
 
 }
 

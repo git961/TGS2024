@@ -120,7 +120,7 @@
     <ClCompile Include="TitleScene.cpp">
       <Filter>ソース ファイル\SceneFile</Filter>
     </ClCompile>
-    <ClCompile Include="HelpScene.cpp">
+    <ClCompile Include="EndCreditsScene.cpp">
       <Filter>ソース ファイル\SceneFile</Filter>
     </ClCompile>
     <ClCompile Include="EndScene.cpp">
@@ -203,7 +203,7 @@
     <ClInclude Include="TitleScene.h">
       <Filter>ヘッダー ファイル\SceneFile</Filter>
     </ClInclude>
-    <ClInclude Include="HelpScene.h">
+    <ClInclude Include="EndCreditsScene.h">
       <Filter>ヘッダー ファイル\SceneFile</Filter>
     </ClInclude>
     <ClInclude Include="EndScene.h">

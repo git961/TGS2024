@@ -1,6 +1,6 @@
 #pragma once
 #include "AbstractScene.h"
-#include "TitleScene.h"
+#include "EndCreditsScene.h"
 
 class GameClearScene : public AbstractScene
 {

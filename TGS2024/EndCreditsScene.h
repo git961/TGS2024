@@ -3,13 +3,13 @@
 #include "TitleScene.h"
 #include "AnimScene.h"
 
-class HelpScene : public AbstractScene
+class EndCreditsScene : public AbstractScene
 {
 private:
 
 public:
-	HelpScene();
-	~HelpScene();
+	EndCreditsScene();
+	~EndCreditsScene();
 
 	void Update() override;
 	void Draw() const override;

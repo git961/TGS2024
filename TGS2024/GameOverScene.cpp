@@ -17,6 +17,10 @@ void GameOverScene::Update()
 
 void GameOverScene::Draw() const
 {
+#ifdef DEBUG
+	SetFontSize(20);
+	DrawFormatString(10, 10, 0xffffff, "GameOver");
+#endif // DEBUG
 
 }
 
