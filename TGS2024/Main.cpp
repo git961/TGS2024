@@ -5,7 +5,7 @@
 #include "SceneManager.h"
 #include "GameMainScene.h"
 #include "AnimScene.h"
-
+#include "TitleScene.h"
 
 // プログラムは WinMain から始まります
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int

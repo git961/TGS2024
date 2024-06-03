@@ -13,6 +13,8 @@
 #include "UI.h"
 #include "Dynamite.h"
 #include <math.h>
+#include "GameClearScene.h"
+#include "GameOverScene.h"
 
 class Player;
 class Enemy;

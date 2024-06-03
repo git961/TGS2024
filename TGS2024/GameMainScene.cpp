@@ -1439,5 +1439,10 @@ AbstractScene* GameMainScene::Change()
 	//if (change == TRUE) {
 	//	return new GameOverScene;
 	//}
+
+	// プレイヤーの残機が0になったらゲームオーバーに移動
+	//return new GameOverScene;
+	//return new GameClearScene;
+
 	return this;
 }
