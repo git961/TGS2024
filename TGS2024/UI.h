@@ -11,7 +11,6 @@ private:
 	
 	int heart_img;//Hp画像
 	int p_img;
-	int score_img;//スコアアイコン画像
 	int dyna_img;//ダイナマイト残弾
 	int btnB_img[2];
 	int btnY_img[2];
