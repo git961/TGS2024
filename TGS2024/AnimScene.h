@@ -32,6 +32,7 @@ private:
     int shake_x1;
     int shake_x2;
     float alpha;
+    float alpha2;
 
     int anim_scene;
 

@@ -11,6 +11,9 @@ Player::Player()
 	player_img[3] = LoadGraph("images/Player/bagopen2.png");
 	player_img[4] = LoadGraph("images/Player/plookup.png");
 	player_img[5] = LoadGraph("images/Player/wakeup.png");
+	player_img[6] = LoadGraph("images/Player/player_tutoend1.png");
+	player_img[7] = LoadGraph("images/Player/player_tutoend2.png");
+	helmet_img= LoadGraph("images/Player/p_helmet.png");
 	LoadDivGraph("images/Player/player_walk.png", 4, 4, 1, 170, 170, player_walk_img);
 	LoadDivGraph("images/Player/player_ase.png", 4, 4, 1, 170, 170, player_ase_img);
 	LoadDivGraph("images/Player/p_death.png", 4, 4, 1, 170, 170, player_death_img);
@@ -18,6 +21,8 @@ Player::Player()
 	LoadDivGraph("images/Player/throw.png", 3, 3, 1, 170, 170, player_throw_img);
 	LoadDivGraph("images/Player/pickaxe.png", 4, 4, 1, 170, 170, pickaxe_img);
 	LoadDivGraph("images/Player/soil_effect.png", 2, 2, 1, 170, 170, soil_effect);
+
+
 
 	atk_sound = LoadSoundMem("sounds/Attack.mp3");
 	op_run_sound = LoadSoundMem("sounds/se/player/run.mp3");
@@ -101,6 +106,7 @@ Player::Player()
 	rock_break_flg = false;
 	rock_cnt = 0;
 	hit_rock_flg = false;
+	p_nomal_num = 0;
 
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(200, atk_sound);
@@ -112,6 +118,10 @@ Player::Player()
 
 	walk_stop_flg = false;
 	tuto_anim_dynaflg = false;
+	start_flg = false;
+
+	helmet_flg = false;
+	helmet_down = -1000;
 }
 
 Player::~Player()
@@ -388,7 +398,7 @@ void Player::Draw() const
 		{
 
 		case NOMAL:
-			DrawRotaGraph(location.x, location.y - img_down, 1, 0, player_img[0], TRUE, direction);
+			DrawRotaGraph(location.x, location.y - img_down, 1, 0, player_img[p_nomal_num], TRUE, direction);
 			//DrawFormatString(location.x, location.y - 80, 0x000000, "nomal");
 			break;
 		case ATTACK:
@@ -448,6 +458,10 @@ void Player::Draw() const
 		//	DrawFormatString(location.x, location.y-20, 0xffffff, "PUSH:B!!!");
 
 		//}
+		if (helmet_flg==true)
+		{
+			DrawRotaGraph(location.x, location.y +helmet_down, 1, 0,helmet_img, TRUE, direction);
+		}
 
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -987,7 +1001,7 @@ void Player::TutorialAnimUpdate()
 	break;
 	case 1:
 
-		if (world.x > 1100)
+		if (world.x > 1200)
 		{
 			tuto_num = 2;
 		}
@@ -1054,6 +1068,7 @@ void Player::TutorialAnimUpdate()
 			op_num = 2;
 			if (tuto_cnt++ > 60)
 			{
+				tuto_cnt = 0;
 				tuto_ui_num = 2;
 				walk_stop_flg = false;
 				tuto_num = 3;
@@ -1191,6 +1206,67 @@ void Player::TutorialAnimUpdate()
 			}
 		}
 
+
+		if (world.x > 1950)
+		{
+			tuto_num = 5;
+			walk_stop_flg = false;
+		}
+
+
+		break;
+	case 5:
+
+		if (walk_stop_flg == true)
+		{
+			helmet_flg = true;
+			player_state = PANIM;
+			op_num = 4;
+			helmet_down += 4;
+			if (helmet_down > -20)
+			{
+				tuto_num = 6;
+				player_state = NOMAL;
+			}
+		}
+		else {
+			location.x += 4;
+			world.x += 4;
+
+			if (player_state == WALK)
+			{
+				if (abs((int)world.x - (int)old_worldx) > 61)
+				{
+					old_worldx = world.x;
+				}
+
+				walk_abs = abs((int)world.x - (int)old_worldx);
+				// 歩行
+				// 5カウントごとに変わる
+				if (walk_abs != 0)
+				{
+					walk_num = walk_abs / 20;
+				}
+			}
+
+		}
+
+		break;
+	case 6:
+		//チュートリアル終anim
+		if (tuto_cnt++>60)
+		{
+			p_nomal_num = 7;
+		}else if(tuto_cnt>30) {
+			helmet_flg = false;
+			p_nomal_num = 6;
+		}
+
+		if (tuto_cnt > 100)
+		{
+			move_x = 0;
+			start_flg = true;
+		}
 		break;
 	}
 

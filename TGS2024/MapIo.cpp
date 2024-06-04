@@ -11,6 +11,8 @@ MapIo::MapIo()
 	p_localx = 0;
 	p_worldx = 0;
 	world_mouse_x = 0;
+
+
 }
 
 MapIo::~MapIo()
@@ -84,6 +86,17 @@ void MapIo::InputTest(GameMainScene* gamemain)
 	if (CheckHitKey(KEY_INPUT_5) == TRUE)
 	{
 		map_data_num = 5;
+	}
+	//看板:チュートリアル用
+	if (CheckHitKey(KEY_INPUT_6) == TRUE)
+	{
+		map_data_num = 6;
+	}
+
+	//ヘルメット:チュートリアル用
+	if (CheckHitKey(KEY_INPUT_7) == TRUE)
+	{
+		map_data_num = 7;
 	}
 
 	now_abs = fabsf(mouse_x - p_localx);
@@ -179,19 +192,19 @@ void MapIo::Draw() const
 		{
 			if (map_array[i][j] == 1)
 			{
-				DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
+				DrawBox(j * BLOCKSIZE-posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - posx, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
 			}
 			else if (map_array[i][j] == 2)
 			{
-				DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0x000000, FALSE);
+				DrawBox(j * BLOCKSIZE - posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - posx, i * BLOCKSIZE + BLOCKSIZE, 0xfff000, FALSE);
 			}
 			else if (map_array[i][j] == 3)
 			{
-				DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0xffff00, FALSE);
+				DrawBox(j * BLOCKSIZE - posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - posx, i * BLOCKSIZE + BLOCKSIZE, 0xffff00, FALSE);
 			}
 			else if (map_array[i][j] == 4)
 			{
-				DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0x00fff0, FALSE);
+				DrawBox(j * BLOCKSIZE - posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - posx, i * BLOCKSIZE + BLOCKSIZE, 0x00fff0, FALSE);
 			}
 		}
 	}

@@ -41,6 +41,7 @@ private:
 
     float img_down;//画像の表示位置を下げる用
     int p_imgnum;//プレイヤーの画像番号切り替え用
+    int p_nomal_num;
 
     int p_atk_imgnum;//攻撃画像切り替え用
 
@@ -113,7 +114,11 @@ private:
     int tuto_cnt;
     bool walk_stop_flg;
     bool tuto_anim_dynaflg;//カメラをダイナマイトに追従させる用
+    bool start_flg;
 
+    bool helmet_flg;//ヘルメットを落とすフラグ
+    float helmet_down;
+    int helmet_img;//
 
 public:
     Player();
@@ -169,5 +174,6 @@ public:
     int GetTutoUiNum() { return tuto_ui_num; }
     void SetMoveStop(bool set_flg) { walk_stop_flg = set_flg; }
     bool GetTutoAnimDynaFlg() { return tuto_anim_dynaflg; }
+    bool GetStartFlg() { return start_flg; }
 
 };

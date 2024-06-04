@@ -40,6 +40,10 @@ private:
 	int shake_cnt;
 	bool shake_flg;
 
+	float helx, hely;//helmetのｘｙ
+	float angle;
+	bool is_up;
+
 public:
 	int direction;
 
@@ -48,12 +52,13 @@ public:
 
 	void Update();
 	void Draw() const;
+	void DrawKanban() const;
 	int GetBlockNum() { return block_num; }
 
 	void SetDamage(float damage) { hp = hp - damage; }
 	void SetShakeFlg(bool set_flg) { shake_flg=set_flg; }
 	float GetHp() { return hp; }
-	
+	void SetUp(bool set_flg) { is_up = set_flg; }
 
 	//ブロックのlocationとスクリーンの原点を引いてスクリーン座標上の位置に変換
 	//void SetBlockLocalPosition(float set_origin_posx, float set_origin_posy)

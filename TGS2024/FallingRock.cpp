@@ -147,7 +147,7 @@ void FallingRock::Draw() const
 		DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0, rock_effect_img[rock_img_num], TRUE, FALSE);
 	}
 
-	DrawFormatString(300, 180, 0xffffff, "camerax: %f", location.x);
-	DrawFormatString(300, 200, 0xffffff, "cameray: %f", location.y);
+	//DrawFormatString(300, 180, 0xffffff, "camerax: %f", location.x);
+	//DrawFormatString(300, 200, 0xffffff, "cameray: %f", location.y);
 
 }

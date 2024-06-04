@@ -14,11 +14,15 @@ private:
 	int dyna_img;//ダイナマイト残弾
 	int btnB_img[2];
 	int btnY_img[2];
-	int tuto_backimg;
+	int tuto_backimg[10];
 	float alpha;
-	float alpha_flg;
+	float alpha2;
+	bool alpha_flg;
+	int kanban_anim_num;
+	int i;
 
 	float x, y;
+
 	int player_hp;
 	int heart_num;//表示するhpの数
 	int dyna_num;//表示するダイナマイトの数
