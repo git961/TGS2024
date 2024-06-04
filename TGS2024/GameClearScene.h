@@ -5,7 +5,7 @@
 class GameClearScene : public AbstractScene
 {
 private:
-
+	int change_cnt;		// シーン切り替えできるようになるまでのカウント
 public:
 	GameClearScene();
 	~GameClearScene();

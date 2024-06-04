@@ -112,6 +112,8 @@ private:
     //チュートリアル用
     bool play_start_flg;//アニメーション終
 
+    bool clear_flg;         // クリアしたか？
+    bool gameover_flg;         // ゲームオーバーになったか？
     int main_bgm;
     int volume;
 

@@ -12,6 +12,8 @@ TitleScene::TitleScene()
 	scene_change_cnt = 0;
 	scene_change_flg = false;
 
+	change_cnt = 180;
+
 	anim_cnt = 0;
 
 	// 画像読込
@@ -28,7 +30,12 @@ void TitleScene::Update()
 {
 	input.InputUpdate();
 
-	if (cursor_move_interval < 40)
+	if (change_cnt > 0)
+	{
+		change_cnt--;
+	}
+
+	if (cursor_move_interval < 15)
 	{
 		cursor_move_interval++;
 	}
@@ -62,22 +69,25 @@ void TitleScene::Update()
 		}
 	}
 
-	if (push_b_flg == false)
+	if (change_cnt <= 0)
 	{
-		// Bボタンで決定
-		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+		if (push_b_flg == false)
 		{
-			push_b_flg = true;
+			// Bボタンで決定
+			if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+			{
+				push_b_flg = true;
+			}
 		}
-	}
-	else
-	{
-		scene_change_cnt++;
-
-		if (scene_change_cnt >= 180)
+		else
 		{
-			// 180fでシーン切り替え
-			scene_change_flg = true;
+			scene_change_cnt++;
+
+			if (scene_change_cnt >= 180)
+			{
+				// 180fでシーン切り替え
+				scene_change_flg = true;
+			}
 		}
 	}
 }
@@ -88,6 +98,7 @@ void TitleScene::Draw() const
 	SetFontSize(20);
 	DrawFormatString(10, 10, 0xffffff, "Title");
 	DrawFormatString(10, 30, 0xffffff, "B: decision");
+	DrawFormatString(10, 50, 0xffffff, "draw_cnt: %d", change_cnt);
 
 	SetFontSize(40);
 	DrawFormatString(150, 130, 0xffffff, "Start");

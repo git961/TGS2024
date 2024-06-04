@@ -160,6 +160,9 @@ GameMainScene::GameMainScene()
 	
 	play_start_flg = false;
 
+	clear_flg = false;
+	gameover_flg = false;
+
 	// サウンド読込
 	main_bgm = LoadSoundMem("sounds/bgm/gamemain.mp3");
 	volume = 150;
@@ -304,7 +307,7 @@ void GameMainScene::Update()
 		}
 		break;
 	case GOAL:
-
+		clear_flg = true;
 		break;
 	case PLAY:
 		if (CheckHitKey(KEY_INPUT_SPACE) == 1)
@@ -748,6 +751,8 @@ void GameMainScene::Update()
 					delete player;
 					player_damage_once = false;
 					player = nullptr;
+					// ゲームオーバー判定
+					gameover_flg = true;
 					player = new Player();
 				}
 			}
@@ -1506,13 +1511,17 @@ void GameMainScene::Tutorial()
 
 AbstractScene* GameMainScene::Change()
 {
-	//if (change == TRUE) {
-	//	return new GameOverScene;
-	//}
+	if (gameover_flg == true)
+	{
+		// プレイヤーの残機が0になったら
+		return new GameOverScene;
+	}
 
-	// プレイヤーの残機が0になったらゲームオーバーに移動
-	//return new GameOverScene;
-	//return new GameClearScene;
+	if (clear_flg == true)
+	{
+		// ゴールに触れたら
+		return new GameClearScene;
+	}
 
 	return this;
 }

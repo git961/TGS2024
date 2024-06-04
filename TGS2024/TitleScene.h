@@ -22,6 +22,8 @@ private:
 	int scene_change_cnt;
 	bool scene_change_flg;			//treu: 切り替える
 
+	int change_cnt;		// シーン切り替えできるようになるまでのカウント
+
 	int anim_cnt;
 
 	//int back_img;			// 背景画像

@@ -5,6 +5,7 @@
 class GameOverScene : public AbstractScene
 {
 private:
+	int change_cnt;		// シーン切り替えできるようになるまでのカウント
 
 public:
 	GameOverScene();
