@@ -873,56 +873,6 @@ void GameMainScene::Update()
 								rock_damage_once = false;
 							}
 
-							//ダメージを一回だけ与える
-							if (rock_damage_once == false)
-							{
-								//つるはしとエネミーと当たってるかのチェック
-								//if (ac->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true) {
-								for (int i = 0; i < DYNAMITE_MAXNUM; i++)
-								{
-
-									if (dynamite[i] != nullptr)
-									{
-										//ダイナマイトが岩と当たってるかのチェック
-										if (dynamite[i]->GetDynamite() == false)
-										{
-											if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-											{
-												dynamite[i]->SetDynamite(true);
-
-											}
-										}
-										//ダイナマイトの爆発とエネミーの当たり判定
-										if (dynamite[i]->Getdamage_flg() == true)
-										{
-											if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-											{
-												dynamite[i]->SetEnemyX(stage_block[j]->GetWorldLocation().x);
-												dynamite[i]->DamageCalculation();
-												stage_block[j]->SetDamage(30);
-												stage_block[j]->SetShakeFlg(true);
-
-
-
-												rock_damage_once = true;
-
-											}
-										}
-									}
-
-									if (stage_block[j] != nullptr)
-									{
-										if (stage_block[j]->GetHp() <= 0)
-										{
-											stage_block[j] = nullptr;
-										}
-									}
-
-
-								}
-
-							}
-
 						}
 					}
 
@@ -963,6 +913,58 @@ void GameMainScene::Update()
 					}
 				}
 				*/	
+			}
+
+			//ダイナマイトと岩ブロックの当たり判定
+			for (int j = 0; j < block_count; j++)
+			{
+				if (stage_block[j] != nullptr)
+				{
+					if (stage_block[j]->GetBlockNum() == 4)
+					{
+						//ダメージを一回だけ与える
+						if (rock_damage_once == false)
+						{
+							for (int i = 0; i < DYNAMITE_MAXNUM; i++)
+							{
+								if (dynamite[i] != nullptr)
+								{
+									//ダイナマイトが岩と当たってるかのチェック
+									if (dynamite[i]->GetDynamite() == false&&stage_block[j]!=nullptr)
+									{
+										if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+										{
+											dynamite[i]->SetDynamite(true);
+
+										}
+									}
+									//ダイナマイトの爆発とエネミーの当たり判定
+									if (dynamite[i]->Getdamage_flg() == true)
+									{
+										if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+										{
+											dynamite[i]->SetEnemyX(stage_block[j]->GetWorldLocation().x);
+											dynamite[i]->DamageCalculation();
+											stage_block[j]->SetDamage(30);
+											stage_block[j]->SetShakeFlg(true);
+
+											rock_damage_once = true;
+										}
+									}
+								}
+
+								if (stage_block[j] != nullptr)
+								{
+									if (stage_block[j]->GetHp() <= 0)
+									{
+										stage_block[j] = nullptr;
+									}
+								}
+
+							}
+						}
+					}
+				}
 			}
 
 			//エネミーと岩ブロックの当たり判定
