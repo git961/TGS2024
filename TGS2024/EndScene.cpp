@@ -8,7 +8,7 @@ EndScene::EndScene()
 	volume = 150;
 
 	// サウンド読込
-	end_bgm = LoadSoundMem("sounds/bgm/gamemain.mp3");
+	end_bgm = LoadSoundMem("sounds/se/scene/end02.mp3");
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(volume, end_bgm);
 
@@ -26,7 +26,7 @@ void EndScene::Update()
 	// エンドbgmループ再生
 	if (CheckSoundMem(end_bgm) == FALSE)
 	{
-		PlaySoundMem(end_bgm, DX_PLAYTYPE_LOOP);
+		PlaySoundMem(end_bgm, DX_PLAYTYPE_BACK);
 	}
 
 	if (end_cnt != 0)

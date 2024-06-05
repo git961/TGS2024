@@ -221,7 +221,7 @@ void GameMainScene::Update()
 	// ゲームメインbgmループ再生
 	if (CheckSoundMem(main_bgm) == FALSE)
 	{
-		PlaySoundMem(main_bgm, DX_PLAYTYPE_LOOP);
+		//PlaySoundMem(main_bgm, DX_PLAYTYPE_LOOP);
 	}
 
 	switch (game_state)
@@ -546,10 +546,17 @@ void GameMainScene::Update()
 			{
 				if (player != nullptr && walk_gem[i] != nullptr)
 				{
-					if (player->HitCheck(walk_gem[i]->GetWorldLocation(), walk_gem[i]->GetWidth(), walk_gem[i]->GetHeight()) == true)
+					if (walk_gem[i]->GetPlaySoundFlg() == true)
 					{
-						walk_gem[i]->PlayGetSound();
-						score->SetScore(walk_gem[i]->GetGemScore());
+						if (player->HitCheck(walk_gem[i]->GetWorldLocation(), walk_gem[i]->GetWidth(), walk_gem[i]->GetHeight()) == true)
+						{
+							walk_gem[i]->PlayGetSound();
+							score->SetScore(walk_gem[i]->GetGemScore());
+						}
+					}
+
+					if (walk_gem[i]->GetDeleteFlg() == true)
+					{
 						delete walk_gem[i];
 						walk_gem[i] = nullptr;
 					}
@@ -1053,7 +1060,10 @@ void GameMainScene::Draw() const
 		// 歩行エネミーの宝石描画処理
 		if (walk_gem[i] != nullptr)
 		{
-			walk_gem[i]->Draw();
+			if (walk_gem[i]->GetPlaySoundFlg() == true)
+			{
+				walk_gem[i]->Draw();
+			}
 		}
 	}
 	

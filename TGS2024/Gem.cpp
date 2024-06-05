@@ -19,6 +19,7 @@ Gem::Gem(World set_world, int set_score)
 	drop_sound = LoadSoundMem("sounds/se/gem/drop.mp3");
 	//sparkling_sound = LoadSoundMem("sounds/se/gem/sparkling.mp3");
 	play_drop_sound = true;
+	play_get_sound = true;
 
 	gem_score = set_score;
 	count = 0;
@@ -30,7 +31,7 @@ Gem::Gem(World set_world, int set_score)
 
 	just_generated = true;
 	from_rolling_enemy = false;
-
+	is_delete = false;
 	//is_deete = false;
 
 	// サウンドの音量設定
@@ -126,6 +127,11 @@ void Gem::Update(GameMainScene* gamemain)
 		}
 	}
 
+	if (play_get_sound == false && CheckSoundMem(get_gem_sound) == FALSE)
+	{
+		// seが鳴り終わったら削除
+		is_delete = true;
+	}
 
 	//if (move_x_timer < 30)
 	//{
@@ -158,9 +164,10 @@ void Gem::PlayGetSound()
 {
 	//is_deete = true;
 
-	if (CheckSoundMem(get_gem_sound) == FALSE)
+	if (play_get_sound == true && CheckSoundMem(get_gem_sound) == FALSE)
 	{
 		// ゲットse
 		PlaySoundMem(get_gem_sound, DX_PLAYTYPE_BACK);
+		play_get_sound = false;
 	}
 }

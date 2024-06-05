@@ -12,6 +12,8 @@ private:
 	int volume;
 	int end_bgm;
 
+	bool se_flg;
+
 public:
 	EndScene();
 	~EndScene();
