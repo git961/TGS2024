@@ -68,6 +68,7 @@ private:
     float hit_enemy_x;
 
     bool fall_flg;//敵が落ちてくるフラグ
+    bool fall_end_flg;//敵が地面に付いたらtrue
 
 public:
     Enemy(float set_x, float set_y,bool set_direction);
@@ -109,5 +110,6 @@ public:
     bool GetDeleteFlg() const { return is_delete; }           // 削除フラグの取得
     bool GetIsKnockBack() const { return is_knock_back; }     // ノックバックフラグの取得
     bool GetGemDropFlg() const { return gem_drop; }
+    bool GetFallEndFlg()const { return fall_end_flg; }
 };
 

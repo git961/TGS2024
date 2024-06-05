@@ -61,12 +61,11 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 	//{
 	//	direction = false;
 	//}
-	//// 進行方法が左ならx座標と移動方向が変わる
-	//if (direction == false)
-	//{
-	//	x = 1260;
-	//	move_x *= -1;
-	//}
+	// 進行方法が左ならx座標と移動方向が変わる
+	if (direction == true)
+	{
+		move_x *= -1;
+	}
 
 	star.x = 0.0f;
 	star.y = 0.0f;
@@ -121,6 +120,17 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 	ChangeVolumeSoundMem(150, knock_back_sount);
 	ChangeVolumeSoundMem(255, death_sount);
 	ground_flg = false;
+
+	if (direction == true)
+	{
+		fall_end_flg = false;
+	}
+	else {
+
+		fall_end_flg = true;
+	}
+	fall_flg = false;
+
 }
 
 Enemy::~Enemy()
@@ -202,9 +212,14 @@ void Enemy::Update(GameMainScene* gamemain)
 
 			SetVertex();
 
-			// 移動処理
-			Move();
-
+			if (fall_end_flg == false) {
+				Fall();
+			}
+			else 
+			{
+				// 移動処理
+				Move();
+			}
 			// 歩行アニメーション
 			WalkingAnimation();
 
@@ -258,7 +273,8 @@ void Enemy::Draw() const
 	//DrawFormatString(location.x - 100, 170, 0xffffff, "+: %f", start_x + mvx);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "k: %d", is_knock_back);
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "s: %d", is_knock_back_start);
-	DrawFormatString(location.x - 100, 50, 0xffffff, "worldy;%f", world.y);
+	DrawFormatString(location.x - 100, 50, 0xffffff, "worldy;%f", world.x);
+	DrawFormatString(location.x - 100, 80, 0xffffff, "pworldy;%f", player_x);
 	//DrawFormatString(100, 20, 0xffffff, "opacity: %d", opacity);
 	//DrawBoxAA(location.x - width / 2, location.y - height / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);				// 当たり判定のボックス
 #endif // DEBUG
@@ -320,6 +336,7 @@ void Enemy::Draw() const
 // 移動処理
 void Enemy::Move()
 {
+
 	// 端に来たら跳ね返る
 	if (world.x + width / 2 > FIELD_WIDTH || world.x - width / 2 < 0)
 	{
@@ -347,8 +364,10 @@ void Enemy::Move()
 		//speed = 2.0f;
 	}
 
-	// 移動処理
+
+	//移動処理
 	world.x -= speed * move_x;
+
 }
 
 // 進行方向の変更
@@ -671,5 +690,19 @@ void Enemy::Damege(int damege)
 
 void Enemy::Fall()
 {
-	world.y+=1;
+	
+	if (player_x > world.x+80)
+	{
+		fall_flg = true;
+	}
+
+	if (fall_flg == true)
+	{
+		world.y += 4;
+		if (world.y > 600)
+		{
+			fall_end_flg = true;
+		}
+	}
+
 }

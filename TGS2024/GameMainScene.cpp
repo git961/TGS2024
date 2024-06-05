@@ -44,7 +44,7 @@ GameMainScene::GameMainScene()
 
 
 	game_state = TUTORIAL;
-	//game_state = PLAY;
+	game_state = PLAY;
 
 	//enemyhit = false;		// 当たっていない
 
@@ -387,19 +387,7 @@ void GameMainScene::Update()
 				}
 
 
-				//プレイヤーの攻撃
-				if (ac != nullptr) {
-					ac->Update(this, player);
-				}
-
-				//プレイヤーの死亡処理
-				if (player->GetDeathFlg() == true)
-				{
-					delete player;
-					player_damage_once = false;
-					player = nullptr;
-					player = new Player();
-				}
+	
 			}
 		}
 
@@ -409,7 +397,7 @@ void GameMainScene::Update()
 				if (dynamite[i] != nullptr)
 				{
 					for (int j = 0; j < ENEMYMAXNUM; j++) {
-						if (enemy[j] != nullptr) {
+						if (enemy[j] != nullptr&&enemy[j]->GetHp() > 0) {
 							//ダイナマイトとエネミーと当たってるかのチェック
 							if (dynamite[i]->GetDynamite() == false)
 							{
@@ -419,50 +407,50 @@ void GameMainScene::Update()
 
 								}
 							}
-
-							//ダイナマイトの爆発とエネミーの当たり判定
-							if (dynamite[i]->Getdamage_flg() == true)
-							{
-								if (dynamite[i]->HitCheck(enemy[j]->GetWorldLocation(), enemy[j]->GetWidth(), enemy[j]->GetHeight()) == true)
+								//ダイナマイトの爆発とエネミーの当たり判定
+								if (dynamite[i]->Getdamage_flg() == true)
 								{
-									dynamite[i]->SetEnemyX(enemy[j]->GetWorldLocation().x);
-									dynamite[i]->DamageCalculation();
+									if (dynamite[i]->HitCheck(enemy[j]->GetWorldLocation(), enemy[j]->GetWidth(), enemy[j]->GetHeight()) == true)
+									{
+										dynamite[i]->SetEnemyX(enemy[j]->GetWorldLocation().x);
+										dynamite[i]->DamageCalculation();
 
-									enemy[j]->SetKnockBackStartFlg(true);
-									enemy[j]->SetStarDrawFlg(true);
-									enemy[j]->SetPlayerWorldLocation(player->GetWorldLocation());
-									enemy[j]->Damege(dynamite[i]->GetAttack());
+										enemy[j]->SetKnockBackStartFlg(true);
+										enemy[j]->SetStarDrawFlg(true);
+										enemy[j]->SetPlayerWorldLocation(player->GetWorldLocation());
+										enemy[j]->Damege(dynamite[i]->GetAttack());
 
 
 
 
-									//	check_abs = fabsf(dynamite[i]->GetWorldLocation().x - enemy[j]->GetWorldLocation().x);
+										//	check_abs = fabsf(dynamite[i]->GetWorldLocation().x - enemy[j]->GetWorldLocation().x);
 
-									//	//爆発の中心座標から近いかとおいかでダメージが変わる
-									//	if (fabsf(dynamite[i]->GetWorldLocation().x - enemy[j]->GetWorldLocation().x) < 35)
-									//	{
-									//		enemy[j]->Damege(30);
-									//		// 歩行エネミーのノックバック処理
-									//		enemy[j]->SetKnockBackStartFlg(true);
-									//		enemy[j]->SetPlayerWorldLocation(player->GetWorldLocation());
+										//	//爆発の中心座標から近いかとおいかでダメージが変わる
+										//	if (fabsf(dynamite[i]->GetWorldLocation().x - enemy[j]->GetWorldLocation().x) < 35)
+										//	{
+										//		enemy[j]->Damege(30);
+										//		// 歩行エネミーのノックバック処理
+										//		enemy[j]->SetKnockBackStartFlg(true);
+										//		enemy[j]->SetPlayerWorldLocation(player->GetWorldLocation());
 
-									//	}
-									//}
-									////爆発の中心座標から近いかとおいかでダメージが変わる
-									//if (fabsf(dynamite[i]->GetWorldLocation().x - enemy[j]->GetWorldLocation().x) < 100)
-									//{
-									//	enemy[j]->Damege(20);
-									//	// 歩行エネミーのノックバック処理
-									//	enemy[j]->SetKnockBackStartFlg(true);
-									//	enemy[j]->SetPlayerWorldLocation(player->GetWorldLocation());
+										//	}
+										//}
+										////爆発の中心座標から近いかとおいかでダメージが変わる
+										//if (fabsf(dynamite[i]->GetWorldLocation().x - enemy[j]->GetWorldLocation().x) < 100)
+										//{
+										//	enemy[j]->Damege(20);
+										//	// 歩行エネミーのノックバック処理
+										//	enemy[j]->SetKnockBackStartFlg(true);
+										//	enemy[j]->SetPlayerWorldLocation(player->GetWorldLocation());
 
-									//}
-									//else if (fabsf(dynamite[i]->GetWorldLocation().x - enemy[j]->GetWorldLocation().x) < 200)
-									//{
-									//	enemy[j]->Damege(10);
-									//}
+										//}
+										//else if (fabsf(dynamite[i]->GetWorldLocation().x - enemy[j]->GetWorldLocation().x) < 200)
+										//{
+										//	enemy[j]->Damege(10);
+										//}
+									}
 								}
-							}
+							
 						}
 					}
 				}
@@ -476,6 +464,9 @@ void GameMainScene::Update()
 					if (enemy[i]->GetWorldLocation().x > screen_origin_position.x - 100 && enemy[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 					{
 						enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+						if (enemy[i]->GetFallEndFlg() == false) {
+							enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+						}
 						enemy[i]->Update(this);
 					}
 
@@ -974,6 +965,37 @@ void GameMainScene::Update()
 				*/	
 			}
 
+			//エネミーと岩ブロックの当たり判定
+			for (int j = 0; j < block_count; j++)
+			{
+				if (stage_block[j] != nullptr&& stage_block[j]->GetBlockNum() == 4)
+				{
+					stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+	
+						for (int i = 0; i < ENEMYMAXNUM; i++)
+						{
+							if (enemy[i] != nullptr && enemy[i]->GetHp() > 0)
+							{
+								if (enemy[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+								{
+									if (enemy[i]->GetIsKnockBack() == true)
+									{
+										// ノックバックしている敵に当たったら自身もノックバックを開始する
+										enemy[i]->SetKnockBackStartFlg(true);
+									}
+									else
+									{
+										// 当たっていたら２体とも進行方向を反対に変更する
+										enemy[i]->SetHitEnemyX(stage_block[j]->GetWorldLocation().x);
+										enemy[i]->ChangeDirection();
+									}
+								}
+							}
+						}
+					
+				}
+			}
 
 			if (player != nullptr && mapio != nullptr)
 			{
@@ -1018,30 +1040,6 @@ void GameMainScene::Draw() const
 			stage_block[j]->DrawKanban();
 		}
 
-		//エネミーとブロックの当たり判定のチェック
-		if (stage_block[j] != nullptr)
-		{
-
-			for (int i = 0; i < ENEMYMAXNUM; i++)
-			{
-				if (enemy[i] != nullptr)
-				{
-					if (stage_block[j]->GetBlockNum() == 1)
-					{
-
-						if (enemy[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-						{
-							DrawFormatString(enemy[i]->GetWorldLocation().x, 300, 0xffffff, "true");
-						}
-						else
-						{
-							//DrawFormatString(enemy[i]->GetWorldLocation().x, 300, 0xffffff, "false");
-						}
-
-					}
-				}
-			}
-		}
 	}
 	
 	if (game_state == TUTORIAL)
@@ -1432,8 +1430,9 @@ void GameMainScene::Tutorial()
 
 							}
 						}
+
 						//ダイナマイトの爆発とエネミーの当たり判定
-						if (dynamite[i]->Getdamage_flg() == true)
+						if (dynamite[i]->Getdamage_flg() == true&& stage_block[j]->GetHp() > 0)
 						{
 							if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
 							{
