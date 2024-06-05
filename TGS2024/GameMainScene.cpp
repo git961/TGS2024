@@ -1513,12 +1513,24 @@ AbstractScene* GameMainScene::Change()
 {
 	if (gameover_flg == true)
 	{
+		// ゲームメインbgm停止
+		if (CheckSoundMem(main_bgm) == TRUE)
+		{
+			StopSoundMem(main_bgm);
+		}
+
 		// プレイヤーの残機が0になったら
 		return new GameOverScene;
 	}
 
 	if (clear_flg == true)
 	{
+		// ゲームメインbgm停止
+		if (CheckSoundMem(main_bgm) == TRUE)
+		{
+			StopSoundMem(main_bgm);
+		}
+
 		// ゴールに触れたら
 		return new GameClearScene;
 	}

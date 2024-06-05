@@ -7,6 +7,8 @@ class EndCreditsScene : public AbstractScene
 {
 private:
 	int change_cnt;		// シーン切り替えできるようになるまでのカウント
+	int volume;
+	int credits_bgm;
 
 public:
 	EndCreditsScene();

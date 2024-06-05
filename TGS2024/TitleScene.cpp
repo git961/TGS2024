@@ -16,9 +16,22 @@ TitleScene::TitleScene()
 
 	anim_cnt = 0;
 
+	//volume = 150;
+
+	// サウンド読込
+	title_bgm = LoadSoundMem("sounds/bgm/title.mp3");
+	move_cursor_se = LoadSoundMem("sounds/se/system/cursor.mp3");
+	decision_se = LoadSoundMem("sounds/se/player/Attack.mp3");
+
 	// 画像読込
 	//back_img = LoadGraph("images/Scene/Title/KnockBack.png");
 	//cursor_img = LoadGraph("images/Enemy/KnockBack.png");
+
+	// サウンドの音量設定
+	ChangeVolumeSoundMem(220, title_bgm);
+	ChangeVolumeSoundMem(200, move_cursor_se);
+	ChangeVolumeSoundMem(180, decision_se);
+
 }
 
 TitleScene::~TitleScene()
@@ -29,6 +42,12 @@ TitleScene::~TitleScene()
 void TitleScene::Update()
 {
 	input.InputUpdate();
+
+	// タイトルbgmループ再生
+	if (CheckSoundMem(title_bgm) == FALSE)
+	{
+		PlaySoundMem(title_bgm, DX_PLAYTYPE_LOOP);
+	}
 
 	if (change_cnt > 0)
 	{
@@ -43,6 +62,9 @@ void TitleScene::Update()
 	{
 		if (input.LongPressBtn(XINPUT_BUTTON_DPAD_UP) == TRUE || input.GetPadThumbLY() >= 32000)
 		{
+			// カーソルse
+			PlaySoundMem(move_cursor_se, DX_PLAYTYPE_BACK);
+
 			cursor_move_interval = 0;
 			// カーソル上移動
 			if (cursor_num == Start)
@@ -56,6 +78,9 @@ void TitleScene::Update()
 		}
 		if (input.LongPressBtn(XINPUT_BUTTON_DPAD_DOWN) == TRUE || input.GetPadThumbLY() <= -32000)
 		{
+			// カーソルse
+			PlaySoundMem(move_cursor_se, DX_PLAYTYPE_BACK);
+
 			cursor_move_interval = 0;
 			// カーソル下移動
 			if (cursor_num == End)
@@ -76,6 +101,9 @@ void TitleScene::Update()
 			// Bボタンで決定
 			if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 			{
+				// 決定se
+				PlaySoundMem(decision_se, DX_PLAYTYPE_BACK);
+
 				push_b_flg = true;
 			}
 		}
@@ -127,9 +155,19 @@ AbstractScene* TitleScene::Change()
 		switch (cursor_num)
 		{
 		case Start:
+			// タイトルbgm停止
+			if (CheckSoundMem(title_bgm) == TRUE)
+			{
+				StopSoundMem(title_bgm);
+			}
 			return new AnimScene();
 			break;
 		case End:
+			// タイトルbgm停止
+			if (CheckSoundMem(title_bgm) == TRUE)
+			{
+				StopSoundMem(title_bgm);
+			}
 			return new EndScene();
 			break;
 		default:

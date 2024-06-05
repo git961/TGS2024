@@ -9,6 +9,9 @@ private:
 
 	int fps;
 
+	int volume;
+	int end_bgm;
+
 public:
 	EndScene();
 	~EndScene();

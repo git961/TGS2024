@@ -29,9 +29,10 @@ private:
 	//int back_img;			// 背景画像
 	//int cursor_img;			// カーソル画像
 
-	//int title_bgm;
-	//int move_cursor_se;			// カーソル移動se
-	//int decision_se;			// 決定se
+	//int volume;
+	int title_bgm;
+	int move_cursor_se;			// カーソル移動se
+	int decision_se;			// 決定se
 
 public:
 	TitleScene();
