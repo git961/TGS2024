@@ -212,6 +212,10 @@ void MapIo::Draw() const
 			{
 				DrawBox(j * BLOCKSIZE - posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - posx, i * BLOCKSIZE + BLOCKSIZE, 0x00fff0, FALSE);
 			}
+			else if (map_array[i][j] == 8)
+			{
+				DrawBox(j * BLOCKSIZE - posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - posx, i * BLOCKSIZE + BLOCKSIZE, 0xff0000, FALSE);
+			}
 		}
 	}
 
@@ -248,6 +252,9 @@ void MapIo::Draw() const
 		break;
 	case 4:
 		DrawFormatString(40, 80, 0xffffff, "PUT_ROCK");
+		break;
+	case 8:
+		DrawFormatString(40, 80, 0xffffff, "PUT_FALL_ENEMY");
 		break;
 	}
 
