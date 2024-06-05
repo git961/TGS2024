@@ -35,7 +35,7 @@ private:
 
 public:
 
-    RollingEnemy();
+    RollingEnemy(float set_x);
     ~RollingEnemy();
 
     void Update(GameMainScene* gamemain);

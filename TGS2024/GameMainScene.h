@@ -48,7 +48,7 @@ private:
 
     Player* player;
     Enemy** enemy;
-    RollingEnemy* rolling_enemy;
+    RollingEnemy** rolling_enemy;
     AttackCheck* ac;
     Dynamite** dynamite;
     fps fp;
@@ -89,7 +89,8 @@ private:
     //camera_y - 720 / 2;
 
     int block_count;//配置したブロックの数
-    int enemy_count;//配置したエネミーの数
+    int enemy_count;//配置した歩行エネミーの数
+    int rolling_enemy_cnt;//配置したローリングエネミーの数
     int map_old_array[map_blockmax_y][map_blockmax_x];//配置したエネミーを消したかチェック用
 
     int walk_gem_score;             // 歩行エネミーの宝石スコア

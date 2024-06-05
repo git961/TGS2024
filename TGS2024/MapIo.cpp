@@ -105,6 +105,12 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		map_data_num = 8;
 	}
 
+	//落下してくる敵用
+	if (CheckHitKey(KEY_INPUT_9) == TRUE)
+	{
+		map_data_num = 9;
+	}
+
 	now_abs = fabsf(mouse_x - p_localx);
 
 	//マウスがプレイヤーの右に居たら
@@ -216,6 +222,10 @@ void MapIo::Draw() const
 			{
 				DrawBox(j * BLOCKSIZE - posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - posx, i * BLOCKSIZE + BLOCKSIZE, 0xff0000, FALSE);
 			}
+			else if (map_array[i][j] == 9)
+			{
+				DrawBox(j * BLOCKSIZE - posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - posx, i * BLOCKSIZE + BLOCKSIZE, 0xff000f, FALSE);
+			}
 		}
 	}
 
@@ -255,6 +265,9 @@ void MapIo::Draw() const
 		break;
 	case 8:
 		DrawFormatString(40, 80, 0xffffff, "PUT_FALL_ENEMY");
+		break;
+	case 9:
+		DrawFormatString(40, 80, 0xffffff, "PUT_ROLLING_ENEMY");
 		break;
 	}
 
