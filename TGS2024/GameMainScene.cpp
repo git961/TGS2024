@@ -44,7 +44,7 @@ GameMainScene::GameMainScene()
 
 
 	game_state = TUTORIAL;
-	game_state = PLAY;
+	//game_state = PLAY;
 
 	//enemyhit = false;		// 当たっていない
 
@@ -86,7 +86,7 @@ GameMainScene::GameMainScene()
 					stage_block[block_count++] = new StageBlock(1, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 					break;
 				case 2:
-					enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+					enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2,false);
 					break;
 				case 3:
 					stage_block[block_count++] = new StageBlock(3, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
@@ -102,6 +102,9 @@ GameMainScene::GameMainScene()
 					break;
 				case 7:
 					stage_block[block_count++] = new StageBlock(7, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+					break;
+				case 8:
+					enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2,true);
 					break;
 				}
 
@@ -268,6 +271,7 @@ void GameMainScene::Update()
 						stage_block[block_count++] = new StageBlock(7, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 
+
 					}
 
 					if (enemy_count < ENEMYMAXNUM)
@@ -275,9 +279,14 @@ void GameMainScene::Update()
 
 						if (mapio->GetMapData(i, j) == 2)
 						{
-							enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+							enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2,false);
 						}
 
+						if (mapio->GetMapData(i, j) == 8)
+						{
+							enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2, true);
+
+						}
 					}
 
 				}
@@ -831,7 +840,6 @@ void GameMainScene::Update()
 					*/
 
 
-
 					if (player != nullptr)
 					{
 
@@ -929,6 +937,41 @@ void GameMainScene::Update()
 
 
 				}
+
+				/*
+				//エネミーとブロックの当たり判定
+				if (stage_block[j] != nullptr)
+				{
+					stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+					for (int i = 0; i < ENEMYMAXNUM; i++)
+					{
+						if (enemy[i] != nullptr)
+						{
+							if (stage_block[j]->GetBlockNum() == 1)
+							{
+
+								if (enemy[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+								{
+									enemy[i]->HitCheckup(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
+								}
+								
+							}
+
+							//エネミーの下のブロックの番号が1じゃなかったら
+							if (enemy[i]->GetWorldLocation().y < stage_block[j]->GetWorldLocation().y-10)
+							{
+								if (stage_block[j]->GetBlockNum()!=1)
+								{
+									enemy[i]->SetGroundFlg(false);
+								}
+
+							}
+							
+						}
+					}
+				}
+				*/	
 			}
 
 
@@ -973,6 +1016,31 @@ void GameMainScene::Draw() const
 		if (stage_block[j] != nullptr)
 		{
 			stage_block[j]->DrawKanban();
+		}
+
+		//エネミーとブロックの当たり判定のチェック
+		if (stage_block[j] != nullptr)
+		{
+
+			for (int i = 0; i < ENEMYMAXNUM; i++)
+			{
+				if (enemy[i] != nullptr)
+				{
+					if (stage_block[j]->GetBlockNum() == 1)
+					{
+
+						if (enemy[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+						{
+							DrawFormatString(enemy[i]->GetWorldLocation().x, 300, 0xffffff, "true");
+						}
+						else
+						{
+							//DrawFormatString(enemy[i]->GetWorldLocation().x, 300, 0xffffff, "false");
+						}
+
+					}
+				}
+			}
 		}
 	}
 	
@@ -1087,6 +1155,7 @@ void GameMainScene::Draw() const
 		{
 			stage_block[j]->Draw();
 		}
+
 	}
 
 	//ダイナマイト描画

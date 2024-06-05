@@ -1,6 +1,6 @@
 ﻿#include "Enemy.h"
 
-Enemy::Enemy(float set_x, float set_y)
+Enemy::Enemy(float set_x, float set_y,bool set_direction)
 {
 	// 中心座標
 	location.x = set_x;
@@ -42,7 +42,8 @@ Enemy::Enemy(float set_x, float set_y)
 	death_cnt = 0;
 	is_delete = false;
 
-	direction = false;			// 画像は右向き
+	direction = set_direction;
+	//direction = false;			// 画像は右向き
 
 	is_knock_back = false;		// ノックバック中ではない
 	is_knock_back_start = false;
@@ -113,11 +114,13 @@ Enemy::Enemy(float set_x, float set_y)
 	draw_death_img = true;
 
 	hit_enemy_x = 0.0f;
+	SetVertex();
 
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(80, footsteps_sound);
 	ChangeVolumeSoundMem(150, knock_back_sount);
 	ChangeVolumeSoundMem(255, death_sount);
+	ground_flg = false;
 }
 
 Enemy::~Enemy()
@@ -157,6 +160,7 @@ void Enemy::Update(GameMainScene* gamemain)
 {
 	if (hp > 0)
 	{
+
 		if (is_knock_back_start == true)
 		{
 			is_knock_back = true;
@@ -195,6 +199,8 @@ void Enemy::Update(GameMainScene* gamemain)
 			{
 				play_sound = true;
 			}
+
+			SetVertex();
 
 			// 移動処理
 			Move();
@@ -252,6 +258,7 @@ void Enemy::Draw() const
 	//DrawFormatString(location.x - 100, 170, 0xffffff, "+: %f", start_x + mvx);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "k: %d", is_knock_back);
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "s: %d", is_knock_back_start);
+	DrawFormatString(location.x - 100, 50, 0xffffff, "worldy;%f", world.y);
 	//DrawFormatString(100, 20, 0xffffff, "opacity: %d", opacity);
 	//DrawBoxAA(location.x - width / 2, location.y - height / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);				// 当たり判定のボックス
 #endif // DEBUG
@@ -660,4 +667,9 @@ void Enemy::FragmentEffect()
 void Enemy::Damege(int damege)
 {
 	hp -= (float)damege;
+}
+
+void Enemy::Fall()
+{
+	world.y+=1;
 }

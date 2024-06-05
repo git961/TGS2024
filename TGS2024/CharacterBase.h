@@ -47,8 +47,10 @@ public:
 
 
 	bool GetDirection() { return direction; }//キャラの向きを返す　0:右 1:左
+	bool GetGroundFlg() { return ground_flg; }
 
 	void SetRockFlg(bool set_flg) { hit_rock_flg = set_flg; }
+	void SetGroundFlg(bool set_flg) { ground_flg = set_flg; }
 
 	/*
 	//当たり判定:何かに当たったかどうかだけ返す
@@ -181,6 +183,20 @@ public:
 	//
 	}
 
+	void HitCheckup(Boxvertex set_box_vertex, World set_world)
+	{
+			//キャラの右下の頂点の高さと、ボックスの左上の頂点の高さを比べる
+			if (box_vertex.lower_righty < set_box_vertex.upper_lefty + 5)
+			{
+				//右下の頂点の方が高かったら上に居るという事になる。
+				ground_flg = true;
+				//world.y = set_world.y - height / 2;
 
+			}
+			else {
+				ground_flg = false;
+			}
+		//当たらなくなったら
+	}
 };
 

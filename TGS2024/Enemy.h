@@ -67,8 +67,10 @@ private:
 
     float hit_enemy_x;
 
+    bool fall_flg;//敵が落ちてくるフラグ
+
 public:
-    Enemy(float set_x, float set_y);
+    Enemy(float set_x, float set_y,bool set_direction);
     ~Enemy();
 
     void Update(GameMainScene* gamemain);
@@ -83,6 +85,7 @@ public:
     void StarEffect();                          // 星エフェクトの処理
     void FragmentEffect();                      // 石の破片エフェクトの処理
     void Damege(int damege);                    // 被ダメージ処理
+    void Fall();
 
     // set関数
     void SetEnemyWorldLocation(World set_world)

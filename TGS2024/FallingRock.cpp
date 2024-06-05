@@ -13,7 +13,7 @@ FallingRock::FallingRock()
 	world.y = -500;
 	location.x = 350;
 	location.y = -500;
-	speed = 1;
+	speed = 5;
 	angle = 0;
 	degree = 0;
 	landing_flg = false;
@@ -46,7 +46,7 @@ void FallingRock::Update()
 	case 0:
 		if (world.y < 390)
 		{
-			world.y += 2;
+			world.y += 15;
 		}
 		else
 		{
@@ -70,27 +70,27 @@ void FallingRock::Update()
 		case 1:
 			rock_img_num = 0;
 			break;
-		case 30:
+		case 5:
 			rock_img_num = 1;
-			degree += 0.5;
+			degree += 5;
 			world.x += speed;
 
 			break;
-		case 60:
+		case 10:
 			rock_img_num = 2;
-			degree += 0.5;
+			degree += 5;
 			world.x += speed;
 
 			break;
-		case 90:
+		case 15:
 			rock_img_num = 3;
-			degree += 0.5;
+			degree += 5;
 			world.x += speed;
 
 			break;
-		case 120:
+		case 20:
 			rock_state = 2;
-			degree += 0.5;
+			degree += 5;
 
 			break;
 
@@ -114,7 +114,7 @@ void FallingRock::Update()
 
 		if (degree < 360)
 		{
-			degree += 0.5;
+			degree += 5;
 		}
 		else
 		{

@@ -86,7 +86,7 @@ void AnimScene::Update()
 			anim_scene = 2;
 		}
 		else {
-			alpha -= 1;
+			alpha -= 5;
 		}
 
 		break;
@@ -99,8 +99,8 @@ void AnimScene::Update()
 
 		break;
 	case 3:
-
-		if (alpha++ > 255) {
+		alpha += 5;
+		if (alpha > 255) {
 			if (alpha > 300) {
 				p_backimg_num = 1;
 				//布擦れ音
@@ -110,17 +110,17 @@ void AnimScene::Update()
 				}
 			}
 			
-			if (alpha > 350) {
+			if (alpha > 400) {
 				p_backimg_num = 2;
 
 			}
 
-			if (alpha > 400)
+			if (alpha > 520)
 			{
 				//p_backimg_num = 3;
 			}
 
-			if (alpha > 800) {
+			if (alpha > 700) {
 				anim_scene = 4;
 				alpha2 = 255;
 				alpha = 255;
@@ -147,16 +147,18 @@ void AnimScene::Update()
 			}
 		}
 		else {
-			alpha -= 1;
+			alpha -= 5;
 		}
 
 		if (ase_flg == true)
 		{
-			if (cnt++ > 250)
+			cnt += 5;
+			if (cnt > 300)
 			{
 				ase_flg = false;
 				anim_scene = 5;
 				shake_flg = true;
+				cnt = 0;
 			}
 		}
 
@@ -176,7 +178,6 @@ void AnimScene::Update()
 
 		break;
 	case 6:
-		
 		//でかい岩が落ちてくる
 		if (fallingrock != nullptr)
 		{
@@ -185,11 +186,6 @@ void AnimScene::Update()
 		}
 		//画面の揺れ
 		ShakeCamera(fallingrock->GetLanding(),2);
-	break;
-	case 7:
-		//ドガン！って音と
-		//吹き飛ばされる画像
-		//次のシーンで眼が罰点の状態で走って来て、岩にぶつかったら、ダメージ受けた時の奴をやる
 	break;
 	}
 	
@@ -201,7 +197,7 @@ void AnimScene::Update()
 
 	if (fallingrock->GetBlackOut() == true)
 	{
-		alpha += 0.5;
+		alpha += 5;
 		if (alpha > 255) {
 			next_scene_flg = true;
 			anim_scene = 7;
@@ -280,19 +276,19 @@ void AnimScene::ShakeCamera(bool set_true, int set_num)
 			case 0:
 				screen_origin_position.x += shake_x1;
 				break;
-			case 10:
+			case 2:
 				screen_origin_position.x -= shake_x2;
 				break;
-			case 20:
+			case 4:
 				screen_origin_position.x = 0;
 				break;
-			case 30:
+			case 6:
 				screen_origin_position.x += shake_x1;
 				break;
-			case 40:
+			case 8:
 				screen_origin_position.x -= shake_x2;
 				break;
-			case 50:
+			case 10:
 				screen_origin_position.x = 0;
 				shake_cnt = 0;
 				break;
@@ -317,19 +313,19 @@ void AnimScene::ShakeCamera(bool set_true, int set_num)
 			case 0:
 				screen_origin_position.x += shake_x1;
 				break;
-			case 10:
+			case 2:
 				screen_origin_position.x -= shake_x2;
 				break;
-			case 20:
+			case 4:
 				screen_origin_position.x = 0;
 				break;
-			case 30:
+			case 6:
 				screen_origin_position.x += shake_x1;
 				break;
-			case 40:
+			case 8:
 				screen_origin_position.x -= shake_x2;
 				break;
-			case 50:
+			case 10:
 				screen_origin_position.x = 0;
 				shake_cnt = 0;
 				break;

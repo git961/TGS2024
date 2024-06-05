@@ -744,8 +744,8 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 			}
 
 			player_state = WALK;
-			location.x += 1;
-			world.x += 1;
+			location.x += 4;
+			world.x += 4;
 
 			if (abs((int)world.x - (int)old_worldx) > 61)
 			{
@@ -762,7 +762,7 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 
 		}
 		else {
-			if (op_cnt++ >120)
+			if (op_cnt++ >60)
 			{
 				player_state = PANIM;
 				if (op_cnt++ > 140)
@@ -790,25 +790,25 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 		op_cnt++;
 		switch (op_cnt)
 		{
-		case 60:
+		case 30:
 			direction = 1;
 			break;
-		case 120:
+		case 60:
 			direction = 0;
 			break;
-		case 160:
+		case 90:
 			anim_scene->SetShakeFlg(false);
 			break;
-		case 180:
+		case 120:
 			direction = 1;
 			anim_scene->SetExc(true);
 			break;
-		case 240:
+		case 140:
 			anim_scene->SetExc(false);
 			anim_scene->SetRun(true);
 			direction = 0;
 			break;
-		case 300:
+		case 150:
 			anim_scene->SetAnimScene(6);
 			op_cnt = 0;
 			break;
@@ -819,8 +819,8 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 		
 		if (1400> world.x) {
 			player_state = ASE;
-			location.x += 1;
-			world.x += 1;
+			location.x += 4;
+			world.x += 4;
 
 			if (abs((int)world.x - (int)old_worldx) > 61)
 			{

@@ -99,6 +99,12 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		map_data_num = 7;
 	}
 
+	//落下してくる敵用
+	if (CheckHitKey(KEY_INPUT_8) == TRUE)
+	{
+		map_data_num = 8;
+	}
+
 	now_abs = fabsf(mouse_x - p_localx);
 
 	//マウスがプレイヤーの右に居たら
