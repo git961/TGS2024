@@ -44,7 +44,7 @@ GameMainScene::GameMainScene()
 
 
 	game_state = TUTORIAL;
-	game_state = PLAY;
+	//game_state = PLAY;
 
 	//enemyhit = false;		// 当たっていない
 
@@ -114,7 +114,12 @@ GameMainScene::GameMainScene()
 					break;
 				case 9:
 					rolling_enemy[rolling_enemy_cnt++] = new RollingEnemy(j * BLOCKSIZE + BLOCKSIZE / 2);
-
+					break;
+				case 10:
+					stage_block[block_count++] = new StageBlock(10, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+					break;
+				case 11:
+					stage_block[block_count++] = new StageBlock(11, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 					break;
 				}
 
@@ -293,7 +298,12 @@ void GameMainScene::Update()
 					case 7:
 						stage_block[block_count++] = new StageBlock(7, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
-
+					case 10:
+						stage_block[block_count++] = new StageBlock(10, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+					case 11:
+						stage_block[block_count++] = new StageBlock(11, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
 
 					}
 

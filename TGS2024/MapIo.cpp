@@ -93,6 +93,8 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		map_data_num = 6;
 	}
 
+
+
 	//ヘルメット:チュートリアル用
 	if (CheckHitKey(KEY_INPUT_7) == TRUE)
 	{
@@ -109,6 +111,17 @@ void MapIo::InputTest(GameMainScene* gamemain)
 	if (CheckHitKey(KEY_INPUT_9) == TRUE)
 	{
 		map_data_num = 9;
+	}
+
+	//看板:チュートリアル用
+	if (CheckHitKey(KEY_INPUT_T) == TRUE)
+	{
+		map_data_num = 10;
+	}
+	//看板:チュートリアル用
+	if (CheckHitKey(KEY_INPUT_Y) == TRUE)
+	{
+		map_data_num = 11;
 	}
 
 	now_abs = fabsf(mouse_x - local_posx);
@@ -235,7 +248,7 @@ void MapIo::Draw() const
 			}
 			else if (map_array[i][j] == 9)
 			{
-				DrawBox(j * BLOCKSIZE - posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - posx, i * BLOCKSIZE + BLOCKSIZE, 0xff000f, FALSE);
+				DrawBox(j * BLOCKSIZE - posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - posx, i * BLOCKSIZE + BLOCKSIZE, 0x008000, FALSE);
 			}
 		}
 	}
@@ -262,23 +275,23 @@ void MapIo::Draw() const
 	switch (map_data_num)
 	{
 	case 1:
-		DrawFormatString(40, 80, 0xffffff, "PUT_MAPChip");
+		DrawFormatString(40, 200, 0xffffff, "PUT_MAPChip");
 
 		break;
 	case 2:
-		DrawFormatString(40, 80, 0xffffff, "PUT_ENEMY");
+		DrawFormatString(40, 200, 0xffffff, "PUT_ENEMY");
 		break;
 	case 3:
-		DrawFormatString(40, 80, 0xffffff, "PUT_Goal");
+		DrawFormatString(40, 200, 0xffffff, "PUT_Goal");
 		break;
 	case 4:
-		DrawFormatString(40, 80, 0xffffff, "PUT_ROCK");
+		DrawFormatString(40, 200, 0xffffff, "PUT_ROCK");
 		break;
 	case 8:
-		DrawFormatString(40, 80, 0xffffff, "PUT_FALL_ENEMY");
+		DrawFormatString(40, 200, 0xffffff, "PUT_FALL_ENEMY");
 		break;
 	case 9:
-		DrawFormatString(40, 80, 0xffffff, "PUT_ROLLING_ENEMY");
+		DrawFormatString(40, 200, 0xffffff, "PUT_ROLLING_ENEMY");
 		break;
 	}
 
