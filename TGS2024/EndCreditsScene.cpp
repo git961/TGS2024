@@ -2,6 +2,8 @@
 
 EndCreditsScene::EndCreditsScene()
 {
+	text_x = 700;
+	text_y = 720;
 	change_cnt = 180;
 	volume = 30;
 
@@ -52,6 +54,38 @@ void EndCreditsScene::Draw() const
 	{
 		DrawFormatString(500, 600, 0xffffff, "B: Title");
 	}
+
+	SetFontSize(40);
+
+	// テキストは画像に変更する
+	DrawFormatString(500, 100, 0xffffff, "1");
+
+	DrawFormatString(500, 150, 0xffffff, "2");
+	DrawFormatString(500, 190, 0xffffff, "3");
+	DrawFormatString(500, 230, 0xffffff, "4");
+	DrawFormatString(500, 270, 0xffffff, "5");
+	DrawFormatString(500, 310, 0xffffff, "6");
+
+	DrawFormatString(500, 360, 0xffffff, "7");
+	DrawFormatString(500, 400, 0xffffff, "8");
+
+	DrawFormatString(500, 450, 0xffffff, "9");
+	DrawFormatString(500, 490, 0xffffff, "10");
+
+	// ↓文字化けする
+	//DrawFormatString(500, 100, 0xffffff, "使用素材");
+
+	//DrawFormatString(500, 150, 0xffffff, "BGM・SE");
+	//DrawFormatString(500, 190, 0xffffff, "効果音ラボ");
+	//DrawFormatString(500, 230, 0xffffff, "効果音工房");
+	//DrawFormatString(500, 270, 0xffffff, "魔王魂");
+	//DrawFormatString(500, 310, 0xffffff, "OtoLogic");
+
+	//DrawFormatString(500, 360, 0xffffff, "画像");
+	//DrawFormatString(500, 400, 0xffffff, "DOTLIST");
+
+	//DrawFormatString(500, 450, 0xffffff, "フォント");
+	//DrawFormatString(500, 490, 0xffffff, "4x4極小かなフォント");
 
 }
 
