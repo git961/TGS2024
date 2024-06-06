@@ -2,15 +2,14 @@
 
 EndScene::EndScene()
 {
-	end_cnt = 300;			// 300f経過したら終了
+	end_cnt = 240;			// 300f経過したら終了
 	endflg = false;
-	fps = 0;
 	volume = 150;
-
+	se_flg = true;
 	// サウンド読込
-	end_bgm = LoadSoundMem("sounds/se/scene/end02.mp3");
+	end_se = LoadSoundMem("sounds/se/scene/end02.mp3");
 	// サウンドの音量設定
-	ChangeVolumeSoundMem(volume, end_bgm);
+	ChangeVolumeSoundMem(volume, end_se);
 
 }
 
@@ -23,19 +22,16 @@ void EndScene::Update()
 {
 	end_cnt--;
 
-	// エンドbgmループ再生
-	if (CheckSoundMem(end_bgm) == FALSE)
+	if (end_cnt <= 180)
 	{
-		PlaySoundMem(end_bgm, DX_PLAYTYPE_BACK);
-	}
-
-	if (end_cnt != 0)
-	{
-		if (end_cnt % 60 == 0)
+		// エンドse再生
+		if (se_flg == true)
 		{
-			fps++;
+			PlaySoundMem(end_se, DX_PLAYTYPE_BACK);
+			se_flg = false;
 		}
 	}
+
 	if (end_cnt <= 0)
 	{
 		endflg = true;
@@ -47,7 +43,6 @@ void EndScene::Draw() const
 	SetFontSize(20);
 	DrawFormatString(10, 10, 0xffffff, "End");
 	DrawFormatString(300, 10, 0xffffff, "end_cnt: %d", end_cnt);
-	DrawFormatString(300, 30, 0xffffff, "fps: %d", fps);
 
 }
 
@@ -55,10 +50,10 @@ AbstractScene* EndScene::Change()
 {
 	if (endflg == true)
 	{
-		// エンドbgm停止
-		if (CheckSoundMem(end_bgm) == TRUE)
+		// エンドse停止
+		if (CheckSoundMem(end_se) == TRUE)
 		{
-			StopSoundMem(end_bgm);
+			StopSoundMem(end_se);
 		}
 
 		// 終了

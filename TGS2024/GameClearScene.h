@@ -7,7 +7,8 @@ class GameClearScene : public AbstractScene
 private:
 	int change_cnt;		// シーン切り替えできるようになるまでのカウント
 	int volume;
-	int gameclear_bgm;
+	bool se_flg;
+	int gameclear_se;
 
 public:
 	GameClearScene();

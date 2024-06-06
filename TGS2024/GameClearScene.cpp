@@ -3,13 +3,13 @@
 GameClearScene::GameClearScene()
 {
 	change_cnt = 180;
-
 	volume = 150;
+	se_flg = true;
 
 	// サウンド読込
-	gameclear_bgm = LoadSoundMem("sounds/bgm/gamemain.mp3");
+	gameclear_se = LoadSoundMem("sounds/se/scene/gameclear.mp3");
 	// サウンドの音量設定
-	ChangeVolumeSoundMem(volume, gameclear_bgm);
+	ChangeVolumeSoundMem(volume, gameclear_se);
 
 }
 
@@ -22,10 +22,11 @@ void GameClearScene::Update()
 {
 	input.InputUpdate();
 
-	// クリアbgmループ再生
-	if (CheckSoundMem(gameclear_bgm) == FALSE)
+	// クリアse再生
+	if (se_flg == true)
 	{
-		PlaySoundMem(gameclear_bgm, DX_PLAYTYPE_LOOP);
+		PlaySoundMem(gameclear_se, DX_PLAYTYPE_BACK);
+		se_flg = false;
 	}
 
 	if (change_cnt > 0)
@@ -39,10 +40,13 @@ void GameClearScene::Draw() const
 #ifdef DEBUG
 	SetFontSize(20);
 	DrawFormatString(10, 10, 0xffffff, "GameClear");
-	DrawFormatString(10, 30, 0xffffff, "B: EndCredits");
 	DrawFormatString(10, 50, 0xffffff, "draw_cnt: %d", change_cnt);
 
 #endif // DEBUG
+	if (change_cnt <= 0)
+	{
+		DrawFormatString(500, 600, 0xffffff, "B: EndCredits");
+	}
 
 }
 
@@ -53,9 +57,9 @@ AbstractScene* GameClearScene::Change()
 		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 		{
 			// クリアbgm停止
-			if (CheckSoundMem(gameclear_bgm) == TRUE)
+			if (CheckSoundMem(gameclear_se) == TRUE)
 			{
-				StopSoundMem(gameclear_bgm);
+				StopSoundMem(gameclear_se);
 			}
 
 			// Bボタンでエンドロールに遷移

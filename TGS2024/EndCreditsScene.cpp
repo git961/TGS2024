@@ -44,10 +44,14 @@ void EndCreditsScene::Draw() const
 #ifdef DEBUG
 	SetFontSize(20);
 	DrawFormatString(10, 10, 0xffffff, "EndCredits");
-	DrawFormatString(10, 30, 0xffffff, "B: Title");
 	DrawFormatString(10, 50, 0xffffff, "draw_cnt: %d", change_cnt);
 	DrawFormatString(10, 70, 0xffffff, "volume: %d", volume);
 #endif // DEBUG
+
+	if (change_cnt <= 0)
+	{
+		DrawFormatString(500, 600, 0xffffff, "B: Title");
+	}
 
 }
 

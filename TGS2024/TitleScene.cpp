@@ -60,44 +60,41 @@ void TitleScene::Update()
 	}
 	else
 	{
-		if (input.LongPressBtn(XINPUT_BUTTON_DPAD_UP) == TRUE || input.GetPadThumbLY() >= 32000)
-		{
-			// カーソルse
-			PlaySoundMem(move_cursor_se, DX_PLAYTYPE_BACK);
-
-			cursor_move_interval = 0;
-			// カーソル上移動
-			if (cursor_num == Start)
-			{
-				cursor_num = End;
-			}
-			else
-			{
-				cursor_num--;
-			}
-		}
-		if (input.LongPressBtn(XINPUT_BUTTON_DPAD_DOWN) == TRUE || input.GetPadThumbLY() <= -32000)
-		{
-			// カーソルse
-			PlaySoundMem(move_cursor_se, DX_PLAYTYPE_BACK);
-
-			cursor_move_interval = 0;
-			// カーソル下移動
-			if (cursor_num == End)
-			{
-				cursor_num = Start;
-			}
-			else
-			{
-				cursor_num++;
-			}
-		}
-	}
-
-	if (change_cnt <= 0)
-	{
 		if (push_b_flg == false)
 		{
+			if (input.LongPressBtn(XINPUT_BUTTON_DPAD_UP) == TRUE || input.GetPadThumbLY() >= 32000)
+			{
+				// カーソルse
+				PlaySoundMem(move_cursor_se, DX_PLAYTYPE_BACK);
+
+				cursor_move_interval = 0;
+				// カーソル上移動
+				if (cursor_num == Start)
+				{
+					cursor_num = End;
+				}
+				else
+				{
+					cursor_num--;
+				}
+			}
+			if (input.LongPressBtn(XINPUT_BUTTON_DPAD_DOWN) == TRUE || input.GetPadThumbLY() <= -32000)
+			{
+				// カーソルse
+				PlaySoundMem(move_cursor_se, DX_PLAYTYPE_BACK);
+
+				cursor_move_interval = 0;
+				// カーソル下移動
+				if (cursor_num == End)
+				{
+					cursor_num = Start;
+				}
+				else
+				{
+					cursor_num++;
+				}
+			}
+
 			// Bボタンで決定
 			if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 			{
@@ -118,6 +115,7 @@ void TitleScene::Update()
 			}
 		}
 	}
+
 }
 
 void TitleScene::Draw() const
@@ -125,7 +123,6 @@ void TitleScene::Draw() const
 #ifdef DEBUG
 	SetFontSize(20);
 	DrawFormatString(10, 10, 0xffffff, "Title");
-	DrawFormatString(10, 30, 0xffffff, "B: decision");
 	DrawFormatString(10, 50, 0xffffff, "draw_cnt: %d", change_cnt);
 
 	SetFontSize(40);
@@ -134,15 +131,12 @@ void TitleScene::Draw() const
 
 	SetFontSize(20);
 	DrawFormatString(300, 10, 0xffffff, "scene_change_cnt: %d", scene_change_cnt);
-	//DrawFormatString(300, 10, 0xffffff, "cursor_num: %d", cursor_num);
-	//DrawFormatString(300, 30, 0xffffff, "cursor_move_interval: %d", cursor_move_interval);
-	//DrawFormatString(300, 50, 0xffffff, "Bnum: %d", input.GetBtnnum());
-	//DrawFormatString(300, 70, 0xffffff, "BLnum: %d", input.GetLongButtonNum());
-	//DrawFormatString(300, 90, 0xffffff, "LPBf: %d", input.GetLongPressBtnflg());
-	//DrawFormatString(300, 110, 0xffffff, "LPBU: %d", input.LongPressBtn(XINPUT_BUTTON_DPAD_UP));
-	//DrawFormatString(300, 130, 0xffffff, "LPBD: %d", input.LongPressBtn(XINPUT_BUTTON_DPAD_DOWN));
 #endif // DEBUG
 
+	if (change_cnt <= 0)
+	{
+		DrawFormatString(500, 600, 0xffffff, "B: decision");
+	}
 
 	DrawCircle(cursor_x, cursor_y * cursor_num + cursor_y, 4, 0xffffff, true);
 

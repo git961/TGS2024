@@ -7,8 +7,8 @@ class GameOverScene : public AbstractScene
 private:
 	int change_cnt;		// シーン切り替えできるようになるまでのカウント
 	int volume;
-	int gameover_bgm;
-
+	bool play_sound_flg;		// 一度だけ再生
+	int gameover_se;
 public:
 	GameOverScene();
 	~GameOverScene();

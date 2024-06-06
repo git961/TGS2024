@@ -7,12 +7,10 @@ private:
 	int end_cnt;
 	bool endflg;
 
-	int fps;
-
 	int volume;
-	int end_bgm;
-
 	bool se_flg;
+	int end_se;
+
 
 public:
 	EndScene();
