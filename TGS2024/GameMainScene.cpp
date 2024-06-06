@@ -484,8 +484,10 @@ void GameMainScene::Update()
 				{
 					rolling_enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
-					rolling_enemy[i]->Update(this);
-
+					if (rolling_enemy[i]->GetWorldLocation().x > screen_origin_position.x-100  && rolling_enemy[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH+30)
+					{
+						rolling_enemy[i]->Update(this);
+					}
 					if (rolling_enemy[i]->GetDeleteFlg() == true)
 					{
 						delete rolling_enemy[i];
@@ -498,7 +500,8 @@ void GameMainScene::Update()
 				{
 					if (player != nullptr)
 					{
-						if (rolling_enemy[i]->GetLocation().x > player->GetLocation().x + SCREEN_WIDTH)
+						//if (rolling_enemy[i]->GetLocation().x < player->GetLocation().x + SCREEN_WIDTH)
+						if(rolling_enemy[i]->GetWorldLocation().x<camera_pos.x-SCREEN_WIDTH/2-100)
 						{
 							delete rolling_enemy[i];
 							rolling_enemy[i] = nullptr;
@@ -938,6 +941,7 @@ void GameMainScene::Update()
 				*/	
 			}
 
+			/*
 			//ダイナマイトと岩ブロックの当たり判定
 			for (int j = 0; j < block_count; j++)
 			{
@@ -989,6 +993,64 @@ void GameMainScene::Update()
 					}
 				}
 			}
+			*/
+			//ダメージを一回だけ与える
+
+		for (int i = 0; i < DYNAMITE_MAXNUM; i++)
+		{
+			if (dynamite[i] != nullptr)
+			{
+				for (int j = 0; j < block_count; j++)
+				{
+
+					if (stage_block[j] != nullptr)
+					{
+						if (stage_block[j]->GetBlockNum() == 4)
+						{
+								//ダイナマイトが岩と当たってるかのチェック
+								if (dynamite[i]->GetDynamite() == false && stage_block[j] != nullptr)
+								{
+									if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+									{
+										dynamite[i]->SetDynamite(true);
+
+									}
+								}
+								//ダイナマイトの爆発とエネミーの当たり判定
+								if (dynamite[i]->Getdamage_flg() == true)
+								{
+									if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+									{
+										dynamite[i]->SetEnemyX(stage_block[j]->GetWorldLocation().x);
+										dynamite[i]->DamageCalculation();
+										stage_block[j]->SetDamage(30);
+										stage_block[j]->SetShakeFlg(true);
+
+										//rock_damage_once = true;
+									}
+								}
+
+
+							
+						}
+					}
+
+				}
+
+			}
+		}
+			
+		for (int j = 0; j < block_count; j++)
+		{
+			if (stage_block[j] != nullptr)
+			{
+				if (stage_block[j]->GetBlockNum()==4 && stage_block[j]->GetHp() <= 0)
+				{
+					stage_block[j] = nullptr;
+				}
+			}
+
+		}
 
 			//エネミーと岩ブロックの当たり判定
 			for (int j = 0; j < block_count; j++)
