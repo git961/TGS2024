@@ -2,7 +2,7 @@
 
 AttackCheck::AttackCheck()
 {
-	width = 60;
+	width = 70;
 	height = 50;
 	location.x = 0;
 	location.y = 0;

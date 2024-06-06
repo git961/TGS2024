@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #define DEBUG		        // デバッグ用、消すと#ifdef DEBUGの処理がされなくなる
 
 #include <stdlib.h>         // スポーン位置決定用
@@ -9,7 +9,7 @@
 
 class GameMainScene;
 
-struct effect
+struct effect2
 {
     float x;
     float y;
@@ -20,7 +20,8 @@ struct effect
     bool is_draw;       // 描画するか？
 };
 
-class Enemy : public CharacterBase
+class FallingEnemy :
+    public CharacterBase
 {
 private:
     int enemy_walk_img[5];          // エネミー歩行画像
@@ -49,10 +50,10 @@ private:
     float player_x;
     float player_y;
 
-    effect star;
+    effect2 star;
     bool tmp_direction;               // 向きの一時保管
 
-    effect fragment[4];
+    effect2 fragment[4];
     float v0[4];                      // 斜方投射時の初速度
     float gravity;                    // 重力
     float start_x;
@@ -67,12 +68,9 @@ private:
 
     float hit_enemy_x;
 
-    bool fall_flg;//敵が落ちてくるフラグ
-    bool fall_end_flg;//敵が地面に付いたらtrue
-
 public:
-    Enemy(float set_x, float set_y,bool set_direction);
-    ~Enemy();
+    FallingEnemy(float set_x, float set_y);
+    ~FallingEnemy();
 
     void Update(GameMainScene* gamemain);
     void Draw() const;
@@ -86,7 +84,6 @@ public:
     void StarEffect();                          // 星エフェクトの処理
     void FragmentEffect();                      // 石の破片エフェクトの処理
     void Damege(int damege);                    // 被ダメージ処理
-    void Fall();
 
     // set関数
     void SetEnemyWorldLocation(World set_world)
@@ -100,9 +97,9 @@ public:
         player_y = set_world.y;
     }
     void SetKnockBackStartFlg(bool set_flg) { is_knock_back_start = set_flg; }
-    void SetStarDrawFlg(bool set_flg) { star.is_draw = set_flg; }       
-    void SetGemDropFlg(bool set_flg){ gem_drop = set_flg; }
-    void SetHitEnemyX(float set_x){ hit_enemy_x = set_x; }
+    void SetStarDrawFlg(bool set_flg) { star.is_draw = set_flg; }
+    void SetGemDropFlg(bool set_flg) { gem_drop = set_flg; }
+    void SetHitEnemyX(float set_x) { hit_enemy_x = set_x; }
 
     // get関数
     float GetHp() const { return hp; }                        // hp取得
@@ -110,6 +107,6 @@ public:
     bool GetDeleteFlg() const { return is_delete; }           // 削除フラグの取得
     bool GetIsKnockBack() const { return is_knock_back; }     // ノックバックフラグの取得
     bool GetGemDropFlg() const { return gem_drop; }
-    bool GetFallEndFlg()const { return fall_end_flg; }
+
 };
 

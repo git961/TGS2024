@@ -1,23 +1,23 @@
 #include "RollingEnemy.h"
 
-RollingEnemy::RollingEnemy()
+RollingEnemy::RollingEnemy(float set_x)
 {
 	// 中心座標
 	//location.x = 200;
 	//location.y = 600;
 
-	world.x = 30.0f;
+	world.x = set_x;
 	world.y = 608.0f;
 
 	width = 60.0f;
 	height = 60.0f;
 
-	move_x = 1.0f;			// 移動量
+	move_x = -1.0f;			// 移動量
 	move_y = 0.0f;			// 未使用
 	hp = 10.0f;
 	attack = 10.0f;
 	speed = 8.0f;
-	direction = true;	// 左向き
+	direction = false;	// 左向き
 
 	//画像読込
 	LoadDivGraph("images/Enemy/RollingTest.png", 5, 5, 1, 64, 64, enemy_roll_img);
@@ -174,6 +174,7 @@ void RollingEnemy::Update(GameMainScene* gamemain)
 		angle = 0.0;
 	}
 
+	/*
 	// 端に来たら跳ね返る
 	if (world.x + width / 2 > FIELD_WIDTH || world.x - width / 2 < 0)
 	{
@@ -192,7 +193,7 @@ void RollingEnemy::Update(GameMainScene* gamemain)
 		// -1を掛けて移動量反転
 		move_x *= -1;
 	}
-
+	*/
 }
 
 void RollingEnemy::Draw() const

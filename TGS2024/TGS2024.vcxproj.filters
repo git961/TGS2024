@@ -132,6 +132,9 @@
     <ClCompile Include="Score.cpp">
       <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
+    <ClCompile Include="FallingEnemy.cpp">
+      <Filter>ソース ファイル\EnemyFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fps.h">

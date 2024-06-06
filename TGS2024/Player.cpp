@@ -2,7 +2,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-Player::Player()
+Player::Player(float set_x)
 {
 	//画像読込
 	player_img[0] = LoadGraph("images/Player/player.png");
@@ -41,7 +41,7 @@ Player::Player()
 
 	anim_cnt = 0;
 
-	world.x = 0;
+	world.x = set_x;
 	world.y = 600.0f-30;
 
 	location.x = 0;
@@ -51,6 +51,7 @@ Player::Player()
 
 	//体力
 	hp = 50;
+	//hp = 10;
 
 	//幅と座標
 	width = 50;
@@ -168,6 +169,7 @@ void Player::Update(GameMainScene* gamemain)
 			break;
 		case 25:
 			death_flg = true;
+			death_anim_cnt = 0;
 			break;
 		default:
 			break;
@@ -744,8 +746,8 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 			}
 
 			player_state = WALK;
-			location.x += 1;
-			world.x += 1;
+			location.x += 4;
+			world.x += 4;
 
 			if (abs((int)world.x - (int)old_worldx) > 61)
 			{
@@ -762,7 +764,7 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 
 		}
 		else {
-			if (op_cnt++ >120)
+			if (op_cnt++ >60)
 			{
 				player_state = PANIM;
 				if (op_cnt++ > 140)
@@ -790,25 +792,25 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 		op_cnt++;
 		switch (op_cnt)
 		{
-		case 60:
+		case 30:
 			direction = 1;
 			break;
-		case 120:
+		case 60:
 			direction = 0;
 			break;
-		case 160:
+		case 90:
 			anim_scene->SetShakeFlg(false);
 			break;
-		case 180:
+		case 120:
 			direction = 1;
 			anim_scene->SetExc(true);
 			break;
-		case 240:
+		case 140:
 			anim_scene->SetExc(false);
 			anim_scene->SetRun(true);
 			direction = 0;
 			break;
-		case 300:
+		case 150:
 			anim_scene->SetAnimScene(6);
 			op_cnt = 0;
 			break;
@@ -819,8 +821,8 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 		
 		if (1400> world.x) {
 			player_state = ASE;
-			location.x += 1;
-			world.x += 1;
+			location.x += 4;
+			world.x += 4;
 
 			if (abs((int)world.x - (int)old_worldx) > 61)
 			{
@@ -938,6 +940,7 @@ void Player::TutorialAnimUpdate()
 					player_state = ATTACK;
 					tuto_atk_flg = true;
 					tuto_ui_num = 1;
+					death_anim_cnt = 0;
 					break;
 				default:
 					break;

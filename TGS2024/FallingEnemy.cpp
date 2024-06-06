@@ -1,6 +1,6 @@
-﻿#include "Enemy.h"
+#include "FallingEnemy.h"
 
-Enemy::Enemy(float set_x, float set_y,bool set_direction)
+FallingEnemy::FallingEnemy(float set_x, float set_y)
 {
 	// 中心座標
 	location.x = set_x;
@@ -42,30 +42,13 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 	death_cnt = 0;
 	is_delete = false;
 
-	direction = set_direction;
-	//direction = false;			// 画像は右向き
+	direction = false;			// 画像は右向き
 
 	is_knock_back = false;		// ノックバック中ではない
 	is_knock_back_start = false;
 
 	player_x = 0.0f;
 	player_y = 0.0f;
-
-	//srand((unsigned int)time(NULL));			// 現在時刻の情報で初期化
-	//num = rand() % 10 + 1;
-	//if (num >= 5)
-	//{
-	//	direction = true;
-	//}
-	//else
-	//{
-	//	direction = false;
-	//}
-	// 進行方法が左ならx座標と移動方向が変わる
-	if (direction == true)
-	{
-		move_x *= -1;
-	}
 
 	star.x = 0.0f;
 	star.y = 0.0f;
@@ -113,27 +96,15 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 	draw_death_img = true;
 
 	hit_enemy_x = 0.0f;
-	SetVertex();
 
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(80, footsteps_sound);
 	ChangeVolumeSoundMem(150, knock_back_sount);
 	ChangeVolumeSoundMem(255, death_sount);
-	ground_flg = false;
-
-	if (direction == true)
-	{
-		fall_end_flg = false;
-	}
-	else {
-
-		fall_end_flg = true;
-	}
-	fall_flg = false;
 
 }
 
-Enemy::~Enemy()
+FallingEnemy::~FallingEnemy()
 {
 	// 画像の削除
 	for (int i = 0; i < 5; i++)
@@ -164,13 +135,13 @@ Enemy::~Enemy()
 	DeleteSoundMem(footsteps_sound);
 	DeleteSoundMem(knock_back_sount);
 	DeleteSoundMem(death_sount);
+
 }
 
-void Enemy::Update(GameMainScene* gamemain)
+void FallingEnemy::Update(GameMainScene* gamemain)
 {
 	if (hp > 0)
 	{
-
 		if (is_knock_back_start == true)
 		{
 			is_knock_back = true;
@@ -210,16 +181,9 @@ void Enemy::Update(GameMainScene* gamemain)
 				play_sound = true;
 			}
 
-			SetVertex();
+			// 移動処理
+			Move();
 
-			if (fall_end_flg == false) {
-				Fall();
-			}
-			else 
-			{
-				// 移動処理
-				Move();
-			}
 			// 歩行アニメーション
 			WalkingAnimation();
 
@@ -255,30 +219,11 @@ void Enemy::Update(GameMainScene* gamemain)
 		// 破片エフェクト
 		FragmentEffect();
 	}
+
 }
 
-void Enemy::Draw() const
+void FallingEnemy::Draw() const
 {
-#ifdef DEBUG
-	//DrawFormatString(location.x - 100, 50, 0xffffff, "hp: %.2f", hp);
-	//DrawFormatString(location.x - 100, 30, 0xffffff, "crack: %d", crack_image_num);
-	//DrawFormatString(location.x - 100, 50, 0xffffff, "0: %.1f", fragment[0].x);
-	//DrawFormatString(location.x - 100, 80, 0xffffff, "1: %.1f", fragment[1].x);
-	//DrawFormatString(location.x - 100, 110, 0xffffff, "2: %.1f", fragment[2].x);
-	//DrawFormatString(location.x - 100, 140, 0xffffff, "3: %.1f", fragment[3].x);
-	//DrawFormatString(location.x - 100, 170, 0xffffff, "L: %.1f", location.x);
-	//DrawFormatString(location.x - 100, 230, 0xffffff, "m0: %.1f", mvx[0]);
-	//DrawFormatString(location.x - 100, 260, 0xffffff, "m1: %.1f", mvx[1]);
-	//DrawFormatString(location.x - 100, 290, 0xffffff, "m2: %.1f", mvx[2]);
-	//DrawFormatString(location.x - 100, 170, 0xffffff, "+: %f", start_x + mvx);
-	//DrawFormatString(location.x - 100, 80, 0xffffff, "k: %d", is_knock_back);
-	//DrawFormatString(location.x - 100, 50, 0xffffff, "s: %d", is_knock_back_start);
-	DrawFormatString(location.x - 100, 50, 0xffffff, "worldy;%f", world.x);
-	DrawFormatString(location.x - 100, 80, 0xffffff, "pworldy;%f", player_x);
-	//DrawFormatString(100, 20, 0xffffff, "opacity: %d", opacity);
-	//DrawBoxAA(location.x - width / 2, location.y - height / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);				// 当たり判定のボックス
-#endif // DEBUG
-
 	// 画像の描画
 	if (hp > 0)
 	{
@@ -327,16 +272,10 @@ void Enemy::Draw() const
 		}
 	}
 
-
-#ifdef DEBUG
-	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);			// 中心座標
-#endif // DEBUG
 }
 
-// 移動処理
-void Enemy::Move()
+void FallingEnemy::Move()
 {
-
 	// 端に来たら跳ね返る
 	if (world.x + width / 2 > FIELD_WIDTH || world.x - width / 2 < 0)
 	{
@@ -364,14 +303,12 @@ void Enemy::Move()
 		//speed = 2.0f;
 	}
 
-
-	//移動処理
+	// 移動処理
 	world.x -= speed * move_x;
 
 }
 
-// 進行方向の変更
-void Enemy::ChangeDirection()
+void FallingEnemy::ChangeDirection()
 {
 	// 移動量の反転
 	move_x *= -1;
@@ -395,10 +332,10 @@ void Enemy::ChangeDirection()
 	{
 		world.x -= 5;
 	}
+
 }
 
-// ノックバック処理
-void Enemy::KnockBack()
+void FallingEnemy::KnockBack()
 {
 	if (speed >= 0.0f)
 	{
@@ -444,10 +381,10 @@ void Enemy::KnockBack()
 			}
 		}
 	}
+
 }
 
-// 歩行アニメーションの処理
-void Enemy::WalkingAnimation()
+void FallingEnemy::WalkingAnimation()
 {
 	if (anim_cnt < anim_max_cnt)
 	{
@@ -466,10 +403,10 @@ void Enemy::WalkingAnimation()
 		// 5カウントごとに変わる
 		image_num = anim_cnt / 5;
 	}
+
 }
 
-// 死亡アニメーションの処理
-void Enemy::DeathAnimation()
+void FallingEnemy::DeathAnimation()
 {
 	death_cnt++;
 
@@ -501,10 +438,10 @@ void Enemy::DeathAnimation()
 			}
 		}
 	}
+
 }
 
-// ノックバック準備処理
-void Enemy::KnockBackPreparation()
+void FallingEnemy::KnockBackPreparation()
 {
 	// ノックバック時の初期スピード
 	speed = 2.0f;
@@ -531,10 +468,10 @@ void Enemy::KnockBackPreparation()
 	star.y = location.y - 40;
 	star.count = 0;
 	tmp_direction = direction;
+
 }
 
-// 星エフェクトの処理
-void Enemy::StarEffect()
+void FallingEnemy::StarEffect()
 {
 	// 星の座標を敵のスクリーン座標にする
 	star.x = location.x;
@@ -599,10 +536,10 @@ void Enemy::StarEffect()
 		star.degree = 0.0;
 		star.radian = 0.0;
 	}
+
 }
 
-// 石の破片エフェクトの処理
-void Enemy::FragmentEffect()
+void FallingEnemy::FragmentEffect()
 {
 	for (int i = 0; i < 4; i++)
 	{
@@ -627,7 +564,7 @@ void Enemy::FragmentEffect()
 			}
 
 			fragment[i].x = location.x;
-			fragment[i].y = location.y - height /  2;				// 画像の中心
+			fragment[i].y = location.y - height / 2;				// 画像の中心
 
 			// 宝石を落とす
 			gem_drop = true;
@@ -636,7 +573,7 @@ void Enemy::FragmentEffect()
 		start_x = location.x;
 		start_y = location.y - height / 2;				// 画像の中心
 
-		if (fragment[i].y  < 608.f)
+		if (fragment[i].y < 608.f)
 		{
 			// 地面についていない間は値の計算を行う
 			mvx[i] = v0[i] * cosf((float)fragment[i].radian) * sum_t;
@@ -653,56 +590,17 @@ void Enemy::FragmentEffect()
 
 		sum_t += t;
 
-		//if (fragment[i].y <= 608.0f)
-		//{
-		//	// 地面についていないのであれば
-		//	if (fragment[i].timer++ < 60)
-		//	{
-		//		if (i > 1)
-		//		{
-		//			// 斜方投射
-		//			// 右向き
-		//			fragment[i].x += v0[i] * cosf((float)fragment[i].radian);
-		//		}
-		//		else
-		//		{
-		//			// 斜方投射
-		//			// 左向き
-		//			fragment[i].x -= v0[i] * cosf((float)fragment[i].radian);
-		//		}
 
-		//		fragment[i].y += v0[i] * sinf((float)fragment[i].radian) - gravity;
-		//	}
-		//}
 
 		if (fragment[i].is_draw == false)
 		{
 			fragment[i].is_draw = true;
 		}
 	}
+
 }
 
-// 被ダメージ処理
-void Enemy::Damege(int damege)
+void FallingEnemy::Damege(int damege)
 {
 	hp -= (float)damege;
-}
-
-void Enemy::Fall()
-{
-	
-	if (player_x > world.x+80)
-	{
-		fall_flg = true;
-	}
-
-	if (fall_flg == true)
-	{
-		world.y += 4;
-		if (world.y > 600)
-		{
-			fall_end_flg = true;
-		}
-	}
-
 }

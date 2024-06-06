@@ -38,13 +38,19 @@ StageBlock::StageBlock(int set_block_num,float set_x, float set_y)
 		block_img = LoadGraph("images/Stage/fukuro.png");
 		break;
 	case 6:
-		block_img = LoadGraph("images/Stage/kanban02.png");
+		block_img = LoadGraph("images/Stage/kanban1.png");
 		break;
 	case 7:
 		block_img = LoadGraph("images/UI/helmet.png");
 		angle = 0;
 		is_up = false;
 		hely = location.y;
+		break;
+	case 10:
+		block_img = LoadGraph("images/Stage/kanban2.png");
+		break;
+	case 11:
+		block_img = LoadGraph("images/Stage/kanban3.png");
 		break;
 	}
 
@@ -122,7 +128,7 @@ void StageBlock::Draw() const
 	{
 		DrawRotaGraph(location.x, hely + 10, 1, angle, block_img, TRUE, 0);
 	}
-	else if (block_num != 6)
+	else if (block_num != 6&& block_num != 10 && block_num != 11)
 	{
 		DrawRotaGraph(location.x, location.y, 1, 0, block_img, TRUE, 0);
 	}
@@ -137,7 +143,7 @@ void StageBlock::Draw() const
 
 void StageBlock::DrawKanban() const
 {
-	if (block_num == 6)
+	if (block_num == 6||block_num==10||block_num==11)
 	{
 		DrawRotaGraph(location.x, location.y - 60, 1, 0, block_img, TRUE, 0);
 	}
