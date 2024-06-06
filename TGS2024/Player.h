@@ -121,7 +121,7 @@ private:
     int helmet_img;//
 
 public:
-    Player();
+    Player(float set_x);
     ~Player();
 
     void Update(GameMainScene* gamemain);

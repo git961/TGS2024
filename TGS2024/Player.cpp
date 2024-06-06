@@ -2,7 +2,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-Player::Player()
+Player::Player(float set_x)
 {
 	//画像読込
 	player_img[0] = LoadGraph("images/Player/player.png");
@@ -41,7 +41,7 @@ Player::Player()
 
 	anim_cnt = 0;
 
-	world.x = 0;
+	world.x = set_x;
 	world.y = 600.0f-30;
 
 	location.x = 0;
@@ -51,6 +51,7 @@ Player::Player()
 
 	//体力
 	hp = 50;
+	//hp = 10;
 
 	//幅と座標
 	width = 50;
@@ -168,6 +169,7 @@ void Player::Update(GameMainScene* gamemain)
 			break;
 		case 25:
 			death_flg = true;
+			death_anim_cnt = 0;
 			break;
 		default:
 			break;
@@ -938,6 +940,7 @@ void Player::TutorialAnimUpdate()
 					player_state = ATTACK;
 					tuto_atk_flg = true;
 					tuto_ui_num = 1;
+					death_anim_cnt = 0;
 					break;
 				default:
 					break;

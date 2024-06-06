@@ -19,7 +19,7 @@ GameMainScene::GameMainScene()
 
 	mapio = new MapIo;
 
-	player = new Player();
+	player = new Player(0.0f);
 
 	enemy = new Enemy * [ENEMYMAXNUM];
 	rolling_enemy = new RollingEnemy*[ROLLING_ENEMY_MAXNUM];
@@ -814,14 +814,7 @@ void GameMainScene::Update()
 					}
 				}
 
-				//プレイヤーの死亡処理
-				if (player->GetDeathFlg() == true)
-				{
-					delete player;
-					player_damage_once = false;
-					player = nullptr;
-					player = new Player();
-				}
+
 			}
 
 			//カメラとUIのアップデート
@@ -1139,6 +1132,20 @@ void GameMainScene::Update()
 			if (score != nullptr)
 			{
 				score->Update();
+			}
+
+			if (player != nullptr)
+			{
+				//プレイヤーの死亡処理
+				if (player->GetDeathFlg() == true)
+				{
+					delete player;
+					player_damage_once = false;
+					player = nullptr;
+					player = new Player(2000.0f);
+					player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+				}
 			}
 			break;
 	default:
