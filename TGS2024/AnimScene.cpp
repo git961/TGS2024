@@ -265,7 +265,7 @@ void AnimScene::Draw() const
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 		DrawGraph(screen_origin_position.x, 0, p_backimg[p_backimg_num], FALSE);
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha2);
+		//SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha2);
 	}
 
 

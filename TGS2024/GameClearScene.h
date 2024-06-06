@@ -9,6 +9,14 @@ private:
 	int volume;
 	bool se_flg;
 	int gameclear_se;
+	int endimg_num;//エンディング画像切り替え用
+	int change_imgnum_cnt;
+	int change_img_num;
+	float alpha;
+	float alpha2;
+	bool alpha_start_flg;
+
+	int ending_img[10];
 
 public:
 	GameClearScene();

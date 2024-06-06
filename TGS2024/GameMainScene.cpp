@@ -1191,16 +1191,16 @@ void GameMainScene::Draw() const
 	{
 		DrawGraph(location_x+1280*i, location_y, back_img[0], FALSE);
 	}
-	DrawGraph(location_x + 1280 * 9, location_y, back_img[9], FALSE);
+	DrawGraph(location_x + 1280 * 8, location_y, back_img[9], FALSE);
 
 
 	//DrawFormatString(0, 0, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
 	//fp.display_fps();
-
 	//if (checkhit == true)
 	//{
 	//	DrawFormatString(0, 10, 0xffffff, "hit");
 	//}
+	
 	for (int j = 0; j < block_count; j++)
 	{
 		if (stage_block[j] != nullptr)
