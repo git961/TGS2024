@@ -1167,9 +1167,9 @@ void GameMainScene::Update()
 					delete player;
 					player_damage_once = false;
 					player = nullptr;
+					gameover_flg = true;
 					player = new Player(2000.0f);
-					player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-
+					//player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				}
 			}
 			break;
