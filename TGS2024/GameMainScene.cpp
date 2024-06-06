@@ -41,11 +41,12 @@ GameMainScene::GameMainScene()
 	//back.png
 	back_img[0] = LoadGraph("images/Backimg/backimg.png", TRUE);
 	back_img[9] = LoadGraph("images/Backimg/backimgGoal.png", TRUE);
+	goal_img= LoadGraph("images/Ending/ending8.png", TRUE);
 	//back_img = LoadGraph("images/background_test.png", TRUE);
 
 
 	game_state = TUTORIAL;
-	//game_state = PLAY;
+	game_state = PLAY;
 
 	//enemyhit = false;		// 当たっていない
 
@@ -156,6 +157,7 @@ GameMainScene::GameMainScene()
 	
 	play_start_flg = false;
 
+	clear_alpha = 0;
 	clear_flg = false;
 	gameover_flg = false;
 
@@ -358,7 +360,9 @@ void GameMainScene::Update()
 		}
 		break;
 	case GOAL:
-		clear_flg = true;
+		if (clear_alpha++>300) {
+			clear_flg = true;
+		}
 		break;
 	case PLAY:
 		if (CheckHitKey(KEY_INPUT_SPACE) == 1)
@@ -1353,6 +1357,14 @@ void GameMainScene::Draw() const
 		score->Draw();
 	}
 
+
+	}
+
+	if (game_state == GOAL)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, clear_alpha);
+		DrawGraph(location_x, location_y, goal_img, FALSE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	}
 #ifdef DEBUG

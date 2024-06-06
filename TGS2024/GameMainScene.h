@@ -77,6 +77,7 @@ private:
     //bool enemyhit;      // 歩行エネミー同士の当たり判定チェック用、後に削除
 
     int back_img[10];//背景入れるよう
+    int goal_img;//ゴールした後に表示する画像入れる用
 
     int check_num;//blockのどこに当たったか貰うよう
 
@@ -114,6 +115,7 @@ private:
     bool play_start_flg;//アニメーション終
 
     bool clear_flg;         // クリアしたか？
+    float clear_alpha;
     bool gameover_flg;         // ゲームオーバーになったか？
     int main_bgm;
     int volume;
