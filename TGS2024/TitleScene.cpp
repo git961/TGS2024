@@ -95,13 +95,16 @@ void TitleScene::Update()
 				}
 			}
 
-			// Bボタンで決定
-			if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+			if (change_cnt <= 0)
 			{
-				// 決定se
-				PlaySoundMem(decision_se, DX_PLAYTYPE_BACK);
+				// Bボタンで決定
+				if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+				{
+					// 決定se
+					PlaySoundMem(decision_se, DX_PLAYTYPE_BACK);
 
-				push_b_flg = true;
+					push_b_flg = true;
+				}
 			}
 		}
 		else
