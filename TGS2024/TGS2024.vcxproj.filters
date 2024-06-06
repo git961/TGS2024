@@ -114,8 +114,23 @@
     <ClCompile Include="AnimScene.cpp">
       <Filter>ソース ファイル\SceneFile</Filter>
     </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>ソース ファイル\SceneFile</Filter>
+    </ClCompile>
+    <ClCompile Include="EndCreditsScene.cpp">
+      <Filter>ソース ファイル\SceneFile</Filter>
+    </ClCompile>
+    <ClCompile Include="EndScene.cpp">
+      <Filter>ソース ファイル\SceneFile</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClearScene.cpp">
+      <Filter>ソース ファイル\SceneFile</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverScene.cpp">
+      <Filter>ソース ファイル\SceneFile</Filter>
+    </ClCompile>
     <ClCompile Include="Score.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
     <ClCompile Include="FallingEnemy.cpp">
       <Filter>ソース ファイル\EnemyFile</Filter>
@@ -173,9 +188,6 @@
     <ClInclude Include="Gem.h">
       <Filter>ヘッダー ファイル\GemFile</Filter>
     </ClInclude>
-    <ClInclude Include="Score.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="UI.h">
       <Filter>ヘッダー ファイル\UI</Filter>
     </ClInclude>
@@ -188,8 +200,23 @@
     <ClInclude Include="AnimScene.h">
       <Filter>ヘッダー ファイル\SceneFile</Filter>
     </ClInclude>
-    <ClInclude Include="FallingEnemy.h">
-      <Filter>ヘッダー ファイル\EnemyFile</Filter>
+    <ClInclude Include="TitleScene.h">
+      <Filter>ヘッダー ファイル\SceneFile</Filter>
+    </ClInclude>
+    <ClInclude Include="EndCreditsScene.h">
+      <Filter>ヘッダー ファイル\SceneFile</Filter>
+    </ClInclude>
+    <ClInclude Include="EndScene.h">
+      <Filter>ヘッダー ファイル\SceneFile</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClearScene.h">
+      <Filter>ヘッダー ファイル\SceneFile</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverScene.h">
+      <Filter>ヘッダー ファイル\SceneFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Score.h">
+      <Filter>ヘッダー ファイル\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

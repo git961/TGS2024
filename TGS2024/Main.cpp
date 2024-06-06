@@ -5,7 +5,7 @@
 #include "SceneManager.h"
 #include "GameMainScene.h"
 #include "AnimScene.h"
-
+#include "TitleScene.h"
 
 // プログラムは WinMain から始まります
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int
@@ -21,21 +21,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	SetDrawScreen(DX_SCREEN_BACK);	// 描画先画面を裏にする
 
-	SceneManager SceneManager(dynamic_cast<AbstractScene*>(new GameMainScene));
+	SceneManager SceneManager(dynamic_cast<AbstractScene*>(new TitleScene));
 	Input input;
 	fps fp;
 	//ループ前にFPS計測を初期化
 	fp.Reset_fps();
 
 	//ゲームループ
-	while (ProcessMessage() != -1) {
-		SceneManager.Update();
-		SceneManager.Draw();
-		input.InputUpdate();
-
+	while (ProcessMessage() != -1)
+	{
 		//fps固定
 		fp.fpsUpdate();
 
+		SceneManager.Update();
+		SceneManager.Draw();
+		input.InputUpdate();
 
 		if (input.CheckBtn(XINPUT_BUTTON_BACK) == TRUE) {
 			break;

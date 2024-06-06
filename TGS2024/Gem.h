@@ -19,12 +19,14 @@ private:
 	int drop_sound;			// 出現時se
 	//int sparkling_sound;	// キラキラse
 	bool play_drop_sound;        // 1回だけサウンドを鳴らす用
+	bool play_get_sound;        // 1回だけサウンドを鳴らす用
 
 	float player_x;
 	float player_y;
 
 	bool just_generated;
 	bool from_rolling_enemy;	// 転がるエネミーからドロップしたか？
+	bool is_delete;				// 削除してもいいか？
 
 	//bool is_deete;
 public:
@@ -44,5 +46,6 @@ public:
 	void SetFromRollingEnemyFlg(bool set_flg){ from_rolling_enemy = set_flg; }
 
 	int GetGemScore() const { return gem_score; }
-	//bool GetDeleteFlg() const { return is_deete; }
+	bool GetDeleteFlg() const { return is_delete; }
+	bool GetPlaySoundFlg() const { return play_get_sound; }
 };

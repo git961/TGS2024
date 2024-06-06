@@ -4,7 +4,6 @@ UI::UI(int set_hp, int set_dyna_num)
 {
 	heart_img = LoadGraph("images/UI/heart.png");
 	p_img = LoadGraph("images/UI/player.png");
-	score_img = LoadGraph("images/UI/score_Icon.png");
 	dyna_img= LoadGraph("images/UI/dynamite.png");
 	LoadDivGraph("images/UI/UIB.png", 2, 2, 1, 128, 128, btnB_img);
 	LoadDivGraph("images/UI/UIY.png", 2, 2, 1, 128, 128, btnY_img);
@@ -45,9 +44,7 @@ void UI::Draw() const
 	int ax, ay;
 	GetMousePoint(&ax, &ay);
 	//DrawFormatString(1000, 10, 0xffff00, "%d,%d", ax, ay);
-
-	DrawRotaGraph(620, 30, 1, 0, score_img, TRUE, 0);
-
+	
 	//if (player->GetTutoAtkFlg() == true)
 	//{
 	//	DrawRotaGraph(player->GetLocation().x, player->GetLocation().y-100, 1, 0, btnB_img, TRUE, 0);

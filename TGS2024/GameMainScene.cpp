@@ -155,6 +155,9 @@ GameMainScene::GameMainScene()
 	
 	play_start_flg = false;
 
+	clear_flg = false;
+	gameover_flg = false;
+
 	// サウンド読込
 	main_bgm = LoadSoundMem("sounds/bgm/gamemain.mp3");
 	volume = 150;
@@ -353,7 +356,7 @@ void GameMainScene::Update()
 		}
 		break;
 	case GOAL:
-
+		clear_flg = true;
 		break;
 	case PLAY:
 		if (CheckHitKey(KEY_INPUT_SPACE) == 1)
@@ -561,7 +564,7 @@ void GameMainScene::Update()
 			// 歩行エネミーの宝石生成処理
 			for (int i = 0; i < ENEMYMAXNUM; i++)
 			{
-				if (enemy[i] != nullptr)
+				if (player != nullptr && enemy[i] != nullptr)
 				{
 					if (enemy[i]->GetGemDropFlg() == true)
 					{
@@ -591,16 +594,23 @@ void GameMainScene::Update()
 			{
 				if (player != nullptr && walk_gem[i] != nullptr)
 				{
-					if (player->HitCheck(walk_gem[i]->GetWorldLocation(), walk_gem[i]->GetWidth(), walk_gem[i]->GetHeight()) == true)
+					if (walk_gem[i]->GetPlaySoundFlg() == true)
 					{
-						walk_gem[i]->PlayGetSound();
-						score->SetScore(walk_gem[i]->GetGemScore());
+						if (player->HitCheck(walk_gem[i]->GetWorldLocation(), walk_gem[i]->GetWidth(), walk_gem[i]->GetHeight()) == true)
+						{
+							walk_gem[i]->PlayGetSound();
+							score->SetScore(walk_gem[i]->GetGemScore());
+						}
+					}
+
+					if (walk_gem[i]->GetDeleteFlg() == true)
+					{
 						delete walk_gem[i];
 						walk_gem[i] = nullptr;
 					}
 				}
 			}
-			
+
 			for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
 			{
 				// 転がるエネミーの宝石生成処理
@@ -608,7 +618,7 @@ void GameMainScene::Update()
 				{
 					if (rolling_enemy[i]->GetGemDropFlg() == true)
 					{
-						if (roll_gem == nullptr)
+						if (player != nullptr && roll_gem == nullptr)
 						{
 							roll_gem = new Gem(rolling_enemy[i]->GetWorldLocation(), roll_gem_score);
 							roll_gem->SetFromRollingEnemyFlg(true);
@@ -617,7 +627,6 @@ void GameMainScene::Update()
 					}
 				}
 			}
-
 			// 転がるエネミーの宝石更新処理
 			if (roll_gem != nullptr)
 			{
@@ -628,10 +637,17 @@ void GameMainScene::Update()
 			// 転がるエネミーの宝石とプレイヤーの当たり判定
 			if (player != nullptr && roll_gem != nullptr)
 			{
-				if (player->HitCheck(roll_gem->GetWorldLocation(), roll_gem->GetWidth(), roll_gem->GetHeight()) == true)
+				if (roll_gem->GetPlaySoundFlg() == true)
 				{
-					roll_gem->PlayGetSound();
-					score->SetScore(roll_gem->GetGemScore());
+					if (player->HitCheck(roll_gem->GetWorldLocation(), roll_gem->GetWidth(), roll_gem->GetHeight()) == true)
+					{
+						roll_gem->PlayGetSound();
+						score->SetScore(roll_gem->GetGemScore());
+					}
+				}
+
+				if (roll_gem->GetDeleteFlg() == true)
+				{
 					delete roll_gem;
 					roll_gem = nullptr;
 				}
@@ -814,7 +830,16 @@ void GameMainScene::Update()
 					}
 				}
 
-
+				////プレイヤーの死亡処理
+				//if (player->GetDeathFlg() == true)
+				//{
+				//	delete player;
+				//	player_damage_once = false;
+				//	player = nullptr;
+				//	// ゲームオーバー判定
+				//	gameover_flg = true;
+				//	player = new Player();
+				//}
 			}
 
 			//カメラとUIのアップデート
@@ -1253,7 +1278,10 @@ void GameMainScene::Draw() const
 		// 歩行エネミーの宝石描画処理
 		if (walk_gem[i] != nullptr)
 		{
-			walk_gem[i]->Draw();
+			if (walk_gem[i]->GetPlaySoundFlg() == true)
+			{
+				walk_gem[i]->Draw();
+			}
 		}
 	}
 	
@@ -1261,8 +1289,11 @@ void GameMainScene::Draw() const
 
 	if (roll_gem != nullptr)
 	{
-		// 転がるエネミーの宝石描画処理
-		roll_gem->Draw();
+		if (roll_gem->GetPlaySoundFlg() == true)
+		{
+			// 転がるエネミーの宝石描画処理
+			roll_gem->Draw();
+		}
 	}
 
 
@@ -1716,8 +1747,29 @@ void GameMainScene::Tutorial()
 
 AbstractScene* GameMainScene::Change()
 {
-	//if (change == TRUE) {
-	//	return new GameOverScene;
-	//}
+	if (gameover_flg == true)
+	{
+		// ゲームメインbgm停止
+		if (CheckSoundMem(main_bgm) == TRUE)
+		{
+			StopSoundMem(main_bgm);
+		}
+
+		// プレイヤーの残機が0になったら
+		return new GameOverScene;
+	}
+
+	if (clear_flg == true)
+	{
+		// ゲームメインbgm停止
+		if (CheckSoundMem(main_bgm) == TRUE)
+		{
+			StopSoundMem(main_bgm);
+		}
+
+		// ゴールに触れたら
+		return new GameClearScene;
+	}
+
 	return this;
 }

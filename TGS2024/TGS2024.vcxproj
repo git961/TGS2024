@@ -155,12 +155,16 @@
     <ClCompile Include="AttackCheck.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Dynamite.cpp" />
+    <ClCompile Include="EndScene.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FallingEnemy.cpp" />
     <ClCompile Include="FallingRock.cpp" />
     <ClCompile Include="fps.cpp" />
+    <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="GameMainScene.cpp" />
+    <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="Gem.cpp" />
+    <ClCompile Include="EndCreditsScene.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapIo.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -168,6 +172,7 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="StageBlock.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -175,10 +180,13 @@
     <ClInclude Include="AnimScene.h" />
     <ClInclude Include="AttackCheck.h" />
     <ClInclude Include="Define.h" />
-    <ClInclude Include="FallingEnemy.h" />
+    <ClInclude Include="EndScene.h" />
     <ClInclude Include="FallingRock.h" />
+    <ClInclude Include="GameClearScene.h" />
+    <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="Gem.h" />
     <ClInclude Include="Dynamite.h" />
+    <ClInclude Include="EndCreditsScene.h" />
     <ClInclude Include="ObjectBase.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CharacterBase.h" />
@@ -192,6 +200,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Score.h" />
     <ClInclude Include="StageBlock.h" />
+    <ClInclude Include="TitleScene.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Vec2I.h" />
   </ItemGroup>

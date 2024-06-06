@@ -28,6 +28,11 @@ AnimScene::AnimScene()
 		camera_pos.y - SCREEN_HEIGHT / 2.0f
 	};
 
+	cnt = 0;
+
+	fps_cnt = 0;
+	fps = 0;
+
 	anim_scene = 0;
 	//anim_scene = 6;
 	alpha = 255;
@@ -64,6 +69,16 @@ AnimScene::~AnimScene()
 
 void AnimScene::Update()
 {
+	fps_cnt++;
+
+	if (fps_cnt != 0)
+	{
+		if (fps_cnt % 60 == 0)
+		{
+			fps++;
+		}
+	}
+
 	player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
 	switch (anim_scene)
@@ -256,6 +271,10 @@ void AnimScene::Draw() const
 
 
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND,0);
+
+
+	DrawFormatString(300, 30, 0xffffff, "fps_cnt: %d", fps_cnt);
+	DrawFormatString(300, 50, 0xffffff, "fps: %d", fps);
 
 	//DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
 	//DrawFormatString(300, 300, 0xffffff, "alpha%d", alpha);
