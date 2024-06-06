@@ -218,9 +218,44 @@ void GameMainScene::Update()
 		mapio->InputTest(this);
 		mapio->SetOriginPosx(screen_origin_position.x);
 
+		//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
+		location_x = world_x - screen_origin_position.x;
+		location_y = world_y - screen_origin_position.y;
+
+		if (CheckHitKey(KEY_INPUT_D) == TRUE)
+		{
+			screen_origin_position.x+=5;
+		}
+		if (CheckHitKey(KEY_INPUT_A) == TRUE)
+		{
+			screen_origin_position.x-=5;
+		}
+
+		if (mapio != nullptr)
+		{
+			mapio->SetOriginPosx(screen_origin_position.x);
+			mapio->SetLocalPosx(location_x);
+			mapio->SetWorldPosx(world_x);
+		}
+
+		for (int j = 0; j < block_count; j++)
+		{
+			if (stage_block[j] != nullptr)
+			{
+				stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			}
+		}
+
+		
+
 		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
 			enemy[i] = nullptr;
+		}
+
+		for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
+		{
+			rolling_enemy[i] = nullptr;
 		}
 
 		//右スティック押し込み
@@ -230,6 +265,7 @@ void GameMainScene::Update()
 			mapio->SaveMapData();
 			block_count = 0;
 			enemy_count = 0;
+			rolling_enemy_cnt = 0;
 
 			//マップチップに反映する
 			for (int i = 0; i < map_blockmax_y; i++)
@@ -1110,7 +1146,6 @@ void GameMainScene::Draw() const
 	for (int i = 0; i < 8; i++)
 	{
 		DrawGraph(location_x+1280*i, location_y, back_img, FALSE);
-
 	}
 
 	//DrawFormatString(0, 0, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
