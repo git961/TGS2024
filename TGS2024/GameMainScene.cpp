@@ -39,7 +39,8 @@ GameMainScene::GameMainScene()
 
 	player_damage_once = false;
 	//back.png
-	back_img = LoadGraph("images/backimg.png", TRUE);
+	back_img[0] = LoadGraph("images/Backimg/backimg.png", TRUE);
+	back_img[9] = LoadGraph("images/Backimg/backimgGoal.png", TRUE);
 	//back_img = LoadGraph("images/background_test.png", TRUE);
 
 
@@ -183,7 +184,8 @@ GameMainScene::~GameMainScene()
 	delete score;
 
 	// 画像削除
-	DeleteGraph(back_img);
+	DeleteGraph(back_img[0]);
+	DeleteGraph(back_img[9]);
 
 	// サウンド削除
 	DeleteSoundMem(main_bgm);
@@ -1167,8 +1169,8 @@ void GameMainScene::Update()
 					delete player;
 					player_damage_once = false;
 					player = nullptr;
-					gameover_flg = true;
-					player = new Player(2000.0f);
+					//gameover_flg = true;
+					player = new Player(2200.0f);
 					//player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				}
 			}
@@ -1187,8 +1189,10 @@ void GameMainScene::Draw() const
 	// 背景画像描画（仮）
 	for (int i = 0; i < 8; i++)
 	{
-		DrawGraph(location_x+1280*i, location_y, back_img, FALSE);
+		DrawGraph(location_x+1280*i, location_y, back_img[0], FALSE);
 	}
+	DrawGraph(location_x + 1280 * 9, location_y, back_img[9], FALSE);
+
 
 	//DrawFormatString(0, 0, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
 	//fp.display_fps();
