@@ -62,6 +62,7 @@ private:
     int anim_bgm;
     int op_sad_sound;//悲しい音
     bool play_sad_sound;
+    bool play_cloth_sound;
 public:
     AnimScene();
     ~AnimScene();
