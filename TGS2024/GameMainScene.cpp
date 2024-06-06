@@ -23,6 +23,7 @@ GameMainScene::GameMainScene()
 
 	enemy = new Enemy * [ENEMYMAXNUM];
 	//rolling_enemy = new RollingEnemy;
+	rolling_enemy = nullptr;
 	stage_block = new StageBlock * [map_blockmax_y * map_blockmax_x];
 
 	ui = new UI(player->GetHp(),player->GetDynaNum());
@@ -221,7 +222,7 @@ void GameMainScene::Update()
 	// ゲームメインbgmループ再生
 	if (CheckSoundMem(main_bgm) == FALSE)
 	{
-		//PlaySoundMem(main_bgm, DX_PLAYTYPE_LOOP);
+		PlaySoundMem(main_bgm, DX_PLAYTYPE_LOOP);
 	}
 
 	switch (game_state)
@@ -516,7 +517,7 @@ void GameMainScene::Update()
 			// 歩行エネミーの宝石生成処理
 			for (int i = 0; i < ENEMYMAXNUM; i++)
 			{
-				if (enemy[i] != nullptr)
+				if (player != nullptr && enemy[i] != nullptr)
 				{
 					if (enemy[i]->GetGemDropFlg() == true)
 					{
@@ -568,7 +569,7 @@ void GameMainScene::Update()
 			{
 				if (rolling_enemy->GetGemDropFlg() == true)
 				{
-					if (roll_gem == nullptr)
+					if (player != nullptr && roll_gem == nullptr)
 					{
 						roll_gem = new Gem(rolling_enemy->GetWorldLocation(), roll_gem_score);
 						roll_gem->SetFromRollingEnemyFlg(true);
@@ -587,10 +588,17 @@ void GameMainScene::Update()
 			// 転がるエネミーの宝石とプレイヤーの当たり判定
 			if (player != nullptr && roll_gem != nullptr)
 			{
-				if (player->HitCheck(roll_gem->GetWorldLocation(), roll_gem->GetWidth(), roll_gem->GetHeight()) == true)
+				if (roll_gem->GetPlaySoundFlg() == true)
 				{
-					roll_gem->PlayGetSound();
-					score->SetScore(roll_gem->GetGemScore());
+					if (player->HitCheck(roll_gem->GetWorldLocation(), roll_gem->GetWidth(), roll_gem->GetHeight()) == true)
+					{
+						roll_gem->PlayGetSound();
+						score->SetScore(roll_gem->GetGemScore());
+					}
+				}
+
+				if (roll_gem->GetDeleteFlg() == true)
+				{
 					delete roll_gem;
 					roll_gem = nullptr;
 				}
@@ -1071,8 +1079,11 @@ void GameMainScene::Draw() const
 
 	if (roll_gem != nullptr)
 	{
-		// 転がるエネミーの宝石描画処理
-		roll_gem->Draw();
+		if (roll_gem->GetPlaySoundFlg() == true)
+		{
+			// 転がるエネミーの宝石描画処理
+			roll_gem->Draw();
+		}
 	}
 
 
