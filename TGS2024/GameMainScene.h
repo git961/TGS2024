@@ -127,12 +127,15 @@ private:
     int CircleSize;
     int ScreenHandle;
     bool fadein_flg;//フェードイン開始フラグ
-
+    float alpha;
+    bool black_flg;
     int p_death_cnt;//プレイヤーが何回死んだかカウントする用
 
 public:
     GameMainScene();
     ~GameMainScene();
+
+    void ResetMap();
 
     void Update() override;
     void Draw() const override;

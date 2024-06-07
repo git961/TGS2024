@@ -182,6 +182,8 @@ GameMainScene::GameMainScene()
 	//円形フェードインの円のサイズをセット
 	CircleSize = 700;
 	fadein_flg = false;
+	alpha = 255;
+	black_flg = false;
 }
 
 
@@ -203,6 +205,101 @@ GameMainScene::~GameMainScene()
 
 	// サウンド削除
 	DeleteSoundMem(main_bgm);
+}
+
+void GameMainScene::ResetMap()
+{
+	for (int j = 0; j < block_count; j++)
+	{
+		if (stage_block[j] != nullptr)
+		{
+				stage_block[j] = nullptr;
+		
+		}
+	}
+
+	//エネミー削除
+	for (int i = 0; i < ENEMYMAXNUM; i++)
+	{
+		enemy[i] = nullptr;
+	}
+
+	for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
+	{
+		rolling_enemy[i] = nullptr;
+	}
+
+	block_count = 0;
+	enemy_count = 0;
+	rolling_enemy_cnt = 0;
+
+	//マップチップに反映する
+	for (int i = 0; i < map_blockmax_y; i++)
+	{
+		for (int j = 0; j < map_blockmax_x; j++)
+		{
+
+			switch (mapio->GetMapData(i, j))
+			{
+			case 1:
+				stage_block[block_count++] = new StageBlock(1, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+				break;
+			case 3:
+				stage_block[block_count++] = new StageBlock(3, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+				break;
+			case 4:
+				stage_block[block_count++] = new StageBlock(4, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+				break;
+			case 5:
+				stage_block[block_count++] = new StageBlock(5, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+				break;
+			case 6:
+				stage_block[block_count++] = new StageBlock(6, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+				break;
+			case 7:
+				stage_block[block_count++] = new StageBlock(7, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+				break;
+			case 10:
+				stage_block[block_count++] = new StageBlock(10, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+				break;
+			case 11:
+				stage_block[block_count++] = new StageBlock(11, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+				break;
+
+			}
+
+			if (enemy_count < ENEMYMAXNUM)
+			{
+
+				if (mapio->GetMapData(i, j) == 2)
+				{
+					enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2, false);
+				}
+
+				if (mapio->GetMapData(i, j) == 8)
+				{
+					enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2, true);
+
+				}
+			}
+
+			if (rolling_enemy_cnt < ROLLING_ENEMY_MAXNUM)
+			{
+				if (mapio->GetMapData(i, j) == 9)
+				{
+					rolling_enemy[rolling_enemy_cnt++] = new RollingEnemy(j * BLOCKSIZE + BLOCKSIZE / 2);
+				}
+			}
+		}
+	}
+
+	for (int j = 0; j < block_count; j++)
+	{
+		if (stage_block[j] != nullptr)
+		{
+			stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+		}
+	}
 }
 
 void GameMainScene::Update()
@@ -271,7 +368,7 @@ void GameMainScene::Update()
 		}
 
 		
-
+		//エネミー削除
 		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
 			enemy[i] = nullptr;
@@ -281,6 +378,7 @@ void GameMainScene::Update()
 		{
 			rolling_enemy[i] = nullptr;
 		}
+
 
 		//右スティック押し込み
 		if (input.CheckBtn(XINPUT_BUTTON_RIGHT_THUMB) == TRUE || CheckHitKey(KEY_INPUT_P) == TRUE)
@@ -377,21 +475,53 @@ void GameMainScene::Update()
 		}
 		break;
 	case RESPAWN:
+		//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
+		location_x = world_x - screen_origin_position.x;
+		location_y = world_y - screen_origin_position.y;
 
-		CircleSize -= 6;
-		if (CircleSize <= -6)
+		if (CircleSize <= -6&&black_flg==false)
 		{
 			fadein_flg = false;
+			CircleSize = 700;
 			delete player;
 			player_damage_once = false;
 			player = nullptr;
 			//gameover_flg = true;
+			black_flg = true;
 			player = new Player(2200.0f);
-			CircleSize = 700;
+
+			UpdateCamera(player->GetWorldLocation());
+			screen_origin_position = {camera_pos.x - SCREEN_WIDTH / 2.0f,camera_pos.y - SCREEN_HEIGHT / 2.0f};
 			player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-			//game_state = PLAY;
-			
+
+			ResetMap();
 		}
+		else {
+			CircleSize -= 8;
+		}
+
+		if (black_flg == true)
+		{
+			if (player != nullptr)
+			{
+
+				player->RespawnAnimUpdate();
+
+			}
+			alpha-=5;
+			if (player->GetStartFlg() == true)
+			{
+				game_state = PLAY;
+
+			}
+		}
+
+
+
+
+
+
+
 		break;
 	case PLAY:
 
@@ -1416,6 +1546,19 @@ void GameMainScene::Draw() const
 		DrawGraph(0, 0, ScreenHandle, TRUE);
 	}
 
+	if (black_flg == true)
+	{
+		//プレイヤー描画
+		if (player != nullptr)
+		{
+			player->Draw();
+		}
+
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+		DrawGraph(0, 0, death_img, FALSE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
+
 #ifdef DEBUG
 
 	//DrawFormatString(300, 180, 0xffffff, "abs: %f", check_abs);
@@ -1801,6 +1944,7 @@ void GameMainScene::Tutorial()
 			stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 		}
 	}
+
 
 	screen_origin_position = {
 	camera_pos.x - SCREEN_WIDTH / 2.0f,

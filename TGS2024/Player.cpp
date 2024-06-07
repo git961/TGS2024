@@ -51,7 +51,7 @@ Player::Player(float set_x)
 
 	//体力
 	hp = 50;
-	//hp = 10;
+	hp = 10;
 
 	//幅と座標
 	width = 50;
@@ -1294,14 +1294,17 @@ void Player::RespawnAnimUpdate()
 		player_state = DEATH;
 		death_num = 3;
 		break;
-	case 30:
+	case 40:
 		player_state = PANIM;
 		op_num = 5;
 		break;
-	case 50:
+	case 80:
 		p_nomal_num = 7;
 		player_state = NOMAL;
 		death_anim_cnt = 0;
+		start_flg = true;
 		break;
 	}
+
+	
 }
