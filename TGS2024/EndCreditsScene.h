@@ -10,6 +10,8 @@ private:
 	int text_y;
 	int timer;
 	int score;
+	int tmp_score;
+	int num[5];				// 表示画像の要素番号（５桁分）
 	int change_cnt;		// シーン切り替えできるようになるまでのカウント
 	int volume;
 	int text_img[12];	// 使用素材のテキスト画像

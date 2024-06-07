@@ -6,6 +6,21 @@ EndCreditsScene::EndCreditsScene(int set_score)
 	text_y = 720;
 	timer = 0;
 	score = set_score;
+	tmp_score = score;
+
+	for (int i = 0; i < 5; i++)
+	{
+		if (tmp_score > 0)
+		{
+			num[i] = tmp_score % 10;
+			tmp_score /= 10;
+		}
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		num[i] = 0;
+	}
+
 	change_cnt = 180;
 	volume = 30;
 
@@ -29,6 +44,7 @@ EndCreditsScene::EndCreditsScene(int set_score)
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(volume, credits_bgm);
 
+
 }
 
 EndCreditsScene::~EndCreditsScene()
@@ -51,7 +67,17 @@ void EndCreditsScene::Update()
 {
 	input.InputUpdate();
 
-	timer++;
+	if (timer < 2400)
+	{
+		timer++;
+	}
+	else
+	{
+		if (change_cnt > 0)
+		{
+			change_cnt--;
+		}
+	}
 
 	// クレジットbgmループ再生
 	if (CheckSoundMem(credits_bgm) == FALSE)
@@ -65,10 +91,6 @@ void EndCreditsScene::Update()
 		ChangeVolumeSoundMem(volume, credits_bgm);
 	}
 
-	if (change_cnt > 0)
-	{
-		change_cnt--;
-	}
 }
 
 void EndCreditsScene::Draw() const
@@ -107,7 +129,10 @@ void EndCreditsScene::Draw() const
 
 	// スコア
 	DrawRotaGraph(640, 2500 - timer, 1.0, 0.0, text_img[11], TRUE, FALSE);
-
+	for (int i = 0; i < 5; i++)
+	{
+		DrawRotaGraph(880 - 120 * i, 2700 - timer, 2.0, 0.0, num_img[num[i]], TRUE, FALSE);
+	}
 }
 
 AbstractScene* EndCreditsScene::Change()
