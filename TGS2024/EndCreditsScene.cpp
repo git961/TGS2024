@@ -4,8 +4,24 @@ EndCreditsScene::EndCreditsScene()
 {
 	text_x = 700;
 	text_y = 720;
+	timer = 0;
 	change_cnt = 180;
 	volume = 30;
+
+	// 画像読込
+	text_img[0] = LoadGraph("images/text/credit/materials_used.png");
+	text_img[1] = LoadGraph("images/text/credit/bgm_se.png");
+	text_img[2] = LoadGraph("images/text/credit/koukaonrabo.png");
+	text_img[3] = LoadGraph("images/text/credit/koukaonkoubou.png");
+	text_img[4] = LoadGraph("images/text/credit/maoudamasii.png");
+	text_img[5] = LoadGraph("images/text/credit/otologic.png");
+	text_img[6] = LoadGraph("images/text/credit/image.png");
+	text_img[7] = LoadGraph("images/text/credit/dotlist.png");
+	text_img[8] = LoadGraph("images/text/credit/font.png");
+	text_img[9] = LoadGraph("images/text/credit/4_4gokusyoukanafont.png");
+	text_img[10] = LoadGraph("images/text/credit/pixelmplus10.png");
+	text_img[11] = LoadGraph("images/text/credit/your_score.png");
+	LoadDivGraph("images/UI/num.png", 10, 10, 1, 64, 64, num_img);
 
 	// サウンド読込
 	credits_bgm = LoadSoundMem("sounds/bgm/ending.mp3");
@@ -16,12 +32,25 @@ EndCreditsScene::EndCreditsScene()
 
 EndCreditsScene::~EndCreditsScene()
 {
+	// 画像削除
+	for (int i = 0; i < 12; i++)
+	{
+		DeleteGraph(text_img[i]);
+	}
+	for (int i = 0; i < 10; i++)
+	{
+		DeleteGraph(num_img[i]);
+	}
 
+	// サウンド削除
+	DeleteSoundMem(credits_bgm);
 }
 
 void EndCreditsScene::Update()
 {
 	input.InputUpdate();
+
+	timer++;
 
 	// クレジットbgmループ再生
 	if (CheckSoundMem(credits_bgm) == FALSE)
@@ -55,37 +84,27 @@ void EndCreditsScene::Draw() const
 		DrawFormatString(500, 600, 0xffffff, "B: Title");
 	}
 
-	SetFontSize(40);
+	// 使用素材
+	DrawRotaGraph(640, 800 - timer, 1.0, 0.0, text_img[0], TRUE, FALSE);
 
-	// テキストは画像に変更する
-	DrawFormatString(500, 100, 0xffffff, "1");
+	// bgm・seなど
+	DrawRotaGraph(640, 950 - timer, 1.0, 0.0, text_img[1], TRUE, FALSE);
+	DrawRotaGraph(640, 1030 - timer, 1.0, 0.0, text_img[2], TRUE, FALSE);
+	DrawRotaGraph(640, 1110 - timer, 1.0, 0.0, text_img[3], TRUE, FALSE);
+	DrawRotaGraph(640, 1190 - timer, 1.0, 0.0, text_img[4], TRUE, FALSE);
+	DrawRotaGraph(640, 1270 - timer, 1.0, 0.0, text_img[5], TRUE, FALSE);
 
-	DrawFormatString(500, 150, 0xffffff, "2");
-	DrawFormatString(500, 190, 0xffffff, "3");
-	DrawFormatString(500, 230, 0xffffff, "4");
-	DrawFormatString(500, 270, 0xffffff, "5");
-	DrawFormatString(500, 310, 0xffffff, "6");
+	// 画像など
+	DrawRotaGraph(640, 1420 - timer, 1.0, 0.0, text_img[6], TRUE, FALSE);
+	DrawRotaGraph(640, 1500 - timer, 1.0, 0.0, text_img[7], TRUE, FALSE);
 
-	DrawFormatString(500, 360, 0xffffff, "7");
-	DrawFormatString(500, 400, 0xffffff, "8");
+	// フォントなど
+	DrawRotaGraph(640, 1650 - timer, 1.0, 0.0, text_img[8], TRUE, FALSE);
+	DrawRotaGraph(640, 1730 - timer, 1.0, 0.0, text_img[9], TRUE, FALSE);
+	DrawRotaGraph(640, 1810 - timer, 1.0, 0.0, text_img[10], TRUE, FALSE);
 
-	DrawFormatString(500, 450, 0xffffff, "9");
-	DrawFormatString(500, 490, 0xffffff, "10");
-
-	// ↓文字化けする
-	//DrawFormatString(500, 100, 0xffffff, "使用素材");
-
-	//DrawFormatString(500, 150, 0xffffff, "BGM・SE");
-	//DrawFormatString(500, 190, 0xffffff, "効果音ラボ");
-	//DrawFormatString(500, 230, 0xffffff, "効果音工房");
-	//DrawFormatString(500, 270, 0xffffff, "魔王魂");
-	//DrawFormatString(500, 310, 0xffffff, "OtoLogic");
-
-	//DrawFormatString(500, 360, 0xffffff, "画像");
-	//DrawFormatString(500, 400, 0xffffff, "DOTLIST");
-
-	//DrawFormatString(500, 450, 0xffffff, "フォント");
-	//DrawFormatString(500, 490, 0xffffff, "4x4極小かなフォント");
+	// スコア
+	DrawRotaGraph(640, 2500 - timer, 1.0, 0.0, text_img[11], TRUE, FALSE);
 
 }
 
