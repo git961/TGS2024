@@ -38,6 +38,7 @@ enum GameState {
     TUTORIAL,
     POSE,
     GOAL,
+    RESPAWN,
     PLAY
 };
 
@@ -78,6 +79,8 @@ private:
 
     int back_img[10];//背景入れるよう
     int goal_img;//ゴールした後に表示する画像入れる用
+    int death_img;//プレイヤーが死んだとき用
+    float img_extrate;//画像の拡大率変更用
 
     int check_num;//blockのどこに当たったか貰うよう
 
@@ -119,6 +122,13 @@ private:
     bool gameover_flg;         // ゲームオーバーになったか？
     int main_bgm;
     int volume;
+
+    //円形フェードイン
+    int CircleSize;
+    int ScreenHandle;
+    bool fadein_flg;//フェードイン開始フラグ
+
+    int p_death_cnt;//プレイヤーが何回死んだかカウントする用
 
 public:
     GameMainScene();

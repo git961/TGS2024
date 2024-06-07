@@ -19,7 +19,8 @@ GameMainScene::GameMainScene()
 
 	mapio = new MapIo;
 
-	player = new Player(0.0f);
+	//player = new Player(0.0f);
+	player = new Player(2200.0f);
 
 	enemy = new Enemy * [ENEMYMAXNUM];
 	rolling_enemy = new RollingEnemy*[ROLLING_ENEMY_MAXNUM];
@@ -42,11 +43,14 @@ GameMainScene::GameMainScene()
 	back_img[0] = LoadGraph("images/Backimg/backimg.png", TRUE);
 	back_img[9] = LoadGraph("images/Backimg/backimgGoal.png", TRUE);
 	goal_img= LoadGraph("images/Ending/ending8.png", TRUE);
+	death_img= LoadGraph("images/Backimg/death.png", TRUE);
 	//back_img = LoadGraph("images/background_test.png", TRUE);
 
 
-	game_state = TUTORIAL;
+	//game_state = TUTORIAL;
 	game_state = PLAY;
+
+	//game_state = RESPAWN;
 
 	//enemyhit = false;		// 当たっていない
 
@@ -170,6 +174,14 @@ GameMainScene::GameMainScene()
 	camera_resetx.x = 0;
 	camera_resetflg = false;
 	camera_old_x = 0;
+
+	img_extrate = 5;
+
+	//円形フェードイン用の描画対象にできる画像を作成
+	ScreenHandle = MakeScreen(1280, 720, TRUE);
+	//円形フェードインの円のサイズをセット
+	CircleSize = 700;
+	fadein_flg = false;
 }
 
 
@@ -364,7 +376,25 @@ void GameMainScene::Update()
 			clear_flg = true;
 		}
 		break;
+	case RESPAWN:
+
+		CircleSize -= 6;
+		if (CircleSize <= -6)
+		{
+			fadein_flg = false;
+			delete player;
+			player_damage_once = false;
+			player = nullptr;
+			//gameover_flg = true;
+			player = new Player(2200.0f);
+			CircleSize = 700;
+			player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			//game_state = PLAY;
+			
+		}
+		break;
 	case PLAY:
+
 		if (CheckHitKey(KEY_INPUT_SPACE) == 1)
 		{
 			game_state = EDITOR;
@@ -1170,12 +1200,8 @@ void GameMainScene::Update()
 				//プレイヤーの死亡処理
 				if (player->GetDeathFlg() == true)
 				{
-					delete player;
-					player_damage_once = false;
-					player = nullptr;
-					//gameover_flg = true;
-					player = new Player(2200.0f);
-					//player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+					fadein_flg = true;
+					game_state = RESPAWN;
 				}
 			}
 			break;
@@ -1196,6 +1222,7 @@ void GameMainScene::Draw() const
 		DrawGraph(location_x+1280*i, location_y, back_img[0], FALSE);
 	}
 	DrawGraph(location_x + 1280 * 8, location_y, back_img[9], FALSE);
+
 
 
 	//DrawFormatString(0, 0, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
@@ -1367,6 +1394,28 @@ void GameMainScene::Draw() const
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	}
+
+	if (fadein_flg==true)
+	{
+		//DrawGraph(location_x, location_y, death_img, FALSE);
+		if (player != nullptr)
+		{
+			//DrawRotaGraph(player->GetLocation().x, 700, img_extrate, 0, death_img, TRUE, 0);
+
+			SetDrawScreen(ScreenHandle);
+			DrawBox(0, 0, 1280, 720, GetColor(0, 0, 0), TRUE);
+			if (CircleSize >= 1)
+			{
+				SetDrawBlendMode(DX_BLENDMODE_SRCCOLOR, 0);
+				DrawCircle(player->GetLocation().x, player->GetLocation().y + 40, CircleSize, GetColor(0, 0, 0), TRUE);
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+			}
+		}
+
+		SetDrawScreen(DX_SCREEN_BACK);
+		DrawGraph(0, 0, ScreenHandle, TRUE);
+	}
+
 #ifdef DEBUG
 
 	//DrawFormatString(300, 180, 0xffffff, "abs: %f", check_abs);
