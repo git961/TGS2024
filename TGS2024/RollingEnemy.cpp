@@ -44,6 +44,9 @@ RollingEnemy::RollingEnemy(float set_x)
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(255, roll_sound);
 	ChangeVolumeSoundMem(100, death_sount);
+
+	stop_move_flg = false;
+
 }
 
 RollingEnemy::~RollingEnemy()
@@ -62,6 +65,7 @@ RollingEnemy::~RollingEnemy()
 	// サウンド削除
 	DeleteSoundMem(roll_sound);
 	DeleteSoundMem(death_sount);
+
 }
 
 void RollingEnemy::Update(GameMainScene* gamemain)
@@ -74,40 +78,42 @@ void RollingEnemy::Update(GameMainScene* gamemain)
 			PlaySoundMem(roll_sound, DX_PLAYTYPE_BACK);
 		}
 
-		if (direction == true)
+		if (stop_move_flg == false)
 		{
-			// 右回り
-			if (degree < 360.0)
+			if (direction == true)
 			{
-				degree += (double)speed;
+				// 右回り
+				if (degree < 360.0)
+				{
+					degree += (double)speed;
+				}
+				else
+				{
+					degree = 0.0;
+				}
 			}
 			else
 			{
-				degree = 0.0;
+				// 左回り
+				if (degree > 0.0)
+				{
+					degree -= (double)speed;
+				}
+				else
+				{
+					degree = 360.0;
+				}
 			}
-		}
-		else
-		{
-			// 左回り
-			if (degree > 0.0)
-			{
-				degree -= (double)speed;
-			}
-			else
-			{
-				degree = 360.0;
-			}
-		}
 
-		// 画像の角度
-		angle = DEGREE_RADIAN(degree);
+			// 画像の角度
+			angle = DEGREE_RADIAN(degree);
 
-		// 移動処理
-		world.x += speed * move_x;
+			// 移動処理
+			world.x += speed * move_x;
+		}
 	}
 	else
 	{
-
 		if (sound_play == true)
 		{
 			if (CheckSoundMem(death_sount) == FALSE)
@@ -199,7 +205,8 @@ void RollingEnemy::Update(GameMainScene* gamemain)
 void RollingEnemy::Draw() const
 {
 #ifdef DEBUG
-	//DrawFormatString(0, 50, 0xffffff, "hp : %f", hp);
+	DrawFormatString(0, 50, 0xffffff, "hp : %f", hp);
+	DrawFormatString(0, 200, 0xffffff, "flg%d", stop_move_flg);
 	//DrawFormatString(location.x - 100, 530, 0xffffff, "enemy_image_num : %d", enemy_image_num);
 	//DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0x3c3c3c, true);			// 当たり判定のボックス
 #endif // DEBUG

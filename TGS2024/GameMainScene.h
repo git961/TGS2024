@@ -59,7 +59,7 @@ private:
     MapIo *mapio;
     StageBlock **stage_block;
     Gem** walk_gem;             // 配列
-    Gem* roll_gem;
+    Gem** roll_gem;
     Score* score;
 
     UI* ui;
