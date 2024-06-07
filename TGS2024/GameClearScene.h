@@ -5,13 +5,14 @@
 class GameClearScene : public AbstractScene
 {
 private:
+	int score;
 	int change_cnt;		// シーン切り替えできるようになるまでのカウント
 	int volume;
 	bool se_flg;
 	int gameclear_se;
 
 public:
-	GameClearScene();
+	GameClearScene(int set_score);
 	~GameClearScene();
 
 	void Update() override;

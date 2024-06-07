@@ -1756,7 +1756,7 @@ AbstractScene* GameMainScene::Change()
 		}
 
 		// プレイヤーの残機が0になったら
-		return new GameOverScene;
+		return new GameOverScene(score->GetScore());
 	}
 
 	if (clear_flg == true)
@@ -1768,7 +1768,7 @@ AbstractScene* GameMainScene::Change()
 		}
 
 		// ゴールに触れたら
-		return new GameClearScene;
+		return new GameClearScene(score->GetScore());
 	}
 
 	return this;

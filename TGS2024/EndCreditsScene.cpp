@@ -1,10 +1,11 @@
 #include "EndCreditsScene.h"
 
-EndCreditsScene::EndCreditsScene()
+EndCreditsScene::EndCreditsScene(int set_score)
 {
 	text_x = 700;
 	text_y = 720;
 	timer = 0;
+	score = set_score;
 	change_cnt = 180;
 	volume = 30;
 
@@ -77,6 +78,7 @@ void EndCreditsScene::Draw() const
 	DrawFormatString(10, 10, 0xffffff, "EndCredits");
 	DrawFormatString(10, 50, 0xffffff, "draw_cnt: %d", change_cnt);
 	DrawFormatString(10, 70, 0xffffff, "volume: %d", volume);
+	DrawFormatString(10, 90, 0xffffff, "score: %d", score);
 #endif // DEBUG
 
 	if (change_cnt <= 0)
