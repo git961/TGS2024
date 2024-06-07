@@ -20,4 +20,5 @@ public:
 	void Draw() const;
 
 	void SetScore(int set_score) { score += set_score; }
+	int GetScore() const { return score; }
 };

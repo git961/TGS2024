@@ -1,7 +1,8 @@
 #include "GameClearScene.h"
 
-GameClearScene::GameClearScene()
+GameClearScene::GameClearScene(int set_score)
 {
+	score = set_score;
 	change_cnt = 180;
 	volume = 150;
 	se_flg = true;
@@ -211,6 +212,7 @@ void GameClearScene::Draw() const
 	SetFontSize(20);
 	DrawFormatString(10, 10, 0xffffff, "GameClear");
 	DrawFormatString(10, 50, 0xffffff, "draw_cnt: %d", change_cnt);
+	DrawFormatString(10, 70, 0xffffff, "score: %d", score);
 
 #endif // DEBUG
 	//if (change_cnt <= 0)

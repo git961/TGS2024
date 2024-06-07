@@ -47,6 +47,7 @@ AnimScene::AnimScene()
 	anim_bgm = LoadSoundMem("sounds/bgm/opening.mp3");
 	op_sad_sound = LoadSoundMem("sounds/se/player/sad.mp3");
 	play_sad_sound = true;
+	play_cloth_sound = true;
 
 
 	// サウンドの音量設定
@@ -119,9 +120,10 @@ void AnimScene::Update()
 			if (alpha > 300) {
 				p_backimg_num = 1;
 				//布擦れ音
-				if (CheckSoundMem(cloth_rubbing_sound) == FALSE)
+				if (play_cloth_sound == true)
 				{
 					PlaySoundMem(cloth_rubbing_sound, DX_PLAYTYPE_BACK);
+					play_cloth_sound = false;
 				}
 			}
 			
