@@ -22,22 +22,23 @@ EndCreditsScene::EndCreditsScene(int set_score)
 	}
 
 	change_cnt = 180;
-	volume = 30;
+	volume = 0;
 
 	// 画像読込
-	text_img[0] = LoadGraph("images/text/credit/materials_used.png");
-	text_img[1] = LoadGraph("images/text/credit/bgm_se.png");
-	text_img[2] = LoadGraph("images/text/credit/koukaonrabo.png");
-	text_img[3] = LoadGraph("images/text/credit/koukaonkoubou.png");
-	text_img[4] = LoadGraph("images/text/credit/maoudamasii.png");
-	text_img[5] = LoadGraph("images/text/credit/otologic.png");
-	text_img[6] = LoadGraph("images/text/credit/image.png");
-	text_img[7] = LoadGraph("images/text/credit/dotlist.png");
-	text_img[8] = LoadGraph("images/text/credit/font.png");
-	text_img[9] = LoadGraph("images/text/credit/4_4gokusyoukanafont.png");
-	text_img[10] = LoadGraph("images/text/credit/pixelmplus10.png");
-	text_img[11] = LoadGraph("images/text/credit/your_score.png");
+	text_img[0] = LoadGraph("images/scene/credit/materials_used.png");
+	text_img[1] = LoadGraph("images/scene/credit/bgm_se.png");
+	text_img[2] = LoadGraph("images/scene/credit/koukaonrabo.png");
+	text_img[3] = LoadGraph("images/scene/credit/koukaonkoubou.png");
+	text_img[4] = LoadGraph("images/scene/credit/maoudamasii.png");
+	text_img[5] = LoadGraph("images/scene/credit/otologic.png");
+	text_img[6] = LoadGraph("images/scene/credit/image.png");
+	text_img[7] = LoadGraph("images/scene/credit/dotlist.png");
+	text_img[8] = LoadGraph("images/scene/credit/font.png");
+	text_img[9] = LoadGraph("images/scene/credit/4_4gokusyoukanafont.png");
+	text_img[10] = LoadGraph("images/scene/credit/pixelmplus10.png");
+	text_img[11] = LoadGraph("images/scene/credit/your_score.png");
 	LoadDivGraph("images/UI/num.png", 10, 10, 1, 64, 64, num_img);
+	push_b_img = LoadGraph("images/scene/push_b_white.png");
 
 	// サウンド読込
 	credits_bgm = LoadSoundMem("sounds/bgm/ending.mp3");
@@ -58,6 +59,7 @@ EndCreditsScene::~EndCreditsScene()
 	{
 		DeleteGraph(num_img[i]);
 	}
+	DeleteGraph(push_b_img);
 
 	// サウンド削除
 	DeleteSoundMem(credits_bgm);
@@ -67,7 +69,7 @@ void EndCreditsScene::Update()
 {
 	input.InputUpdate();
 
-	if (timer < 2400)
+	if (timer < 2300)
 	{
 		timer++;
 	}
@@ -103,11 +105,6 @@ void EndCreditsScene::Draw() const
 	DrawFormatString(10, 90, 0xffffff, "score: %d", score);
 #endif // DEBUG
 
-	if (change_cnt <= 0)
-	{
-		DrawFormatString(500, 600, 0xffffff, "B: Title");
-	}
-
 	// 使用素材
 	DrawRotaGraph(640, 800 - timer, 1.0, 0.0, text_img[0], TRUE, FALSE);
 
@@ -132,6 +129,11 @@ void EndCreditsScene::Draw() const
 	for (int i = 0; i < 5; i++)
 	{
 		DrawRotaGraph(880 - 120 * i, 2700 - timer, 2.0, 0.0, num_img[num[i]], TRUE, FALSE);
+	}
+
+	if (change_cnt <= 0)
+	{
+		DrawRotaGraph(640, 680, 1.0, 0.0, push_b_img, TRUE, FALSE);
 	}
 }
 

@@ -38,9 +38,6 @@ private:
 
     int cnt;
 
-    int fps_cnt;
-    int fps;
-
     int back_img;//背景入れるよう
     int block_img;//ブロック画像
     int black_img;//黒の画像
