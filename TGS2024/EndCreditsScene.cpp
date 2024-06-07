@@ -22,7 +22,8 @@ EndCreditsScene::EndCreditsScene(int set_score)
 	}
 
 	change_cnt = 180;
-	volume = 0;
+	volume = 20;
+	volume_timer = 1;
 
 	// 画像読込
 	text_img[0] = LoadGraph("images/scene/credit/materials_used.png");
@@ -37,14 +38,13 @@ EndCreditsScene::EndCreditsScene(int set_score)
 	text_img[9] = LoadGraph("images/scene/credit/4_4gokusyoukanafont.png");
 	text_img[10] = LoadGraph("images/scene/credit/pixelmplus10.png");
 	text_img[11] = LoadGraph("images/scene/credit/your_score.png");
-	LoadDivGraph("images/UI/num.png", 10, 10, 1, 64, 64, num_img);
+	LoadDivGraph("images/scene/credit/num.png", 10, 10, 1, 64, 64, num_img);
 	push_b_img = LoadGraph("images/scene/push_b_white.png");
 
 	// サウンド読込
 	credits_bgm = LoadSoundMem("sounds/bgm/ending.mp3");
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(volume, credits_bgm);
-
 
 }
 
@@ -89,8 +89,16 @@ void EndCreditsScene::Update()
 
 	if (volume < 140)
 	{
-		volume++;
-		ChangeVolumeSoundMem(volume, credits_bgm);
+		//volume++;
+		//ChangeVolumeSoundMem(volume, credits_bgm);
+
+		volume_timer++;
+		if (volume_timer % 2 == 0)
+		{
+			volume++;
+			ChangeVolumeSoundMem(volume, credits_bgm);
+		}
+
 	}
 
 }
@@ -125,10 +133,10 @@ void EndCreditsScene::Draw() const
 	DrawRotaGraph(640, 1810 - timer, 1.0, 0.0, text_img[10], TRUE, FALSE);
 
 	// スコア
-	DrawRotaGraph(640, 2500 - timer, 1.0, 0.0, text_img[11], TRUE, FALSE);
+	DrawRotaGraph(650, 2500 - timer, 1.0, 0.0, text_img[11], TRUE, FALSE);
 	for (int i = 0; i < 5; i++)
 	{
-		DrawRotaGraph(880 - 120 * i, 2700 - timer, 2.0, 0.0, num_img[num[i]], TRUE, FALSE);
+		DrawRotaGraph(860 - 110 * i, 2700 - timer, 2.0, 0.0, num_img[num[i]], TRUE, FALSE);
 	}
 
 	if (change_cnt <= 0)
