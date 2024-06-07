@@ -45,7 +45,6 @@ RollingEnemy::RollingEnemy(float set_x)
 	ChangeVolumeSoundMem(255, roll_sound);
 	ChangeVolumeSoundMem(100, death_sount);
 
-	stop_move_flg = false;
 
 }
 

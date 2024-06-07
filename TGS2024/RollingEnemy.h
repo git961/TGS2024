@@ -31,7 +31,6 @@ private:
     bool is_delete;      // 削除するか？
     bool just_death;     // 死亡したばかりか？
     bool gem_drop;       // 宝石を落とすか？
-    bool stop_move_flg;//ダイナマイトに当たったら動きを止める
 
 public:
 
@@ -42,7 +41,6 @@ public:
     void Draw() const;
 
     void Damege(int damege);                // 被ダメージ処理
-    void StopMove(bool set_flg) { stop_move_flg = set_flg; }
 
     float GetHp() const { return hp; }            // hp取得
     float GetAttack() const { return attack; }// 攻撃力取得

@@ -757,7 +757,6 @@ void GameMainScene::Update()
 							if (dynamite[i]->HitCheck(rolling_enemy[j]->GetWorldLocation(), rolling_enemy[j]->GetWidth(), rolling_enemy[j]->GetHeight()) == true)
 							{
 								dynamite[i]->SetDynamite(true);
-								//rolling_enemy[j]->StopMove(true);
 								rolling_enemy[j]->Damege(dynamite[i]->GetAttack());
 							}
 						}
