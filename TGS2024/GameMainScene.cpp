@@ -512,7 +512,9 @@ void GameMainScene::Update()
 			if (player->GetStartFlg() == true)
 			{
 				game_state = PLAY;
-
+				black_flg = false;
+				alpha = 255;
+				CircleSize = 700;
 			}
 		}
 
@@ -1569,6 +1571,7 @@ void GameMainScene::Draw() const
 	//DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
 	//DrawFormatString(30, 300, 0xffffff, "m_mode: %d", map_mode);
 	//DrawFormatString(30, 300, 0xffffff, "e_cnt: %d", enemy_count);
+	DrawFormatString(30, 300, 0xffffff, "CircleSize:%d", CircleSize);
 
 
 	switch (game_state)

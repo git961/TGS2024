@@ -151,7 +151,7 @@ void Player::Update(GameMainScene* gamemain)
 		death_anim_cnt++;
 		switch (death_anim_cnt)
 		{
-		case 0:
+		case 1:
 			death_num = 0;
 			break;
 		case 5:
@@ -1299,6 +1299,7 @@ void Player::RespawnAnimUpdate()
 		op_num = 5;
 		break;
 	case 80:
+		death_num = 0;
 		p_nomal_num = 7;
 		player_state = NOMAL;
 		death_anim_cnt = 0;
