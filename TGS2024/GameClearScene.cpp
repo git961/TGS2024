@@ -286,7 +286,7 @@ AbstractScene* GameClearScene::Change()
 
 	if (alpha2 > 300)
 	{
-		return new EndCreditsScene;
+		return new EndCreditsScene(score);
 	}
 	return this;
 }

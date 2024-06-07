@@ -85,7 +85,6 @@ private:
     int check_num;//blockのどこに当たったか貰うよう
 
     // 背景画像スクロール用
-    // ※　後で削除予定！！！
     float location_x;
     float location_y;
     float world_x;

@@ -1519,13 +1519,7 @@ void GameMainScene::Draw() const
 
 	}
 
-	if (game_state == GOAL)
-	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, clear_alpha);
-		DrawGraph(location_x, location_y, goal_img, FALSE);
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	}
 
 	if (fadein_flg==true)
 	{
@@ -1559,6 +1553,14 @@ void GameMainScene::Draw() const
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 		DrawGraph(0, 0, death_img, FALSE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
+
+	if (game_state == GOAL)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, clear_alpha);
+		DrawGraph(0, 0, goal_img, FALSE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 	}
 
 #ifdef DEBUG
