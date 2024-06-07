@@ -2,8 +2,8 @@
 
 TitleScene::TitleScene()
 {
-	cursor_x = 120;
-	cursor_y = 120;
+	cursor_x = 400;
+	cursor_y = 410;
 	cursor_start_y = 120;
 	cursor_move_interval = 40;
 	cursor_num = Start;
@@ -120,6 +120,16 @@ void TitleScene::Update()
 					push_b_flg = true;
 				}
 			}
+
+			if (cursor_num == Start)
+			{
+				cursor_y = 410;
+			}
+			else
+			{
+				cursor_y = 520;
+			}
+
 		}
 		else
 		{
@@ -141,28 +151,34 @@ void TitleScene::Draw() const
 	SetFontSize(20);
 	DrawFormatString(10, 10, 0xffffff, "Title");
 	DrawFormatString(10, 50, 0xffffff, "draw_cnt: %d", change_cnt);
+	DrawFormatString(10, 70, 0xffffff, "scene_change_cnt: %d", scene_change_cnt);
 
-	SetFontSize(40);
-	DrawFormatString(150, 130, 0xffffff, "Start");
-	DrawFormatString(150, 250, 0xffffff, "End");
+	//SetFontSize(40);
+	//DrawFormatString(150, 130, 0xffffff, "Start");
+	//DrawFormatString(150, 250, 0xffffff, "End");
 
-	SetFontSize(20);
-	DrawFormatString(300, 10, 0xffffff, "scene_change_cnt: %d", scene_change_cnt);
 #endif // DEBUG
 
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
+	// タイトル配置目安画像
 	//DrawRotaGraph(640, 360, 1.0, 0.0, back_img, TRUE, FALSE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	// タイトル
+	DrawRotaGraph(640, 180, 1.0, 0.0, text_img[0], TRUE, FALSE);
+
+	// start・end
+	DrawRotaGraph(640, 410, 1.0, 0.0, text_img[1], TRUE, FALSE);
+	DrawRotaGraph(640, 520, 1.0, 0.0, text_img[2], TRUE, FALSE);
+
+	// カーソル画像
+	DrawRotaGraph(cursor_x, cursor_y, 1.0, 0.0, cursor_img, TRUE, FALSE);
 
 	if (change_cnt <= 0)
 	{
-		DrawFormatString(500, 600, 0xffffff, "B: decision");
+		// push_b
+		//DrawRotaGraph(640, 650, 1.0, 0.0, text_img[3], TRUE, FALSE);
 	}
-
-	DrawRotaGraph(cursor_x, cursor_y, 1.0, 0.0, cursor_img, TRUE, FALSE);
-
-	DrawCircle(cursor_x, cursor_y * cursor_num + cursor_y, 4, 0xffffff, true);
-
-	// push_b
-	DrawRotaGraph(640, 680, 1.0, 0.0, text_img[3], TRUE, FALSE);
 }
 
 AbstractScene* TitleScene::Change()
