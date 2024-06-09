@@ -51,7 +51,7 @@ Player::Player(float set_x)
 
 	//体力
 	hp = 50;
-	//hp = 10;
+	hp = 10;
 
 	//幅と座標
 	width = 50;
@@ -260,16 +260,34 @@ void Player::Update(GameMainScene* gamemain)
 		}
 
 
-		// 端に来たら跳ね返る
-		if (world.x + width / 2 > FIELD_WIDTH)
+
+		if (gamemain->GetPlayerLife() >= 3)
 		{
-			world.x = FIELD_WIDTH - 20;
+			// 端に来たら跳ね返る
+			if (world.x + width / 2 > FIELD_WIDTH)
+			{
+				world.x = FIELD_WIDTH - 20;
 
+			}
+			else if (world.x - width / 2 < 0) {
+				world.x = width / 2;
+			}
 		}
-		else if (world.x - width / 2 < 0) {
-			world.x = width / 2;
+		else
+		{
+			// 端に来たら跳ね返る
+			if (world.x + width / 2 > FIELD_WIDTH)
+			{
+				world.x = FIELD_WIDTH - 20;
 
+			}
+			else if (world.x - width / 2 < 2100) {
+				world.x = 2100 + width / 2;
+
+			}
 		}
+
+
 
 		//敵からダメージを食らったら
 		if (hit_damage == true)

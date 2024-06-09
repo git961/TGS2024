@@ -197,6 +197,8 @@ GameMainScene::GameMainScene()
 	fadein_flg = false;
 	alpha = 255;
 	black_flg = false;
+
+	p_life_num = 3;
 }
 
 
@@ -273,14 +275,8 @@ void GameMainScene::ResetMap()
 			case 4:
 				stage_block[block_count++] = new StageBlock(4, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
-			case 5:
-				stage_block[block_count++] = new StageBlock(5, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
-				break;
 			case 6:
 				stage_block[block_count++] = new StageBlock(6, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
-				break;
-			case 7:
-				stage_block[block_count++] = new StageBlock(7, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 10:
 				stage_block[block_count++] = new StageBlock(10, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
@@ -553,6 +549,7 @@ void GameMainScene::Update()
 			alpha-=5;
 			if (player->GetStartFlg() == true)
 			{
+				p_life_num--;
 				game_state = PLAY;
 				black_flg = false;
 				alpha = 255;

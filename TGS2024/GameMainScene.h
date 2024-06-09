@@ -125,6 +125,8 @@ private:
     int main_bgm;
     int volume;
 
+    int p_life_num;//プレイヤーの残機数
+
     //円形フェードイン
     int CircleSize;
     int ScreenHandle;
@@ -148,6 +150,8 @@ public:
     void SetPlayerDamageOnce(bool set_flg) { player_damage_once = set_flg; }
 
     void ShakeCamera(bool set_true, int set_num);
+
+    int GetPlayerLife() { return p_life_num; }
 
     void Tutorial();
 
