@@ -1000,6 +1000,11 @@ void Player::TutorialAnimUpdate()
 		{
 			tuto_num = 2;
 		}
+		else
+		{
+			//
+			tuto_ui_num = 4;
+		}
 
 		SetVertex();
 

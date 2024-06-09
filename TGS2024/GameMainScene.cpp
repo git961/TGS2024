@@ -19,8 +19,8 @@ GameMainScene::GameMainScene()
 
 	mapio = new MapIo;
 
-	//player = new Player(0.0f);
-	player = new Player(2200.0f);
+	player = new Player(0.0f);
+	//player = new Player(2200.0f);
 
 	enemy = new Enemy * [ENEMYMAXNUM];
 	rolling_enemy = new RollingEnemy*[ROLLING_ENEMY_MAXNUM];
@@ -47,8 +47,8 @@ GameMainScene::GameMainScene()
 	//back_img = LoadGraph("images/background_test.png", TRUE);
 
 
-	//game_state = TUTORIAL;
-	game_state = PLAY;
+	game_state = TUTORIAL;
+	//game_state = PLAY;
 
 	//game_state = RESPAWN;
 
@@ -76,6 +76,8 @@ GameMainScene::GameMainScene()
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
 		enemy[i] = nullptr;
+		walk_gem[i] = nullptr;
+		
 	}
 
 	//ローリングエネミーとジェム

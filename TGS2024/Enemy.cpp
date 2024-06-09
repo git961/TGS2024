@@ -65,6 +65,7 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 	if (direction == true)
 	{
 		move_x *= -1;
+		world.y = -60;
 	}
 
 	star.x = 0.0f;

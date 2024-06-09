@@ -7,6 +7,7 @@ UI::UI(int set_hp, int set_dyna_num)
 	dyna_img= LoadGraph("images/UI/dynamite.png");
 	LoadDivGraph("images/UI/UIB.png", 2, 2, 1, 128, 128, btnB_img);
 	LoadDivGraph("images/UI/UIY.png", 2, 2, 1, 128, 128, btnY_img);
+	LoadDivGraph("images/UI/walk_UI.png", 4, 4, 1, 128, 128, btnmove_img);
 	tuto_backimg[0] = LoadGraph("images/Animscene/dynapic.png");
 	tuto_backimg[1] = LoadGraph("images/Animscene/kanbananim.png");
 	//tuto_backimg[2] = LoadGraph("images/Animscene/kanbananim2.png");
@@ -26,6 +27,7 @@ UI::UI(int set_hp, int set_dyna_num)
 	alpha_flg = false;
 	kanban_anim_num = 1;
 	i = 0;
+	btn_flg = false;
 }
 
 UI::~UI()
@@ -122,21 +124,46 @@ void UI::UpdateTutorial(Player* player)
 
 		break;
 	case 4:
-		//alpha += 5;
-		//i++;
-		//switch (i)
-		//{
-		//case 100:
-		//	kanban_anim_num = 2;
-		//	break;
-		//case 200:
-		//	kanban_anim_num = 3;
-		//	break;
-		//case 300:
-		//	kanban_anim_num = 4;
-		//	break;
-		//}
 
+		if (btn_flg == false)
+		{
+			alpha = 255;
+			//歩行UI表示
+			btn_cnt++;
+			switch (btn_cnt)
+			{
+			case 1:
+				btn_num = 0;
+				break;
+			case 10:
+				btn_num = 1;
+				break;
+			case 20:
+				btn_num = 2;
+				break;
+			case 30:
+				btn_num = 3;
+				break;
+			case 40:
+				btn_cnt = 0;
+				break;
+			}
+
+			if (player->GetLocation().x > 600)
+			{
+				btn_flg = true;
+				btn_cnt = 0;
+				btn_num = 0;
+			}
+		}
+
+		if (btn_flg == true)
+		{
+			if (alpha > 0)
+			{
+				alpha -= 15;
+			}
+		}
 		break;
 
 	}
@@ -160,10 +187,14 @@ void UI::DrawTutorial(Player* player) const
 		DrawRotaGraph(player->GetLocation().x, player->GetLocation().y - 100, 1, 0, btnY_img[btn_num], TRUE, 0);
 		break;
 	case 4:
-		//SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
-		//DrawGraph(0, 0, tuto_backimg[1], TRUE);
-		//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		if (btn_flg == true)
+		{
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+		}
+		DrawRotaGraph(500, player->GetLocation().y - 100, 1, 0, btnmove_img[btn_num], TRUE, 0);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
+		
 		break;
 
 	}

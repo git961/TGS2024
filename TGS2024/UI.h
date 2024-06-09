@@ -14,6 +14,7 @@ private:
 	int dyna_img;//ダイナマイト残弾
 	int btnB_img[2];
 	int btnY_img[2];
+	int btnmove_img[4];
 	int tuto_backimg[10];
 	float alpha;
 	float alpha2;
@@ -28,6 +29,7 @@ private:
 	int dyna_num;//表示するダイナマイトの数
 	int btn_num;
 	int btn_cnt;
+	int btn_flg;
 
 public:
 	UI(int set_hp,int set_dyna_num);
