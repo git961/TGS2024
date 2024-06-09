@@ -27,6 +27,17 @@ struct Blockvertex
 	float upper_lefty[map_blockmax_x * map_blockmax_y];
 };
 
+struct block_effect
+{
+	float x;
+	float y;
+	double degree;      // 画像の角度（デグリー）
+	double radian;      // 画像の角度（ラジアン）
+	int timer;          // 描画時間
+	int count;          // 三角関数用
+	bool is_draw;       // 描画するか？
+};
+
 class StageBlock
 	:public CharacterBase
 {
@@ -36,6 +47,8 @@ private:
 	int block_num;//1:ステージブロック　3:Goal
 	int block_img;
 
+	int fragment_img[4];
+
 	float shakex;
 	int shake_cnt;
 	bool shake_flg;
@@ -43,6 +56,19 @@ private:
 	float helx, hely;//helmetのｘｙ
 	float angle;
 	bool is_up;
+
+	bool effect_flg;
+	block_effect fragment[4];
+	float v0[4];                      // 斜方投射時の初速度
+	float gravity;                    // 重力
+	float start_x;
+	float start_y;
+	float sum_t;
+	float t;
+	float mvx[4];
+	float mvy[4];
+	bool gem_drop;
+
 
 public:
 	int direction;
@@ -53,6 +79,9 @@ public:
 	void Update();
 	void Draw() const;
 	void DrawKanban() const;
+	void FragmentEffect();                      // 石の破片エフェクトの処理
+	void FragmentSet();
+
 	int GetBlockNum() { return block_num; }
 
 	void SetDamage(float damage) { hp = hp - damage; }

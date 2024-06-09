@@ -70,6 +70,7 @@ GameMainScene::GameMainScene()
 
 	block_count = 0;
 	enemy_count = 0;
+	rock_count = 0;
 	rolling_enemy_cnt = 0;
 
 	mapio->LoadMapData();
@@ -108,6 +109,7 @@ GameMainScene::GameMainScene()
 					stage_block[block_count++] = new StageBlock(3, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 					break;
 				case 4:
+					rock_count++;
 					stage_block[block_count++] = new StageBlock(4, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 					break;
 				case 5:
@@ -147,6 +149,13 @@ GameMainScene::GameMainScene()
 	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
 	{
 		dynamite[i] = nullptr;
+	}
+
+	rock_gem = new Gem*[rock_count];
+
+	for (int i = 0; i < rock_count; i++)
+	{
+		rock_gem[i] = nullptr;
 	}
 
 	check_num = 0;
@@ -244,6 +253,7 @@ void GameMainScene::ResetMap()
 
 	block_count = 0;
 	enemy_count = 0;
+	rock_count = 0;
 	rolling_enemy_cnt = 0;
 
 	//マップチップに反映する
@@ -304,6 +314,11 @@ void GameMainScene::ResetMap()
 				}
 			}
 		}
+	}
+
+	for (int i = 0; i < rock_count; i++)
+	{
+		rock_gem[i] = nullptr;
 	}
 
 	for (int j = 0; j < block_count; j++)
@@ -387,11 +402,13 @@ void GameMainScene::Update()
 		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
 			enemy[i] = nullptr;
+			walk_gem[i] = nullptr;
 		}
 
 		for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
 		{
 			rolling_enemy[i] = nullptr;
+			roll_gem[i] = nullptr;
 		}
 
 
@@ -402,6 +419,7 @@ void GameMainScene::Update()
 			mapio->SaveMapData();
 			block_count = 0;
 			enemy_count = 0;
+			rock_count = 0;
 			rolling_enemy_cnt = 0;
 
 			//マップチップに反映する
@@ -419,6 +437,7 @@ void GameMainScene::Update()
 						stage_block[block_count++] = new StageBlock(3, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 4:
+						rock_count++;
 						stage_block[block_count++] = new StageBlock(4, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 5:
@@ -461,7 +480,14 @@ void GameMainScene::Update()
 							rolling_enemy[rolling_enemy_cnt++] = new RollingEnemy(j * BLOCKSIZE + BLOCKSIZE / 2);
 						}
 					}
+
+
 				}
+			}
+
+			for (int i = 0; i < rock_count; i++)
+			{
+				rock_gem[i] = nullptr;
 			}
 
 			game_state = PLAY;
