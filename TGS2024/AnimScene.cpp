@@ -1,7 +1,4 @@
 #include "AnimScene.h"
-//画面の中央を座標に入れる
-
-
 
 AnimScene::AnimScene()
 {
@@ -257,7 +254,7 @@ void AnimScene::Draw() const
 
 	DrawGraph(x, 640,block_img, FALSE);
 
-	if (anim_scene == 1||fallingrock->GetBlackOut() == true)
+	if (anim_scene==0||anim_scene == 1||fallingrock->GetBlackOut() == true)
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 		DrawGraph(screen_origin_position.x, 0, black_img, FALSE);

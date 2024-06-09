@@ -77,8 +77,6 @@ void RollingEnemy::Update(GameMainScene* gamemain)
 			PlaySoundMem(roll_sound, DX_PLAYTYPE_BACK);
 		}
 
-		if (stop_move_flg == false)
-		{
 			if (direction == true)
 			{
 				// 右回り
@@ -109,7 +107,8 @@ void RollingEnemy::Update(GameMainScene* gamemain)
 
 			// 移動処理
 			world.x += speed * move_x;
-		}
+		
+	
 	}
 	else
 	{
@@ -205,7 +204,6 @@ void RollingEnemy::Draw() const
 {
 #ifdef DEBUG
 	DrawFormatString(0, 50, 0xffffff, "hp : %f", hp);
-	DrawFormatString(0, 200, 0xffffff, "flg%d", stop_move_flg);
 	//DrawFormatString(location.x - 100, 530, 0xffffff, "enemy_image_num : %d", enemy_image_num);
 	//DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0x3c3c3c, true);			// 当たり判定のボックス
 #endif // DEBUG

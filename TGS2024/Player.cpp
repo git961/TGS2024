@@ -711,28 +711,21 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 		world.x = -50;
 		location.x = -50;
 
-		if (CheckSoundMem(atk_sound) == FALSE)
+		if (CheckSoundMem(atk_sound) == FALSE&&op_cnt<=2)
 		{
 			PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+			op_cnt++;
 		}
 
-		//while (CheckSoundMem(atk_sound) == 1)
-		//{
-
-		//}
-
-		if (CheckSoundMem(atk_sound) == FALSE)
+		if (op_cnt >= 2)
 		{
-			PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+			op_cnt++;
+			if (op_cnt > 60)
+			{
+				op_cnt = 0;
+				anim_scene->SetAnimScene(1);
+			}
 		}
-
-		//while (CheckSoundMem(atk_sound) == 1)
-		//{
-
-		//}
-
-		anim_scene->SetAnimScene(1);
-
 
 	break;
 	case 2:
