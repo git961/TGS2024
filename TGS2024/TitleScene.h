@@ -26,8 +26,9 @@ private:
 
 	int anim_cnt;
 
-	//int back_img;			// 背景画像
-	//int cursor_img;			// カーソル画像
+	int back_img;			// 背景画像
+	int cursor_img;			// カーソル画像
+	int text_img[4];
 
 	//int volume;
 	int title_bgm;
