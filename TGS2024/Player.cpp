@@ -275,13 +275,13 @@ void Player::Update(GameMainScene* gamemain)
 		}
 		else
 		{
-			// 端に来たら跳ね返る
 			if (world.x + width / 2 > FIELD_WIDTH)
 			{
 				world.x = FIELD_WIDTH - 20;
 
 			}
 			else if (world.x - width / 2 < 2100) {
+				// 看板に来たら跳ね返る
 				world.x = 2100 + width / 2;
 
 			}

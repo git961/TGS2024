@@ -44,11 +44,12 @@ GameMainScene::GameMainScene()
 	back_img[9] = LoadGraph("images/Backimg/backimgGoal.png", TRUE);
 	goal_img= LoadGraph("images/Ending/ending8.png", TRUE);
 	death_img= LoadGraph("images/Backimg/death.png", TRUE);
+	pose_img = LoadGraph("images/UI/pose.png", TRUE);
 	//back_img = LoadGraph("images/background_test.png", TRUE);
 
 
 	game_state = TUTORIAL;
-	//game_state = PLAY;
+	game_state = PLAY;
 
 	//game_state = RESPAWN;
 
@@ -1649,6 +1650,14 @@ void GameMainScene::Draw() const
 		DrawGraph(0, 0, goal_img, FALSE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
+	}
+
+	if (game_state == POSE) {
+
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
+		DrawGraph(0, 0, death_img, FALSE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		DrawGraph(550, 350, pose_img, FALSE);
 	}
 
 #ifdef DEBUG
