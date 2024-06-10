@@ -159,15 +159,13 @@ void GameOverScene::Update()
 					}
 				}
 
-				if (change_cnt <= 0)
-				{
 					// Bボタンで決定
 					if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 					{
 
 						push_b_flg = true;
 					}
-				}
+				
 
 				if (cursor_num == Retry)
 				{
@@ -191,19 +189,19 @@ void GameOverScene::Update()
 					case 1:
 						rip_num = 0;
 						break;
-					case 3:
+					case 5:
 						rip_num = 1;
 						break;
-					case 6:
+					case 10:
 						rip_num = 2;
 						break;
-					case 9:
+					case 15:
 						rip_num = 3;
 						break;
-					case 12:
-						rip_num;
+					case 20:
+						rip_num=4;
 						break;
-					case 30:
+					case 60:
 						change_flg = true;
 						break;
 					}
@@ -224,7 +222,7 @@ void GameOverScene::Draw() const
 	SetFontSize(20);
 	DrawFormatString(10, 10, 0xffffff, "GameOver");
 	DrawFormatString(10, 50, 0xffffff, "draw_cnt: %d", change_cnt);
-	DrawFormatString(10, 70, 0xffffff, "score: %d", score);
+	DrawFormatString(10, 70, 0xffffff, "btnflg: %d", push_b_flg);
 #endif // DEBUG
 
 	//DrawRotaGraph(location.x, location.y-25, 1, 0, player_img[p_imgnum], TRUE, direction);
@@ -235,9 +233,19 @@ void GameOverScene::Draw() const
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	}
-	DrawRotaGraph(x, y, 1, 0, rip_img[rip_num], TRUE, 0);
-	//DrawRotaGraph(x, y-60, 1, 0, ring_img, TRUE, 0);
 
+	if (push_b_flg == false)
+	{
+		DrawRotaGraph(x, y, 1, 0, rip_img[rip_num], TRUE, 0);
+		//DrawRotaGraph(x, y-60, 1, 0, ring_img, TRUE, 0);
+		
+	}
+	else {
+		if (cursor_num == Retry) {
+			DrawRotaGraph(x, y, 1, 0, retry_img[rip_num], TRUE, 0);
+		}
+
+	}
 
 	if (select_flg == true)
 	{
@@ -247,7 +255,6 @@ void GameOverScene::Draw() const
 		// start・end
 		DrawRotaGraph(640, 400, 1.5, 0.0, font_img[0], TRUE, FALSE);
 		DrawRotaGraph(680, 500, 1.5, 0.0, font_img[1], TRUE, FALSE);
-		DrawRotaGraph(x, y, 1, 0, retry_img[rip_num], TRUE, 0);
 
 	}
 
@@ -255,8 +262,7 @@ void GameOverScene::Draw() const
 
 AbstractScene* GameOverScene::Change()
 {
-	if (change_cnt <= 0)
-	{
+
 		if (change_flg == true)
 		{
 			// ゲームオーバーse停止
@@ -275,6 +281,6 @@ AbstractScene* GameOverScene::Change()
 
 			}
 		}
-	}
+	
 	return this;
 }
