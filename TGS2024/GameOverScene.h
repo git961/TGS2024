@@ -11,6 +11,7 @@ private:
 	bool play_sound_flg;		// 一度だけ再生
 	int gameover_se;
 	int rock_effect_img[10];
+	int retry_img[10];
 	int font_img[10];
 	int ring_img;
 
@@ -35,6 +36,7 @@ private:
 	int move_cursor_se;			// カーソル移動se
 	bool push_b_flg;				// Bボタンを押したか？
 
+	bool change_flg;
 
 	enum gameoverCursorPos
 	{

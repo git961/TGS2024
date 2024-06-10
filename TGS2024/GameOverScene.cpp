@@ -18,6 +18,7 @@ GameOverScene::GameOverScene(int set_score)
 
 	//画像読込
 	LoadDivGraph("images/scene/gameover/haka.png", 5, 5, 1, 128, 128, rip_img);
+	LoadDivGraph("images/scene/gameover/retry.png", 5, 5, 1, 128, 128, retry_img);
 	LoadDivGraph("images/scene/gameover/font.png", 2, 1, 2, 180, 64, font_img);
 	LoadDivGraph("images/Animscene/rockeffect.png", 4, 4, 1, 1024, 512, rock_effect_img);
 
@@ -36,7 +37,7 @@ GameOverScene::GameOverScene(int set_score)
 	alpha = 255;
 	// サウンド読込
 	gameover_se = LoadSoundMem("sounds/se/scene/gameover.mp3");
-	
+	change_flg = false;
 
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(volume, gameover_se);
@@ -107,6 +108,7 @@ void GameOverScene::Update()
 				break;
 			case 30:
 				select_flg = true;
+				rip_cnt = 0;
 				break;
 			}
 		}
@@ -179,7 +181,37 @@ void GameOverScene::Update()
 			}
 			else
 			{
+				if (cursor_num == Retry)
+				{
+					//プレイヤーが墓から出てくるアニメーションの後sceneを移動
 
+					rip_cnt++;
+					switch (rip_cnt)
+					{
+					case 1:
+						rip_num = 0;
+						break;
+					case 3:
+						rip_num = 1;
+						break;
+					case 6:
+						rip_num = 2;
+						break;
+					case 9:
+						rip_num = 3;
+						break;
+					case 12:
+						rip_num;
+						break;
+					case 30:
+						change_flg = true;
+						break;
+					}
+
+				}
+				else {
+
+				}
 			}
 		}
 
@@ -215,6 +247,8 @@ void GameOverScene::Draw() const
 		// start・end
 		DrawRotaGraph(640, 400, 1.5, 0.0, font_img[0], TRUE, FALSE);
 		DrawRotaGraph(680, 500, 1.5, 0.0, font_img[1], TRUE, FALSE);
+		DrawRotaGraph(x, y, 1, 0, retry_img[rip_num], TRUE, 0);
+
 	}
 
 }
@@ -223,7 +257,7 @@ AbstractScene* GameOverScene::Change()
 {
 	if (change_cnt <= 0)
 	{
-		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+		if (change_flg == true)
 		{
 			// ゲームオーバーse停止
 			if (CheckSoundMem(gameover_se) == TRUE)
@@ -231,8 +265,15 @@ AbstractScene* GameOverScene::Change()
 				StopSoundMem(gameover_se);
 			}
 
-			// Bボタンでタイトルに遷移
-			return new TitleScene;
+			if (cursor_num == Retry)
+			{
+				return new GameMainScene;
+			}
+			else {
+				// Bボタンでタイトルに遷移
+				return new TitleScene;
+
+			}
 		}
 	}
 	return this;
