@@ -51,7 +51,7 @@ Player::Player(float set_x)
 
 	//体力
 	hp = 50;
-	//hp = 10;
+	hp = 10;
 
 	//幅と座標
 	width = 50;
@@ -151,7 +151,7 @@ void Player::Update(GameMainScene* gamemain)
 		death_anim_cnt++;
 		switch (death_anim_cnt)
 		{
-		case 0:
+		case 1:
 			death_num = 0;
 			break;
 		case 5:
@@ -701,7 +701,6 @@ void Player::PlayerAttack()
 
 }
 
-
 void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 {
 
@@ -717,20 +716,20 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 			PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
 		}
 
-		while (CheckSoundMem(atk_sound) == 1)
-		{
+		//while (CheckSoundMem(atk_sound) == 1)
+		//{
 
-		}
+		//}
 
 		if (CheckSoundMem(atk_sound) == FALSE)
 		{
 			PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
 		}
 
-		while (CheckSoundMem(atk_sound) == 1)
-		{
+		//while (CheckSoundMem(atk_sound) == 1)
+		//{
 
-		}
+		//}
 
 		anim_scene->SetAnimScene(1);
 
@@ -1284,4 +1283,29 @@ void Player::TutorialAnimUpdate()
 		world.x = width / 2;
 	}
 
+}
+
+void Player::RespawnAnimUpdate()
+{
+	death_anim_cnt++;
+	switch (death_anim_cnt)
+	{
+	case 1:
+		player_state = DEATH;
+		death_num = 3;
+		break;
+	case 40:
+		player_state = PANIM;
+		op_num = 5;
+		break;
+	case 80:
+		death_num = 0;
+		p_nomal_num = 7;
+		player_state = NOMAL;
+		death_anim_cnt = 0;
+		start_flg = true;
+		break;
+	}
+
+	
 }

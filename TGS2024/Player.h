@@ -170,6 +170,7 @@ public:
 
     void OpAnimUpdate(AnimScene *anim_scene,int set_case);//最初のアニメーション用
     void TutorialAnimUpdate();//チュートリアル用アップデート
+    void RespawnAnimUpdate();//復活するときのアニメーション用
 
     int GetTutoUiNum() { return tuto_ui_num; }
     void SetMoveStop(bool set_flg) { walk_stop_flg = set_flg; }

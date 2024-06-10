@@ -38,6 +38,7 @@ enum GameState {
     TUTORIAL,
     POSE,
     GOAL,
+    RESPAWN,
     PLAY
 };
 
@@ -76,12 +77,14 @@ private:
     bool checkhit;
     //bool enemyhit;      // 歩行エネミー同士の当たり判定チェック用、後に削除
 
-    int back_img;//背景入れるよう
+    int back_img[10];//背景入れるよう
+    int goal_img;//ゴールした後に表示する画像入れる用
+    int death_img;//プレイヤーが死んだとき用
+    float img_extrate;//画像の拡大率変更用
 
     int check_num;//blockのどこに当たったか貰うよう
 
     // 背景画像スクロール用
-    // ※　後で削除予定！！！
     float location_x;
     float location_y;
     float world_x;
@@ -114,13 +117,24 @@ private:
     bool play_start_flg;//アニメーション終
 
     bool clear_flg;         // クリアしたか？
+    float clear_alpha;
     bool gameover_flg;         // ゲームオーバーになったか？
     int main_bgm;
     int volume;
 
+    //円形フェードイン
+    int CircleSize;
+    int ScreenHandle;
+    bool fadein_flg;//フェードイン開始フラグ
+    float alpha;
+    bool black_flg;
+    int p_death_cnt;//プレイヤーが何回死んだかカウントする用
+
 public:
     GameMainScene();
     ~GameMainScene();
+
+    void ResetMap();
 
     void Update() override;
     void Draw() const override;
