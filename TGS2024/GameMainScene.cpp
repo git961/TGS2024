@@ -182,9 +182,11 @@ GameMainScene::GameMainScene()
 	// サウンド読込
 	main_bgm = LoadSoundMem("sounds/bgm/gamemain.mp3");
 	volume = 150;
+	fadein_sound = LoadSoundMem("sounds/se/player/drop3.mp3");
 
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(volume, main_bgm);
+	ChangeVolumeSoundMem(volume, fadein_sound);
 	camera_resetx.x = 0;
 	camera_resetflg = false;
 	camera_old_x = 0;
@@ -200,6 +202,8 @@ GameMainScene::GameMainScene()
 	black_flg = false;
 
 	p_life_num = 3;
+	gameover_anim_cnt = 0;
+	fadein_snd_flg = true;
 }
 
 
@@ -353,10 +357,17 @@ void GameMainScene::Update()
 		}
 	}
 
-	// ゲームメインbgmループ再生
-	if (CheckSoundMem(main_bgm) == FALSE)
+	if (p_life_num < 0)
 	{
-		PlaySoundMem(main_bgm, DX_PLAYTYPE_LOOP);
+		StopSoundMem(main_bgm);
+	}
+	else
+	{
+		// ゲームメインbgmループ再生
+		if (CheckSoundMem(main_bgm) == FALSE)
+		{
+			PlaySoundMem(main_bgm, DX_PLAYTYPE_LOOP);
+		}
 	}
 
 	switch (game_state)
@@ -372,11 +383,11 @@ void GameMainScene::Update()
 
 		if (CheckHitKey(KEY_INPUT_D) == TRUE)
 		{
-			screen_origin_position.x+=5;
+			screen_origin_position.x += 5;
 		}
 		if (CheckHitKey(KEY_INPUT_A) == TRUE)
 		{
-			screen_origin_position.x-=5;
+			screen_origin_position.x -= 5;
 		}
 
 		if (mapio != nullptr)
@@ -394,7 +405,7 @@ void GameMainScene::Update()
 			}
 		}
 
-		
+
 		//エネミー削除
 		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
@@ -460,7 +471,7 @@ void GameMainScene::Update()
 
 						if (mapio->GetMapData(i, j) == 2)
 						{
-							enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2,false);
+							enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2, false);
 						}
 
 						if (mapio->GetMapData(i, j) == 8)
@@ -497,7 +508,7 @@ void GameMainScene::Update()
 		{
 			game_state = EDITOR;
 		}
-		
+
 		Tutorial();
 
 		break;
@@ -508,7 +519,7 @@ void GameMainScene::Update()
 		}
 		break;
 	case GOAL:
-		if (clear_alpha++>300) {
+		if (clear_alpha++ > 300) {
 			clear_flg = true;
 		}
 		break;
@@ -517,51 +528,84 @@ void GameMainScene::Update()
 		location_x = world_x - screen_origin_position.x;
 		location_y = world_y - screen_origin_position.y;
 
-		if (CircleSize <= -6&&black_flg==false)
+
+		if (p_life_num < 0)
 		{
-			fadein_flg = false;
-			CircleSize = 700;
-			delete player;
-			player_damage_once = false;
-			player = nullptr;
-
-			//gameover_flg = true;
-			black_flg = true;
-			player = new Player(2200.0f);
-
-			UpdateCamera(player->GetWorldLocation());
-			screen_origin_position = {camera_pos.x - SCREEN_WIDTH / 2.0f,camera_pos.y - SCREEN_HEIGHT / 2.0f};
-			player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-
-			ResetMap();
-		}
-		else {
-			CircleSize -= 8;
-		}
-
-		if (black_flg == true)
-		{
-			if (player != nullptr)
+			if (fadein_snd_flg == true)
 			{
-
-				player->RespawnAnimUpdate();
-
+				fadein_snd_flg = false;
+				PlaySoundMem(fadein_sound, DX_PLAYTYPE_BACK);
 			}
-			alpha-=5;
-			if (player->GetStartFlg() == true)
+
+			if (CircleSize <= 64 && black_flg == false)
 			{
-				p_life_num--;
-				game_state = PLAY;
-				black_flg = false;
-				alpha = 255;
+				//gameover_flg = true;
+				if (gameover_anim_cnt++ > 30)
+				{
+
+					CircleSize -= 8;
+					if (CircleSize <= -6)
+					{
+						gameover_flg = true;
+					}
+				}
+			}
+			else
+			{
+				CircleSize -= 8;
+			}
+		}
+		else
+		{
+			if (fadein_snd_flg==true)
+			{
+				fadein_snd_flg =false;
+				PlaySoundMem(fadein_sound, DX_PLAYTYPE_BACK);
+			}
+			if (CircleSize <= -6 && black_flg == false)
+			{
+				fadein_flg = false;
 				CircleSize = 700;
+				delete player;
+				player_damage_once = false;
+				player = nullptr;
+
+				//gameover_flg = true;
+				black_flg = true;
+				player = new Player(2200.0f);
+
+				UpdateCamera(player->GetWorldLocation());
+				screen_origin_position = { camera_pos.x - SCREEN_WIDTH / 2.0f,camera_pos.y - SCREEN_HEIGHT / 2.0f };
+				player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+				ResetMap();
 			}
+			else {
+				CircleSize -= 8;
+			}
+
+			if (black_flg == true)
+			{
+				if (player != nullptr)
+				{
+
+					player->RespawnAnimUpdate();
+
+				}
+				alpha -= 5;
+				if (player->GetStartFlg() == true)
+				{
+					volume = 150;
+					ChangeVolumeSoundMem(volume, main_bgm);
+					game_state = PLAY;
+					fadein_snd_flg = true;
+					black_flg = false;
+					alpha = 255;
+					CircleSize = 700;
+				}
+			}
+
 		}
-
-
-
-
-
 
 
 		break;
@@ -1421,6 +1465,9 @@ void GameMainScene::Update()
 				if (player->GetDeathFlg() == true)
 				{
 					fadein_flg = true;
+					p_life_num--;
+					volume = 50;
+					ChangeVolumeSoundMem(volume, main_bgm);
 					game_state = RESPAWN;
 				}
 			}
@@ -1595,20 +1642,27 @@ void GameMainScene::Draw() const
 		}
 	}
 
-	if (ui != nullptr)
+		if (ui != nullptr)
+		{
+			ui->Draw();
+		}
+
+		if (score != nullptr)
+		{
+			score->Draw();
+		}
+
+
+	}
+
+	if (p_life_num < 0)
 	{
-		ui->Draw();
+		//プレイヤー描画
+		if (player != nullptr)
+		{
+			player->Draw();
+		}
 	}
-
-	if (score != nullptr)
-	{
-		score->Draw();
-	}
-
-
-	}
-
-
 
 	if (fadein_flg==true)
 	{
@@ -1631,17 +1685,15 @@ void GameMainScene::Draw() const
 		DrawGraph(0, 0, ScreenHandle, TRUE);
 	}
 
+
+
 	if (black_flg == true)
 	{
-		//プレイヤー描画
-		if (player != nullptr)
-		{
-			player->Draw();
-		}
-
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 		DrawGraph(0, 0, death_img, FALSE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+
 	}
 
 	if (game_state == GOAL)
@@ -1660,6 +1712,8 @@ void GameMainScene::Draw() const
 		DrawGraph(550, 350, pose_img, FALSE);
 	}
 
+
+
 #ifdef DEBUG
 
 	//DrawFormatString(300, 180, 0xffffff, "abs: %f", check_abs);
@@ -1670,7 +1724,7 @@ void GameMainScene::Draw() const
 	//DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
 	//DrawFormatString(30, 300, 0xffffff, "m_mode: %d", map_mode);
 	//DrawFormatString(30, 300, 0xffffff, "e_cnt: %d", enemy_count);
-	//DrawFormatString(30, 300, 0xffffff, "CircleSize:%d", CircleSize);
+	DrawFormatString(30, 300, 0xffffff, "p_life_num:%d",p_life_num );
 
 
 	switch (game_state)

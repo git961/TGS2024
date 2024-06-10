@@ -39,11 +39,7 @@ void GameClearScene::Update()
 {
 	//input.InputUpdate();
 	//// クリアse再生
-	//if (se_flg == true)
-	//{
-	//	PlaySoundMem(gameclear_se, DX_PLAYTYPE_BACK);
-	//	se_flg = false;
-	//}
+
 	//if (change_cnt > 0) 
 	//{
 	//	change_cnt--;
@@ -102,6 +98,11 @@ void GameClearScene::Update()
 				}
 
 			}
+		}
+		if (se_flg == true)
+		{
+			PlaySoundMem(gameclear_se, DX_PLAYTYPE_BACK);
+			se_flg = false;
 		}
 		break;
 	case 1:

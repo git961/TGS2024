@@ -127,6 +127,7 @@ private:
     int volume;
 
     int p_life_num;//プレイヤーの残機数
+    int gameover_anim_cnt;
 
     //円形フェードイン
     int CircleSize;
@@ -134,7 +135,8 @@ private:
     bool fadein_flg;//フェードイン開始フラグ
     float alpha;
     bool black_flg;
-    int p_death_cnt;//プレイヤーが何回死んだかカウントする用
+    int fadein_sound;//
+    bool fadein_snd_flg;//フェードインサウンドをならせるか？
 
 public:
     GameMainScene();

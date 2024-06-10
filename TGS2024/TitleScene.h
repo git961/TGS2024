@@ -19,6 +19,7 @@ private:
 	};
 
 	bool push_b_flg;				// Bボタンを押したか？
+
 	int scene_change_cnt;
 	bool scene_change_flg;			//treu: 切り替える
 
