@@ -2,6 +2,7 @@
 
 GameOverScene::GameOverScene(int set_score)
 {
+	black_out = new BlackOut;
 	score = set_score;
 	change_cnt = 180;
 	volume = 150;
@@ -17,8 +18,8 @@ GameOverScene::GameOverScene(int set_score)
 	push_b_flg = false;
 
 	//画像読込
-	LoadDivGraph("images/scene/gameover/haka.png", 5, 5, 1, 128, 128, rip_img);
-	LoadDivGraph("images/scene/gameover/retry.png", 5, 5, 1, 128, 128, retry_img);
+	LoadDivGraph("images/scene/gameover/haka.png", 5, 5, 1, 170, 170, rip_img);
+	LoadDivGraph("images/scene/gameover/retry.png", 5, 5, 1, 170, 170, retry_img);
 	LoadDivGraph("images/scene/gameover/font.png", 2, 1, 2, 180, 64, font_img);
 	LoadDivGraph("images/Animscene/rockeffect.png", 4, 4, 1, 1024, 512, rock_effect_img);
 
@@ -45,7 +46,7 @@ GameOverScene::GameOverScene(int set_score)
 
 GameOverScene::~GameOverScene()
 {
-
+	delete black_out;
 }
 
 void GameOverScene::Update()
@@ -173,7 +174,7 @@ void GameOverScene::Update()
 				}
 				else
 				{
-					cursor_y = 500;
+					cursor_y = 480;
 				}
 
 			}
@@ -214,6 +215,12 @@ void GameOverScene::Update()
 		}
 
 	}
+
+
+	if (black_out != nullptr&&change_flg==true&&cursor_num==Retry)
+	{
+		black_out->Update();
+	}
 }
 
 void GameOverScene::Draw() const
@@ -237,7 +244,7 @@ void GameOverScene::Draw() const
 	if (push_b_flg == false)
 	{
 		DrawRotaGraph(x, y, 1, 0, rip_img[rip_num], TRUE, 0);
-		//DrawRotaGraph(x, y-60, 1, 0, ring_img, TRUE, 0);
+		DrawRotaGraph(x, y-60, 1, 0, ring_img, TRUE, 0);
 		
 	}
 	else {
@@ -254,16 +261,20 @@ void GameOverScene::Draw() const
 		DrawRotaGraph(640, 170, 2.3, 0.0, font_img[2], TRUE, FALSE);
 		// start・end
 		DrawRotaGraph(640, 400, 1.5, 0.0, font_img[0], TRUE, FALSE);
-		DrawRotaGraph(680, 500, 1.5, 0.0, font_img[1], TRUE, FALSE);
+		DrawRotaGraph(680, 480, 1.5, 0.0, font_img[1], TRUE, FALSE);
 
 	}
 
+
+	if (black_out != nullptr) {
+		black_out->Draw();
+	}
 }
 
 AbstractScene* GameOverScene::Change()
 {
 
-		if (change_flg == true)
+		if (black_out!=nullptr&&black_out->GetFadeout() == true)
 		{
 			// ゲームオーバーse停止
 			if (CheckSoundMem(gameover_se) == TRUE)
@@ -273,7 +284,7 @@ AbstractScene* GameOverScene::Change()
 
 			if (cursor_num == Retry)
 			{
-				return new GameMainScene;
+				return new GameMainScene(true);
 			}
 			else {
 				// Bボタンでタイトルに遷移

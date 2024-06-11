@@ -1,10 +1,13 @@
 #pragma once
 #include "AbstractScene.h"
 #include "TitleScene.h"
+#include "BlackOut.h"
 
 class GameOverScene : public AbstractScene
 {
 private:
+	BlackOut *black_out;
+
 	int score;
 	int change_cnt;		// シーン切り替えできるようになるまでのカウント
 	int volume;

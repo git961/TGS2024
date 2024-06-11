@@ -261,7 +261,7 @@ void Player::Update(GameMainScene* gamemain)
 
 
 
-		if (gamemain->GetPlayerLife() >= 3)
+		if (gamemain->GetPlayerNotBack() ==false)
 		{
 			// 端に来たら跳ね返る
 			if (world.x + width / 2 > FIELD_WIDTH)

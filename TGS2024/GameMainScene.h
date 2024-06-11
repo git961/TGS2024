@@ -15,6 +15,7 @@
 #include <math.h>
 #include "GameClearScene.h"
 #include "GameOverScene.h"
+#include "BlackOut.h"
 
 class Player;
 class Enemy;
@@ -65,9 +66,13 @@ private:
 
     UI* ui;
 
+    BlackOut* fade;
+
     cameraposition camera_pos;
 
     cameraposition screen_origin_position;
+
+    bool retry_flg;//リトライしてきたか？
 
     bool pose_flg;//ポーズ中か
     bool goal_flg;//ゴールしたか
@@ -127,6 +132,7 @@ private:
     int volume;
 
     int p_life_num;//プレイヤーの残機数
+    bool p_notback_flg;//プレイヤー戻れなくするか
     int gameover_anim_cnt;
 
     //円形フェードイン
@@ -139,7 +145,7 @@ private:
     bool fadein_snd_flg;//フェードインサウンドをならせるか？
 
 public:
-    GameMainScene();
+    GameMainScene(bool set_flg);
     ~GameMainScene();
 
     void ResetMap();
@@ -155,6 +161,7 @@ public:
     void ShakeCamera(bool set_true, int set_num);
 
     int GetPlayerLife() { return p_life_num; }
+    bool GetPlayerNotBack() { return p_notback_flg; }
 
     void Tutorial();
 
