@@ -183,7 +183,7 @@ void StageBlock::Update()
 		else
 		{
 
-			if (hely <= 550)
+			if (hely <= 543)
 			{
 				hely += 3;
 				world.x=2026;
