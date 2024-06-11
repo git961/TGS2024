@@ -397,6 +397,7 @@ void Player::Draw() const
 
 	//DrawBoxAA(location.x - width/2, location.y - height/2, location.x + width / 2, location.y + height / 2, 0xffffff,true);
 	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
+	//DrawFormatString(location.x, location.y - 80, 0xffffff, "world%f",world.x);
 
 
 	//プレイヤー画像表示
@@ -1237,11 +1238,11 @@ void Player::TutorialAnimUpdate()
 
 		if (walk_stop_flg == true)
 		{
-			helmet_flg = true;
+			//helmet_flg = true;
 			player_state = PANIM;
 			op_num = 4;
-			helmet_down += 4;
-			if (helmet_down > -20)
+			tuto_cnt++;
+			if (tuto_cnt > 60)
 			{
 				tuto_num = 6;
 				player_state = NOMAL;
@@ -1276,7 +1277,6 @@ void Player::TutorialAnimUpdate()
 		{
 			p_nomal_num = 7;
 		}else if(tuto_cnt>30) {
-			helmet_flg = false;
 			p_nomal_num = 6;
 		}
 

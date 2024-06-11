@@ -83,6 +83,12 @@ StageBlock::StageBlock(int set_block_num,float set_x, float set_y)
 		angle = 0;
 		is_up = false;
 		hely = location.y;
+		helx = location.x;
+		frames = 0;
+		radperframe = 2 * M_PI / 40;
+		can_jump = true;
+		delete_flg = false;
+		delete_cnt=0;
 		break;
 	case 10:
 		block_img = LoadGraph("images/Stage/kanban2.png");
@@ -161,8 +167,34 @@ void StageBlock::Update()
 
 	if (is_up==true)
 	{
-		hely -= 10;
-		angle += 0.3;
+		if (can_jump == true)
+		{
+			//hely -= 10;
+			//angle += 0.3;
+			world.x = helx;
+			helx += 2;
+			hely = -200 * sin(radperframe * frames) + 608.0;
+			frames += 1;
+			if (sin(radperframe * frames)>=0.9)
+			{
+				can_jump = false;
+			}
+		}
+		else
+		{
+
+			if (hely <= 550)
+			{
+				hely += 3;
+				world.x=2026;
+			}
+			else {
+				if (delete_cnt++ > 30)
+				{
+					delete_flg = true;
+				}
+			}
+		}
 
 	}
 }

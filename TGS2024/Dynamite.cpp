@@ -92,7 +92,7 @@ void Dynamite::Update()
 
 void Dynamite::Draw() const
 {
-	DrawBoxAA(world.x - width / 2, world.y - height / 2, world.x + width / 2, world.y + height / 2, 0x00ffff, false);
+	//DrawBoxAA(world.x - width / 2, world.y - height / 2, world.x + width / 2, world.y + height / 2, 0x00ffff, false);
 
 	if (dynamite_flg == false)
 	{

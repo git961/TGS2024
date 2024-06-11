@@ -1764,7 +1764,7 @@ void GameMainScene::Draw() const
 	//DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
 	//DrawFormatString(30, 300, 0xffffff, "m_mode: %d", map_mode);
 	//DrawFormatString(30, 300, 0xffffff, "e_cnt: %d", enemy_count);
-	DrawFormatString(30, 300, 0xffffff, "p_life_num:%d",p_life_num );
+	//DrawFormatString(30, 300, 0xffffff, "p_life_num:%d",p_life_num );
 
 
 	switch (game_state)
@@ -1992,6 +1992,7 @@ void GameMainScene::Tutorial()
 					}
 
 
+
 				}
 
 				for (int i = 0; i < DYNAMITE_MAXNUM; i++)
@@ -2065,6 +2066,10 @@ void GameMainScene::Tutorial()
 
 					}
 
+					if (stage_block[j]->GetDeleteFlg() == true)
+					{
+						stage_block[j] = nullptr;
+					}
 				}
 			}
 		}
