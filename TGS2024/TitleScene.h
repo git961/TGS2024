@@ -44,8 +44,6 @@ private:
 	int scene_change_cnt;
 	bool scene_change_flg;		//treu: 切り替える
 
-	int change_cnt;				// シーン切り替えできるようになるまでのカウント
-
 	int anim_cnt;
 	int pickaxe_anim_cnt;		// つるはしを振るアニメーションカウント
 	int rock_break_num;			// 岩の画像番号
@@ -57,6 +55,7 @@ private:
 	int rock_break_img[7];		// タイトル名に重なっている岩
 
 	int pickaxe_img_num;		// つるはし画像番号
+	int rock_braek_timer;		// 岩が崩れるまでの時間
 
 	//int volume;
 	int title_bgm;

@@ -2,11 +2,11 @@
 
 TitleScene::TitleScene()
 {
-	pickaxe_x = 0.0;
-	pickaxe_y = 0.0;
+	pickaxe_x = -10.0;
+	pickaxe_y = -10.0;
 	cursor_x = 400;
 	cursor_y = 410;
-	degree = 250.0;
+	degree = 50.0;
 	radian = 0.0;
 	cursor_start_y = 120;
 	cursor_move_interval = 40;
@@ -34,11 +34,10 @@ TitleScene::TitleScene()
 	scene_change_cnt = 0;
 	scene_change_flg = false;
 
-	change_cnt = 180;
-
 	anim_cnt = 0;
 	pickaxe_anim_cnt = 0;
 	rock_break_num = 1;
+	rock_braek_timer = 250;
 
 	//volume = 150;
 
@@ -99,18 +98,18 @@ void TitleScene::Update()
 {
 	input.InputUpdate();
 
-	PickaxeAnimation();
+	//PickaxeAnimation();
 
-	if (anim_cnt < 250)
+	if (anim_cnt < 320)
 	{
 		anim_cnt++;
 
-		if (anim_cnt >= 180)
+		if (anim_cnt >= rock_braek_timer)
 		{
 			// 岩が崩れるアニメーション
 			CrumblingRock();
 		}
-		else
+		else if(anim_cnt >= 60)
 		{
 			// つるはし回転アニメーション
 			PickaxeRotation();
@@ -141,11 +140,6 @@ void TitleScene::Update()
 		}
 		else
 		{
-			if (change_cnt > 0)
-			{
-				change_cnt--;
-			}
-
 			if (cursor_move_interval < 15)
 			{
 				cursor_move_interval++;
@@ -208,8 +202,7 @@ void TitleScene::Draw() const
 #ifdef DEBUG
 	SetFontSize(20);
 	DrawFormatString(10, 10, 0xffffff, "Title");
-	DrawFormatString(10, 50, 0xffffff, "draw_cnt: %d", change_cnt);
-	//DrawFormatString(10, 70, 0xffffff, "scene_change_cnt: %d", scene_change_cnt);
+	DrawFormatString(10, 70, 0xffffff, "scene_change_cnt: %d", scene_change_cnt);
 	//DrawFormatString(10, 70, 0xffffff, "pickaxe_x: %f", pickaxe_x);
 	//DrawFormatString(10, 90, 0xffffff, "pickaxe_y: %f", pickaxe_y);
 
@@ -239,7 +232,7 @@ void TitleScene::Draw() const
 
 	if (text_up_flg == true)
 	{
-		if (anim_cnt < 180)
+		if (anim_cnt < rock_braek_timer)
 		{
 			// 崩れる岩画像
 			DrawRotaGraph(640, 330, 1.0, 0.0, rock_break_img[0], TRUE, FALSE);
@@ -251,9 +244,16 @@ void TitleScene::Draw() const
 	}
 
 	// カーソル画像
-	DrawRotaGraph(cursor_x, cursor_y, 1.0, 0.0, pickaxe_img[pickaxe_img_num], TRUE, FALSE);
-	DrawRotaGraph((int)pickaxe_x, (int)pickaxe_y, 1.0, radian, cursor_img, TRUE, FALSE);
+	if (anim_stop_flg == true)
+	{
+		DrawRotaGraph((int)pickaxe_x, (int)pickaxe_y, 1.0, 0.0, pickaxe_img[pickaxe_img_num], TRUE, FALSE);
+	}
+	else
+	{
+		DrawRotaGraph((int)pickaxe_x, (int)pickaxe_y, 1.0, radian, pickaxe_img[0], TRUE, FALSE);
+	}
 
+	//DrawRotaGraph((int)pickaxe_x, (int)pickaxe_y, 1.0, radian, cursor_img, TRUE, FALSE);
 }
 
 AbstractScene* TitleScene::Change()
@@ -314,7 +314,7 @@ void TitleScene::PickaxeRotation()
 // 岩が崩れるアニメーション
 void TitleScene::CrumblingRock()
 {
-	rock_break_num = (anim_cnt - 180) / 7;
+	rock_break_num = (anim_cnt - rock_braek_timer) / 7;
 	if (rock_break_num > 6)
 	{
 		rock_break_num = 6;
@@ -393,16 +393,13 @@ void TitleScene::PadOperation()
 		}
 	}
 
-	if (change_cnt <= 0)
+	// Bボタンで決定
+	if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 	{
-		// Bボタンで決定
-		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
-		{
-			// 決定se
-			PlaySoundMem(decision_se, DX_PLAYTYPE_BACK);
+		// 決定se
+		PlaySoundMem(decision_se, DX_PLAYTYPE_BACK);
 
-			push_b_flg = true;
-		}
+		push_b_flg = true;
 	}
 }
 
