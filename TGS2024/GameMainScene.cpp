@@ -20,7 +20,7 @@ GameMainScene::GameMainScene()
 	mapio = new MapIo;
 
 	player = new Player(0.0f);
-	//player = new Player(2200.0f);
+	player = new Player(2200.0f);
 
 	enemy = new Enemy * [ENEMYMAXNUM];
 	rolling_enemy = new RollingEnemy*[ROLLING_ENEMY_MAXNUM];
@@ -225,6 +225,7 @@ GameMainScene::~GameMainScene()
 
 void GameMainScene::ResetMap()
 {
+	score = nullptr;
 	for (int j = 0; j < block_count; j++)
 	{
 		if (stage_block[j] != nullptr)
@@ -325,8 +326,7 @@ void GameMainScene::ResetMap()
 			stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 		}
 	}
-
-	score = 0;
+	score = new Score;
 }
 
 void GameMainScene::Update()
