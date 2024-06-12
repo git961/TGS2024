@@ -56,15 +56,15 @@ void UI::Draw() const
 	//DrawRotaGraph(1200, 675, 1, 0, btnY_img, TRUE, 0);
 	//DrawRotaGraph(1120, 30, 1, 0, score_img, TRUE, 0);
 
-	DrawRotaGraph(140, y, 1, 0, p_img, TRUE, 0);
+	DrawRotaGraph(140, (int)y, 1, 0, p_img, TRUE, 0);
 
 	for (int i = 0; i < heart_num; i++)
 	{
-		DrawRotaGraph(x+35*i, y, 1, 0, heart_img, TRUE, 0);
+		DrawRotaGraph(x+35*i, (int)y, 1, 0, heart_img, TRUE, 0);
 	}
 	for (int i = 0; i < dyna_num; i++)
 	{
-		DrawRotaGraph(32+35 * i, y+64, 1, 0, dyna_img, TRUE, 0);
+		DrawRotaGraph(32+35 * i, (int)y+64, 1, 0, dyna_img, TRUE, 0);
 	}
 
 
@@ -179,7 +179,7 @@ void UI::DrawTutorial(Player* player) const
 		DrawRotaGraph(player->GetLocation().x, player->GetLocation().y-100, 1, 0, btnB_img[btn_num], TRUE, 0);
 		break;
 	case 2:
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha);
 		DrawGraph(0, 0, tuto_backimg[0], TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		break;
@@ -189,7 +189,7 @@ void UI::DrawTutorial(Player* player) const
 	case 4:
 		if (btn_flg == true)
 		{
-			SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha);
 		}
 		DrawRotaGraph(500, player->GetLocation().y - 100, 1, 0, btnmove_img[btn_num], TRUE, 0);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);

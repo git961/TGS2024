@@ -159,7 +159,7 @@ void TitleScene::Update()
 					{
 						start_y = 520.0;
 					}
-					pickaxe_y = start_y - sinf(M_PI * 2 / 100 * count) * 10;
+					pickaxe_y = start_y - sinf((float)M_PI * 2.0f / 100.f * (float)count) * 10.0f;
 
 					// sin用カウント
 					if (count < 100)
@@ -221,8 +221,8 @@ void TitleScene::Draw() const
 	DrawRotaGraph(640, 180, 1.0, 0.0, text_img[0], TRUE, FALSE);
 
 	// start・end
-	DrawRotaGraph(640, start_text_y, 1.0, 0.0, text_img[1], TRUE, FALSE);
-	DrawRotaGraph(640, end_text_y, 1.0, 0.0, text_img[2], TRUE, FALSE);
+	DrawRotaGraph(640, (int)start_text_y, 1.0, 0.0, text_img[1], TRUE, FALSE);
+	DrawRotaGraph(640, (int)end_text_y, 1.0, 0.0, text_img[2], TRUE, FALSE);
 
 	if (anim_stop_flg == true)
 	{
@@ -297,8 +297,8 @@ void TitleScene::PickaxeRotation()
 	pickaxe_x += distance_x / distance * 3.5;
 	pickaxe_y += distance_y / distance * 3.5;
 
-	start_x = pickaxe_x;
-	start_y = pickaxe_y;
+	start_x = (float)pickaxe_x;
+	start_y = (float)pickaxe_y;
 
 	// つるはし時計回り
 	if (degree < 360.0)
@@ -336,8 +336,8 @@ void TitleScene::CrumblingRock()
 
 		if (tmp_sin <= 0.9f)
 		{
-			tmp_sin = sinf(M_PI * 2 / 60 * count);
-			pickaxe_y = start_y - tmp_sin * 100;
+			tmp_sin = sinf((float)M_PI * 2.0f / 60.0f* (float)count);
+			pickaxe_y = start_y - tmp_sin * 100.0f;
 		}
 		else
 		{
@@ -408,7 +408,7 @@ void TitleScene::ValueAssignment()
 {
 	pickaxe_x = 400.0;
 	pickaxe_y = 750.0;
-	start_y = pickaxe_y;
+	start_y = (float)pickaxe_y;
 	count = 0;
 	tmp_sin = 0.0f;
 	degree = 0.0;
@@ -419,10 +419,10 @@ void TitleScene::ValueAssignment()
 // テキストを下から上に出す処理
 void TitleScene::MoveText()
 {
-	tmp_sin = sinf(M_PI * 2 / 60 * count);
-	pickaxe_y = start_y - tmp_sin * 400;
-	start_text_y = tmp_start_text_y - tmp_sin * 400;
-	end_text_y = tmp_end_text_y - tmp_sin * 400;
+	tmp_sin = sinf((float)M_PI * 2.0f / 60.0f * (float)count);
+	pickaxe_y = start_y - tmp_sin * 400.0f;
+	start_text_y = tmp_start_text_y - tmp_sin * 400.0f;
+	end_text_y = tmp_end_text_y - tmp_sin * 400.0f;
 
 	// sin用カウント
 	if (count < 60)

@@ -42,11 +42,11 @@ void Dynamite::Update()
 	{
 		if (direction == 0) {
 			world.x += move_x;
-			rotation += 0.3;
+			rotation += 0.3f;
 		}
 		else {
 			world.x -= move_x;
-			rotation -= 0.3;
+			rotation -= 0.3f;
 		}
 	}
 	else if (dynamite_flg == true)
@@ -96,11 +96,11 @@ void Dynamite::Draw() const
 
 	if (dynamite_flg == false)
 	{
-		DrawRotaGraph(location.x, location.y, 1, rotation, dynamite_img, TRUE, direction);
+		DrawRotaGraph((int)location.x, (int)location.y, 1, rotation, dynamite_img, TRUE, direction);
 	}
 	else
 	{
-		DrawRotaGraph(location.x, location.y, 1, 0, explosion_img[explosion_num], TRUE, direction);
+		DrawRotaGraph((int)location.x, (int)location.y, 1, 0, explosion_img[explosion_num], TRUE, direction);
 
 	}
 }

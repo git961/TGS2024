@@ -120,7 +120,6 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 	ChangeVolumeSoundMem(80, footsteps_sound);
 	ChangeVolumeSoundMem(150, knock_back_sount);
 	ChangeVolumeSoundMem(255, death_sount);
-	ground_flg = false;
 
 	if (direction == true)
 	{
@@ -274,8 +273,8 @@ void Enemy::Draw() const
 	//DrawFormatString(location.x - 100, 170, 0xffffff, "+: %f", start_x + mvx);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "k: %d", is_knock_back);
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "s: %d", is_knock_back_start);
-	DrawFormatString(location.x - 100, 50, 0xffffff, "worldy;%f", world.x);
-	DrawFormatString(location.x - 100, 80, 0xffffff, "pworldy;%f", player_x);
+	//DrawFormatString(location.x - 100, 50, 0xffffff, "worldy;%f", world.x);
+	//DrawFormatString(location.x - 100, 80, 0xffffff, "pworldy;%f", player_x);
 	//DrawFormatString(100, 20, 0xffffff, "opacity: %d", opacity);
 	//DrawBoxAA(location.x - width / 2, location.y - height / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);				// 当たり判定のボックス
 #endif // DEBUG
@@ -539,7 +538,7 @@ void Enemy::StarEffect()
 {
 	// 星の座標を敵のスクリーン座標にする
 	star.x = location.x;
-	star.y = location.y - abs(sinf(M_PI * 2 / 60 * star.count) * 60);
+	star.y = location.y - abs(sinf((float)M_PI * 2.0f / 60.0f * (float)star.count) * 60.0f);
 	star.timer++;
 
 	if (tmp_direction == false)

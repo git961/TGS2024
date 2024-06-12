@@ -88,19 +88,19 @@ void GameOverScene::Update()
 			case 12:
 				rip_num = 0;
 
-				size = 0.6;
+				size = 0.6f;
 				alpha = 150;
 				effect_y -= 10;
 				break;
 			case 15:
 
-				size = 0.7;
+				size = 0.7f;
 				alpha = 100;
 				effect_y -= 30;
 				break;
 			case 18:
 
-				size = 0.8;
+				size = 0.8f;
 				alpha = 50;
 				effect_y -= 40;
 				break;
@@ -235,21 +235,21 @@ void GameOverScene::Draw() const
 	//DrawRotaGraph(location.x, location.y-25, 1, 0, player_img[p_imgnum], TRUE, direction);
 	if (rock_flg == true)
 	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
-		DrawRotaGraph(x, effect_y, size, 0, rock_effect_img[rock_num], TRUE, 0);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha);
+		DrawRotaGraph((int)x, (int)effect_y, size, 0, rock_effect_img[rock_num], TRUE, 0);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	}
 
 	if (push_b_flg == false)
 	{
-		DrawRotaGraph(x, y, 1, 0, rip_img[rip_num], TRUE, 0);
-		DrawRotaGraph(x, y-60, 1, 0, ring_img, TRUE, 0);
+		DrawRotaGraph((int)x, (int)y, 1, 0, rip_img[rip_num], TRUE, 0);
+		DrawRotaGraph((int)x, (int)y-60, 1, 0, ring_img, TRUE, 0);
 		
 	}
 	else {
 		if (cursor_num == Retry) {
-			DrawRotaGraph(x, y, 1, 0, retry_img[rip_num], TRUE, 0);
+			DrawRotaGraph((int)x, (int)y, 1, 0, retry_img[rip_num], TRUE, 0);
 		}
 
 	}

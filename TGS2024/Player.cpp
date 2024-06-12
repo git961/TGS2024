@@ -65,6 +65,8 @@ Player::Player(float set_x)
 	move_x = 0;
 	move_y = 0;
 
+	walk_abs = 0;
+
 	//攻撃に使用変数
 	attacking = false;
 	atk_cnt_timer = 0;
@@ -106,7 +108,6 @@ Player::Player(float set_x)
 	tuto_ui_num = 0;
 	rock_break_flg = false;
 	rock_cnt = 0;
-	hit_rock_flg = false;
 	p_nomal_num = 0;
 
 	// サウンドの音量設定
@@ -116,7 +117,7 @@ Player::Player(float set_x)
 	ChangeVolumeSoundMem(180, throw_dynamite_sound);
 	ChangeVolumeSoundMem(230, death_sound);
 
-
+	dyna_anm_start = false;
 	walk_stop_flg = false;
 	tuto_anim_dynaflg = false;
 	start_flg = false;
@@ -214,7 +215,7 @@ void Player::Update(GameMainScene* gamemain)
 
 
 		if ((unsigned)move_x > 0) {
-			move_x *= 0.9;
+			move_x *= 0.9f;
 			location.x += move_x;
 			world.x += move_x;
 		}
@@ -419,56 +420,56 @@ void Player::Draw() const
 		{
 
 		case NOMAL:
-			DrawRotaGraph(location.x, location.y - img_down, 1, 0, player_img[p_nomal_num], TRUE, direction);
+			DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, player_img[p_nomal_num], TRUE, direction);
 			//DrawFormatString(location.x, location.y - 80, 0x000000, "nomal");
 			break;
 		case ATTACK:
-			DrawRotaGraph(location.x, location.y - img_down, 1, 0, player_attack_img[p_imgnum + p_atk_imgnum], TRUE, direction);
+			DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, player_attack_img[p_imgnum + p_atk_imgnum], TRUE, direction);
 			//DrawFormatString(location.x, location.y - 80, 0x000000, "attack");
 
 			if (is_hit_enemy == true)
 			{
 				if (p_imgnum > 2)
 				{
-					DrawRotaGraph(location.x, location.y - img_down, 1, 0, pickaxe_img[2 + p_atk_imgnum], TRUE, direction);
+					DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, pickaxe_img[2 + p_atk_imgnum], TRUE, direction);
 				}
 				else
 				{
-					DrawRotaGraph(location.x, location.y - img_down, 1, 0, pickaxe_img[p_imgnum + p_atk_imgnum], TRUE, direction);
+					DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, pickaxe_img[p_imgnum + p_atk_imgnum], TRUE, direction);
 				}
 			}
 			else {
 
-				DrawRotaGraph(location.x, location.y - img_down, 1, 0, pickaxe_img[p_imgnum + p_atk_imgnum], TRUE, direction);
+				DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, pickaxe_img[p_imgnum + p_atk_imgnum], TRUE, direction);
 				if (p_imgnum > 2)
 				{
 					//DrawRotaGraph(location.x, location.y - img_down, 1, 0, effect_img[effect_num], TRUE, direction);
-					DrawRotaGraph(location.x, location.y - img_down, 1, 0, soil_effect[effect_num], TRUE, direction);
+					DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, soil_effect[effect_num], TRUE, direction);
 				}
 			}
 
 			break;
 		case WALK:
-			DrawRotaGraph(location.x, location.y-img_down, 1, 0, player_walk_img[walk_num], TRUE, direction);
+			DrawRotaGraph((int)location.x, (int)location.y-img_down, 1, 0, player_walk_img[walk_num], TRUE, direction);
 			//DrawFormatString(location.x, location.y - 80, 0x000000, "walk");
 
 			break;
 		case HITDAMAGE:
-			DrawRotaGraph(location.x, location.y - img_down, 1, 0, player_img[1], TRUE, direction);
+			DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, player_img[1], TRUE, direction);
 			//DrawFormatString(location.x, location.y - 80, 0x000000, "hitdamage");
 			break;
 		case DYNAMITE:
-			DrawRotaGraph(location.x, location.y - img_down, 1, 0, player_throw_img[dyna_throw_num], TRUE, direction);
+			DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, player_throw_img[dyna_throw_num], TRUE, direction);
 			break;
 		case DEATH:
-			DrawRotaGraph(location.x, location.y-img_down, 1, 0, player_death_img[death_num], TRUE, direction);
+			DrawRotaGraph((int)location.x, (int)location.y-img_down, 1, 0, player_death_img[death_num], TRUE, direction);
 			//DrawFormatString(location.x, location.y - 80, 0x000000, "death");
 			break;
 		case PANIM:
-			DrawRotaGraph(location.x, location.y - img_down, 1, 0, player_img[op_num], TRUE, direction);
+			DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, player_img[op_num], TRUE, direction);
 			break;
 		case ASE:
-			DrawRotaGraph(location.x, location.y - img_down, 1, 0, player_ase_img[walk_num], TRUE, direction);
+			DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, player_ase_img[walk_num], TRUE, direction);
 			break;
 		default:
 			break;
@@ -481,7 +482,7 @@ void Player::Draw() const
 		//}
 		if (helmet_flg==true)
 		{
-			DrawRotaGraph(location.x, location.y +helmet_down, 1, 0,helmet_img, TRUE, direction);
+			DrawRotaGraph((int)location.x, (int)location.y +helmet_down, 1, 0,helmet_img, TRUE, direction);
 		}
 
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
@@ -564,7 +565,7 @@ void Player::PlayerMove()
 		//左スティックからの入力が無かったら
 		if (input.GetPadThumbLX() >= -32000 && input.GetPadThumbLX() <= 32000)
 		{
-			move_x *= 0.9;
+			move_x *= 0.9f;
 			if (player_state != ATTACK)
 			{
 				player_state = NOMAL;

@@ -14,7 +14,7 @@ private:
     float rotation;
     int dynamite_img;
     int explosion_img[10];
-    int dynamite_flg;//爆発したらTRUE
+    bool dynamite_flg;//爆発したらTRUE
     bool damage_flg;
     bool dynamite_death;//ダイナマイト消去フラグ
     int direction;

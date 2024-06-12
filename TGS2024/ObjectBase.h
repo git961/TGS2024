@@ -18,20 +18,20 @@ struct World
 struct Boxvertex
 {
 	//右上の頂点
-	float upper_rightx;
-	float upper_righty;
+	float upper_rightx=0.0f;
+	float upper_righty=0.0f;
 
 	//右下の頂点
-	float lower_rightx;
-	float lower_righty;
+	float lower_rightx=0.0f;
+	float lower_righty=0.0f;
 
 	//左上の頂点
-	float upper_leftx;
-	float upper_lefty;
+	float upper_leftx=0.0f;
+	float upper_lefty=0.0f;
 
 	//左下の頂点
-	float lower_leftx;
-	float lower_lefty;
+	float lower_leftx=0.0f;
+	float lower_lefty=0.0f;
 };
 //
 ////左上の頂点
@@ -62,7 +62,19 @@ protected:
 
 public:
 	//コンストラクタとデストラクタ
-	ObjectBase() {};
+	ObjectBase()
+	{
+		width = 0.0f;
+		height = 0.0f;
+		distance_x = 0.0f;
+		distance_y = 0.0f;
+		two_widths = 0.0f;
+		two_heights = 0.0f;
+		world.x = 0.0f;
+		world.y = 0.0f;
+		location = { 0 };
+		box_vertex = { 0 };
+	};
 	~ObjectBase() {};
 
 	//当たり判定:何かに当たったかどうかだけ返す
@@ -72,14 +84,14 @@ public:
 		float my_center_y = height / 2;
 
 		//x座標の相手と自分の距離を絶対値で測る
-		distance_x = fabs(world.x - opponent.x);
+		distance_x = (float)fabs(world.x - opponent.x);
 		//2つの幅/2を足す
-		two_widths = my_center_x + opponent_width / 2;
+		two_widths = my_center_x + opponent_width / 2.0f;
 
 		//y座標の相手と自分の距離を絶対値で測る
-		distance_y = fabs(world.y - opponent.y);
+		distance_y = (float)fabs(world.y - opponent.y);
 		//2つの高さ/2を足す
-		two_heights = my_center_y + opponent_height / 2;
+		two_heights = my_center_y + opponent_height / 2.0f;
 
 		//もし距離の絶対値より幅が大きかったらヒット
 		if (distance_x < two_widths && distance_y < two_heights)

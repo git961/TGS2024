@@ -62,7 +62,7 @@ private:
 	int delete_cnt;//消すまでのカウント
 
 	bool effect_flg;
-	block_effect fragment[4];
+	block_effect fragment[4]={0};
 	float v0[4];                      // 斜方投射時の初速度
 	float gravity;                    // 重力
 	float start_x;

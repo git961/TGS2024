@@ -29,7 +29,7 @@ private:
 	int dyna_num;//表示するダイナマイトの数
 	int btn_num;
 	int btn_cnt;
-	int btn_flg;
+	bool btn_flg;
 
 public:
 	UI(int set_hp,int set_dyna_num);

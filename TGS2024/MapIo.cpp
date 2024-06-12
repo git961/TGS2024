@@ -2,17 +2,23 @@
 
 MapIo::MapIo()
 {
-	map_array[map_blockmax_x][map_blockmax_y];
+	//map_array[map_blockmax_x][map_blockmax_y]={0};
 
 	fp = NULL;
 	count = 0;
 	add_x = 0;
 	map_data_num = 1;
-	p_localx = 0;
-	p_worldx = 0;
-	world_mouse_x = 0;
-
-
+	p_localx = 0.0f;
+	p_worldx = 0.0f;
+	world_mouse_x = 0.0f;
+	world_posx = 0.0f;
+	local_posx = 0.0f;
+	map_get = 0;
+	mouse_x = 0;
+	mouse_y = 0;
+	now_abs = 0.0f;
+	posx = 0.0f;
+	
 }
 
 MapIo::~MapIo()
@@ -228,27 +234,27 @@ void MapIo::Draw() const
 		{
 			if (map_array[i][j] == 1)
 			{
-				DrawBox(j * BLOCKSIZE-posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - posx, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
+				DrawBox(j * BLOCKSIZE- (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
 			}
 			else if (map_array[i][j] == 2)
 			{
-				DrawBox(j * BLOCKSIZE - posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - posx, i * BLOCKSIZE + BLOCKSIZE, 0xfff000, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xfff000, FALSE);
 			}
 			else if (map_array[i][j] == 3)
 			{
-				DrawBox(j * BLOCKSIZE - posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - posx, i * BLOCKSIZE + BLOCKSIZE, 0xffff00, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xffff00, FALSE);
 			}
 			else if (map_array[i][j] == 4)
 			{
-				DrawBox(j * BLOCKSIZE - posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - posx, i * BLOCKSIZE + BLOCKSIZE, 0x00fff0, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x00fff0, FALSE);
 			}
 			else if (map_array[i][j] == 8)
 			{
-				DrawBox(j * BLOCKSIZE - posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - posx, i * BLOCKSIZE + BLOCKSIZE, 0xff0000, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xff0000, FALSE);
 			}
 			else if (map_array[i][j] == 9)
 			{
-				DrawBox(j * BLOCKSIZE - posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - posx, i * BLOCKSIZE + BLOCKSIZE, 0x008000, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x008000, FALSE);
 			}
 		}
 	}
