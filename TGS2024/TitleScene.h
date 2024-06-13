@@ -10,8 +10,10 @@ private:
 	double pickaxe_y;			// アニメーション時のつるはしy座標
 	int cursor_x;
 	int cursor_y;
-	double degree;				// 画像の角度（デグリー）
-	double radian;				// 画像の角度（ラジアン）
+	double degree;				// つるはし画像の角度（デグリー）
+	double radian;				// つるはし画像の角度（ラジアン）
+	double rock_degree;			// 岩画像の角度（デグリー）
+	double rock_radian;			// 岩画像の角度（ラジアン）
 	int cursor_start_y;
 	int cursor_move_interval;
 	int cursor_num;
@@ -62,6 +64,7 @@ private:
 
 	int move_x;				// 岩の破片の移動量x;
 	int move_y;				// 岩の破片の移動量y;
+	int fragment_anim_cnt;	// 岩の破片のアニメーションカウント
 
 	//int volume;
 	int title_bgm;

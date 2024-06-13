@@ -8,6 +8,8 @@ TitleScene::TitleScene()
 	cursor_y = 410;
 	degree = 50.0;
 	radian = 0.0;
+	rock_degree = 0.0;
+	rock_radian = 0.0;
 	cursor_start_y = 120;
 	cursor_move_interval = 40;
 	cursor_num = Start;
@@ -43,6 +45,7 @@ TitleScene::TitleScene()
 
 	move_x = 0;
 	move_y = 0;
+	fragment_anim_cnt = 0;
 
 	//volume = 150;
 
@@ -112,9 +115,26 @@ void TitleScene::Update()
 			}
 			else
 			{
-				// 岩が崩れるアニメーション
-				move_x += 2;
-				move_y += 20;
+
+				if (fragment_anim_cnt < 7)
+				{
+					fragment_anim_cnt++;
+				}
+				else
+				{
+					// 岩が崩れるアニメーション
+					move_x += 1;
+					move_y += 15;
+					if (rock_degree < 360.0)
+					{
+						// 岩の破片画像回転
+						rock_degree += 1.0;
+					}
+					else
+					{
+						rock_degree = 0.0;
+					}
+				}
 			}
 
 			// つるはし落下アニメーション
@@ -127,8 +147,8 @@ void TitleScene::Update()
 
 		}
 
+		// 角度をデグリーからラジアンへ変換
 		radian = (double)DEGREE_RADIAN(degree);
-
 	}
 	else
 	{
@@ -226,7 +246,7 @@ void TitleScene::Draw() const
 
 #endif // DEBUG
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 80);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 170);
 	// タイトル配置目安画像
 	//DrawRotaGraph(640, 360, 1.0, 0.0, back_img, TRUE, FALSE);
 	//DrawRotaGraph(640, 330, 1.0, 0.0, rock_break_img[0], TRUE, FALSE);
@@ -234,21 +254,39 @@ void TitleScene::Draw() const
 	// タイトル岩
 	//DrawRotaGraph(640, 170, 1.0, 0.0, rock_img[rock_img_num], TRUE, FALSE);
 
+						// 岩の破片右側、下から順
+	//DrawRotaGraph(1000, 300, 1.0, (double)DEGREE_RADIAN(20.0), rock_fragments_img[0], TRUE, FALSE);
+	//DrawRotaGraph(950, 160, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[1], TRUE, FALSE);
+	//DrawRotaGraph(970, 50, 1.0, (double)DEGREE_RADIAN(40.0), rock_fragments_img[2], TRUE, FALSE);
+
+	//DrawRotaGraph(720, 60, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[3], TRUE, FALSE);
+	//DrawRotaGraph(740, 200, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[4], TRUE, FALSE);
+	//DrawRotaGraph(720, 330, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[5], TRUE, FALSE);
+	//DrawRotaGraph(550, 240, 1.0, (double)DEGREE_RADIAN(50.0), rock_fragments_img[6], TRUE, FALSE);
+
+	// 岩の破片左側、上から順
+	//DrawRotaGraph(450, 60, 1.0, (double)DEGREE_RADIAN(350.0), rock_fragments_img[7], TRUE, FALSE);
+	//DrawRotaGraph(290, 180, 1.0, (double)DEGREE_RADIAN(320.0), rock_fragments_img[8], TRUE, FALSE);
+	//DrawRotaGraph(300, 310, 1.0, (double)DEGREE_RADIAN(340.0), rock_fragments_img[9], TRUE, FALSE);
+
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	// タイトル
 	DrawRotaGraph(640, 180, 1.0, 0.0, text_img[0], TRUE, FALSE);
 
-	DrawRotaGraph(950, 240, 1.0, 0.0, rock_fragments_img[0], TRUE, FALSE);
-	DrawRotaGraph(930, 110, 1.0, 0.0, rock_fragments_img[1], TRUE, FALSE);
-	DrawRotaGraph(940, 50, 1.0, 0.0, rock_fragments_img[2], TRUE, FALSE);
-	DrawRotaGraph(720, 100, 1.0, 0.0, rock_fragments_img[3], TRUE, FALSE);
-	DrawRotaGraph(780, 200, 1.0, 0.0, rock_fragments_img[4], TRUE, FALSE);
-	DrawRotaGraph(690, 250, 1.0, 0.0, rock_fragments_img[5], TRUE, FALSE);
-	DrawRotaGraph(570, 200, 1.0, 0.0, rock_fragments_img[6], TRUE, FALSE);
-	DrawRotaGraph(470, 70, 1.0, 0.0, rock_fragments_img[7], TRUE, FALSE);
-	DrawRotaGraph(330, 140, 1.0, 0.0, rock_fragments_img[8], TRUE, FALSE);
-	DrawRotaGraph(360, 230, 1.0, 0.0, rock_fragments_img[9], TRUE, FALSE);
+						// 岩の破片画像
+				// パズルテスト
+	//DrawRotaGraph(950, 270, 1.0, 0.0, rock_fragments_img[0], TRUE, FALSE);
+	//DrawRotaGraph(930, 120, 1.0, 0.0, rock_fragments_img[1], TRUE, FALSE);
+	//DrawRotaGraph(940, 50, 1.0, 0.0, rock_fragments_img[2], TRUE, FALSE);
+	//DrawRotaGraph(720, 90, 1.0, 0.0, rock_fragments_img[3], TRUE, FALSE);
+	//DrawRotaGraph(780, 200, 1.0, 0.0, rock_fragments_img[4], TRUE, FALSE);
+	//DrawRotaGraph(690, 280, 1.0, 0.0, rock_fragments_img[5], TRUE, FALSE);
+	//DrawRotaGraph(570, 200, 1.0, 0.0, rock_fragments_img[6], TRUE, FALSE);
+	//DrawRotaGraph(470, 70, 1.0, 0.0, rock_fragments_img[7], TRUE, FALSE);
+	//DrawRotaGraph(330, 140, 1.0, 0.0, rock_fragments_img[8], TRUE, FALSE);
+	//DrawRotaGraph(360, 270, 1.0, 0.0, rock_fragments_img[9], TRUE, FALSE);
+
 
 	// start・end
 	DrawRotaGraph(640, (int)start_text_y, 1.0, 0.0, text_img[1], TRUE, FALSE);
@@ -264,22 +302,57 @@ void TitleScene::Draw() const
 	{
 		if (crack_rock_flg == false)
 		{
-			//DrawRotaGraph(640, 170, 1.0, 0.0, rock_img[rock_img_num], TRUE, FALSE);
+			DrawRotaGraph(640, 170, 1.0, 0.0, rock_img[rock_img_num], TRUE, FALSE);
 		}
 		else
 		{
-			// 岩の破片画像
-			// パズルテスト
-			//DrawRotaGraph(950 + move_x, 240 + move_y, 1.0, 0.0, rock_fragments_img[0], TRUE, FALSE);
-			//DrawRotaGraph(930 + move_x, 110 + move_y, 1.0, 0.0, rock_fragments_img[1], TRUE, FALSE);
-			//DrawRotaGraph(940 + move_x, 50 + move_y, 1.0, 0.0, rock_fragments_img[2], TRUE, FALSE);
-			//DrawRotaGraph(720, 100 + move_y, 1.0, 0.0, rock_fragments_img[3], TRUE, FALSE);
-			//DrawRotaGraph(780, 200 + move_y, 1.0, 0.0, rock_fragments_img[4], TRUE, FALSE);
-			//DrawRotaGraph(690, 250 + move_y, 1.0, 0.0, rock_fragments_img[5], TRUE, FALSE);
-			//DrawRotaGraph(570, 200 + move_y, 1.0, 0.0, rock_fragments_img[6], TRUE, FALSE);
-			//DrawRotaGraph(470 - move_x, 70 + move_y, 1.0, 0.0, rock_fragments_img[7], TRUE, FALSE);
-			//DrawRotaGraph(330 - move_x, 140 + move_y, 1.0, 0.0, rock_fragments_img[8], TRUE, FALSE);
-			//DrawRotaGraph(360 - move_x, 230 + move_y, 1.0, 0.0, rock_fragments_img[9], TRUE, FALSE);
+			// 岩の破片左側、上から順
+			//DrawRotaGraph(450, 60, 1.0, (double)DEGREE_RADIAN(350.0), rock_fragments_img[7], TRUE, FALSE);
+			//DrawRotaGraph(290, 180, 1.0, (double)DEGREE_RADIAN(320.0), rock_fragments_img[8], TRUE, FALSE);
+			//DrawRotaGraph(300, 310, 1.0, (double)DEGREE_RADIAN(340.0), rock_fragments_img[9], TRUE, FALSE);
+
+			//DrawRotaGraph(1000, 300 + move_y, 1.0, (double)DEGREE_RADIAN(20.0), rock_fragments_img[0], TRUE, FALSE);
+			//DrawRotaGraph(950, 160 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[1], TRUE, FALSE);
+			//DrawRotaGraph(970, 50 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[2], TRUE, FALSE);
+
+			//DrawRotaGraph(720, 60 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[3], TRUE, FALSE);
+			//DrawRotaGraph(740, 200 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[4], TRUE, FALSE);
+			//DrawRotaGraph(720, 330 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[5], TRUE, FALSE);
+			//DrawRotaGraph(550, 240 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[6], TRUE, FALSE);
+
+			if (fragment_anim_cnt < 7)
+			{
+				// 岩の破片画像
+				// パズルテスト
+				DrawRotaGraph(950 + move_x, 270 + move_y, 1.0, 0.0, rock_fragments_img[0], TRUE, FALSE);
+				DrawRotaGraph(930 + move_x, 120 + move_y, 1.0, 0.0, rock_fragments_img[1], TRUE, FALSE);
+				DrawRotaGraph(940 + move_x, 50 + move_y, 1.0, 0.0, rock_fragments_img[2], TRUE, FALSE);
+				DrawRotaGraph(720, 90 + move_y, 1.0, 0.0, rock_fragments_img[3], TRUE, FALSE);
+				DrawRotaGraph(780, 200 + move_y, 1.0, 0.0, rock_fragments_img[4], TRUE, FALSE);
+				DrawRotaGraph(690, 280 + move_y, 1.0, 0.0, rock_fragments_img[5], TRUE, FALSE);
+				DrawRotaGraph(570, 200 + move_y, 1.0, 0.0, rock_fragments_img[6], TRUE, FALSE);
+				DrawRotaGraph(470 - move_x, 70 + move_y, 1.0, 0.0, rock_fragments_img[7], TRUE, FALSE);
+				DrawRotaGraph(330 - move_x, 140 + move_y, 1.0, 0.0, rock_fragments_img[8], TRUE, FALSE);
+				DrawRotaGraph(360 - move_x, 270 + move_y, 1.0, 0.0, rock_fragments_img[9], TRUE, FALSE);
+			}
+			else
+			{
+				// 岩回転、x移動あり
+				// 岩の破片右側、下から順
+				DrawRotaGraph(1000, 300 + move_y, 1.0, (double)DEGREE_RADIAN(20.0 + rock_degree), rock_fragments_img[0], TRUE, FALSE);
+				DrawRotaGraph(950, 160 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[1], TRUE, FALSE);
+				DrawRotaGraph(970 + move_x, 50 + move_y, 1.0, (double)DEGREE_RADIAN(40.0), rock_fragments_img[2], TRUE, FALSE);
+
+				DrawRotaGraph(720, 60 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[3], TRUE, FALSE);
+				DrawRotaGraph(740, 200 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[4], TRUE, FALSE);
+				DrawRotaGraph(720, 330 + move_y, 1.0, (double)DEGREE_RADIAN(rock_degree), rock_fragments_img[5], TRUE, FALSE);
+				DrawRotaGraph(550, 240 + move_y, 1.0, (double)DEGREE_RADIAN(50.0), rock_fragments_img[6], TRUE, FALSE);
+
+				// 岩の破片左側、上から順
+				DrawRotaGraph(450, 60 + move_y, 1.0, (double)DEGREE_RADIAN(350.0 - rock_degree), rock_fragments_img[7], TRUE, FALSE);
+				DrawRotaGraph(290, 180 + move_y, 1.0, (double)DEGREE_RADIAN(320.0), rock_fragments_img[8], TRUE, FALSE);
+				DrawRotaGraph(300 - move_x, 310 + move_y, 1.0, (double)DEGREE_RADIAN(340.0), rock_fragments_img[9], TRUE, FALSE);
+			}
 		}
 	}
 
