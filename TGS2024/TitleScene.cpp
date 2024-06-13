@@ -46,13 +46,14 @@ TitleScene::TitleScene()
 	move_x = 0;
 	move_y = 0;
 	fragment_anim_cnt = 0;
+	draw_cursor_flg = false;
 
 	//volume = 150;
 
 	// 画像読込
 	back_img = LoadGraph("images/scene/title/title05.png");
-	cursor_img = LoadGraph("images/scene/title/cursor.png");
-	LoadDivGraph("images/scene/title/pickaxe.png", 3, 3, 1, 170, 170, pickaxe_img);
+	pickaxe_img = LoadGraph("images/scene/title/pickaxe.png");
+	LoadDivGraph("images/scene/title/cursor.png", 3, 3, 1, 128, 92, cursor_img);
 	text_img[0] = LoadGraph("images/scene/title/gangancrush.png");
 	text_img[1] = LoadGraph("images/scene/title/start.png");
 	text_img[2] = LoadGraph("images/scene/title/end.png");
@@ -77,14 +78,14 @@ TitleScene::~TitleScene()
 {
 	// 画像削除
 	DeleteGraph(back_img);
-	DeleteGraph(cursor_img);
+	DeleteGraph(pickaxe_img);
 	for (int i = 0; i < 4; i++)
 	{
 		DeleteGraph(text_img[i]);
 	}
 	for (int i = 0; i < 3; i++)
 	{
-		DeleteGraph(pickaxe_img[i]);
+		DeleteGraph(cursor_img[i]);
 		DeleteGraph(rock_img[i]);
 	}
 	for (int i = 0; i < 10; i++)
@@ -160,6 +161,11 @@ void TitleScene::Update()
 
 		if (anim_stop_flg == false)
 		{
+			if (draw_cursor_flg == false)
+			{
+				draw_cursor_flg = true;
+			}
+
 			if (tmp_sin <= 0.9f)
 			{
 				// テキストを下から上に出す処理
@@ -356,17 +362,16 @@ void TitleScene::Draw() const
 		}
 	}
 
-	// カーソル画像
-	if (anim_stop_flg == true)
+	if (draw_cursor_flg == true)
 	{
-		DrawRotaGraph((int)pickaxe_x, (int)pickaxe_y, 1.0, 0.0, pickaxe_img[pickaxe_img_num], TRUE, FALSE);
+		// カーソル画像
+		DrawRotaGraph((int)pickaxe_x, (int)pickaxe_y, 1.2, 0.0, cursor_img[pickaxe_img_num], TRUE, FALSE);
 	}
 	else
 	{
-		DrawRotaGraph((int)pickaxe_x, (int)pickaxe_y, 1.0, radian, pickaxe_img[0], TRUE, FALSE);
+		// つるはし画像
+		DrawRotaGraph((int)pickaxe_x, (int)pickaxe_y, 1.2, radian, pickaxe_img, TRUE, FALSE);
 	}
-
-	//DrawRotaGraph((int)pickaxe_x, (int)pickaxe_y, 1.0, radian, cursor_img, TRUE, FALSE);
 }
 
 AbstractScene* TitleScene::Change()
@@ -520,15 +525,17 @@ void TitleScene::MoveText()
 // テキスト位置決定処理
 void TitleScene::TextPositioning()
 {
-	if (pickaxe_y <= 410.0)
+	if (pickaxe_y <= 400.0)
 	{
+		//pickaxe_x = 300.0;
 		pickaxe_y += 5.0;
 		start_text_y += 5.0;
 		end_text_y += 5.0;
 	}
 	else
 	{
-		pickaxe_y = 410.0;
+		//pickaxe_x = 400.0;
+		pickaxe_y = 400.0;
 		start_text_y = 410.0;
 		end_text_y = 520.0;
 		anim_stop_flg = true;

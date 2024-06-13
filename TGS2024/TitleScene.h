@@ -52,8 +52,8 @@ private:
 	int rock_break_num;			// 岩の画像番号
 
 	int back_img;				// 背景画像
-	int cursor_img;				// カーソル画像
-	int pickaxe_img[3];			// つるはし画像
+	int cursor_img[3];				// カーソル画像
+	int pickaxe_img;			// つるはし画像
 	int text_img[4];
 	int rock_img[3];			// タイトル名に重なっている岩
 	int rock_fragments_img[10];	// 岩の破片
@@ -65,6 +65,7 @@ private:
 	int move_x;				// 岩の破片の移動量x;
 	int move_y;				// 岩の破片の移動量y;
 	int fragment_anim_cnt;	// 岩の破片のアニメーションカウント
+	bool draw_cursor_flg;	// カーソルを描画するか？
 
 	//int volume;
 	int title_bgm;
