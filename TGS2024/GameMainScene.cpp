@@ -2167,7 +2167,7 @@ AbstractScene* GameMainScene::Change()
 		}
 
 		// プレイヤーの残機が0になったら
-		return new GameOverScene(score->GetScore());
+		return new GameOverScene();
 	}
 
 	if (clear_flg == true)

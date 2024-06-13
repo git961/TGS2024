@@ -48,7 +48,7 @@ private:
 	};
 
 public:
-	GameOverScene(int set_score);
+	GameOverScene();
 	~GameOverScene();
 
 	void Update() override;

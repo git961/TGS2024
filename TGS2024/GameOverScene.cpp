@@ -1,9 +1,7 @@
 #include "GameOverScene.h"
 
-GameOverScene::GameOverScene(int set_score)
+GameOverScene::GameOverScene()
 {
-	black_out = new BlackOut;
-	score = set_score;
 	change_cnt = 180;
 	volume = 150;
 	play_sound_flg = true;

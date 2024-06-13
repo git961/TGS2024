@@ -19,6 +19,7 @@ TitleScene::TitleScene()
 	count = 0;
 	text_up_flg = true;
 	anim_stop_flg = false;
+	crack_rock_flg = false;
 
 	start_x = 0.0f;
 	start_y = 0.0f;
@@ -37,7 +38,11 @@ TitleScene::TitleScene()
 	anim_cnt = 0;
 	pickaxe_anim_cnt = 0;
 	rock_break_num = 1;
+	rock_img_num = 0;
 	rock_braek_timer = 250;
+
+	move_x = 0;
+	move_y = 0;
 
 	//volume = 150;
 
@@ -49,13 +54,8 @@ TitleScene::TitleScene()
 	text_img[1] = LoadGraph("images/scene/title/start.png");
 	text_img[2] = LoadGraph("images/scene/title/end.png");
 	text_img[3] = LoadGraph("images/scene/title/push_b_blue.png");
-	rock_break_img[0] = LoadGraph("images/scene/title/rockbreak(kari)1.png");
-	rock_break_img[1] = LoadGraph("images/scene/title/rockbreak(kari)3.png");
-	rock_break_img[2] = LoadGraph("images/scene/title/rockbreak(kari)4.png");
-	rock_break_img[3] = LoadGraph("images/scene/title/rockbreak(kari)5.png");
-	rock_break_img[4] = LoadGraph("images/scene/title/rockbreak(kari)6.png");
-	rock_break_img[5] = LoadGraph("images/scene/title/rockbreak(kari)7.png");
-	rock_break_img[6] = LoadGraph("images/scene/title/rockbreak(kari)8.png");
+	LoadDivGraph("images/scene/title/TitleRockAnim.png", 3, 1, 3, 850, 320, rock_img);
+	LoadDivGraph("images/scene/title/TitleRocks.png", 10, 10, 1, 430, 320, rock_fragments_img);
 
 	pickaxe_img_num = 0;
 
@@ -82,10 +82,11 @@ TitleScene::~TitleScene()
 	for (int i = 0; i < 3; i++)
 	{
 		DeleteGraph(pickaxe_img[i]);
+		DeleteGraph(rock_img[i]);
 	}
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < 10; i++)
 	{
-		DeleteGraph(rock_break_img[i]);
+		DeleteGraph(rock_fragments_img[i]);
 	}
 
 	// サウンド削除
@@ -98,22 +99,34 @@ void TitleScene::Update()
 {
 	input.InputUpdate();
 
-	//PickaxeAnimation();
-
 	if (anim_cnt < 320)
 	{
 		anim_cnt++;
 
 		if (anim_cnt >= rock_braek_timer)
 		{
-			// 岩が崩れるアニメーション
-			CrumblingRock();
+			if (crack_rock_flg == false)
+			{
+				// 岩ひび割れ
+				CrackRock();
+			}
+			else
+			{
+				// 岩が崩れるアニメーション
+				move_x += 2;
+				move_y += 10;
+			}
+
+			// つるはし落下アニメーション
+			PickaxeFalling();
 		}
 		else if(anim_cnt >= 60)
 		{
 			// つるはし回転アニメーション
 			PickaxeRotation();
+
 		}
+
 		radian = (double)DEGREE_RADIAN(degree);
 
 	}
@@ -201,6 +214,7 @@ void TitleScene::Draw() const
 {
 #ifdef DEBUG
 	SetFontSize(20);
+
 	DrawFormatString(10, 10, 0xffffff, "Title");
 	DrawFormatString(10, 70, 0xffffff, "scene_change_cnt: %d", scene_change_cnt);
 	//DrawFormatString(10, 70, 0xffffff, "pickaxe_x: %f", pickaxe_x);
@@ -212,9 +226,14 @@ void TitleScene::Draw() const
 
 #endif // DEBUG
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 80);
 	// タイトル配置目安画像
 	//DrawRotaGraph(640, 360, 1.0, 0.0, back_img, TRUE, FALSE);
+	//DrawRotaGraph(640, 330, 1.0, 0.0, rock_break_img[0], TRUE, FALSE);
+
+	// タイトル岩
+	//DrawRotaGraph(640, 170, 1.0, 0.0, rock_img[rock_img_num], TRUE, FALSE);
+
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	// タイトル
@@ -232,14 +251,24 @@ void TitleScene::Draw() const
 
 	if (text_up_flg == true)
 	{
-		if (anim_cnt < rock_braek_timer)
+		if (crack_rock_flg == false)
 		{
-			// 崩れる岩画像
-			DrawRotaGraph(640, 330, 1.0, 0.0, rock_break_img[0], TRUE, FALSE);
+			DrawRotaGraph(640, 170, 1.0, 0.0, rock_img[rock_img_num], TRUE, FALSE);
 		}
 		else
 		{
-			DrawRotaGraph(640, 330, 1.0, 0.0, rock_break_img[rock_break_num], TRUE, FALSE);
+			// 岩の破片画像
+			// パズルテスト
+			DrawRotaGraph(950, 240 + move_y, 1.0, 0.0, rock_fragments_img[0], TRUE, FALSE);
+			DrawRotaGraph(930, 110 + move_y, 1.0, 0.0, rock_fragments_img[1], TRUE, FALSE);
+			DrawRotaGraph(940, 50 + move_y, 1.0, 0.0, rock_fragments_img[2], TRUE, FALSE);
+			DrawRotaGraph(720, 100 + move_y, 1.0, 0.0, rock_fragments_img[3], TRUE, FALSE);
+			DrawRotaGraph(780, 200 + move_y, 1.0, 0.0, rock_fragments_img[4], TRUE, FALSE);
+			DrawRotaGraph(690, 250 + move_y, 1.0, 0.0, rock_fragments_img[5], TRUE, FALSE);
+			DrawRotaGraph(570, 200 + move_y, 1.0, 0.0, rock_fragments_img[6], TRUE, FALSE);
+			DrawRotaGraph(470, 70 + move_y, 1.0, 0.0, rock_fragments_img[7], TRUE, FALSE);
+			DrawRotaGraph(330, 140 + move_y, 1.0, 0.0, rock_fragments_img[8], TRUE, FALSE);
+			DrawRotaGraph(360, 230 + move_y, 1.0, 0.0, rock_fragments_img[9], TRUE, FALSE);
 		}
 	}
 
@@ -311,49 +340,18 @@ void TitleScene::PickaxeRotation()
 	}
 }
 
-// 岩が崩れるアニメーション
-void TitleScene::CrumblingRock()
+// 岩にひびが入るアニメーション
+void TitleScene::CrackRock()
 {
-	rock_break_num = (anim_cnt - rock_braek_timer) / 7;
-	if (rock_break_num > 6)
+	if (rock_img_num < 2)
 	{
-		rock_break_num = 6;
+		// 7fで画像切り替え
+		rock_img_num = (anim_cnt - (rock_braek_timer - 10)) / 7;
 	}
 
-	if (rock_break_num >= 1)
+	if ((anim_cnt - (rock_braek_timer - 10)) / 7 == 3)
 	{
-		// つるはし反時計回り
-		if (degree > 0.0)
-		{
-			degree -= 15;
-		}
-		else
-		{
-			degree = 360.0;
-		}
-
-		pickaxe_x -= 10.0;
-
-		if (tmp_sin <= 0.9f)
-		{
-			tmp_sin = sinf((float)M_PI * 2.0f / 60.0f* (float)count);
-			pickaxe_y = start_y - tmp_sin * 100.0f;
-		}
-		else
-		{
-			pickaxe_y += speed;
-			speed += 0.5;
-		}
-
-		// sin用カウント
-		if (count < 30)
-		{
-			count++;
-		}
-		else
-		{
-			count = 0;
-		}
+		crack_rock_flg = true;
 	}
 }
 
@@ -470,4 +468,50 @@ void TitleScene::PickaxeAnimation()
 	{
 		pickaxe_anim_cnt = 0;
 	}
+}
+
+// 岩が崩れるアニメーション
+void TitleScene::RockCollapses()
+{
+
+}
+// つるはし落下アニメーション
+void TitleScene::PickaxeFalling()
+{
+	if (rock_break_num >= 1)
+	{
+		// つるはし反時計回り
+		if (degree > 0.0)
+		{
+			degree -= 15;
+		}
+		else
+		{
+			degree = 360.0;
+		}
+
+		pickaxe_x -= 10.0;
+
+		if (tmp_sin <= 0.9f)
+		{
+			tmp_sin = sinf(M_PI * 2 / 60 * count);
+			pickaxe_y = start_y - tmp_sin * 100;
+		}
+		else
+		{
+			pickaxe_y += speed;
+			speed += 0.5;
+		}
+
+		// sin用カウント
+		if (count < 30)
+		{
+			count++;
+		}
+		else
+		{
+			count = 0;
+		}
+	}
+
 }

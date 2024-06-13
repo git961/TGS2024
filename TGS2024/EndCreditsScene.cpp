@@ -7,6 +7,10 @@ EndCreditsScene::EndCreditsScene(int set_score)
 	timer = 0;
 	score = set_score;
 	tmp_score = score;
+	for (int i = 0; i < 5; i++)
+	{
+		num[i] = 0;
+	}
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -15,10 +19,6 @@ EndCreditsScene::EndCreditsScene(int set_score)
 			num[i] = tmp_score % 10;
 			tmp_score /= 10;
 		}
-	}
-	for (int i = 0; i < 5; i++)
-	{
-		num[i] = 0;
 	}
 
 	change_cnt = 180;
@@ -89,18 +89,13 @@ void EndCreditsScene::Update()
 
 	if (volume < 140)
 	{
-		//volume++;
-		//ChangeVolumeSoundMem(volume, credits_bgm);
-
 		volume_timer++;
 		if (volume_timer % 2 == 0)
 		{
 			volume++;
 			ChangeVolumeSoundMem(volume, credits_bgm);
 		}
-
 	}
-
 }
 
 void EndCreditsScene::Draw() const
