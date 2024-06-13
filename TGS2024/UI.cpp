@@ -215,19 +215,37 @@ void UI::HeartAnim()
 		case 60:
 			heart_anim_num = 1;
 			break;
-		case 70:
+		case 65:
 			heart_anim_num = 2;
 			break;
-		case 80:
+		case 70:
 			heart_anim_num = 3;
 			break;
-		case 90:
+		case 75:
 			heart_anim_num = 4;
 			break;
-		case 100:
+		case 80:
 			heart_anim_num = 5;
 			break;
+		case 85:
+			heart_anim_num = 0;
+			break;
+		case 90:
+			heart_anim_num = 1;
+			break;
+		case 95:
+			heart_anim_num = 2;
+			break;
+		case 100:
+			heart_anim_num = 3;
+			break;
+		case 105:
+			heart_anim_num = 4;
+			break;
 		case 110:
+			heart_anim_num = 5;
+			break;
+		case 115:
 			heart_anim_num = 0;
 			anim_cnt = 0;
 			break;
