@@ -2,7 +2,7 @@
 
 UI::UI(int set_hp, int set_dyna_num)
 {
-	heart_img = LoadGraph("images/UI/heart.png");
+	LoadDivGraph("images/UI/heart.png", 6, 6, 1, 128, 128, heart_img);
 	p_img = LoadGraph("images/UI/player.png");
 	dyna_img= LoadGraph("images/UI/dynamite.png");
 	LoadDivGraph("images/UI/UIB.png", 2, 2, 1, 128, 128, btnB_img);
@@ -18,7 +18,7 @@ UI::UI(int set_hp, int set_dyna_num)
 	heart_num = set_hp / 10;
 	dyna_num=set_dyna_num;
 	x = 100;
-	y = 40;
+	y = 38;
 
 	btn_num = 0;
 	btn_cnt = 0;
@@ -28,6 +28,9 @@ UI::UI(int set_hp, int set_dyna_num)
 	kanban_anim_num = 1;
 	i = 0;
 	btn_flg = false;
+
+	heart_anim_num = 0;
+	anim_cnt=0;
 }
 
 UI::~UI()
@@ -38,6 +41,8 @@ void UI::Update(int set_hp,int set_dyna_num)
 {
 	heart_num = set_hp / 10;
 	dyna_num = set_dyna_num;
+
+	HeartAnim();
 
 }
 
@@ -60,7 +65,7 @@ void UI::Draw() const
 
 	for (int i = 0; i < heart_num; i++)
 	{
-		DrawRotaGraph(x+35*i, (int)y, 1, 0, heart_img, TRUE, 0);
+		DrawRotaGraph(x+35*i, (int)y-3.0f, 0.5, 0, heart_img[heart_anim_num], TRUE, 0);
 	}
 	for (int i = 0; i < dyna_num; i++)
 	{
@@ -200,4 +205,33 @@ void UI::DrawTutorial(Player* player) const
 	}
 
 
+}
+
+void UI::HeartAnim()
+{
+
+	switch (anim_cnt)
+	{
+		case 60:
+			heart_anim_num = 1;
+			break;
+		case 70:
+			heart_anim_num = 2;
+			break;
+		case 80:
+			heart_anim_num = 3;
+			break;
+		case 90:
+			heart_anim_num = 4;
+			break;
+		case 100:
+			heart_anim_num = 5;
+			break;
+		case 110:
+			heart_anim_num = 0;
+			anim_cnt = 0;
+			break;
+	}
+
+	anim_cnt++;
 }

@@ -161,6 +161,7 @@ GameMainScene::GameMainScene(bool set_flg)
 		game_state =PLAY;
 		ResetMap();
 	}
+	game_state = PLAY;
 
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{

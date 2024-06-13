@@ -114,7 +114,7 @@ void FallingRock::Update()
 
 		if (degree < 360)
 		{
-			degree += 5;
+			degree += 2;
 		}
 		else
 		{

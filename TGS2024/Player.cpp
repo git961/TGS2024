@@ -51,7 +51,7 @@ Player::Player(float set_x)
 
 	//体力
 	hp = 50;
-	hp = 10;
+	//hp = 10;
 
 	//幅と座標
 	width = 50;
