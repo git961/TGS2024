@@ -114,7 +114,7 @@ void TitleScene::Update()
 			{
 				// 岩が崩れるアニメーション
 				move_x += 2;
-				move_y += 10;
+				move_y += 20;
 			}
 
 			// つるはし落下アニメーション
@@ -239,6 +239,17 @@ void TitleScene::Draw() const
 	// タイトル
 	DrawRotaGraph(640, 180, 1.0, 0.0, text_img[0], TRUE, FALSE);
 
+	DrawRotaGraph(950, 240, 1.0, 0.0, rock_fragments_img[0], TRUE, FALSE);
+	DrawRotaGraph(930, 110, 1.0, 0.0, rock_fragments_img[1], TRUE, FALSE);
+	DrawRotaGraph(940, 50, 1.0, 0.0, rock_fragments_img[2], TRUE, FALSE);
+	DrawRotaGraph(720, 100, 1.0, 0.0, rock_fragments_img[3], TRUE, FALSE);
+	DrawRotaGraph(780, 200, 1.0, 0.0, rock_fragments_img[4], TRUE, FALSE);
+	DrawRotaGraph(690, 250, 1.0, 0.0, rock_fragments_img[5], TRUE, FALSE);
+	DrawRotaGraph(570, 200, 1.0, 0.0, rock_fragments_img[6], TRUE, FALSE);
+	DrawRotaGraph(470, 70, 1.0, 0.0, rock_fragments_img[7], TRUE, FALSE);
+	DrawRotaGraph(330, 140, 1.0, 0.0, rock_fragments_img[8], TRUE, FALSE);
+	DrawRotaGraph(360, 230, 1.0, 0.0, rock_fragments_img[9], TRUE, FALSE);
+
 	// start・end
 	DrawRotaGraph(640, (int)start_text_y, 1.0, 0.0, text_img[1], TRUE, FALSE);
 	DrawRotaGraph(640, (int)end_text_y, 1.0, 0.0, text_img[2], TRUE, FALSE);
@@ -253,22 +264,22 @@ void TitleScene::Draw() const
 	{
 		if (crack_rock_flg == false)
 		{
-			DrawRotaGraph(640, 170, 1.0, 0.0, rock_img[rock_img_num], TRUE, FALSE);
+			//DrawRotaGraph(640, 170, 1.0, 0.0, rock_img[rock_img_num], TRUE, FALSE);
 		}
 		else
 		{
 			// 岩の破片画像
 			// パズルテスト
-			DrawRotaGraph(950, 240 + move_y, 1.0, 0.0, rock_fragments_img[0], TRUE, FALSE);
-			DrawRotaGraph(930, 110 + move_y, 1.0, 0.0, rock_fragments_img[1], TRUE, FALSE);
-			DrawRotaGraph(940, 50 + move_y, 1.0, 0.0, rock_fragments_img[2], TRUE, FALSE);
-			DrawRotaGraph(720, 100 + move_y, 1.0, 0.0, rock_fragments_img[3], TRUE, FALSE);
-			DrawRotaGraph(780, 200 + move_y, 1.0, 0.0, rock_fragments_img[4], TRUE, FALSE);
-			DrawRotaGraph(690, 250 + move_y, 1.0, 0.0, rock_fragments_img[5], TRUE, FALSE);
-			DrawRotaGraph(570, 200 + move_y, 1.0, 0.0, rock_fragments_img[6], TRUE, FALSE);
-			DrawRotaGraph(470, 70 + move_y, 1.0, 0.0, rock_fragments_img[7], TRUE, FALSE);
-			DrawRotaGraph(330, 140 + move_y, 1.0, 0.0, rock_fragments_img[8], TRUE, FALSE);
-			DrawRotaGraph(360, 230 + move_y, 1.0, 0.0, rock_fragments_img[9], TRUE, FALSE);
+			//DrawRotaGraph(950 + move_x, 240 + move_y, 1.0, 0.0, rock_fragments_img[0], TRUE, FALSE);
+			//DrawRotaGraph(930 + move_x, 110 + move_y, 1.0, 0.0, rock_fragments_img[1], TRUE, FALSE);
+			//DrawRotaGraph(940 + move_x, 50 + move_y, 1.0, 0.0, rock_fragments_img[2], TRUE, FALSE);
+			//DrawRotaGraph(720, 100 + move_y, 1.0, 0.0, rock_fragments_img[3], TRUE, FALSE);
+			//DrawRotaGraph(780, 200 + move_y, 1.0, 0.0, rock_fragments_img[4], TRUE, FALSE);
+			//DrawRotaGraph(690, 250 + move_y, 1.0, 0.0, rock_fragments_img[5], TRUE, FALSE);
+			//DrawRotaGraph(570, 200 + move_y, 1.0, 0.0, rock_fragments_img[6], TRUE, FALSE);
+			//DrawRotaGraph(470 - move_x, 70 + move_y, 1.0, 0.0, rock_fragments_img[7], TRUE, FALSE);
+			//DrawRotaGraph(330 - move_x, 140 + move_y, 1.0, 0.0, rock_fragments_img[8], TRUE, FALSE);
+			//DrawRotaGraph(360 - move_x, 230 + move_y, 1.0, 0.0, rock_fragments_img[9], TRUE, FALSE);
 		}
 	}
 
@@ -494,7 +505,7 @@ void TitleScene::PickaxeFalling()
 
 		if (tmp_sin <= 0.9f)
 		{
-			tmp_sin = sinf(M_PI * 2 / 60 * count);
+			tmp_sin = sinf((float)M_PI * 2 / 60 * count);
 			pickaxe_y = start_y - tmp_sin * 100;
 		}
 		else

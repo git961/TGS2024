@@ -60,8 +60,8 @@ private:
 	int rock_img_num;			// 岩画像番号
 	int rock_braek_timer;		// 岩が崩れるまでの時間
 
-	float move_x;				// 岩の破片の移動量x;
-	float move_y;				// 岩の破片の移動量y;
+	int move_x;				// 岩の破片の移動量x;
+	int move_y;				// 岩の破片の移動量y;
 
 	//int volume;
 	int title_bgm;

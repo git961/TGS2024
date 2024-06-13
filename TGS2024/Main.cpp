@@ -22,7 +22,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	SetDrawScreen(DX_SCREEN_BACK);	// 描画先画面を裏にする
 
-	SceneManager SceneManager(dynamic_cast<AbstractScene*>(new GameMainScene(true)));
+	SceneManager SceneManager(dynamic_cast<AbstractScene*>(new TitleScene));
 	Input input;
 	fps fp;
 	//ループ前にFPS計測を初期化

@@ -2,6 +2,7 @@
 
 GameOverScene::GameOverScene()
 {
+	black_out = new BlackOut;
 	change_cnt = 180;
 	volume = 150;
 	play_sound_flg = true;
@@ -40,6 +41,14 @@ GameOverScene::GameOverScene()
 
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(volume, gameover_se);
+
+	ring_x = 640;
+	ring_y = 590;
+	count = 0;
+	ring_start_x = ring_x;
+	anim_finish_flg = false;
+	ring_alpha = 0;
+	lower_ring_alpha = false;
 }
 
 GameOverScene::~GameOverScene()
@@ -58,7 +67,7 @@ void GameOverScene::Update()
 		play_sound_flg = false;
 	}
 
-	if (select_flg == false)
+	if (anim_finish_flg == false)
 	{
 		if (y > 599)
 		{
@@ -106,8 +115,8 @@ void GameOverScene::Update()
 				rock_flg = false;
 				break;
 			case 30:
-				select_flg = true;
 				rip_cnt = 0;
+				anim_finish_flg = true;
 				break;
 			}
 		}
@@ -158,14 +167,16 @@ void GameOverScene::Update()
 					}
 				}
 
+				if (select_flg == true)
+				{
 					// Bボタンで決定
 					if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 					{
 
 						push_b_flg = true;
 					}
+				}
 				
-
 				if (cursor_num == Retry)
 				{
 					cursor_y = 400;
@@ -214,6 +225,12 @@ void GameOverScene::Update()
 
 	}
 
+	// 墓アニメーションが終わっていたら
+	if (anim_finish_flg == true)
+	{
+		// リングアニメーション
+		RingAnimation();
+	}
 
 	if (black_out != nullptr&&change_flg==true&&cursor_num==Retry)
 	{
@@ -233,17 +250,22 @@ void GameOverScene::Draw() const
 	//DrawRotaGraph(location.x, location.y-25, 1, 0, player_img[p_imgnum], TRUE, direction);
 	if (rock_flg == true)
 	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 		DrawRotaGraph((int)x, (int)effect_y, size, 0, rock_effect_img[rock_num], TRUE, 0);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
 
+	if (anim_finish_flg == true)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, ring_alpha);
+		// リング画像
+		DrawRotaGraph((int)ring_x, (int)ring_y - 60, 1, 0, ring_img, TRUE, 0);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 
 	if (push_b_flg == false)
 	{
 		DrawRotaGraph((int)x, (int)y, 1, 0, rip_img[rip_num], TRUE, 0);
-		DrawRotaGraph((int)x, (int)y-60, 1, 0, ring_img, TRUE, 0);
-		
 	}
 	else {
 		if (cursor_num == Retry) {
@@ -271,25 +293,67 @@ void GameOverScene::Draw() const
 
 AbstractScene* GameOverScene::Change()
 {
-
-		if (black_out!=nullptr&&black_out->GetFadeout() == true)
+	if (black_out!=nullptr&&black_out->GetFadeout() == true)
+	{
+		// ゲームオーバーse停止
+		if (CheckSoundMem(gameover_se) == TRUE)
 		{
-			// ゲームオーバーse停止
-			if (CheckSoundMem(gameover_se) == TRUE)
-			{
-				StopSoundMem(gameover_se);
-			}
-
-			if (cursor_num == Retry)
-			{
-				return new GameMainScene(true);
-			}
-			else {
-				// Bボタンでタイトルに遷移
-				return new TitleScene;
-
-			}
+			StopSoundMem(gameover_se);
 		}
+
+		if (cursor_num == Retry)
+		{
+			return new GameMainScene(true);
+		}
+		else {
+			// Bボタンでタイトルに遷移
+			return new TitleScene;
+		}
+	}
 	
 	return this;
+}
+
+// リングアニメーション
+void GameOverScene::RingAnimation()
+{
+	// cos用カウント
+	if (count <= 60)
+	{
+		count++;
+	}
+	else
+	{
+		count = 0;
+	}
+
+	// 画像は左右に揺れながら上がっていく
+	ring_x = ring_start_x - cosf((float)M_PI * 2.0f / 60.0f * count) * 10.0f;
+	ring_y--;
+
+	// アニメーションが終わったら選択可能になる
+	if (lower_ring_alpha == false)
+	{
+		// 画像を濃くする
+		if (ring_alpha <= 120)
+		{
+			ring_alpha += 3;
+		}
+		else
+		{
+			lower_ring_alpha = true;
+		}
+	}
+	else
+	{
+		// 画像を薄くする
+		if (ring_alpha >= 0)
+		{
+			ring_alpha -= 2;
+		}
+		else
+		{
+			select_flg = true;
+		}
+	}
 }

@@ -8,7 +8,6 @@ class GameOverScene : public AbstractScene
 private:
 	BlackOut *black_out;
 
-	int score;
 	int change_cnt;		// シーン切り替えできるようになるまでのカウント
 	int volume;
 	bool play_sound_flg;		// 一度だけ再生
@@ -23,7 +22,7 @@ private:
 	int rip_cnt;
 	int rock_num;
 	bool rock_flg;
-	float alpha;
+	int alpha;
 	float size;
 	float x, y;
 	float effect_y;
@@ -47,6 +46,14 @@ private:
 		End
 	};
 
+	float ring_x;
+	float ring_y;
+	int count;
+	float ring_start_x;
+	bool anim_finish_flg;			// 墓アニメーションが終わったか？
+	int ring_alpha;					// リングの画像不透明度
+	bool lower_ring_alpha;			// リング画像の不透明度を下げるか？
+
 public:
 	GameOverScene();
 	~GameOverScene();
@@ -54,5 +61,8 @@ public:
 	void Update() override;
 	void Draw() const override;
 	AbstractScene* Change() override;
+
+private:
+	void RingAnimation();			// リングアニメーション
 };
 
