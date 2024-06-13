@@ -14,8 +14,8 @@ private:
 
     struct cameraposition
     {
-        float x;
-        float y;
+        float x=0;
+        float y=0;
 
     };
 
@@ -27,7 +27,7 @@ private:
     FallingRock *fallingrock;
     Player* player;
 
-    float x, y;
+    float x;
     int shake_cnt;
     int shake_x1;
     int shake_x2;

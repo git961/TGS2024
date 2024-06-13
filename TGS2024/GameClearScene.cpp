@@ -39,11 +39,7 @@ void GameClearScene::Update()
 {
 	//input.InputUpdate();
 	//// クリアse再生
-	//if (se_flg == true)
-	//{
-	//	PlaySoundMem(gameclear_se, DX_PLAYTYPE_BACK);
-	//	se_flg = false;
-	//}
+
 	//if (change_cnt > 0) 
 	//{
 	//	change_cnt--;
@@ -102,6 +98,11 @@ void GameClearScene::Update()
 				}
 
 			}
+		}
+		if (se_flg == true)
+		{
+			PlaySoundMem(gameclear_se, DX_PLAYTYPE_BACK);
+			se_flg = false;
 		}
 		break;
 	case 1:
@@ -225,11 +226,11 @@ void GameClearScene::Draw() const
 	case 0:
 		DrawGraph(0, 0, ending_img[endimg_num], TRUE);
 
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha2);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha2);
 		DrawGraph(0, 0, ending_img[endimg_num+1], TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha);
 		DrawGraph(0, 0, ending_img[7], TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		break;
@@ -237,7 +238,7 @@ void GameClearScene::Draw() const
 	case 2:
 		DrawGraph(0, 0, ending_img[endimg_num], TRUE);
 
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha2);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha2);
 		DrawGraph(0, 0, ending_img[endimg_num + 1], TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -246,7 +247,7 @@ void GameClearScene::Draw() const
 	case 4:
 	case 5:
 		DrawGraph(0, 0, ending_img[endimg_num], TRUE);
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha2);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha2);
 		DrawGraph(0, 0, ending_img[endimg_num + 1], TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		break;
@@ -254,11 +255,11 @@ void GameClearScene::Draw() const
 	case 7:
 		DrawGraph(0, 0, ending_img[endimg_num], TRUE);
 
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha);
 		DrawGraph(0, 0, ending_img[7], TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha2);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha2);
 		DrawGraph(0, 0, ending_img[8], TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		break;

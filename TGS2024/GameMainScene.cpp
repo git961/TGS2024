@@ -11,22 +11,32 @@ static cameraposition screen_origin_position =
 };
 
 
-GameMainScene::GameMainScene()
+GameMainScene::GameMainScene(bool set_flg)
 {
-
+	retry_flg = set_flg;
 
 	//check_abs = 0;
 
 	mapio = new MapIo;
+	fade = new BlackOut;
 
-	player = new Player(0.0f);
-	player = new Player(2200.0f);
+	//プレイヤー生成
+	if (retry_flg == false)
+	{
+		player = new Player(0.0f);
+		p_notback_flg = false;
+	}
+	else
+	{
+		player = new Player(2200.0f);
+		p_notback_flg = true;
+	}
 
 	enemy = new Enemy * [ENEMYMAXNUM];
 	rolling_enemy = new RollingEnemy*[ROLLING_ENEMY_MAXNUM];
 	stage_block = new StageBlock * [map_blockmax_y * map_blockmax_x];
 
-	ui = new UI(player->GetHp(),player->GetDynaNum());
+	ui = new UI((int)player->GetHp(),player->GetDynaNum());
 	ac = new AttackCheck;
 
 	walk_gem = new Gem * [ENEMYMAXNUM];
@@ -37,7 +47,7 @@ GameMainScene::GameMainScene()
 	dynamite = new Dynamite * [DYNAMITE_MAXNUM];
 	checkhit = false;
 	enemy_damage_once = false;
-
+	rock_damage_once = false;
 	player_damage_once = false;
 	//back.png
 	back_img[0] = LoadGraph("images/Backimg/backimg.png", TRUE);
@@ -48,8 +58,6 @@ GameMainScene::GameMainScene()
 	//back_img = LoadGraph("images/background_test.png", TRUE);
 
 
-	game_state = TUTORIAL;
-	game_state = PLAY;
 
 	//game_state = RESPAWN;
 
@@ -71,7 +79,7 @@ GameMainScene::GameMainScene()
 
 	block_count = 0;
 	enemy_count = 0;
-	rock_count = 0;
+	//rock_count = 0;
 	rolling_enemy_cnt = 0;
 
 	mapio->LoadMapData();
@@ -89,58 +97,71 @@ GameMainScene::GameMainScene()
 		roll_gem[i] = nullptr;
 	}
 
-	if (mapio != nullptr) {
-		//stage_block = new StageBlock(this->mapio);
 
-		for (int i = 0; i < map_blockmax_y; i++)
-		{
-			for (int j = 0; j < map_blockmax_x; j++)
+	if (retry_flg == false)
+	{
+		//リトライじゃなかったら
+		game_state = TUTORIAL;
+
+		if (mapio != nullptr) {
+			//stage_block = new StageBlock(this->mapio);
+
+			for (int i = 0; i < map_blockmax_y; i++)
 			{
-				map_old_array[i][j] = mapio->GetMapData(i, j);
-
-				switch (mapio->GetMapData(i, j))
+				for (int j = 0; j < map_blockmax_x; j++)
 				{
-				case 1:
-					stage_block[block_count++] = new StageBlock(1, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
-					break;
-				case 2:
-					enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2,false);
-					break;
-				case 3:
-					stage_block[block_count++] = new StageBlock(3, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
-					break;
-				case 4:
-					rock_count++;
-					stage_block[block_count++] = new StageBlock(4, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
-					break;
-				case 5:
-					stage_block[block_count++] = new StageBlock(5, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
-					break;
-				case 6:
-					stage_block[block_count++] = new StageBlock(6, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
-					break;
-				case 7:
-					stage_block[block_count++] = new StageBlock(7, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
-					break;
-				case 8:
-					enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2,true);
-					break;
-				case 9:
-					rolling_enemy[rolling_enemy_cnt++] = new RollingEnemy(j * BLOCKSIZE + BLOCKSIZE / 2);
-					break;
-				case 10:
-					stage_block[block_count++] = new StageBlock(10, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
-					break;
-				case 11:
-					stage_block[block_count++] = new StageBlock(11, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
-					break;
+					map_old_array[i][j] = mapio->GetMapData(i, j);
+
+					switch (mapio->GetMapData(i, j))
+					{
+					case 1:
+						stage_block[block_count++] = new StageBlock(1, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+					case 2:
+						enemy[enemy_count++] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, false);
+						break;
+					case 3:
+						stage_block[block_count++] = new StageBlock(3, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+					case 4:
+						//rock_count++;
+						stage_block[block_count++] = new StageBlock(4, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+					case 5:
+						stage_block[block_count++] = new StageBlock(5, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+					case 6:
+						stage_block[block_count++] = new StageBlock(6, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+					case 7:
+						stage_block[block_count++] = new StageBlock(7, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+					case 8:
+						enemy[enemy_count++] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, true);
+						break;
+					case 9:
+						rolling_enemy[rolling_enemy_cnt++] = new RollingEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+					case 10:
+						stage_block[block_count++] = new StageBlock(10, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+					case 11:
+						stage_block[block_count++] = new StageBlock(11, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+					}
+
+
 				}
-
-
 			}
 		}
 	}
-
+	else
+	{
+		//リトライして来たら
+		game_state =PLAY;
+		ResetMap();
+	}
+	game_state = PLAY;
 
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
@@ -152,12 +173,12 @@ GameMainScene::GameMainScene()
 		dynamite[i] = nullptr;
 	}
 
-	rock_gem = new Gem*[rock_count];
+	//rock_gem = new Gem*[rock_count];
 
-	for (int i = 0; i < rock_count; i++)
-	{
-		rock_gem[i] = nullptr;
-	}
+	//for (int i = 0; i < rock_count; i++)
+	//{
+	//	rock_gem[i] = nullptr;
+	//}
 
 	check_num = 0;
 
@@ -182,9 +203,11 @@ GameMainScene::GameMainScene()
 	// サウンド読込
 	main_bgm = LoadSoundMem("sounds/bgm/gamemain.mp3");
 	volume = 150;
+	fadein_sound = LoadSoundMem("sounds/se/player/drop3.mp3");
 
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(volume, main_bgm);
+	ChangeVolumeSoundMem(volume, fadein_sound);
 	camera_resetx.x = 0;
 	camera_resetflg = false;
 	camera_old_x = 0;
@@ -200,6 +223,8 @@ GameMainScene::GameMainScene()
 	black_flg = false;
 
 	p_life_num = 3;
+	gameover_anim_cnt = 0;
+	fadein_snd_flg = true;
 }
 
 
@@ -257,7 +282,7 @@ void GameMainScene::ResetMap()
 
 	block_count = 0;
 	enemy_count = 0;
-	rock_count = 0;
+	//rock_count = 0;
 	rolling_enemy_cnt = 0;
 
 	//マップチップに反映する
@@ -269,22 +294,22 @@ void GameMainScene::ResetMap()
 			switch (mapio->GetMapData(i, j))
 			{
 			case 1:
-				stage_block[block_count++] = new StageBlock(1, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count++] = new StageBlock(1, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 3:
-				stage_block[block_count++] = new StageBlock(3, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count++] = new StageBlock(3, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 4:
-				stage_block[block_count++] = new StageBlock(4, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count++] = new StageBlock(4, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 6:
-				stage_block[block_count++] = new StageBlock(6, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count++] = new StageBlock(6, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 10:
-				stage_block[block_count++] = new StageBlock(10, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count++] = new StageBlock(10, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 11:
-				stage_block[block_count++] = new StageBlock(11, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count++] = new StageBlock(11, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 
 			}
@@ -294,12 +319,12 @@ void GameMainScene::ResetMap()
 
 				if (mapio->GetMapData(i, j) == 2)
 				{
-					enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2, false);
+					enemy[enemy_count++] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, false);
 				}
 
 				if (mapio->GetMapData(i, j) == 8)
 				{
-					enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2, true);
+					enemy[enemy_count++] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, true);
 
 				}
 			}
@@ -308,16 +333,16 @@ void GameMainScene::ResetMap()
 			{
 				if (mapio->GetMapData(i, j) == 9)
 				{
-					rolling_enemy[rolling_enemy_cnt++] = new RollingEnemy(j * BLOCKSIZE + BLOCKSIZE / 2);
+					rolling_enemy[rolling_enemy_cnt++] = new RollingEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2);
 				}
 			}
 		}
 	}
 
-	for (int i = 0; i < rock_count; i++)
-	{
-		rock_gem[i] = nullptr;
-	}
+	//for (int i = 0; i < rock_count; i++)
+	//{
+	//	rock_gem[i] = nullptr;
+	//}
 
 	for (int j = 0; j < block_count; j++)
 	{
@@ -353,10 +378,17 @@ void GameMainScene::Update()
 		}
 	}
 
-	// ゲームメインbgmループ再生
-	if (CheckSoundMem(main_bgm) == FALSE)
+	if (p_life_num < 0)
 	{
-		PlaySoundMem(main_bgm, DX_PLAYTYPE_LOOP);
+		StopSoundMem(main_bgm);
+	}
+	else
+	{
+		// ゲームメインbgmループ再生
+		if (CheckSoundMem(main_bgm) == FALSE)
+		{
+			PlaySoundMem(main_bgm, DX_PLAYTYPE_LOOP);
+		}
 	}
 
 	switch (game_state)
@@ -372,11 +404,11 @@ void GameMainScene::Update()
 
 		if (CheckHitKey(KEY_INPUT_D) == TRUE)
 		{
-			screen_origin_position.x+=5;
+			screen_origin_position.x += 5;
 		}
 		if (CheckHitKey(KEY_INPUT_A) == TRUE)
 		{
-			screen_origin_position.x-=5;
+			screen_origin_position.x -= 5;
 		}
 
 		if (mapio != nullptr)
@@ -394,7 +426,7 @@ void GameMainScene::Update()
 			}
 		}
 
-		
+
 		//エネミー削除
 		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
@@ -416,7 +448,7 @@ void GameMainScene::Update()
 			mapio->SaveMapData();
 			block_count = 0;
 			enemy_count = 0;
-			rock_count = 0;
+			//rock_count = 0;
 			rolling_enemy_cnt = 0;
 
 			//マップチップに反映する
@@ -428,29 +460,29 @@ void GameMainScene::Update()
 					switch (mapio->GetMapData(i, j))
 					{
 					case 1:
-						stage_block[block_count++] = new StageBlock(1, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+						stage_block[block_count++] = new StageBlock(1, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 3:
-						stage_block[block_count++] = new StageBlock(3, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+						stage_block[block_count++] = new StageBlock(3, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 4:
-						rock_count++;
-						stage_block[block_count++] = new StageBlock(4, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+						//rock_count++;
+						stage_block[block_count++] = new StageBlock(4, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 5:
-						stage_block[block_count++] = new StageBlock(5, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+						stage_block[block_count++] = new StageBlock(5, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 6:
-						stage_block[block_count++] = new StageBlock(6, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+						stage_block[block_count++] = new StageBlock(6, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 7:
-						stage_block[block_count++] = new StageBlock(7, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+						stage_block[block_count++] = new StageBlock(7, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 10:
-						stage_block[block_count++] = new StageBlock(10, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+						stage_block[block_count++] = new StageBlock(10, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 11:
-						stage_block[block_count++] = new StageBlock(11, j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2);
+						stage_block[block_count++] = new StageBlock(11, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 
 					}
@@ -460,12 +492,12 @@ void GameMainScene::Update()
 
 						if (mapio->GetMapData(i, j) == 2)
 						{
-							enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2,false);
+							enemy[enemy_count++] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, false);
 						}
 
 						if (mapio->GetMapData(i, j) == 8)
 						{
-							enemy[enemy_count++] = new Enemy(j * BLOCKSIZE + BLOCKSIZE / 2, i * BLOCKSIZE + BLOCKSIZE / 2, true);
+							enemy[enemy_count++] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, true);
 
 						}
 					}
@@ -474,7 +506,7 @@ void GameMainScene::Update()
 					{
 						if (mapio->GetMapData(i, j) == 9)
 						{
-							rolling_enemy[rolling_enemy_cnt++] = new RollingEnemy(j * BLOCKSIZE + BLOCKSIZE / 2);
+							rolling_enemy[rolling_enemy_cnt++] = new RollingEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2);
 						}
 					}
 
@@ -482,10 +514,10 @@ void GameMainScene::Update()
 				}
 			}
 
-			for (int i = 0; i < rock_count; i++)
-			{
-				rock_gem[i] = nullptr;
-			}
+			//for (int i = 0; i < rock_count; i++)
+			//{
+			//	rock_gem[i] = nullptr;
+			//}
 
 			game_state = PLAY;
 		}
@@ -497,7 +529,7 @@ void GameMainScene::Update()
 		{
 			game_state = EDITOR;
 		}
-		
+
 		Tutorial();
 
 		break;
@@ -508,7 +540,7 @@ void GameMainScene::Update()
 		}
 		break;
 	case GOAL:
-		if (clear_alpha++>300) {
+		if (clear_alpha++ > 300) {
 			clear_flg = true;
 		}
 		break;
@@ -517,51 +549,84 @@ void GameMainScene::Update()
 		location_x = world_x - screen_origin_position.x;
 		location_y = world_y - screen_origin_position.y;
 
-		if (CircleSize <= -6&&black_flg==false)
+
+		if (p_life_num < 0)
 		{
-			fadein_flg = false;
-			CircleSize = 700;
-			delete player;
-			player_damage_once = false;
-			player = nullptr;
-
-			//gameover_flg = true;
-			black_flg = true;
-			player = new Player(2200.0f);
-
-			UpdateCamera(player->GetWorldLocation());
-			screen_origin_position = {camera_pos.x - SCREEN_WIDTH / 2.0f,camera_pos.y - SCREEN_HEIGHT / 2.0f};
-			player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-
-			ResetMap();
-		}
-		else {
-			CircleSize -= 8;
-		}
-
-		if (black_flg == true)
-		{
-			if (player != nullptr)
+			if (fadein_snd_flg == true)
 			{
-
-				player->RespawnAnimUpdate();
-
+				fadein_snd_flg = false;
+				PlaySoundMem(fadein_sound, DX_PLAYTYPE_BACK);
 			}
-			alpha-=5;
-			if (player->GetStartFlg() == true)
+
+			if (CircleSize <= 64 && black_flg == false)
 			{
-				p_life_num--;
-				game_state = PLAY;
-				black_flg = false;
-				alpha = 255;
+				//gameover_flg = true;
+				if (gameover_anim_cnt++ > 30)
+				{
+
+					CircleSize -= 8;
+					if (CircleSize <= -6)
+					{
+						gameover_flg = true;
+					}
+				}
+			}
+			else
+			{
+				CircleSize -= 8;
+			}
+		}
+		else
+		{
+			if (fadein_snd_flg==true)
+			{
+				fadein_snd_flg =false;
+				PlaySoundMem(fadein_sound, DX_PLAYTYPE_BACK);
+			}
+			if (CircleSize <= -6 && black_flg == false)
+			{
+				fadein_flg = false;
 				CircleSize = 700;
+				delete player;
+				player_damage_once = false;
+				player = nullptr;
+
+				//gameover_flg = true;
+				black_flg = true;
+				player = new Player(2200.0f);
+
+				UpdateCamera(player->GetWorldLocation());
+				screen_origin_position = { camera_pos.x - SCREEN_WIDTH / 2.0f,camera_pos.y - SCREEN_HEIGHT / 2.0f };
+				player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+				ResetMap();
 			}
+			else {
+				CircleSize -= 8;
+			}
+
+			if (black_flg == true)
+			{
+				if (player != nullptr)
+				{
+
+					player->RespawnAnimUpdate();
+
+				}
+				alpha -= 5;
+				if (player->GetStartFlg() == true)
+				{
+					volume = 150;
+					ChangeVolumeSoundMem(volume, main_bgm);
+					game_state = PLAY;
+					fadein_snd_flg = true;
+					black_flg = false;
+					alpha = 255;
+					CircleSize = 700;
+				}
+			}
+
 		}
-
-
-
-
-
 
 
 		break;
@@ -571,6 +636,18 @@ void GameMainScene::Update()
 		{
 			game_state = EDITOR;
 		}
+
+		if (retry_flg==true&&fade != nullptr)
+		{
+			if (fade->GetFadein() == false)
+			{
+				fade->Fadein();
+			}
+			else {
+				fade = nullptr;
+			}
+		}
+
 
 #ifdef DEBUG
 		//if (rolling_enemy == nullptr)
@@ -1011,7 +1088,7 @@ void GameMainScene::Update()
 			{
 				if (player!=nullptr && enemy[i] != nullptr) {
 					//もしプレイヤーとエネミーが当たったら
-					if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight() == true))
+					if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true)
 					{
 						if (enemy[i]->GetHp() > 0)
 						{
@@ -1029,7 +1106,7 @@ void GameMainScene::Update()
 			for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
 			{
 				if (player!=nullptr && rolling_enemy[i] != nullptr) {
-					if (player->HitCheck(rolling_enemy[i]->GetWorldLocation(), rolling_enemy[i]->GetWidth(), rolling_enemy[i]->GetHeight() == true))
+					if (player->HitCheck(rolling_enemy[i]->GetWorldLocation(), rolling_enemy[i]->GetWidth(), rolling_enemy[i]->GetHeight()) == true)
 					{
 						if (rolling_enemy[i]->GetHp() > 0)
 						{
@@ -1106,7 +1183,7 @@ void GameMainScene::Update()
 				//UIアップデート
 				if (ui != nullptr)
 				{
-					ui->Update(player->GetHp(), player->GetDynaNum());
+					ui->Update((int)player->GetHp(), player->GetDynaNum());
 				}
 			}
 
@@ -1421,6 +1498,10 @@ void GameMainScene::Update()
 				if (player->GetDeathFlg() == true)
 				{
 					fadein_flg = true;
+					p_life_num--;
+					p_notback_flg = true;
+					volume = 50;
+					ChangeVolumeSoundMem(volume, main_bgm);
 					game_state = RESPAWN;
 				}
 			}
@@ -1439,9 +1520,9 @@ void GameMainScene::Draw() const
 	// 背景画像描画（仮）
 	for (int i = 0; i < 8; i++)
 	{
-		DrawGraph(location_x+1280*i, location_y, back_img[0], FALSE);
+		DrawGraph((int)location_x+1280*i, (int)location_y, back_img[0], FALSE);
 	}
-	DrawGraph(location_x + 1280 * 8, location_y, back_img[9], FALSE);
+	DrawGraph((int)location_x + 1280 * 8, (int)location_y, back_img[9], FALSE);
 
 
 
@@ -1595,20 +1676,27 @@ void GameMainScene::Draw() const
 		}
 	}
 
-	if (ui != nullptr)
+		if (ui != nullptr)
+		{
+			ui->Draw();
+		}
+
+		if (score != nullptr)
+		{
+			score->Draw();
+		}
+
+
+	}
+
+	if (p_life_num < 0)
 	{
-		ui->Draw();
+		//プレイヤー描画
+		if (player != nullptr)
+		{
+			player->Draw();
+		}
 	}
-
-	if (score != nullptr)
-	{
-		score->Draw();
-	}
-
-
-	}
-
-
 
 	if (fadein_flg==true)
 	{
@@ -1622,7 +1710,7 @@ void GameMainScene::Draw() const
 			if (CircleSize >= 1)
 			{
 				SetDrawBlendMode(DX_BLENDMODE_SRCCOLOR, 0);
-				DrawCircle(player->GetLocation().x, player->GetLocation().y + 40, CircleSize, GetColor(0, 0, 0), TRUE);
+				DrawCircle((int)player->GetLocation().x, (int)player->GetLocation().y + 40, CircleSize, GetColor(0, 0, 0), TRUE);
 				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 			}
 		}
@@ -1631,22 +1719,20 @@ void GameMainScene::Draw() const
 		DrawGraph(0, 0, ScreenHandle, TRUE);
 	}
 
+
+
 	if (black_flg == true)
 	{
-		//プレイヤー描画
-		if (player != nullptr)
-		{
-			player->Draw();
-		}
-
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha);
 		DrawGraph(0, 0, death_img, FALSE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+
 	}
 
 	if (game_state == GOAL)
 	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, clear_alpha);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)clear_alpha);
 		DrawGraph(0, 0, goal_img, FALSE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -1660,6 +1746,15 @@ void GameMainScene::Draw() const
 		DrawGraph(550, 350, pose_img, FALSE);
 	}
 
+	if (retry_flg==true && fade!=nullptr)
+	{
+		if (fade->GetFadein() == false)
+		{
+			fade->Draw_Fadein();
+		}
+	}
+
+
 #ifdef DEBUG
 
 	//DrawFormatString(300, 180, 0xffffff, "abs: %f", check_abs);
@@ -1670,7 +1765,7 @@ void GameMainScene::Draw() const
 	//DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
 	//DrawFormatString(30, 300, 0xffffff, "m_mode: %d", map_mode);
 	//DrawFormatString(30, 300, 0xffffff, "e_cnt: %d", enemy_count);
-	//DrawFormatString(30, 300, 0xffffff, "CircleSize:%d", CircleSize);
+	//DrawFormatString(30, 300, 0xffffff, "p_life_num:%d",p_life_num );
 
 
 	switch (game_state)
@@ -1898,6 +1993,7 @@ void GameMainScene::Tutorial()
 					}
 
 
+
 				}
 
 				for (int i = 0; i < DYNAMITE_MAXNUM; i++)
@@ -1971,6 +2067,10 @@ void GameMainScene::Tutorial()
 
 					}
 
+					if (stage_block[j]->GetDeleteFlg() == true)
+					{
+						stage_block[j] = nullptr;
+					}
 				}
 			}
 		}

@@ -11,13 +11,13 @@ StageBlock::StageBlock(int set_block_num,float set_x, float set_y)
 	location.x = set_x;
 	location.y = set_y;
 	block_num = set_block_num;
-	//if (block_num == 1) {
-	//	block_img = LoadGraph("images/Stage/block.png");
-	//}
-	//else {
-	//	block_img = LoadGraph("images/Stage/Goal.png");
-	//}
-
+	angle = 0;
+	block_img = 0;
+	can_jump = true;
+	delete_cnt = 0;
+	delete_flg = false;
+	direction = false;
+	effect_flg = false;
 
 	switch (block_num)
 	{
@@ -83,6 +83,12 @@ StageBlock::StageBlock(int set_block_num,float set_x, float set_y)
 		angle = 0;
 		is_up = false;
 		hely = location.y;
+		helx = location.x;
+		frames = 0;
+		radperframe = 2.0f * (float)M_PI / 40.0f;
+		can_jump = true;
+		delete_flg = false;
+		delete_cnt=0;
 		break;
 	case 10:
 		block_img = LoadGraph("images/Stage/kanban2.png");
@@ -161,8 +167,34 @@ void StageBlock::Update()
 
 	if (is_up==true)
 	{
-		hely -= 10;
-		angle += 0.3;
+		if (can_jump == true)
+		{
+			//hely -= 10;
+			//angle += 0.3;
+			world.x = helx;
+			helx += 2;
+			hely =- 200.0f * (float)sin(radperframe * frames) + 608.0f;
+			frames += 1;
+			if (sin(radperframe * frames)>=0.9)
+			{
+				can_jump = false;
+			}
+		}
+		else
+		{
+
+			if (hely <= 543)
+			{
+				hely += 3;
+				world.x=2026;
+			}
+			else {
+				if (delete_cnt++ > 30)
+				{
+					delete_flg = true;
+				}
+			}
+		}
 
 	}
 }
@@ -174,16 +206,16 @@ void StageBlock::Draw() const
 
 	if (block_num == 7)
 	{
-		DrawRotaGraph(location.x, hely + 10, 1, angle, block_img, TRUE, 0);
+		DrawRotaGraph((int)location.x, (int)hely + 10, 1, angle, block_img, TRUE, 0);
 	}
 	else if (block_num != 6&& block_num != 10 && block_num != 11&&block_num!=4)
 	{
-		DrawRotaGraph(location.x, location.y, 1, 0, block_img, TRUE, 0);
+		DrawRotaGraph((int)location.x, (int)location.y, 1, 0, block_img, TRUE, 0);
 	}
 	
 	if (block_num == 4)
 	{
-		DrawRotaGraph(location.x,location.y, 1, 0, block_img, TRUE, 0);
+		DrawRotaGraph((int)location.x, (int)location.y, 1, 0, block_img, TRUE, 0);
 		for (int i = 0; i < 4; i++)
 		{
 			// 破片描画
@@ -202,7 +234,7 @@ void StageBlock::DrawKanban() const
 {
 	if (block_num == 6||block_num==10||block_num==11)
 	{
-		DrawRotaGraph(location.x, location.y - 60, 1, 0, block_img, TRUE, 0);
+		DrawRotaGraph((int)location.x, (int)location.y - 60, 1, 0, block_img, TRUE, 0);
 	}
 }
 

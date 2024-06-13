@@ -23,9 +23,9 @@ private:
 
 	//int *map_data = new int[block_num];
 
-	int map_array[map_blockmax_y][map_blockmax_x];
+	int map_array[map_blockmax_y][map_blockmax_x]={0};
 	//真ん中の座標を手に居れる
-	int stage_block_pos[map_blockmax_x][map_blockmax_y];
+	int stage_block_pos[map_blockmax_x][map_blockmax_y]={0};
 
 	FILE* fp;
 	int map_get;

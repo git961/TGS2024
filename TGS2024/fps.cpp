@@ -49,7 +49,7 @@ void fps::Keisoku_fps() {
 	//1ループの時間経過を求める
 	deltaTime = (nowTime - oldTime) / 6000000.0F;
 
-	count += deltaTime;
+	count += (int)deltaTime;
 
 	//1秒間のFPSを計測する、1秒ごとに初期化する
 	fpsCounter++;

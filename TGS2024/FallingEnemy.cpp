@@ -475,7 +475,7 @@ void FallingEnemy::StarEffect()
 {
 	// 星の座標を敵のスクリーン座標にする
 	star.x = location.x;
-	star.y = location.y - abs(sinf(M_PI * 2 / 60 * star.count) * 60);
+	star.y = location.y - abs(sinf((float)M_PI * 2.0f / 60.0f * (float)star.count) * 60.0f);
 	star.timer++;
 
 	if (tmp_direction == false)

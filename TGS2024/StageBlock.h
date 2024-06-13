@@ -54,11 +54,15 @@ private:
 	bool shake_flg;
 
 	float helx, hely;//helmetのｘｙ
+	float frames;
+	bool can_jump;
+	float radperframe;
 	float angle;
 	bool is_up;
+	int delete_cnt;//消すまでのカウント
 
 	bool effect_flg;
-	block_effect fragment[4];
+	block_effect fragment[4]={0};
 	float v0[4];                      // 斜方投射時の初速度
 	float gravity;                    // 重力
 	float start_x;
@@ -69,6 +73,7 @@ private:
 	float mvy[4];
 	bool gem_drop;
 
+	bool delete_flg;
 
 public:
 	int direction;
@@ -88,6 +93,7 @@ public:
 	void SetShakeFlg(bool set_flg) { shake_flg=set_flg; }
 	float GetHp() { return hp; }
 	void SetUp(bool set_flg) { is_up = set_flg; }
+	bool GetDeleteFlg() { return delete_flg; }
 
 	//ブロックのlocationとスクリーンの原点を引いてスクリーン座標上の位置に変換
 	//void SetBlockLocalPosition(float set_origin_posx, float set_origin_posy)

@@ -18,9 +18,13 @@ AnimScene::AnimScene()
 	shake_x2=0;
 	p_backimg_num = 0;
 
-	cameraposition camera_pos{ SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f };
+	cameraposition camera_pos;
+	
+	camera_pos={ SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f };
 
-	cameraposition screen_origin_position = {
+	cameraposition screen_origin_position={0};
+	
+	screen_origin_position={
 		camera_pos.x - SCREEN_WIDTH / 2.0f,
 		camera_pos.y - SCREEN_HEIGHT / 2.0f
 	};
@@ -35,6 +39,8 @@ AnimScene::AnimScene()
 	ase_flg = false;
 	shake_flg = false;
 	next_scene_flg = false;
+
+	run_flg = false;
 
 	cloth_rubbing_sound = LoadSoundMem("sounds/se/op/cloth_rubbing.mp3");
 	shake_sound = LoadSoundMem("sounds/se/op/shake.mp3");
@@ -216,7 +222,7 @@ void AnimScene::Update()
 void AnimScene::Draw() const
 {
 
-	DrawGraph(screen_origin_position.x, 0, back_img, FALSE);
+	DrawGraph((int)screen_origin_position.x, 0, back_img, FALSE);
 
 	if (fallingrock != nullptr)
 	{
@@ -230,27 +236,27 @@ void AnimScene::Draw() const
 
 		if (ase_flg == true)
 		{
-			DrawGraph(player->GetLocation().x-60, player->GetLocation().y-60, p_ase_img, TRUE);
+			DrawGraph((int)player->GetLocation().x-60, (int)player->GetLocation().y-60, p_ase_img, TRUE);
 		}
 
 		if (exc_flg == true)
 		{
-			DrawGraph(player->GetLocation().x - 60, player->GetLocation().y - 60, p_exc_img, TRUE);
+			DrawGraph((int)player->GetLocation().x - 60, (int)player->GetLocation().y - 60, p_exc_img, TRUE);
 		}
 	}
 
-	DrawGraph(x, 640,block_img, FALSE);
+	DrawGraph((int)x, 640,block_img, FALSE);
 
 	if (anim_scene==0||anim_scene == 1||fallingrock->GetBlackOut() == true)
 	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
-		DrawGraph(screen_origin_position.x, 0, black_img, FALSE);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha);
+		DrawGraph((int)screen_origin_position.x, 0, black_img, FALSE);
 	}
 
 	if (anim_scene == 3||anim_scene==4)
 	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
-		DrawGraph(screen_origin_position.x, 0, p_backimg[p_backimg_num], FALSE);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha);
+		DrawGraph((int)screen_origin_position.x, 0, p_backimg[p_backimg_num], FALSE);
 		//SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha2);
 	}
 
@@ -345,7 +351,7 @@ AbstractScene* AnimScene::Change() {
 	if(next_scene_flg==true)
 	{
 		StopSoundMem(anim_bgm);
-		return new GameMainScene;
+		return new GameMainScene(false);
 	}
 	return this;
 }

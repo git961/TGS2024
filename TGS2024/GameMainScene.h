@@ -15,6 +15,7 @@
 #include <math.h>
 #include "GameClearScene.h"
 #include "GameOverScene.h"
+#include "BlackOut.h"
 
 class Player;
 class Enemy;
@@ -60,14 +61,18 @@ private:
     StageBlock **stage_block;
     Gem** walk_gem;             // 配列
     Gem** roll_gem;
-    Gem** rock_gem;
+   // Gem** rock_gem;
     Score* score;
 
     UI* ui;
 
+    BlackOut* fade;
+
     cameraposition camera_pos;
 
     cameraposition screen_origin_position;
+
+    bool retry_flg;//リトライしてきたか？
 
     bool pose_flg;//ポーズ中か
     bool goal_flg;//ゴールしたか
@@ -96,14 +101,14 @@ private:
     //camera_y - 720 / 2;
 
     int block_count;//配置したブロックの数
-    int rock_count;
+    //int rock_count;
     int enemy_count;//配置した歩行エネミーの数
     int rolling_enemy_cnt;//配置したローリングエネミーの数
-    int map_old_array[map_blockmax_y][map_blockmax_x];//配置したエネミーを消したかチェック用
+    int map_old_array[map_blockmax_y][map_blockmax_x] = { 0 };//配置したエネミーを消したかチェック用
 
     int walk_gem_score;             // 歩行エネミーの宝石スコア
     int roll_gem_score;             // 転がるエネミーの宝石スコア
-    int rock_gem_score;             //岩から出る宝石スコア
+    //int rock_gem_score;             //岩から出る宝石スコア
 
     float camera_old_x;
     World camera_resetx;//カメラの位置リセットに
@@ -127,6 +132,8 @@ private:
     int volume;
 
     int p_life_num;//プレイヤーの残機数
+    bool p_notback_flg;//プレイヤー戻れなくするか
+    int gameover_anim_cnt;
 
     //円形フェードイン
     int CircleSize;
@@ -134,10 +141,11 @@ private:
     bool fadein_flg;//フェードイン開始フラグ
     float alpha;
     bool black_flg;
-    int p_death_cnt;//プレイヤーが何回死んだかカウントする用
+    int fadein_sound;//
+    bool fadein_snd_flg;//フェードインサウンドをならせるか？
 
 public:
-    GameMainScene();
+    GameMainScene(bool set_flg);
     ~GameMainScene();
 
     void ResetMap();
@@ -153,6 +161,7 @@ public:
     void ShakeCamera(bool set_true, int set_num);
 
     int GetPlayerLife() { return p_life_num; }
+    bool GetPlayerNotBack() { return p_notback_flg; }
 
     void Tutorial();
 

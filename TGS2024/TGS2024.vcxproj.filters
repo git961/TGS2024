@@ -135,6 +135,9 @@
     <ClCompile Include="FallingEnemy.cpp">
       <Filter>ソース ファイル\EnemyFile</Filter>
     </ClCompile>
+    <ClCompile Include="BlackOut.cpp">
+      <Filter>ソース ファイル\AnimS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fps.h">
@@ -217,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="Score.h">
       <Filter>ヘッダー ファイル\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="BlackOut.h">
+      <Filter>ヘッダー ファイル\AnimS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

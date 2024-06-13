@@ -64,7 +64,7 @@ void Gem::Update(GameMainScene* gamemain)
 	}
 
 	// 宝石が上下に揺れる
-	world.y = world.y - sinf(M_PI * 2 / 60 * count) * 0.5;
+	world.y = world.y - sinf((float)M_PI * 2.0f / 60.0f * (float)count) * 0.5f;
 
 	if (count < 60)
 	{

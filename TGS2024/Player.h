@@ -55,7 +55,6 @@ private:
 
     int reset_timer;//攻撃をしばらくしなかった場合元に戻す
 
-    int img_time;//画像切替の時間調節用
 
     float atk_cnt_timer;//攻撃発生してからとめるまでの時間をカウントする用
     int next_attackflg;//攻撃中もう一度ボタンが押されたら攻撃をする
@@ -73,7 +72,7 @@ private:
 
 
     //プレイヤーの状態
-    bool walk;//true:歩いてる false:止まってる
+   // bool walk;//true:歩いてる false:止まってる
     bool attacking;//true:攻撃中 false:攻撃してない 
 
     //ダイナマイト投擲用
@@ -89,7 +88,6 @@ private:
 
     //ダメージ受けた時に点滅させるよう
     bool hit_damage;//ダメージを受けた
-    bool hit_cnt;//
     bool flash_start;
     bool flash_flg;//点滅させるフラグ
     int flash_cnt;
