@@ -11,7 +11,7 @@ private:
 	bool play_sound_flg;		// 一度だけ再生
 	int gameover_se;
 public:
-	GameOverScene(int set_score);
+	GameOverScene();
 	~GameOverScene();
 
 	void Update() override;
