@@ -72,6 +72,11 @@ private:
 	int title_bgm;
 	int move_cursor_se;			// カーソル移動se
 	int decision_se;			// 決定se
+	int collapse_se;			// 岩が崩れるse
+	int crack_se;				// 岩にひびが入るse
+	int swing_se;				// つるはしが飛んでくるse
+
+	int swing_se_cnt;			// つるはしが飛んでくる音を流す間隔
 
 public:
 	TitleScene();

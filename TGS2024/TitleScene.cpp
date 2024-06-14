@@ -34,7 +34,7 @@ TitleScene::TitleScene()
 	tmp_end_text_y = end_text_y;
 
 	push_b_flg = false;
-	scene_change_cnt = 0;
+	scene_change_cnt = 90;
 	scene_change_flg = false;
 
 	anim_cnt = 0;
@@ -68,11 +68,19 @@ TitleScene::TitleScene()
 	title_bgm = LoadSoundMem("sounds/bgm/title.mp3");
 	move_cursor_se = LoadSoundMem("sounds/se/system/cursor.mp3");
 	decision_se = LoadSoundMem("sounds/se/player/Attack.mp3");
+	collapse_se = LoadSoundMem("sounds/se/scene/title/collapse.mp3");
+	crack_se = LoadSoundMem("sounds/se/scene/title/crack.mp3");
+	swing_se = LoadSoundMem("sounds/se/scene/title/swing.mp3");
 
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(220, title_bgm);
 	ChangeVolumeSoundMem(200, move_cursor_se);
 	ChangeVolumeSoundMem(180, decision_se);
+	ChangeVolumeSoundMem(220, collapse_se);
+	ChangeVolumeSoundMem(190, crack_se);
+	ChangeVolumeSoundMem(190, swing_se);
+
+	swing_se_cnt = 0;
 }
 
 TitleScene::~TitleScene()
@@ -98,6 +106,9 @@ TitleScene::~TitleScene()
 	DeleteSoundMem(title_bgm);
 	DeleteSoundMem(move_cursor_se);
 	DeleteSoundMem(decision_se);
+	DeleteSoundMem(collapse_se);
+	DeleteSoundMem(crack_se);
+	DeleteSoundMem(swing_se);
 }
 
 void TitleScene::Update()
@@ -112,12 +123,11 @@ void TitleScene::Update()
 		{
 			if (crack_rock_flg == false)
 			{
-				// 岩ひび割れ
+				// 岩が入るアニメーション
 				CrackRock();
 			}
 			else
 			{
-
 				if (fragment_anim_cnt < 7)
 				{
 					fragment_anim_cnt++;
@@ -136,7 +146,6 @@ void TitleScene::Update()
 		{
 			// つるはし回転アニメーション
 			PickaxeRotation();
-
 		}
 
 		// 角度をデグリーからラジアンへ変換
@@ -204,11 +213,11 @@ void TitleScene::Update()
 				}
 				else
 				{
-					scene_change_cnt++;
+					scene_change_cnt--;
 
-					if (scene_change_cnt >= 120)
+					if (scene_change_cnt <= 0)
 					{
-						// 180fでシーン切り替え
+						// 90fでシーン切り替え
 						scene_change_flg = true;
 					}
 
@@ -224,7 +233,6 @@ void TitleScene::Update()
 	{
 		PlaySoundMem(title_bgm, DX_PLAYTYPE_LOOP);
 	}
-
 }
 
 void TitleScene::Draw() const
@@ -399,6 +407,20 @@ AbstractScene* TitleScene::Change()
 // つるはし回転アニメーション
 void TitleScene::PickaxeRotation()
 {
+	if (swing_se_cnt <= 0)
+	{
+		// つるはしが飛んでくる音
+		if (CheckSoundMem(swing_se) == FALSE)
+		{
+			PlaySoundMem(swing_se, DX_PLAYTYPE_BACK);
+		}
+		swing_se_cnt = 32;
+	}
+	else
+	{
+		swing_se_cnt--;
+	}
+
 	distance_x = crack_x - pickaxe_x;
 	distance_y = crack_y - pickaxe_y;
 
@@ -425,6 +447,18 @@ void TitleScene::PickaxeRotation()
 // 岩にひびが入るアニメーション
 void TitleScene::CrackRock()
 {
+	// つるはしでたたく音
+	if (CheckSoundMem(decision_se) == FALSE)
+	{
+		PlaySoundMem(decision_se, DX_PLAYTYPE_BACK);
+	}
+
+	// 岩にひびが入る音
+	if (CheckSoundMem(crack_se) == FALSE)
+	{
+		PlaySoundMem(crack_se, DX_PLAYTYPE_BACK);
+	}
+
 	if (rock_img_num < 2)
 	{
 		// 7fで画像切り替え
@@ -557,6 +591,12 @@ void TitleScene::PickaxeAnimation()
 // 岩が崩れるアニメーション
 void TitleScene::RockCollapses()
 {
+	// 岩が崩れる音
+	if (CheckSoundMem(collapse_se) == FALSE)
+	{
+		PlaySoundMem(collapse_se, DX_PLAYTYPE_BACK);
+	}
+
 	move_x += 1;
 	move_y += 15;
 	if (rock_degree < 360.0)
