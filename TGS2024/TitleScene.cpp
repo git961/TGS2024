@@ -8,6 +8,8 @@ TitleScene::TitleScene()
 	cursor_y = 410;
 	degree = 50.0;
 	radian = 0.0;
+	rock_degree = 0.0;
+	rock_radian = 0.0;
 	cursor_start_y = 120;
 	cursor_move_interval = 40;
 	cursor_num = Start;
@@ -32,7 +34,7 @@ TitleScene::TitleScene()
 	tmp_end_text_y = end_text_y;
 
 	push_b_flg = false;
-	scene_change_cnt = 0;
+	scene_change_cnt = 90;
 	scene_change_flg = false;
 
 	anim_cnt = 0;
@@ -43,19 +45,22 @@ TitleScene::TitleScene()
 
 	move_x = 0;
 	move_y = 0;
+	fragment_anim_cnt = 0;
+	draw_cursor_flg = false;
 
 	//volume = 150;
 
 	// 画像読込
-	back_img = LoadGraph("images/scene/title/title05.png");
-	cursor_img = LoadGraph("images/scene/title/cursor.png");
-	LoadDivGraph("images/scene/title/pickaxe.png", 3, 3, 1, 170, 170, pickaxe_img);
-	text_img[0] = LoadGraph("images/scene/title/gangancrush.png");
-	text_img[1] = LoadGraph("images/scene/title/start.png");
-	text_img[2] = LoadGraph("images/scene/title/end.png");
-	text_img[3] = LoadGraph("images/scene/title/push_b_blue.png");
-	LoadDivGraph("images/scene/title/TitleRockAnim.png", 3, 1, 3, 850, 320, rock_img);
-	LoadDivGraph("images/scene/title/TitleRocks.png", 10, 10, 1, 430, 320, rock_fragments_img);
+	back_img = LoadGraph("images/scene/title/back.png");
+	pickaxe_img = LoadGraph("images/scene/title/pickaxe01.png");
+	LoadDivGraph("images/scene/title/cursor01.png", 3, 3, 1, 128, 92, cursor_img);
+	text_img[0] = LoadGraph("images/scene/title/gangancrush01.png");
+	text_img[1] = LoadGraph("images/scene/title/start01.png");
+	text_img[2] = LoadGraph("images/scene/title/end01.png");
+	text_img[3] = LoadGraph("images/scene/title/push_b_blue01.png");
+	LoadDivGraph("images/scene/title/TitleRockAnim01.png", 3, 1, 3, 850, 320, rock_img);
+	LoadDivGraph("images/scene/title/TitleRocks01.png", 10, 10, 1, 430, 320, rock_fragments_img);
+	//sparkling = LoadGraph("images/scene/title/sparkling.png");
 
 	pickaxe_img_num = 0;
 
@@ -63,25 +68,33 @@ TitleScene::TitleScene()
 	title_bgm = LoadSoundMem("sounds/bgm/title.mp3");
 	move_cursor_se = LoadSoundMem("sounds/se/system/cursor.mp3");
 	decision_se = LoadSoundMem("sounds/se/player/Attack.mp3");
+	collapse_se = LoadSoundMem("sounds/se/scene/title/collapse.mp3");
+	crack_se = LoadSoundMem("sounds/se/scene/title/crack.mp3");
+	swing_se = LoadSoundMem("sounds/se/scene/title/swing.mp3");
 
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(220, title_bgm);
 	ChangeVolumeSoundMem(200, move_cursor_se);
 	ChangeVolumeSoundMem(180, decision_se);
+	ChangeVolumeSoundMem(220, collapse_se);
+	ChangeVolumeSoundMem(190, crack_se);
+	ChangeVolumeSoundMem(190, swing_se);
+
+	swing_se_cnt = 0;
 }
 
 TitleScene::~TitleScene()
 {
 	// 画像削除
 	DeleteGraph(back_img);
-	DeleteGraph(cursor_img);
+	DeleteGraph(pickaxe_img);
 	for (int i = 0; i < 4; i++)
 	{
 		DeleteGraph(text_img[i]);
 	}
 	for (int i = 0; i < 3; i++)
 	{
-		DeleteGraph(pickaxe_img[i]);
+		DeleteGraph(cursor_img[i]);
 		DeleteGraph(rock_img[i]);
 	}
 	for (int i = 0; i < 10; i++)
@@ -93,6 +106,9 @@ TitleScene::~TitleScene()
 	DeleteSoundMem(title_bgm);
 	DeleteSoundMem(move_cursor_se);
 	DeleteSoundMem(decision_se);
+	DeleteSoundMem(collapse_se);
+	DeleteSoundMem(crack_se);
+	DeleteSoundMem(swing_se);
 }
 
 void TitleScene::Update()
@@ -107,14 +123,20 @@ void TitleScene::Update()
 		{
 			if (crack_rock_flg == false)
 			{
-				// 岩ひび割れ
+				// 岩が入るアニメーション
 				CrackRock();
 			}
 			else
 			{
-				// 岩が崩れるアニメーション
-				move_x += 2;
-				move_y += 10;
+				if (fragment_anim_cnt < 7)
+				{
+					fragment_anim_cnt++;
+				}
+				else
+				{
+					// 岩が崩れるアニメーション
+					RockCollapses();
+				}
 			}
 
 			// つるはし落下アニメーション
@@ -124,11 +146,10 @@ void TitleScene::Update()
 		{
 			// つるはし回転アニメーション
 			PickaxeRotation();
-
 		}
 
+		// 角度をデグリーからラジアンへ変換
 		radian = (double)DEGREE_RADIAN(degree);
-
 	}
 	else
 	{
@@ -140,6 +161,11 @@ void TitleScene::Update()
 
 		if (anim_stop_flg == false)
 		{
+			if (draw_cursor_flg == false)
+			{
+				draw_cursor_flg = true;
+			}
+
 			if (tmp_sin <= 0.9f)
 			{
 				// テキストを下から上に出す処理
@@ -187,11 +213,11 @@ void TitleScene::Update()
 				}
 				else
 				{
-					scene_change_cnt++;
+					scene_change_cnt--;
 
-					if (scene_change_cnt >= 120)
+					if (scene_change_cnt <= 0)
 					{
-						// 180fでシーン切り替え
+						// 90fでシーン切り替え
 						scene_change_flg = true;
 					}
 
@@ -207,7 +233,6 @@ void TitleScene::Update()
 	{
 		PlaySoundMem(title_bgm, DX_PLAYTYPE_LOOP);
 	}
-
 }
 
 void TitleScene::Draw() const
@@ -226,18 +251,49 @@ void TitleScene::Draw() const
 
 #endif // DEBUG
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 80);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 170);
 	// タイトル配置目安画像
-	//DrawRotaGraph(640, 360, 1.0, 0.0, back_img, TRUE, FALSE);
 	//DrawRotaGraph(640, 330, 1.0, 0.0, rock_break_img[0], TRUE, FALSE);
 
 	// タイトル岩
 	//DrawRotaGraph(640, 170, 1.0, 0.0, rock_img[rock_img_num], TRUE, FALSE);
 
+						// 岩の破片右側、下から順
+	//DrawRotaGraph(1000, 300, 1.0, (double)DEGREE_RADIAN(20.0), rock_fragments_img[0], TRUE, FALSE);
+	//DrawRotaGraph(950, 160, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[1], TRUE, FALSE);
+	//DrawRotaGraph(970, 50, 1.0, (double)DEGREE_RADIAN(40.0), rock_fragments_img[2], TRUE, FALSE);
+
+	//DrawRotaGraph(720, 60, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[3], TRUE, FALSE);
+	//DrawRotaGraph(740, 200, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[4], TRUE, FALSE);
+	//DrawRotaGraph(720, 330, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[5], TRUE, FALSE);
+	//DrawRotaGraph(550, 240, 1.0, (double)DEGREE_RADIAN(50.0), rock_fragments_img[6], TRUE, FALSE);
+
+	// 岩の破片左側、上から順
+	//DrawRotaGraph(450, 60, 1.0, (double)DEGREE_RADIAN(350.0), rock_fragments_img[7], TRUE, FALSE);
+	//DrawRotaGraph(290, 180, 1.0, (double)DEGREE_RADIAN(320.0), rock_fragments_img[8], TRUE, FALSE);
+	//DrawRotaGraph(300, 310, 1.0, (double)DEGREE_RADIAN(340.0), rock_fragments_img[9], TRUE, FALSE);
+
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	// 背景画像
+	DrawRotaGraph(640, 360, 1.0, 0.0, back_img, TRUE, FALSE);
 
 	// タイトル
 	DrawRotaGraph(640, 180, 1.0, 0.0, text_img[0], TRUE, FALSE);
+
+						// 岩の破片画像
+				// パズルテスト
+	//DrawRotaGraph(950, 270, 1.0, 0.0, rock_fragments_img[0], TRUE, FALSE);
+	//DrawRotaGraph(930, 120, 1.0, 0.0, rock_fragments_img[1], TRUE, FALSE);
+	//DrawRotaGraph(940, 50, 1.0, 0.0, rock_fragments_img[2], TRUE, FALSE);
+	//DrawRotaGraph(720, 90, 1.0, 0.0, rock_fragments_img[3], TRUE, FALSE);
+	//DrawRotaGraph(780, 200, 1.0, 0.0, rock_fragments_img[4], TRUE, FALSE);
+	//DrawRotaGraph(690, 280, 1.0, 0.0, rock_fragments_img[5], TRUE, FALSE);
+	//DrawRotaGraph(570, 200, 1.0, 0.0, rock_fragments_img[6], TRUE, FALSE);
+	//DrawRotaGraph(470, 70, 1.0, 0.0, rock_fragments_img[7], TRUE, FALSE);
+	//DrawRotaGraph(330, 140, 1.0, 0.0, rock_fragments_img[8], TRUE, FALSE);
+	//DrawRotaGraph(360, 270, 1.0, 0.0, rock_fragments_img[9], TRUE, FALSE);
+
 
 	// start・end
 	DrawRotaGraph(640, (int)start_text_y, 1.0, 0.0, text_img[1], TRUE, FALSE);
@@ -257,32 +313,66 @@ void TitleScene::Draw() const
 		}
 		else
 		{
-			// 岩の破片画像
-			// パズルテスト
-			DrawRotaGraph(950, 240 + move_y, 1.0, 0.0, rock_fragments_img[0], TRUE, FALSE);
-			DrawRotaGraph(930, 110 + move_y, 1.0, 0.0, rock_fragments_img[1], TRUE, FALSE);
-			DrawRotaGraph(940, 50 + move_y, 1.0, 0.0, rock_fragments_img[2], TRUE, FALSE);
-			DrawRotaGraph(720, 100 + move_y, 1.0, 0.0, rock_fragments_img[3], TRUE, FALSE);
-			DrawRotaGraph(780, 200 + move_y, 1.0, 0.0, rock_fragments_img[4], TRUE, FALSE);
-			DrawRotaGraph(690, 250 + move_y, 1.0, 0.0, rock_fragments_img[5], TRUE, FALSE);
-			DrawRotaGraph(570, 200 + move_y, 1.0, 0.0, rock_fragments_img[6], TRUE, FALSE);
-			DrawRotaGraph(470, 70 + move_y, 1.0, 0.0, rock_fragments_img[7], TRUE, FALSE);
-			DrawRotaGraph(330, 140 + move_y, 1.0, 0.0, rock_fragments_img[8], TRUE, FALSE);
-			DrawRotaGraph(360, 230 + move_y, 1.0, 0.0, rock_fragments_img[9], TRUE, FALSE);
+			// 岩の破片左側、上から順
+			//DrawRotaGraph(450, 60, 1.0, (double)DEGREE_RADIAN(350.0), rock_fragments_img[7], TRUE, FALSE);
+			//DrawRotaGraph(290, 180, 1.0, (double)DEGREE_RADIAN(320.0), rock_fragments_img[8], TRUE, FALSE);
+			//DrawRotaGraph(300, 310, 1.0, (double)DEGREE_RADIAN(340.0), rock_fragments_img[9], TRUE, FALSE);
+
+			//DrawRotaGraph(1000, 300 + move_y, 1.0, (double)DEGREE_RADIAN(20.0), rock_fragments_img[0], TRUE, FALSE);
+			//DrawRotaGraph(950, 160 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[1], TRUE, FALSE);
+			//DrawRotaGraph(970, 50 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[2], TRUE, FALSE);
+
+			//DrawRotaGraph(720, 60 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[3], TRUE, FALSE);
+			//DrawRotaGraph(740, 200 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[4], TRUE, FALSE);
+			//DrawRotaGraph(720, 330 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[5], TRUE, FALSE);
+			//DrawRotaGraph(550, 240 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[6], TRUE, FALSE);
+
+			if (fragment_anim_cnt < 7)
+			{
+				// 岩の破片画像
+				// パズルテスト
+				DrawRotaGraph(950 + move_x, 270 + move_y, 1.0, 0.0, rock_fragments_img[0], TRUE, FALSE);
+				DrawRotaGraph(930 + move_x, 120 + move_y, 1.0, 0.0, rock_fragments_img[1], TRUE, FALSE);
+				DrawRotaGraph(940 + move_x, 50 + move_y, 1.0, 0.0, rock_fragments_img[2], TRUE, FALSE);
+				DrawRotaGraph(720, 90 + move_y, 1.0, 0.0, rock_fragments_img[3], TRUE, FALSE);
+				DrawRotaGraph(780, 200 + move_y, 1.0, 0.0, rock_fragments_img[4], TRUE, FALSE);
+				DrawRotaGraph(690, 280 + move_y, 1.0, 0.0, rock_fragments_img[5], TRUE, FALSE);
+				DrawRotaGraph(570, 200 + move_y, 1.0, 0.0, rock_fragments_img[6], TRUE, FALSE);
+				DrawRotaGraph(470 - move_x, 70 + move_y, 1.0, 0.0, rock_fragments_img[7], TRUE, FALSE);
+				DrawRotaGraph(330 - move_x, 140 + move_y, 1.0, 0.0, rock_fragments_img[8], TRUE, FALSE);
+				DrawRotaGraph(360 - move_x, 270 + move_y, 1.0, 0.0, rock_fragments_img[9], TRUE, FALSE);
+			}
+			else
+			{
+				// 岩回転、x移動あり
+				// 岩の破片右側、下から順
+				DrawRotaGraph(1000, 300 + move_y, 1.0, (double)DEGREE_RADIAN(20.0 + rock_degree), rock_fragments_img[0], TRUE, FALSE);
+				DrawRotaGraph(950, 160 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[1], TRUE, FALSE);
+				DrawRotaGraph(970 + move_x, 50 + move_y, 1.0, (double)DEGREE_RADIAN(40.0), rock_fragments_img[2], TRUE, FALSE);
+
+				DrawRotaGraph(720, 60 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[3], TRUE, FALSE);
+				DrawRotaGraph(740, 200 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[4], TRUE, FALSE);
+				DrawRotaGraph(720, 330 + move_y, 1.0, (double)DEGREE_RADIAN(rock_degree), rock_fragments_img[5], TRUE, FALSE);
+				DrawRotaGraph(550, 240 + move_y, 1.0, (double)DEGREE_RADIAN(50.0), rock_fragments_img[6], TRUE, FALSE);
+
+				// 岩の破片左側、上から順
+				DrawRotaGraph(450, 60 + move_y, 1.0, (double)DEGREE_RADIAN(350.0 - rock_degree), rock_fragments_img[7], TRUE, FALSE);
+				DrawRotaGraph(290, 180 + move_y, 1.0, (double)DEGREE_RADIAN(320.0), rock_fragments_img[8], TRUE, FALSE);
+				DrawRotaGraph(300 - move_x, 310 + move_y, 1.0, (double)DEGREE_RADIAN(340.0), rock_fragments_img[9], TRUE, FALSE);
+			}
 		}
 	}
 
-	// カーソル画像
-	if (anim_stop_flg == true)
+	if (draw_cursor_flg == true)
 	{
-		DrawRotaGraph((int)pickaxe_x, (int)pickaxe_y, 1.0, 0.0, pickaxe_img[pickaxe_img_num], TRUE, FALSE);
+		// カーソル画像
+		DrawRotaGraph((int)pickaxe_x, (int)pickaxe_y, 1.2, 0.0, cursor_img[pickaxe_img_num], TRUE, FALSE);
 	}
 	else
 	{
-		DrawRotaGraph((int)pickaxe_x, (int)pickaxe_y, 1.0, radian, pickaxe_img[0], TRUE, FALSE);
+		// つるはし画像
+		DrawRotaGraph((int)pickaxe_x, (int)pickaxe_y, 1.2, radian, pickaxe_img, TRUE, FALSE);
 	}
-
-	//DrawRotaGraph((int)pickaxe_x, (int)pickaxe_y, 1.0, radian, cursor_img, TRUE, FALSE);
 }
 
 AbstractScene* TitleScene::Change()
@@ -317,6 +407,20 @@ AbstractScene* TitleScene::Change()
 // つるはし回転アニメーション
 void TitleScene::PickaxeRotation()
 {
+	if (swing_se_cnt <= 0)
+	{
+		// つるはしが飛んでくる音
+		if (CheckSoundMem(swing_se) == FALSE)
+		{
+			PlaySoundMem(swing_se, DX_PLAYTYPE_BACK);
+		}
+		swing_se_cnt = 32;
+	}
+	else
+	{
+		swing_se_cnt--;
+	}
+
 	distance_x = crack_x - pickaxe_x;
 	distance_y = crack_y - pickaxe_y;
 
@@ -343,6 +447,18 @@ void TitleScene::PickaxeRotation()
 // 岩にひびが入るアニメーション
 void TitleScene::CrackRock()
 {
+	// つるはしでたたく音
+	if (CheckSoundMem(decision_se) == FALSE)
+	{
+		PlaySoundMem(decision_se, DX_PLAYTYPE_BACK);
+	}
+
+	// 岩にひびが入る音
+	if (CheckSoundMem(crack_se) == FALSE)
+	{
+		PlaySoundMem(crack_se, DX_PLAYTYPE_BACK);
+	}
+
 	if (rock_img_num < 2)
 	{
 		// 7fで画像切り替え
@@ -436,15 +552,17 @@ void TitleScene::MoveText()
 // テキスト位置決定処理
 void TitleScene::TextPositioning()
 {
-	if (pickaxe_y <= 410.0)
+	if (pickaxe_y <= 400.0)
 	{
+		//pickaxe_x = 300.0;
 		pickaxe_y += 5.0;
 		start_text_y += 5.0;
 		end_text_y += 5.0;
 	}
 	else
 	{
-		pickaxe_y = 410.0;
+		//pickaxe_x = 400.0;
+		pickaxe_y = 400.0;
 		start_text_y = 410.0;
 		end_text_y = 520.0;
 		anim_stop_flg = true;
@@ -473,8 +591,25 @@ void TitleScene::PickaxeAnimation()
 // 岩が崩れるアニメーション
 void TitleScene::RockCollapses()
 {
+	// 岩が崩れる音
+	if (CheckSoundMem(collapse_se) == FALSE)
+	{
+		PlaySoundMem(collapse_se, DX_PLAYTYPE_BACK);
+	}
 
+	move_x += 1;
+	move_y += 15;
+	if (rock_degree < 360.0)
+	{
+		// 岩の破片画像回転
+		rock_degree += 1.0;
+	}
+	else
+	{
+		rock_degree = 0.0;
+	}
 }
+
 // つるはし落下アニメーション
 void TitleScene::PickaxeFalling()
 {
@@ -494,7 +629,7 @@ void TitleScene::PickaxeFalling()
 
 		if (tmp_sin <= 0.9f)
 		{
-			tmp_sin = sinf(M_PI * 2 / 60 * count);
+			tmp_sin = sinf((float)M_PI * 2 / 60 * count);
 			pickaxe_y = start_y - tmp_sin * 100;
 		}
 		else

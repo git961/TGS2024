@@ -11,6 +11,9 @@ private:
 	bool se_flg;
 	int end_se;
 
+	int back_img;				// 背景画像
+	int thank_you_img;			// テキスト画像
+
 
 public:
 	EndScene();

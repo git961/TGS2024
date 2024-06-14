@@ -10,8 +10,10 @@ private:
 	double pickaxe_y;			// アニメーション時のつるはしy座標
 	int cursor_x;
 	int cursor_y;
-	double degree;				// 画像の角度（デグリー）
-	double radian;				// 画像の角度（ラジアン）
+	double degree;				// つるはし画像の角度（デグリー）
+	double radian;				// つるはし画像の角度（ラジアン）
+	double rock_degree;			// 岩画像の角度（デグリー）
+	double rock_radian;			// 岩画像の角度（ラジアン）
 	int cursor_start_y;
 	int cursor_move_interval;
 	int cursor_num;
@@ -28,7 +30,7 @@ private:
 	float start_x;
 	float start_y;
 	float tmp_sin;
-	double speed;					// つるはし落下速度
+	double speed;				// つるはし落下速度
 
 	float start_text_y;
 	float end_text_y;
@@ -50,23 +52,31 @@ private:
 	int rock_break_num;			// 岩の画像番号
 
 	int back_img;				// 背景画像
-	int cursor_img;				// カーソル画像
-	int pickaxe_img[3];			// つるはし画像
+	int cursor_img[3];			// カーソル画像
+	int pickaxe_img;			// つるはし画像
 	int text_img[4];
 	int rock_img[3];			// タイトル名に重なっている岩
 	int rock_fragments_img[10];	// 岩の破片
+	//int sparkling;				// きらきら画像
 
 	int pickaxe_img_num;		// つるはし画像番号
 	int rock_img_num;			// 岩画像番号
 	int rock_braek_timer;		// 岩が崩れるまでの時間
 
-	float move_x;				// 岩の破片の移動量x;
-	float move_y;				// 岩の破片の移動量y;
+	int move_x;					// 岩の破片の移動量x;
+	int move_y;					// 岩の破片の移動量y;
+	int fragment_anim_cnt;		// 岩の破片のアニメーションカウント
+	bool draw_cursor_flg;		// カーソルを描画するか？
 
 	//int volume;
 	int title_bgm;
 	int move_cursor_se;			// カーソル移動se
 	int decision_se;			// 決定se
+	int collapse_se;			// 岩が崩れるse
+	int crack_se;				// 岩にひびが入るse
+	int swing_se;				// つるはしが飛んでくるse
+
+	int swing_se_cnt;			// つるはしが飛んでくる音を流す間隔
 
 public:
 	TitleScene();
