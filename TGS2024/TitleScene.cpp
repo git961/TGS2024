@@ -125,17 +125,7 @@ void TitleScene::Update()
 				else
 				{
 					// 岩が崩れるアニメーション
-					move_x += 1;
-					move_y += 15;
-					if (rock_degree < 360.0)
-					{
-						// 岩の破片画像回転
-						rock_degree += 1.0;
-					}
-					else
-					{
-						rock_degree = 0.0;
-					}
+					RockCollapses();
 				}
 			}
 
@@ -567,8 +557,19 @@ void TitleScene::PickaxeAnimation()
 // 岩が崩れるアニメーション
 void TitleScene::RockCollapses()
 {
-
+	move_x += 1;
+	move_y += 15;
+	if (rock_degree < 360.0)
+	{
+		// 岩の破片画像回転
+		rock_degree += 1.0;
+	}
+	else
+	{
+		rock_degree = 0.0;
+	}
 }
+
 // つるはし落下アニメーション
 void TitleScene::PickaxeFalling()
 {
