@@ -38,6 +38,7 @@ EndCreditsScene::EndCreditsScene(int set_score)
 	text_img[9] = LoadGraph("images/scene/credit/4_4gokusyoukanafont.png");
 	text_img[10] = LoadGraph("images/scene/credit/pixelmplus10.png");
 	text_img[11] = LoadGraph("images/scene/credit/your_score.png");
+	text_img[12] = LoadGraph("images/scene/credit/dova_sindrome.png");
 	LoadDivGraph("images/scene/credit/num.png", 10, 10, 1, 64, 64, num_img);
 	push_b_img = LoadGraph("images/scene/push_b_white.png");
 
@@ -69,7 +70,7 @@ void EndCreditsScene::Update()
 {
 	input.InputUpdate();
 
-	if (timer < 2300)
+	if (timer < 2500)
 	{
 		timer++;
 	}
@@ -117,26 +118,27 @@ void EndCreditsScene::Draw() const
 	DrawRotaGraph(640, 1110 - timer, 1.0, 0.0, text_img[3], TRUE, FALSE);
 	DrawRotaGraph(640, 1190 - timer, 1.0, 0.0, text_img[4], TRUE, FALSE);
 	DrawRotaGraph(640, 1270 - timer, 1.0, 0.0, text_img[5], TRUE, FALSE);
+	DrawRotaGraph(640, 1350 - timer, 1.0, 0.0, text_img[12], TRUE, FALSE);
 
 	// 画像など
-	DrawRotaGraph(640, 1420 - timer, 1.0, 0.0, text_img[6], TRUE, FALSE);
-	DrawRotaGraph(640, 1500 - timer, 1.0, 0.0, text_img[7], TRUE, FALSE);
+	DrawRotaGraph(640, 1500 - timer, 1.0, 0.0, text_img[6], TRUE, FALSE);
+	DrawRotaGraph(640, 1580 - timer, 1.0, 0.0, text_img[7], TRUE, FALSE);
 
 	// フォントなど
-	DrawRotaGraph(640, 1650 - timer, 1.0, 0.0, text_img[8], TRUE, FALSE);
-	DrawRotaGraph(640, 1730 - timer, 1.0, 0.0, text_img[9], TRUE, FALSE);
-	DrawRotaGraph(640, 1810 - timer, 1.0, 0.0, text_img[10], TRUE, FALSE);
+	DrawRotaGraph(640, 1730 - timer, 1.0, 0.0, text_img[8], TRUE, FALSE);
+	DrawRotaGraph(640, 1810 - timer, 1.0, 0.0, text_img[9], TRUE, FALSE);
+	DrawRotaGraph(640, 1890 - timer, 1.0, 0.0, text_img[10], TRUE, FALSE);
 
 	// スコア
-	DrawRotaGraph(650, 2500 - timer, 1.0, 0.0, text_img[11], TRUE, FALSE);
+	DrawRotaGraph(650, 2670 - timer, 1.0, 0.0, text_img[11], TRUE, FALSE);
 	for (int i = 0; i < 5; i++)
 	{
-		DrawRotaGraph(860 - 110 * i, 2700 - timer, 2.0, 0.0, num_img[num[i]], TRUE, FALSE);
+		DrawRotaGraph(860 - 110 * i, 2870 - timer, 2.0, 0.0, num_img[num[i]], TRUE, FALSE);
 	}
 
 	if (change_cnt <= 0)
 	{
-		DrawRotaGraph(640, 680, 1.0, 0.0, push_b_img, TRUE, FALSE);
+		DrawRotaGraph(640, 600, 1.0, 0.0, push_b_img, TRUE, FALSE);
 	}
 }
 
