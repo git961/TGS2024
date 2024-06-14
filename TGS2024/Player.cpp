@@ -246,7 +246,7 @@ void Player::Update(GameMainScene* gamemain)
 
 		if (player_state == WALK)
 		{
-			if (abs((int)world.x - (int)old_worldx) > 61)
+			if (abs((int)world.x - (int)old_worldx) > 160)
 			{
 				old_worldx = world.x;
 			}
@@ -256,7 +256,7 @@ void Player::Update(GameMainScene* gamemain)
 			// 5カウントごとに変わる
 			if (walk_abs != 0)
 			{
-				walk_num = walk_abs / 20;
+				walk_num = walk_abs / 40;
 			}
 		}
 
@@ -398,7 +398,7 @@ void Player::Draw() const
 
 	//DrawBoxAA(location.x - width/2, location.y - height/2, location.x + width / 2, location.y + height / 2, 0xffffff,true);
 	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
-	//DrawFormatString(location.x, location.y - 80, 0xffffff, "world%f",world.x);
+	DrawFormatString(location.x, location.y - 80, 0xffffff, "drawnam%d",walk_num);
 
 
 	//プレイヤー画像表示
