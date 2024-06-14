@@ -59,6 +59,7 @@ private:
 	int fallen_leaves_se;			// リスタート選択時にプレイヤーが出てくる音
 	int decision_se;				// 決定se
 	int cursor_anim_cnt;			// カーソルのアニメーション用カウント
+	int push_b_img;
 
 public:
 	GameOverScene();

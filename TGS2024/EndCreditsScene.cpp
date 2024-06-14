@@ -40,7 +40,7 @@ EndCreditsScene::EndCreditsScene(int set_score)
 	text_img[11] = LoadGraph("images/scene/credit/your_score.png");
 	text_img[12] = LoadGraph("images/scene/credit/dova_sindrome.png");
 	LoadDivGraph("images/scene/credit/num.png", 10, 10, 1, 64, 64, num_img);
-	push_b_img = LoadGraph("images/scene/push_b_white.png");
+	push_b_img = LoadGraph("images/scene/credit/push_b_white.png");
 
 	// サウンド読込
 	credits_bgm = LoadSoundMem("sounds/bgm/ending.mp3");

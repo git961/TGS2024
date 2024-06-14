@@ -24,6 +24,7 @@ GameOverScene::GameOverScene()
 
 	LoadDivGraph("images/scene/title/cursor01.png", 3, 3, 1, 128, 92, cursor_img);
 	ring_img = LoadGraph("images/scene/gameover/ring.png");
+	push_b_img = LoadGraph("images/scene/title/push_b_blue01.png");
 	move_cursor_se = LoadSoundMem("sounds/se/system/cursor.mp3");
 	font_img[2] = LoadGraph("images/scene/gameover/gameover.png");
 	ChangeVolumeSoundMem(200, move_cursor_se);
@@ -341,11 +342,12 @@ void GameOverScene::Draw() const
 		// カーソルアニメーション
 		DrawRotaGraph(cursor_x, cursor_y, 1.0, 0.0, cursor_img[cursor_img_num], TRUE, FALSE);
 
-		DrawRotaGraph(640, 170, 2.3, 0.0, font_img[2], TRUE, FALSE);
+		DrawRotaGraph(640, 150, 2.3, 0.0, font_img[2], TRUE, FALSE);
 		// start・end
 		DrawRotaGraph(640, 400, 1.5, 0.0, font_img[0], TRUE, FALSE);
 		DrawRotaGraph(680, 480, 1.5, 0.0, font_img[1], TRUE, FALSE);
 
+		DrawRotaGraph(640, 700, 0.5, 0.0, push_b_img, TRUE, FALSE);
 	}
 
 
