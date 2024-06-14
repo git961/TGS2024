@@ -22,16 +22,17 @@ GameOverScene::GameOverScene()
 	LoadDivGraph("images/scene/gameover/font.png", 2, 1, 2, 180, 64, font_img);
 	LoadDivGraph("images/Animscene/rockeffect.png", 4, 4, 1, 1024, 512, rock_effect_img);
 
-	cursor_img = LoadGraph("images/scene/title/cursor.png");
+	LoadDivGraph("images/scene/title/cursor01.png", 3, 3, 1, 128, 92, cursor_img);
 	ring_img = LoadGraph("images/scene/gameover/ring.png");
 	move_cursor_se = LoadSoundMem("sounds/se/system/cursor.mp3");
 	font_img[2] = LoadGraph("images/scene/gameover/gameover.png");
 	ChangeVolumeSoundMem(200, move_cursor_se);
 	//640, 400,
-	cursor_x = 450;
+	cursor_x = 430;
 	cursor_y = 400;
 	cursor_move_interval = 40;
 	cursor_num = Retry;
+	cursor_img_num = 0;
 
 	size = 0.5;
 	alpha = 255;
@@ -49,11 +50,45 @@ GameOverScene::GameOverScene()
 	anim_finish_flg = false;
 	ring_alpha = 0;
 	lower_ring_alpha = false;
+
+	grave_se = LoadSoundMem("sounds/se/scene/gameover/grave.mp3");
+	fallen_leaves_se = LoadSoundMem("sounds/se/scene/gameover/fallen_leaves.mp3");
+	decision_se = LoadSoundMem("sounds/se/player/Attack.mp3");
+
+	ChangeVolumeSoundMem(150, grave_se);
+	ChangeVolumeSoundMem(150, fallen_leaves_se);
+	ChangeVolumeSoundMem(150, decision_se);
+
+	cursor_anim_cnt = 0;
 }
 
 GameOverScene::~GameOverScene()
 {
 	delete black_out;
+
+	// 画像の削除
+	DeleteGraph(ring_img);
+	for (int i = 0; i < 3; i++)
+	{
+		DeleteGraph(cursor_img[i]);
+	}
+	for (int i = 0; i < 10; i++)
+	{
+		DeleteGraph(rock_effect_img[i]);
+		DeleteGraph(retry_img[i]);
+		DeleteGraph(font_img[i]);
+	}
+	for (int i = 0; i < 6; i++)
+	{
+		DeleteGraph(rip_img[i]);
+	}
+
+	// サウンドの削除
+	DeleteSoundMem(gameover_se);
+	DeleteSoundMem(move_cursor_se);
+	DeleteSoundMem(grave_se);
+	DeleteSoundMem(fallen_leaves_se);
+	DeleteSoundMem(decision_se);
 }
 
 void GameOverScene::Update()
@@ -79,6 +114,13 @@ void GameOverScene::Update()
 				rock_flg = true;
 				rip_num = 1;
 				rock_num = 0;
+
+				// 墓の着地音
+				if (CheckSoundMem(grave_se) == FALSE)
+				{
+					PlaySoundMem(grave_se, DX_PLAYTYPE_BACK);
+				}
+
 				break;
 			case 3:
 				rip_num = 2;
@@ -172,6 +214,11 @@ void GameOverScene::Update()
 					// Bボタンで決定
 					if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 					{
+						// つるはしでたたく音
+						if (CheckSoundMem(decision_se) == FALSE)
+						{
+							PlaySoundMem(decision_se, DX_PLAYTYPE_BACK);
+						}
 
 						push_b_flg = true;
 					}
@@ -189,6 +236,14 @@ void GameOverScene::Update()
 			}
 			else
 			{
+				// カーソルの画像番号を動かす
+				if (cursor_img_num < 2)
+				{
+					cursor_anim_cnt++;
+
+					cursor_img_num = cursor_anim_cnt / 3;
+				}
+
 				if (cursor_num == Retry)
 				{
 					//プレイヤーが墓から出てくるアニメーションの後sceneを移動
@@ -200,6 +255,12 @@ void GameOverScene::Update()
 						rip_num = 0;
 						break;
 					case 5:
+						// 墓から出てくる音
+						if (CheckSoundMem(fallen_leaves_se) == FALSE)
+						{
+							PlaySoundMem(fallen_leaves_se, DX_PLAYTYPE_BACK);
+						}
+
 						rip_num = 1;
 						break;
 					case 10:
@@ -268,6 +329,7 @@ void GameOverScene::Draw() const
 		DrawRotaGraph((int)x, (int)y, 1, 0, rip_img[rip_num], TRUE, 0);
 	}
 	else {
+
 		if (cursor_num == Retry) {
 			DrawRotaGraph((int)x, (int)y, 1, 0, retry_img[rip_num], TRUE, 0);
 		}
@@ -276,8 +338,9 @@ void GameOverScene::Draw() const
 
 	if (select_flg == true)
 	{
-		// カーソル画像
-		DrawRotaGraph(cursor_x, cursor_y, 1.0, 0.0, cursor_img, TRUE, FALSE);
+		// カーソルアニメーション
+		DrawRotaGraph(cursor_x, cursor_y, 1.0, 0.0, cursor_img[cursor_img_num], TRUE, FALSE);
+
 		DrawRotaGraph(640, 170, 2.3, 0.0, font_img[2], TRUE, FALSE);
 		// start・end
 		DrawRotaGraph(640, 400, 1.5, 0.0, font_img[0], TRUE, FALSE);

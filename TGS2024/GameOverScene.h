@@ -34,7 +34,8 @@ private:
 	int cursor_y;
 	int cursor_move_interval;
 	int cursor_num;
-	int cursor_img;			// カーソル画像
+	int cursor_img[3];			// カーソル画像
+	int cursor_img_num;			// カーソルの画像番号
 	int move_cursor_se;			// カーソル移動se
 	bool push_b_flg;				// Bボタンを押したか？
 
@@ -53,6 +54,11 @@ private:
 	bool anim_finish_flg;			// 墓アニメーションが終わったか？
 	int ring_alpha;					// リングの画像不透明度
 	bool lower_ring_alpha;			// リング画像の不透明度を下げるか？
+
+	int grave_se;					// 墓の着地音
+	int fallen_leaves_se;			// リスタート選択時にプレイヤーが出てくる音
+	int decision_se;				// 決定se
+	int cursor_anim_cnt;			// カーソルのアニメーション用カウント
 
 public:
 	GameOverScene();
