@@ -61,6 +61,8 @@ private:
 	int cursor_anim_cnt;			// カーソルのアニメーション用カウント
 	int push_b_img;
 
+	int gameover_bgm;				// ゲームオーバーbgm
+
 public:
 	GameOverScene();
 	~GameOverScene();

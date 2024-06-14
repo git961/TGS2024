@@ -38,7 +38,7 @@ GameOverScene::GameOverScene()
 	size = 0.5;
 	alpha = 255;
 	// サウンド読込
-	gameover_se = LoadSoundMem("sounds/se/scene/gameover.mp3");
+	gameover_se = LoadSoundMem("sounds/se/scene/gameover/defeat.mp3");
 	change_flg = false;
 
 	// サウンドの音量設定
@@ -55,10 +55,12 @@ GameOverScene::GameOverScene()
 	grave_se = LoadSoundMem("sounds/se/scene/gameover/grave.mp3");
 	fallen_leaves_se = LoadSoundMem("sounds/se/scene/gameover/fallen_leaves.mp3");
 	decision_se = LoadSoundMem("sounds/se/player/Attack.mp3");
+	gameover_bgm = LoadSoundMem("sounds/bgm/gameover.mp3");
 
 	ChangeVolumeSoundMem(150, grave_se);
 	ChangeVolumeSoundMem(150, fallen_leaves_se);
 	ChangeVolumeSoundMem(150, decision_se);
+	ChangeVolumeSoundMem(130, gameover_bgm);
 
 	cursor_anim_cnt = 0;
 }
@@ -294,6 +296,15 @@ void GameOverScene::Update()
 		RingAnimation();
 	}
 
+	// ゲームオーバーbgmループ再生
+	if (CheckSoundMem(gameover_se) == FALSE)
+	{
+		if (CheckSoundMem(gameover_bgm) == FALSE)
+		{
+			PlaySoundMem(gameover_bgm, DX_PLAYTYPE_LOOP);
+		}
+	}
+
 	if (black_out != nullptr&&change_flg==true&&cursor_num==Retry)
 	{
 		black_out->Update();
@@ -360,10 +371,10 @@ AbstractScene* GameOverScene::Change()
 {
 	if (black_out!=nullptr&&black_out->GetFadeout() == true)
 	{
-		// ゲームオーバーse停止
-		if (CheckSoundMem(gameover_se) == TRUE)
+		// ゲームオーバーbgm停止
+		if (CheckSoundMem(gameover_bgm) == TRUE)
 		{
-			StopSoundMem(gameover_se);
+			StopSoundMem(gameover_bgm);
 		}
 
 		if (cursor_num == Retry)

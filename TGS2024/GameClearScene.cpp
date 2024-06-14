@@ -8,7 +8,7 @@ GameClearScene::GameClearScene(int set_score)
 	se_flg = true;
 
 	// サウンド読込
-	gameclear_se = LoadSoundMem("sounds/se/scene/gameclear.mp3");
+	gameclear_se = LoadSoundMem("sounds/se/scene/gameclear02.mp3");
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(volume, gameclear_se);
 
