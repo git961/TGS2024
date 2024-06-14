@@ -51,15 +51,16 @@ TitleScene::TitleScene()
 	//volume = 150;
 
 	// 画像読込
-	back_img = LoadGraph("images/scene/title/title05.png");
-	pickaxe_img = LoadGraph("images/scene/title/pickaxe.png");
-	LoadDivGraph("images/scene/title/cursor.png", 3, 3, 1, 128, 92, cursor_img);
-	text_img[0] = LoadGraph("images/scene/title/gangancrush.png");
-	text_img[1] = LoadGraph("images/scene/title/start.png");
-	text_img[2] = LoadGraph("images/scene/title/end.png");
-	text_img[3] = LoadGraph("images/scene/title/push_b_blue.png");
-	LoadDivGraph("images/scene/title/TitleRockAnim.png", 3, 1, 3, 850, 320, rock_img);
-	LoadDivGraph("images/scene/title/TitleRocks.png", 10, 10, 1, 430, 320, rock_fragments_img);
+	back_img = LoadGraph("images/scene/title/back.png");
+	pickaxe_img = LoadGraph("images/scene/title/pickaxe01.png");
+	LoadDivGraph("images/scene/title/cursor01.png", 3, 3, 1, 128, 92, cursor_img);
+	text_img[0] = LoadGraph("images/scene/title/gangancrush01.png");
+	text_img[1] = LoadGraph("images/scene/title/start01.png");
+	text_img[2] = LoadGraph("images/scene/title/end01.png");
+	text_img[3] = LoadGraph("images/scene/title/push_b_blue01.png");
+	LoadDivGraph("images/scene/title/TitleRockAnim01.png", 3, 1, 3, 850, 320, rock_img);
+	LoadDivGraph("images/scene/title/TitleRocks01.png", 10, 10, 1, 430, 320, rock_fragments_img);
+	//sparkling = LoadGraph("images/scene/title/sparkling.png");
 
 	pickaxe_img_num = 0;
 
@@ -254,7 +255,6 @@ void TitleScene::Draw() const
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 170);
 	// タイトル配置目安画像
-	//DrawRotaGraph(640, 360, 1.0, 0.0, back_img, TRUE, FALSE);
 	//DrawRotaGraph(640, 330, 1.0, 0.0, rock_break_img[0], TRUE, FALSE);
 
 	// タイトル岩
@@ -276,6 +276,9 @@ void TitleScene::Draw() const
 	//DrawRotaGraph(300, 310, 1.0, (double)DEGREE_RADIAN(340.0), rock_fragments_img[9], TRUE, FALSE);
 
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	// 背景画像
+	DrawRotaGraph(640, 360, 1.0, 0.0, back_img, TRUE, FALSE);
 
 	// タイトル
 	DrawRotaGraph(640, 180, 1.0, 0.0, text_img[0], TRUE, FALSE);
