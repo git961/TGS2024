@@ -12,7 +12,7 @@ Gem::Gem(World set_world, int set_score)
 	height = 32.0f;
 
 	// 画像の読み込み
-	gem_img = LoadGraph("images/Gem/Gem.png");
+	LoadDivGraph("images/Gem/Gem.png", 5, 5, 1, 32, 32,gem_img);
 
 	// サウンド読込
 	get_gem_sound = LoadSoundMem("sounds/se/gem/get.mp3");
@@ -34,6 +34,9 @@ Gem::Gem(World set_world, int set_score)
 	is_delete = false;
 	//is_deete = false;
 
+	anim_cnt = 0;
+	anim_num = 0;
+
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(255, get_gem_sound);
 	ChangeVolumeSoundMem(255, drop_sound);
@@ -43,7 +46,7 @@ Gem::Gem(World set_world, int set_score)
 Gem::~Gem()
 {
 	// 画像削除
-	DeleteGraph(gem_img);
+	//DeleteGraph(gem_img[]);
 
 	// サウンド削除
 	DeleteSoundMem(get_gem_sound);
@@ -133,6 +136,8 @@ void Gem::Update(GameMainScene* gamemain)
 		is_delete = true;
 	}
 
+	GemAnim();
+
 	//if (move_x_timer < 30)
 	//{
 	//	// 敵の死亡位置がプレイヤーよりも右
@@ -157,7 +162,16 @@ void Gem::Draw() const
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "s: %.2lf", size);
 
 	// 宝石画像
-	DrawRotaGraph((int)location.x, (int)location.y, size, 0.0, gem_img, TRUE, direction);
+	DrawRotaGraph((int)location.x, (int)location.y, size, 0.0, gem_img[anim_num], TRUE, direction);
+}
+
+void Gem::GemAnim()
+{
+	anim_cnt++;
+	anim_num = anim_cnt / 10;
+	if (anim_cnt >=49) {
+		anim_cnt = 0;
+	}
 }
 
 void Gem::PlayGetSound()

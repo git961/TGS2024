@@ -9,7 +9,7 @@ class GameMainScene;
 class Gem : public CharacterBase
 {
 private:
-	int gem_img;			// 宝石画像
+	int gem_img[6];			// 宝石画像
 	int gem_score;			// 宝石のスコア
 	int count;				// sin用
 	int move_x_timer;		// 座標xが動く時間
@@ -28,6 +28,9 @@ private:
 	bool from_rolling_enemy;	// 転がるエネミーからドロップしたか？
 	bool is_delete;				// 削除してもいいか？
 
+	int anim_cnt;
+	int anim_num;
+
 	//bool is_deete;
 public:
 	Gem(World set_world, int set_score);
@@ -35,6 +38,8 @@ public:
 
 	void Update(GameMainScene* gamemain);
 	void Draw() const;
+
+	void GemAnim();
 
 	void PlayGetSound();
 
