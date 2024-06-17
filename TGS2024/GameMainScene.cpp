@@ -50,8 +50,10 @@ GameMainScene::GameMainScene(bool set_flg)
 	rock_damage_once = false;
 	player_damage_once = false;
 	//back.png
-	back_img[0] = LoadGraph("images/Backimg/backimg.png", TRUE);
-	back_img[9] = LoadGraph("images/Backimg/backimgGoal.png", TRUE);
+	back_img[0] = LoadGraph("images/Backimg/backimg01.png", TRUE);
+	//back_img[0] = LoadGraph("images/Backimg/backimg.png", TRUE);
+	//back_img[9] = LoadGraph("images/Backimg/backimgGoal.png", TRUE);
+	back_img[9] = LoadGraph("images/Backimg/backimgGoal01.png", TRUE);
 	goal_img= LoadGraph("images/Ending/ending8.png", TRUE);
 	death_img= LoadGraph("images/Backimg/death.png", TRUE);
 	pose_img = LoadGraph("images/UI/pose.png", TRUE);
@@ -1599,82 +1601,82 @@ void GameMainScene::Draw() const
 			player->Draw();
 		}
 
-	//プレイヤー攻撃描画
-	if (ac != nullptr)
-	{
-		if (ac->GetAttackFlg() == true)
+		//プレイヤー攻撃描画
+		if (ac != nullptr)
 		{
-			ac->Draw();
-		}
-	}
-
-
-	for (int i = 0; i < ENEMYMAXNUM; i++)
-	{
-		// 歩行エネミーの宝石描画処理
-		if (walk_gem[i] != nullptr)
-		{
-			if (walk_gem[i]->GetPlaySoundFlg() == true)
+			if (ac->GetAttackFlg() == true)
 			{
-				walk_gem[i]->Draw();
+				ac->Draw();
 			}
 		}
-	}
+
+
+		for (int i = 0; i < ENEMYMAXNUM; i++)
+		{
+			// 歩行エネミーの宝石描画処理
+			if (walk_gem[i] != nullptr)
+			{
+				if (walk_gem[i]->GetPlaySoundFlg() == true)
+				{
+					walk_gem[i]->Draw();
+				}
+			}
+		}
 	
 
-	for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
-	{
-		if (roll_gem[i] != nullptr)
+		for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
 		{
-			if (roll_gem[i]->GetPlaySoundFlg() == true)
+			if (roll_gem[i] != nullptr)
 			{
-				// 転がるエネミーの宝石描画処理
-				roll_gem[i]->Draw();
+				if (roll_gem[i]->GetPlaySoundFlg() == true)
+				{
+					// 転がるエネミーの宝石描画処理
+					roll_gem[i]->Draw();
+				}
 			}
 		}
-	}
 
 
-	for (int i = 0; i < ENEMYMAXNUM; i++)
-	{
-		// エネミー描画処理
-		if (enemy[i] != nullptr)
+		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
-			if (enemy[i]->GetWorldLocation().x > screen_origin_position.x - 100 && enemy[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+			// エネミー描画処理
+			if (enemy[i] != nullptr)
 			{
-				enemy[i]->Draw();
+				if (enemy[i]->GetWorldLocation().x > screen_origin_position.x - 100 && enemy[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+				{
+					enemy[i]->Draw();
+				}
 			}
 		}
-	}
 
-	for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
-	{
-		if (rolling_enemy[i] != nullptr)
+		for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
 		{
-			// 転がるエネミー描画
-			rolling_enemy[i]->Draw();
-		}
-	}
-
-	//ステージブロック描画
-	for (int j = 0; j < block_count; j++)
-	{
-		if (stage_block[j] != nullptr)
-		{
-			stage_block[j]->Draw();
+			if (rolling_enemy[i] != nullptr)
+			{
+				// 転がるエネミー描画
+				rolling_enemy[i]->Draw();
+			}
 		}
 
-	}
-
-	//ダイナマイト描画
-	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
-	{
-		if (dynamite[i] != nullptr)
+		//ステージブロック描画
+		for (int j = 0; j < block_count; j++)
 		{
-			dynamite[i]->Draw();
-			//DrawFormatString(300 * i , 0, 0xff0000, "tmp_abs: %f", dynamite[i]->GetTmpAbs());
+			if (stage_block[j] != nullptr)
+			{
+				stage_block[j]->Draw();
+			}
+
 		}
-	}
+
+		//ダイナマイト描画
+		for (int i = 0; i < DYNAMITE_MAXNUM; i++)
+		{
+			if (dynamite[i] != nullptr)
+			{
+				dynamite[i]->Draw();
+				//DrawFormatString(300 * i , 0, 0xff0000, "tmp_abs: %f", dynamite[i]->GetTmpAbs());
+			}
+		}
 
 		if (ui != nullptr)
 		{
@@ -1685,7 +1687,6 @@ void GameMainScene::Draw() const
 		{
 			score->Draw();
 		}
-
 
 	}
 
