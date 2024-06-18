@@ -3,7 +3,7 @@
 GameOverScene::GameOverScene()
 {
 	black_out = new BlackOut;
-	change_cnt = 180;
+	change_cnt = 60;
 	volume = 150;
 	play_sound_flg = true;
 	x = 640;
@@ -282,7 +282,14 @@ void GameOverScene::Update()
 
 				}
 				else {
-
+					if (change_cnt > 0)
+					{
+						change_cnt--;
+					}
+					else
+					{
+						change_flg = true;
+					}
 				}
 			}
 		}
@@ -305,7 +312,7 @@ void GameOverScene::Update()
 		}
 	}
 
-	if (black_out != nullptr&&change_flg==true&&cursor_num==Retry)
+	if (black_out != nullptr&&change_flg==true)
 	{
 		black_out->Update();
 	}
@@ -317,7 +324,9 @@ void GameOverScene::Draw() const
 	SetFontSize(20);
 	DrawFormatString(10, 10, 0xffffff, "GameOver");
 	DrawFormatString(10, 50, 0xffffff, "draw_cnt: %d", change_cnt);
-	DrawFormatString(10, 70, 0xffffff, "btnflg: %d", push_b_flg);
+	//DrawFormatString(10, 70, 0xffffff, "btnflg: %d", push_b_flg);
+	//DrawFormatString(10, 70, 0xffffff, "cursor_num: %d", cursor_num);
+	DrawFormatString(10, 70, 0xffffff, "change_flg: %d", change_flg);
 #endif // DEBUG
 
 	//DrawRotaGraph(location.x, location.y-25, 1, 0, player_img[p_imgnum], TRUE, direction);
@@ -344,6 +353,10 @@ void GameOverScene::Draw() const
 
 		if (cursor_num == Retry) {
 			DrawRotaGraph((int)x, (int)y, 1, 0, retry_img[rip_num], TRUE, 0);
+		}
+		else
+		{
+			DrawRotaGraph((int)x, (int)y, 1, 0, rip_img[0], TRUE, 0);
 		}
 
 	}
