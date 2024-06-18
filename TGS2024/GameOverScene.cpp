@@ -321,12 +321,12 @@ void GameOverScene::Update()
 void GameOverScene::Draw() const
 {
 #ifdef DEBUG
-	SetFontSize(20);
-	DrawFormatString(10, 10, 0xffffff, "GameOver");
-	DrawFormatString(10, 50, 0xffffff, "draw_cnt: %d", change_cnt);
+	//SetFontSize(20);
+	//DrawFormatString(10, 10, 0xffffff, "GameOver");
+	//DrawFormatString(10, 50, 0xffffff, "draw_cnt: %d", change_cnt);
 	//DrawFormatString(10, 70, 0xffffff, "btnflg: %d", push_b_flg);
 	//DrawFormatString(10, 70, 0xffffff, "cursor_num: %d", cursor_num);
-	DrawFormatString(10, 70, 0xffffff, "change_flg: %d", change_flg);
+	//DrawFormatString(10, 70, 0xffffff, "change_flg: %d", change_flg);
 #endif // DEBUG
 
 	//DrawRotaGraph(location.x, location.y-25, 1, 0, player_img[p_imgnum], TRUE, direction);

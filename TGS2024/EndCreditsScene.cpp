@@ -102,11 +102,11 @@ void EndCreditsScene::Update()
 void EndCreditsScene::Draw() const
 {
 #ifdef DEBUG
-	SetFontSize(20);
-	DrawFormatString(10, 10, 0xffffff, "EndCredits");
-	DrawFormatString(10, 50, 0xffffff, "draw_cnt: %d", change_cnt);
-	DrawFormatString(10, 70, 0xffffff, "volume: %d", volume);
-	DrawFormatString(10, 90, 0xffffff, "score: %d", score);
+	//SetFontSize(20);
+	//DrawFormatString(10, 10, 0xffffff, "EndCredits");
+	//DrawFormatString(10, 50, 0xffffff, "draw_cnt: %d", change_cnt);
+	//DrawFormatString(10, 70, 0xffffff, "volume: %d", volume);
+	//DrawFormatString(10, 90, 0xffffff, "score: %d", score);
 #endif // DEBUG
 
 	// 使用素材

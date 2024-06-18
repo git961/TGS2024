@@ -24,8 +24,8 @@ FallingRock::FallingRock()
 	rocks_fall_sound = LoadSoundMem("sounds/se/op/rocks_fall.mp3");
 	roll_sound = LoadSoundMem("sounds/se/op/roll.mp3");
 	// サウンドの音量設定
-	ChangeVolumeSoundMem(255, rocks_fall_sound);
-	ChangeVolumeSoundMem(255, roll_sound);
+	ChangeVolumeSoundMem(190, rocks_fall_sound);
+	ChangeVolumeSoundMem(190, roll_sound);
 
 }
 
