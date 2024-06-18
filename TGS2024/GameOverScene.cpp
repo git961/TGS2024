@@ -3,7 +3,7 @@
 GameOverScene::GameOverScene()
 {
 	black_out = new BlackOut;
-	change_cnt = 180;
+	change_cnt = 60;
 	volume = 150;
 	play_sound_flg = true;
 	x = 640;
@@ -24,6 +24,7 @@ GameOverScene::GameOverScene()
 
 	LoadDivGraph("images/scene/title/cursor01.png", 3, 3, 1, 128, 92, cursor_img);
 	ring_img = LoadGraph("images/scene/gameover/ring.png");
+	push_b_img = LoadGraph("images/scene/title/push_b_blue01.png");
 	move_cursor_se = LoadSoundMem("sounds/se/system/cursor.mp3");
 	font_img[2] = LoadGraph("images/scene/gameover/gameover.png");
 	ChangeVolumeSoundMem(200, move_cursor_se);
@@ -37,7 +38,7 @@ GameOverScene::GameOverScene()
 	size = 0.5;
 	alpha = 255;
 	// サウンド読込
-	gameover_se = LoadSoundMem("sounds/se/scene/gameover.mp3");
+	gameover_se = LoadSoundMem("sounds/se/scene/gameover/defeat.mp3");
 	change_flg = false;
 
 	// サウンドの音量設定
@@ -54,10 +55,12 @@ GameOverScene::GameOverScene()
 	grave_se = LoadSoundMem("sounds/se/scene/gameover/grave.mp3");
 	fallen_leaves_se = LoadSoundMem("sounds/se/scene/gameover/fallen_leaves.mp3");
 	decision_se = LoadSoundMem("sounds/se/player/Attack.mp3");
+	gameover_bgm = LoadSoundMem("sounds/bgm/gameover.mp3");
 
 	ChangeVolumeSoundMem(150, grave_se);
 	ChangeVolumeSoundMem(150, fallen_leaves_se);
 	ChangeVolumeSoundMem(150, decision_se);
+	ChangeVolumeSoundMem(130, gameover_bgm);
 
 	cursor_anim_cnt = 0;
 }
@@ -279,7 +282,14 @@ void GameOverScene::Update()
 
 				}
 				else {
-
+					if (change_cnt > 0)
+					{
+						change_cnt--;
+					}
+					else
+					{
+						change_flg = true;
+					}
 				}
 			}
 		}
@@ -293,7 +303,16 @@ void GameOverScene::Update()
 		RingAnimation();
 	}
 
-	if (black_out != nullptr&&change_flg==true&&cursor_num==Retry)
+	// ゲームオーバーbgmループ再生
+	if (CheckSoundMem(gameover_se) == FALSE)
+	{
+		if (CheckSoundMem(gameover_bgm) == FALSE)
+		{
+			PlaySoundMem(gameover_bgm, DX_PLAYTYPE_LOOP);
+		}
+	}
+
+	if (black_out != nullptr&&change_flg==true)
 	{
 		black_out->Update();
 	}
@@ -302,10 +321,12 @@ void GameOverScene::Update()
 void GameOverScene::Draw() const
 {
 #ifdef DEBUG
-	SetFontSize(20);
-	DrawFormatString(10, 10, 0xffffff, "GameOver");
-	DrawFormatString(10, 50, 0xffffff, "draw_cnt: %d", change_cnt);
-	DrawFormatString(10, 70, 0xffffff, "btnflg: %d", push_b_flg);
+	//SetFontSize(20);
+	//DrawFormatString(10, 10, 0xffffff, "GameOver");
+	//DrawFormatString(10, 50, 0xffffff, "draw_cnt: %d", change_cnt);
+	//DrawFormatString(10, 70, 0xffffff, "btnflg: %d", push_b_flg);
+	//DrawFormatString(10, 70, 0xffffff, "cursor_num: %d", cursor_num);
+	//DrawFormatString(10, 70, 0xffffff, "change_flg: %d", change_flg);
 #endif // DEBUG
 
 	//DrawRotaGraph(location.x, location.y-25, 1, 0, player_img[p_imgnum], TRUE, direction);
@@ -333,6 +354,10 @@ void GameOverScene::Draw() const
 		if (cursor_num == Retry) {
 			DrawRotaGraph((int)x, (int)y, 1, 0, retry_img[rip_num], TRUE, 0);
 		}
+		else
+		{
+			DrawRotaGraph((int)x, (int)y, 1, 0, rip_img[0], TRUE, 0);
+		}
 
 	}
 
@@ -341,11 +366,12 @@ void GameOverScene::Draw() const
 		// カーソルアニメーション
 		DrawRotaGraph(cursor_x, cursor_y, 1.0, 0.0, cursor_img[cursor_img_num], TRUE, FALSE);
 
-		DrawRotaGraph(640, 170, 2.3, 0.0, font_img[2], TRUE, FALSE);
+		DrawRotaGraph(640, 150, 2.3, 0.0, font_img[2], TRUE, FALSE);
 		// start・end
 		DrawRotaGraph(640, 400, 1.5, 0.0, font_img[0], TRUE, FALSE);
 		DrawRotaGraph(680, 480, 1.5, 0.0, font_img[1], TRUE, FALSE);
 
+		DrawRotaGraph(640, 700, 0.5, 0.0, push_b_img, TRUE, FALSE);
 	}
 
 
@@ -358,10 +384,10 @@ AbstractScene* GameOverScene::Change()
 {
 	if (black_out!=nullptr&&black_out->GetFadeout() == true)
 	{
-		// ゲームオーバーse停止
-		if (CheckSoundMem(gameover_se) == TRUE)
+		// ゲームオーバーbgm停止
+		if (CheckSoundMem(gameover_bgm) == TRUE)
 		{
-			StopSoundMem(gameover_se);
+			StopSoundMem(gameover_bgm);
 		}
 
 		if (cursor_num == Retry)

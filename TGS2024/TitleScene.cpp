@@ -238,10 +238,10 @@ void TitleScene::Update()
 void TitleScene::Draw() const
 {
 #ifdef DEBUG
-	SetFontSize(20);
+	//SetFontSize(20);
 
-	DrawFormatString(10, 10, 0xffffff, "Title");
-	DrawFormatString(10, 70, 0xffffff, "scene_change_cnt: %d", scene_change_cnt);
+	//DrawFormatString(10, 10, 0xffffff, "Title");
+	//DrawFormatString(10, 70, 0xffffff, "scene_change_cnt: %d", scene_change_cnt);
 	//DrawFormatString(10, 70, 0xffffff, "pickaxe_x: %f", pickaxe_x);
 	//DrawFormatString(10, 90, 0xffffff, "pickaxe_y: %f", pickaxe_y);
 

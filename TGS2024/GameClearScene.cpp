@@ -8,7 +8,7 @@ GameClearScene::GameClearScene(int set_score)
 	se_flg = true;
 
 	// サウンド読込
-	gameclear_se = LoadSoundMem("sounds/se/scene/gameclear.mp3");
+	gameclear_se = LoadSoundMem("sounds/se/scene/gameclear03.mp3");
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(volume, gameclear_se);
 
@@ -210,10 +210,10 @@ void GameClearScene::Update()
 void GameClearScene::Draw() const
 {
 #ifdef DEBUG
-	SetFontSize(20);
-	DrawFormatString(10, 10, 0xffffff, "GameClear");
-	DrawFormatString(10, 50, 0xffffff, "draw_cnt: %d", change_cnt);
-	DrawFormatString(10, 70, 0xffffff, "score: %d", score);
+	//SetFontSize(20);
+	//DrawFormatString(10, 10, 0xffffff, "GameClear");
+	//DrawFormatString(10, 50, 0xffffff, "draw_cnt: %d", change_cnt);
+	//DrawFormatString(10, 70, 0xffffff, "score: %d", score);
 
 #endif // DEBUG
 	//if (change_cnt <= 0)

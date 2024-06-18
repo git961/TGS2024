@@ -15,7 +15,7 @@ private:
 	int change_cnt;		// シーン切り替えできるようになるまでのカウント
 	int volume;
 	int volume_timer;
-	int text_img[12];	// 使用素材のテキスト画像
+	int text_img[13];	// 使用素材のテキスト画像
 	int num_img[10];	// スコアで使う数字画像
 	int push_b_img;
 	int credits_bgm;
