@@ -27,9 +27,9 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 	LoadDivGraph("images/Enemy/fragment.png", 4, 4, 1, 64, 64, fragment_img);
 
 	// サウンド読込
-	footsteps_sound = LoadSoundMem("sounds/se/walk04.mp3");
+	footsteps_sound = LoadSoundMem("sounds/se/enemy/walk.mp3");
 	knock_back_sount = LoadSoundMem("sounds/se/enemy/knockback.mp3");
-	death_sount = LoadSoundMem("sounds/se/enemy/death04.mp3");
+	death_sount = LoadSoundMem("sounds/se/enemy/death.mp3");
 	play_sound = true;
 
 	anim_cnt = 0;

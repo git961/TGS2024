@@ -24,7 +24,7 @@ Player::Player(float set_x)
 
 
 
-	atk_sound = LoadSoundMem("sounds/Attack.mp3");
+	atk_sound = LoadSoundMem("sounds/se/player/Attack.mp3");
 	op_run_sound = LoadSoundMem("sounds/se/player/run.mp3");
 	damage_sound = LoadSoundMem("sounds/se/player/damage.mp3");
 	throw_dynamite_sound = LoadSoundMem("sounds/se/player/Throw.mp3");

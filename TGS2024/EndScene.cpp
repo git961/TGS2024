@@ -7,7 +7,7 @@ EndScene::EndScene()
 	volume = 130;
 	se_flg = true;
 	// サウンド読込
-	end_se = LoadSoundMem("sounds/se/scene/end02.mp3");
+	end_se = LoadSoundMem("sounds/se/scene/end.mp3");
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(volume, end_se);
 
@@ -48,9 +48,9 @@ void EndScene::Update()
 
 void EndScene::Draw() const
 {
-	SetFontSize(20);
-	DrawFormatString(10, 10, 0xffffff, "End");
-	DrawFormatString(300, 10, 0xffffff, "end_cnt: %d", end_cnt);
+	//SetFontSize(20);
+	//DrawFormatString(10, 10, 0xffffff, "End");
+	//DrawFormatString(300, 10, 0xffffff, "end_cnt: %d", end_cnt);
 
 	// 背景画像
 	DrawRotaGraph(640, 360, 1.0, 0.0, back_img, TRUE, FALSE);

@@ -66,7 +66,7 @@ TitleScene::TitleScene()
 
 	// サウンド読込
 	title_bgm = LoadSoundMem("sounds/bgm/title.mp3");
-	move_cursor_se = LoadSoundMem("sounds/se/system/cursor.mp3");
+	move_cursor_se = LoadSoundMem("sounds/se/scene/title/cursor.mp3");
 	decision_se = LoadSoundMem("sounds/se/player/Attack.mp3");
 	collapse_se = LoadSoundMem("sounds/se/scene/title/collapse.mp3");
 	crack_se = LoadSoundMem("sounds/se/scene/title/crack.mp3");
