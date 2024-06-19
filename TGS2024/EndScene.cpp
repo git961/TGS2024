@@ -2,6 +2,8 @@
 
 EndScene::EndScene()
 {
+	player = new Player(250.0f);
+
 	end_cnt = 240;			// 300f経過したら終了
 	endflg = false;
 	volume = 130;
@@ -18,6 +20,8 @@ EndScene::EndScene()
 
 EndScene::~EndScene()
 {
+	delete player;
+
 	// 画像削除
 	DeleteGraph(back_img);
 	DeleteGraph(thank_you_img);
@@ -44,6 +48,9 @@ void EndScene::Update()
 	{
 		endflg = true;
 	}
+
+	// プレイヤーアニメーション更新
+	player->EndAnimUpdate();
 }
 
 void EndScene::Draw() const
@@ -58,6 +65,8 @@ void EndScene::Draw() const
 	// テキスト画像
 	DrawRotaGraph(640, 250, 0.8, 0.0, thank_you_img, TRUE, FALSE);
 
+	// プレイヤー画像
+	player->EndAnimDraw();
 }
 
 AbstractScene* EndScene::Change()

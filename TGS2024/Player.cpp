@@ -115,7 +115,7 @@ Player::Player(float set_x)
 	ChangeVolumeSoundMem(180, op_run_sound);
 	ChangeVolumeSoundMem(180, damage_sound);
 	ChangeVolumeSoundMem(180, throw_dynamite_sound);
-	ChangeVolumeSoundMem(230, death_sound);
+	ChangeVolumeSoundMem(210, death_sound);
 
 	dyna_anm_start = false;
 	walk_stop_flg = false;
@@ -1330,11 +1330,24 @@ void Player::RespawnAnimUpdate()
 // エンド画面用アニメーション更新処理
 void Player::EndAnimUpdate()
 {
+	if (end_anim_cnt < 29)
+	{
+		end_anim_cnt++;
+		end_img_num = end_anim_cnt / 10;
+	}
+	else
+	{
+		end_anim_cnt = 0;
+	}
 
+	// 右に移動
+	world.x += 3.0f;
 }
 
 // エンド画面用アニメーション描画処理
 void Player::EndAnimDraw() const
 {
+	// プレイヤーが袋を持って走る画像
+	DrawRotaGraph((int)world.x, (int)world.y, 1.0, 0.0, player_end_img[end_img_num], TRUE, direction);
 
 }

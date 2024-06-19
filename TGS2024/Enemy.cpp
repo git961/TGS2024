@@ -606,7 +606,7 @@ void Enemy::FragmentEffect()
 			{
 				// 初速度の設定
 				//v0[i] = 300.0f;
-				v0[i] = rand() % 200 + 300;
+				v0[i] = rand() % 200 + (float)300;
 
 				// 発射角度の設定
 				fragment[i].degree = rand() % 45 + 45;

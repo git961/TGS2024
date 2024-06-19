@@ -98,8 +98,11 @@ void Gem::Update(GameMainScene* gamemain)
 		{
 			effect_anim_cnt++;
 
-			// 10fで画像切り替え
-			effect_num = effect_anim_cnt / 10;
+			if (effect_num < 3)
+			{
+				// 10fで画像切り替え
+				effect_num = effect_anim_cnt / 10;
+			}
 		}
 		else
 		{
@@ -119,7 +122,7 @@ void Gem::Update(GameMainScene* gamemain)
 void Gem::Draw() const
 {
 	//DrawBoxAA(location.x - width / 2, location.y - height / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);				// 当たり判定のボックス
-	//DrawFormatString(location.x - 100, 50, 0xffffff, "s: %.2lf", size);
+	//DrawFormatString(location.x, 550, 0xffffff, "effect_num: %d", effect_num);
 
 	if (draw_effect == false)
 	{
