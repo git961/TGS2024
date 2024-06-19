@@ -124,10 +124,11 @@ private:
     int end_anim_cnt;               // エンドアニメーション用カウント
 
     // エンドクレジット画面用
-    //int player_credits_img[3];          // クレジット画面でのプレイヤー画像
+    int player_credits_img[8];          // クレジット画面でのプレイヤー画像
     int credits_img_num;                // プレイヤークレジット画像の画像番号
     int credits_anim_cnt;               // クレジットアニメーション用カウント
     int credits_timer;                  // クレジット画面の経過時間
+    bool facing_left_flg;               // 左向きか？
 
 public:
     Player(float set_x);

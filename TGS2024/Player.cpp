@@ -131,9 +131,11 @@ Player::Player(float set_x)
 	end_anim_cnt = 0;
 
 	// エンドクレジット画面用変数
+	LoadDivGraph("images/Player/dance.png", 8, 4, 2, 170, 170, player_credits_img);
 	credits_img_num = 0;
 	credits_anim_cnt = 0;
 	credits_timer = 0;
+	facing_left_flg = false;
 }
 
 Player::~Player()
@@ -1360,7 +1362,6 @@ void Player::EndAnimDraw() const
 void Player::EndCreditsAnimUpdate()
 {
 	credits_timer++;
-	//credits_anim_cnt++;
 
 	if (credits_timer < 400)
 	{
@@ -1371,15 +1372,24 @@ void Player::EndCreditsAnimUpdate()
 	{
 		world.x -= 0.5f;
 		world.y -= 0.7f;
+
+		// 左向きの画像に変更
+		facing_left_flg = true;
 	}
 	else if (credits_timer >= 750 && credits_timer < 800)
 	{
 		world.x += 0.7f;
+
+		// 右向きの画像に変更
+		facing_left_flg = false;
 	}
 	else if (credits_timer >= 850 && credits_timer < 1100)
 	{
 		world.x += 1.2f;
 		world.y -= 1.0f;
+
+		// 左向きの画像に変更
+		facing_left_flg = true;
 	}
 	else if (credits_timer >= 1100 && credits_timer < 1300)
 	{
@@ -1390,11 +1400,17 @@ void Player::EndCreditsAnimUpdate()
 	{
 		world.x += 1.2f;
 		world.y += 1.0f;
+
+		// 右向きの画像に変更
+		facing_left_flg = false;
 	}
 	else if (credits_timer >= 1800 && credits_timer < 1950)
 	{
 		world.x -= 0.6f;
 		world.y += 1.0f;
+
+		// 左向きの画像に変更
+		facing_left_flg = true;
 	}
 	else if (credits_timer >= 2500 && credits_timer < 2550)
 	{
@@ -1425,6 +1441,35 @@ void Player::EndCreditsAnimUpdate()
 	//	world.y = 550.0f;
 	//}
 
+	if (credits_anim_cnt < 40)
+	{
+		credits_anim_cnt++;
+	}
+	else
+	{
+		credits_anim_cnt = 0;
+	}
+
+	// 10fごとに画像切り替え
+	credits_img_num = credits_anim_cnt / 10;
+
+	if (facing_left_flg == true)
+	{
+		// 左向き画像
+		if (credits_img_num > 3)
+		{
+			credits_img_num = 3;
+		}
+	}
+	else
+	{
+		// 右向き画像
+		credits_img_num += 4;
+		if (credits_img_num > 7)
+		{
+			credits_img_num = 7;
+		}
+	}
 }
 
 // エンドクレジット画面用アニメーション描画処理
@@ -1435,5 +1480,5 @@ void Player::EndCreditsAnimDraw() const
 	//DrawFormatString(1000, 10, 0xffff00, "%d,%d", ax, ay);
 
 	// プレイヤー画像
-	DrawRotaGraph((int)world.x, (int)world.y, 1.0, 0.0, player_end_img[0], TRUE, direction);
+	DrawRotaGraph((int)world.x, (int)world.y, 1.1, 0.0, player_credits_img[credits_img_num], TRUE, direction);
 }
