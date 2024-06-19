@@ -129,6 +129,11 @@ Player::Player(float set_x)
 	LoadDivGraph("images/Player/player_end1.png", 3, 3, 1, 170, 170, player_end_img);
 	end_img_num = 0;
 	end_anim_cnt = 0;
+
+	// エンドクレジット画面用変数
+	credits_img_num = 0;
+	credits_anim_cnt = 0;
+	credits_timer = 0;
 }
 
 Player::~Player()
@@ -1349,5 +1354,86 @@ void Player::EndAnimDraw() const
 {
 	// プレイヤーが袋を持って走る画像
 	DrawRotaGraph((int)world.x, (int)world.y, 1.0, 0.0, player_end_img[end_img_num], TRUE, direction);
+}
 
+// エンドクレジット画面用アニメーション更新処理
+void Player::EndCreditsAnimUpdate()
+{
+	credits_timer++;
+	//credits_anim_cnt++;
+
+	if (credits_timer < 400)
+	{
+		world.x += 1.0f;
+		//world.y -= 0.3f;
+	}
+	else if (credits_timer >= 500 && credits_timer < 600)
+	{
+		world.x -= 0.5f;
+		world.y -= 0.7f;
+	}
+	else if (credits_timer >= 750 && credits_timer < 800)
+	{
+		world.x += 0.7f;
+	}
+	else if (credits_timer >= 850 && credits_timer < 1100)
+	{
+		world.x += 1.2f;
+		world.y -= 1.0f;
+	}
+	else if (credits_timer >= 1100 && credits_timer < 1300)
+	{
+		world.x += 1.0f;
+		world.y -= 1.0f;
+	}
+	else if (credits_timer >= 1400 && credits_timer < 1700)
+	{
+		world.x += 1.2f;
+		world.y += 1.0f;
+	}
+	else if (credits_timer >= 1800 && credits_timer < 1950)
+	{
+		world.x -= 0.6f;
+		world.y += 1.0f;
+	}
+	else if (credits_timer >= 2500 && credits_timer < 2550)
+	{
+		world.x -= 1.0f;
+		world.y -= 0.5f;
+	}
+	//else if (credits_timer >= 2700 && credits_timer < 2850)
+	//{
+	// 
+	// // push_bに向かって走る
+	//	world.x -= 3.0f;
+	//}
+	//else if (credits_timer >= 2850 && credits_timer < 2900)
+	//{
+	//	world.x -= 3.0f;
+	//	world.y += 1.4f;
+	//}
+
+	//else if (credits_timer >= 2700 && credits_timer < 2400)
+	//{
+	//	world.x -= 1.0f;
+	//}
+
+	//if (credits_timer < 2680)
+	//{
+	//	// push_bの左側に表示
+	//	world.x = 400.0f;
+	//	world.y = 550.0f;
+	//}
+
+}
+
+// エンドクレジット画面用アニメーション描画処理
+void Player::EndCreditsAnimDraw() const
+{
+	//int ax, ay;
+	//GetMousePoint(&ax, &ay);
+	//DrawFormatString(1000, 10, 0xffff00, "%d,%d", ax, ay);
+
+	// プレイヤー画像
+	DrawRotaGraph((int)world.x, (int)world.y, 1.0, 0.0, player_end_img[0], TRUE, direction);
 }

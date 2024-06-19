@@ -118,9 +118,16 @@ private:
     float helmet_down;
     int helmet_img;//
 
+    // エンド画面用
     int player_end_img[3];          // エンド画面でのプレイヤー画像
     int end_img_num;                // プレイヤーエンド画像の画像番号
     int end_anim_cnt;               // エンドアニメーション用カウント
+
+    // エンドクレジット画面用
+    //int player_credits_img[3];          // クレジット画面でのプレイヤー画像
+    int credits_img_num;                // プレイヤークレジット画像の画像番号
+    int credits_anim_cnt;               // クレジットアニメーション用カウント
+    int credits_timer;                  // クレジット画面の経過時間
 
 public:
     Player(float set_x);
@@ -181,4 +188,6 @@ public:
 
     void EndAnimUpdate();               // エンド画面用アニメーション更新処理
     void EndAnimDraw() const;           // エンド画面用アニメーション描画処理
+    void EndCreditsAnimUpdate();        // エンドクレジット画面用アニメーション更新処理
+    void EndCreditsAnimDraw() const;    // エンドクレジット画面用アニメーション描画処理
 };
