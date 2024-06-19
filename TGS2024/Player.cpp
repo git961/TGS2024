@@ -124,6 +124,11 @@ Player::Player(float set_x)
 
 	helmet_flg = false;
 	helmet_down = -1000;
+
+	// エンド画面用変数
+	LoadDivGraph("images/Player/player_end1.png", 3, 3, 1, 170, 170, player_end_img);
+	end_img_num = 0;
+	end_anim_cnt = 0;
 }
 
 Player::~Player()
@@ -134,7 +139,6 @@ Player::~Player()
 	DeleteSoundMem(damage_sound);
 	DeleteSoundMem(throw_dynamite_sound);
 	DeleteSoundMem(death_sound);
-
 }
 
 void Player::Update(GameMainScene* gamemain)
@@ -177,15 +181,11 @@ void Player::Update(GameMainScene* gamemain)
 		}
 		break;
 	case DYNAMITE:
-		if (CheckSoundMem(throw_dynamite_sound) == FALSE)
-		{
-			PlaySoundMem(throw_dynamite_sound, DX_PLAYTYPE_BACK);
-		}
-
 
 		switch (dyna_anmcnt)
 		{
 		case 1:
+			PlaySoundMem(throw_dynamite_sound, DX_PLAYTYPE_BACK);
 			dyna_stock_num-=1;
 			dyna_throw_num = 0;
 			break;
