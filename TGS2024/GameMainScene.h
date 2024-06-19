@@ -144,6 +144,9 @@ private:
     int fadein_sound;//
     bool fadein_snd_flg;//フェードインサウンドをならせるか？
 
+    int start_pause_se;            // ポーズ開始音
+    int unpause_se;                    // ポーズ解除音
+
 public:
     GameMainScene(bool set_flg);
     ~GameMainScene();

@@ -227,6 +227,12 @@ GameMainScene::GameMainScene(bool set_flg)
 	p_life_num = 3;
 	gameover_anim_cnt = 0;
 	fadein_snd_flg = true;
+
+	start_pause_se = LoadSoundMem("sounds/se/pose/pose.mp3");
+	unpause_se = LoadSoundMem("sounds/se/pose/unpause.mp3");
+	ChangeVolumeSoundMem(140, start_pause_se);
+	ChangeVolumeSoundMem(210, unpause_se);
+
 }
 
 
@@ -248,6 +254,9 @@ GameMainScene::~GameMainScene()
 
 	// サウンド削除
 	DeleteSoundMem(main_bgm);
+	DeleteSoundMem(fadein_sound);
+	DeleteSoundMem(start_pause_se);
+	DeleteSoundMem(unpause_se);
 }
 
 void GameMainScene::ResetMap()
@@ -538,6 +547,9 @@ void GameMainScene::Update()
 	case POSE:
 		if (input.CheckBtn(XINPUT_BUTTON_START) == TRUE)
 		{
+			// ポーズ解除se
+			PlaySoundMem(unpause_se, DX_PLAYTYPE_BACK);
+
 			game_state = PLAY;
 		}
 		break;
@@ -666,6 +678,8 @@ void GameMainScene::Update()
 		//押されたらポーズへ
 		if (input.CheckBtn(XINPUT_BUTTON_START) == TRUE)
 		{
+			// ポーズ開始se
+			PlaySoundMem(start_pause_se, DX_PLAYTYPE_BACK);
 			game_state = POSE;
 		}
 
@@ -1773,7 +1787,7 @@ void GameMainScene::Draw() const
 		//DrawFormatString(400, 100, 0xffffff, "TUTORIAL_NOW");
 		break;
 	case POSE:
-		DrawFormatString(400, 100, 0xffffff, "POSE_NOW");
+		//DrawFormatString(400, 100, 0xffffff, "POSE_NOW");
 		break;
 		
 	case GOAL:
