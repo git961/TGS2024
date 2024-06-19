@@ -133,6 +133,7 @@ Player::Player(float set_x)
 	// エンドクレジット画面用変数
 	LoadDivGraph("images/Player/dance.png", 8, 4, 2, 170, 170, player_credits_img);
 	LoadDivGraph("images/Player/applause.png", 4, 4, 1, 170, 170, applause_img);
+	LoadDivGraph("images/Player/cracker.png", 5, 5, 1, 170, 170, cracker_img);
 	credits_img_num = 0;
 	credits_anim_cnt = 0;
 	credits_timer = 0;
@@ -1475,7 +1476,7 @@ void Player::EndCreditsAnimUpdate()
 			}
 		}
 	}
-	else if(credits_timer >= 2250)
+	else if(credits_timer >= 2250 && credits_timer < 2550)
 	{
 		// 拍手中
 		if (credits_anim_cnt < 12)
@@ -1495,6 +1496,27 @@ void Player::EndCreditsAnimUpdate()
 			credits_img_num = 3;
 		}
 	}
+	else if(credits_timer >= 2550)
+	{
+		// クラッカー
+		if (credits_anim_cnt < 50)
+		{
+			credits_anim_cnt++;
+		}
+		else
+		{
+			credits_anim_cnt = 0;
+		}
+
+		// 10fごとに画像切り替え
+		credits_img_num = credits_anim_cnt / 10;
+
+		if (credits_img_num > 4)
+		{
+			credits_img_num = 4;
+		}
+
+	}
 }
 
 // エンドクレジット画面用アニメーション描画処理
@@ -1509,10 +1531,15 @@ void Player::EndCreditsAnimDraw() const
 		// コサックダンス画像
 		DrawRotaGraph((int)world.x, (int)world.y, 1.1, 0.0, player_credits_img[credits_img_num], TRUE, direction);
 	}
-	else
+	else if(credits_timer < 2550)
 	{
 		// 拍手画像
 		DrawRotaGraph((int)world.x, (int)world.y, 1.1, 0.0, applause_img[credits_img_num], TRUE, direction);
+	}
+	else
+	{
+		// クラッカー画像
+		DrawRotaGraph((int)world.x, (int)world.y, 1.1, 0.0, cracker_img[credits_img_num], TRUE, direction);
 	}
 
 }
