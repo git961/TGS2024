@@ -134,8 +134,12 @@ Player::Player(float set_x)
 	LoadDivGraph("images/Player/dance.png", 8, 4, 2, 170, 170, player_credits_img);
 	LoadDivGraph("images/Player/applause.png", 4, 4, 1, 170, 170, applause_img);
 	LoadDivGraph("images/Player/cracker.png", 5, 5, 1, 170, 170, cracker_img);
+	LoadDivGraph("images/Player/ribbon.png", 5, 5, 1, 150, 220, ribbon_img);
 	credits_img_num = 0;
+	ribbon_img_num = 0;
 	credits_anim_cnt = 0;
+	cracker_anim_cnt = 0;
+	ribbon_anim_cnt = 0;
 	credits_timer = 0;
 	facing_left_flg = false;
 }
@@ -1499,23 +1503,35 @@ void Player::EndCreditsAnimUpdate()
 	else if(credits_timer >= 2550)
 	{
 		// クラッカー
-		if (credits_anim_cnt < 50)
+		if (cracker_anim_cnt < 50)
 		{
-			credits_anim_cnt++;
-		}
-		else
-		{
-			credits_anim_cnt = 0;
-		}
+			cracker_anim_cnt++;
 
-		// 10fごとに画像切り替え
-		credits_img_num = credits_anim_cnt / 10;
+			// 10fごとに画像切り替え
+			credits_img_num = cracker_anim_cnt / 10;
 
-		if (credits_img_num > 4)
-		{
-			credits_img_num = 4;
+			if (credits_img_num > 4)
+			{
+				credits_img_num = 4;
+			}
 		}
 
+		if (credits_img_num >= 3)
+		{
+			// クラッカー
+			if (ribbon_anim_cnt < 50)
+			{
+				ribbon_anim_cnt++;
+
+				// 10fごとに画像切り替え
+				ribbon_img_num = ribbon_anim_cnt / 10;
+
+				if (ribbon_img_num > 4)
+				{
+					ribbon_img_num = 4;
+				}
+			}
+		}
 	}
 }
 
@@ -1540,6 +1556,11 @@ void Player::EndCreditsAnimDraw() const
 	{
 		// クラッカー画像
 		DrawRotaGraph((int)world.x, (int)world.y, 1.1, 0.0, cracker_img[credits_img_num], TRUE, direction);
+		if (credits_img_num >= 3)
+		{
+			// クラッカーのリボン画像
+			DrawRotaGraph((int)world.x - 150, (int)world.y, 1.5, 0.0, ribbon_img[ribbon_img_num], TRUE, direction);
+		}
 	}
 
 }
