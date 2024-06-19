@@ -125,6 +125,7 @@ private:
 
     // エンドクレジット画面用
     int player_credits_img[8];          // クレジット画面でのプレイヤー画像
+    int applause_img[4];                // 拍手画像
     int credits_img_num;                // プレイヤークレジット画像の画像番号
     int credits_anim_cnt;               // クレジットアニメーション用カウント
     int credits_timer;                  // クレジット画面の経過時間
