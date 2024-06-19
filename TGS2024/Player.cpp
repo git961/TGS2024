@@ -1326,3 +1326,15 @@ void Player::RespawnAnimUpdate()
 
 	
 }
+
+// エンド画面用アニメーション更新処理
+void Player::EndAnimUpdate()
+{
+
+}
+
+// エンド画面用アニメーション描画処理
+void Player::EndAnimDraw() const
+{
+
+}

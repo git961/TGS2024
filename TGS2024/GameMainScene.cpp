@@ -228,8 +228,8 @@ GameMainScene::GameMainScene(bool set_flg)
 	gameover_anim_cnt = 0;
 	fadein_snd_flg = true;
 
-	start_pause_se = LoadSoundMem("sounds/se/pose/pose.mp3");
-	unpause_se = LoadSoundMem("sounds/se/pose/unpause.mp3");
+	start_pause_se = LoadSoundMem("sounds/se/pause/pause.mp3");
+	unpause_se = LoadSoundMem("sounds/se/pause/unpause.mp3");
 	ChangeVolumeSoundMem(140, start_pause_se);
 	ChangeVolumeSoundMem(210, unpause_se);
 

@@ -262,18 +262,11 @@ void Enemy::Draw() const
 #ifdef DEBUG
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "hp: %.2f", hp);
 	//DrawFormatString(location.x - 100, 30, 0xffffff, "crack: %d", crack_image_num);
-	//DrawFormatString(location.x - 100, 50, 0xffffff, "0: %.1f", fragment[0].x);
-	//DrawFormatString(location.x - 100, 80, 0xffffff, "1: %.1f", fragment[1].x);
-	//DrawFormatString(location.x - 100, 110, 0xffffff, "2: %.1f", fragment[2].x);
 	//DrawFormatString(location.x - 100, 140, 0xffffff, "3: %.1f", fragment[3].x);
 	//DrawFormatString(location.x - 100, 170, 0xffffff, "L: %.1f", location.x);
-	//DrawFormatString(location.x - 100, 230, 0xffffff, "m0: %.1f", mvx[0]);
-	//DrawFormatString(location.x - 100, 260, 0xffffff, "m1: %.1f", mvx[1]);
-	//DrawFormatString(location.x - 100, 290, 0xffffff, "m2: %.1f", mvx[2]);
-	//DrawFormatString(location.x - 100, 170, 0xffffff, "+: %f", start_x + mvx);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "k: %d", is_knock_back);
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "s: %d", is_knock_back_start);
-	//DrawFormatString(location.x - 100, 50, 0xffffff, "worldy;%f", world.x);
+	//DrawFormatString(location.x - 100, 50, 0xffffff, "worldy;%f", world.y);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "pworldy;%f", player_x);
 	//DrawFormatString(100, 20, 0xffffff, "opacity: %d", opacity);
 	//DrawBoxAA(location.x - width / 2, location.y - height / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);				// 当たり判定のボックス
@@ -653,28 +646,6 @@ void Enemy::FragmentEffect()
 
 		sum_t += t;
 
-		//if (fragment[i].y <= 608.0f)
-		//{
-		//	// 地面についていないのであれば
-		//	if (fragment[i].timer++ < 60)
-		//	{
-		//		if (i > 1)
-		//		{
-		//			// 斜方投射
-		//			// 右向き
-		//			fragment[i].x += v0[i] * cosf((float)fragment[i].radian);
-		//		}
-		//		else
-		//		{
-		//			// 斜方投射
-		//			// 左向き
-		//			fragment[i].x -= v0[i] * cosf((float)fragment[i].radian);
-		//		}
-
-		//		fragment[i].y += v0[i] * sinf((float)fragment[i].radian) - gravity;
-		//	}
-		//}
-
 		if (fragment[i].is_draw == false)
 		{
 			fragment[i].is_draw = true;
@@ -701,6 +672,7 @@ void Enemy::Fall()
 		world.y += 4;
 		if (world.y > 600)
 		{
+			world.y = 608.0f;
 			fall_end_flg = true;
 		}
 	}

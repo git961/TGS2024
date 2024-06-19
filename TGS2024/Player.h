@@ -118,6 +118,10 @@ private:
     float helmet_down;
     int helmet_img;//
 
+    int player_end_img[3];          // エンド画面でのプレイヤー画像
+    int end_img_num;                // プレイヤーエンド画像の画像番号
+    int end_anim_cnt;               // エンドアニメーション用カウント
+
 public:
     Player(float set_x);
     ~Player();
@@ -175,4 +179,6 @@ public:
     bool GetTutoAnimDynaFlg() { return tuto_anim_dynaflg; }
     bool GetStartFlg() { return start_flg; }
 
+    void EndAnimUpdate();               // エンド画面用アニメーション更新処理
+    void EndAnimDraw() const;           // エンド画面用アニメーション描画処理
 };
