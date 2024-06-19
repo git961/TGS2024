@@ -13,11 +13,11 @@ Gem::Gem(World set_world, int set_score)
 
 	// 画像の読み込み
 	LoadDivGraph("images/Gem/Gem.png", 5, 5, 1, 32, 32,gem_img);
+	LoadDivGraph("images/Gem/effect.png", 4, 4, 1, 32, 32, effect_img);
 
 	// サウンド読込
 	get_gem_sound = LoadSoundMem("sounds/se/gem/get.mp3");
 	drop_sound = LoadSoundMem("sounds/se/gem/drop.mp3");
-	//sparkling_sound = LoadSoundMem("sounds/se/gem/sparkling.mp3");
 	play_drop_sound = true;
 	play_get_sound = true;
 
@@ -32,21 +32,29 @@ Gem::Gem(World set_world, int set_score)
 	just_generated = true;
 	from_rolling_enemy = false;
 	is_delete = false;
-	//is_deete = false;
 
 	anim_cnt = 0;
 	anim_num = 0;
+	effect_num = 0;
+	effect_anim_cnt = 0;
+	draw_effect = false;			// エフェクトは表示しない
 
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(255, get_gem_sound);
 	ChangeVolumeSoundMem(255, drop_sound);
-	//ChangeVolumeSoundMem(200, sparkling_sound);
 }
 
 Gem::~Gem()
 {
 	// 画像削除
-	//DeleteGraph(gem_img[]);
+	for (int i = 0; i < 5; i++)
+	{
+		DeleteGraph(gem_img[i]);
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		DeleteGraph(effect_img[i]);
+	}
 
 	// サウンド削除
 	DeleteSoundMem(get_gem_sound);
@@ -67,44 +75,77 @@ void Gem::Update(GameMainScene* gamemain)
 	}
 
 	// 宝石が上下に揺れる
-	world.y = world.y - sinf((float)M_PI * 2.0f / 60.0f * (float)count) * 0.5f;
+	GemSway();
 
-	if (count < 60)
-	{
-		count++;
-	}
-	else
-	{
-		count = 0;
-	}
+	// 生成時のx座標の動き
+	MoveX();
 
-	if (just_generated == true)
+	// 画面外に出ないように
+	ControlPosition();
+
+	// 生成時の宝石の大きさ変更処理
+	ChangeSize();
+
+	if (play_get_sound == false)
 	{
-		// 敵の死亡位置がプレイヤーよりも右
-		if (world.x > player_x)
+		// seが鳴ったらエフェクトのアニメーション開始
+		if (draw_effect == false)
 		{
-			// 宝石が右に移動
-			world.x += 15.0f;
+			draw_effect = true;
+		}
+
+		if (effect_anim_cnt < 40)
+		{
+			effect_anim_cnt++;
+
+			// 10fで画像切り替え
+			effect_num = effect_anim_cnt / 10;
 		}
 		else
 		{
-			// 宝石が左に移動
-			world.x -= 15.0f;
-
+			if (CheckSoundMem(get_gem_sound) == FALSE)
+			{
+				// エフェクトのアニメーションが終わったら削除
+				is_delete = true;
+			}
 		}
-		just_generated = false;
 	}
 
-	// 画面外に出ないように
-	if (world.x + width / 2 > FIELD_WIDTH)
-	{
-		world.x -= width / 2;
-	}
-	else if(world.x - width / 2 < 0)
-	{
-		world.x += width / 2;
-	}
+	// 宝石のアニメーション
+	GemAnim();
 
+}
+
+void Gem::Draw() const
+{
+	//DrawBoxAA(location.x - width / 2, location.y - height / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);				// 当たり判定のボックス
+	//DrawFormatString(location.x - 100, 50, 0xffffff, "s: %.2lf", size);
+
+	if (draw_effect == false)
+	{
+		// 宝石画像
+		DrawRotaGraph((int)location.x, (int)location.y, size, 0.0, gem_img[anim_num], TRUE, direction);
+	}
+	else
+	{
+		// ゲットエフェクト画像
+		DrawRotaGraph((int)location.x, (int)location.y, size, 0.0, effect_img[effect_num], TRUE, direction);
+	}
+}
+
+// 宝石のアニメーション
+void Gem::GemAnim()
+{
+	anim_cnt++;
+	anim_num = anim_cnt / 10;
+	if (anim_cnt >=49) {
+		anim_cnt = 0;
+	}
+}
+
+// 生成時の宝石の大きさ変更処理
+void Gem::ChangeSize()
+{
 	if (from_rolling_enemy == true)
 	{
 		// だんだんサイズが大きくなる
@@ -129,55 +170,61 @@ void Gem::Update(GameMainScene* gamemain)
 			size = 1.0;
 		}
 	}
+}
 
-	if (play_get_sound == false && CheckSoundMem(get_gem_sound) == FALSE)
+// 生成時のx座標の動き
+void Gem::MoveX()
+{
+	if (just_generated == true)
 	{
-		// seが鳴り終わったら削除
-		is_delete = true;
-	}
+		// 敵の死亡位置がプレイヤーよりも右
+		if (world.x > player_x)
+		{
+			// 宝石が右に移動
+			world.x += 15.0f;
+		}
+		else
+		{
+			// 宝石が左に移動
+			world.x -= 15.0f;
 
-	GemAnim();
-
-	//if (move_x_timer < 30)
-	//{
-	//	// 敵の死亡位置がプレイヤーよりも右
-	//	if (world.x > player_x)
-	//	{
-	//		// 宝石が右に移動
-	//		world.x += 5.0f;
-	//	}
-	//	else
-	//	{
-	//		// 宝石が左に移動
-	//		world.x -= 5.0f;
-
-	//	}
-	//	move_x_timer++;
-	//}
-}
-
-void Gem::Draw() const
-{
-	//DrawBoxAA(location.x - width / 2, location.y - height / 2, location.x + width / 2, location.y + height / 2, 0xffffff, true);				// 当たり判定のボックス
-	//DrawFormatString(location.x - 100, 50, 0xffffff, "s: %.2lf", size);
-
-	// 宝石画像
-	DrawRotaGraph((int)location.x, (int)location.y, size, 0.0, gem_img[anim_num], TRUE, direction);
-}
-
-void Gem::GemAnim()
-{
-	anim_cnt++;
-	anim_num = anim_cnt / 10;
-	if (anim_cnt >=49) {
-		anim_cnt = 0;
+		}
+		just_generated = false;
 	}
 }
 
+// 画面外にでないように
+void Gem::ControlPosition()
+{
+	if (world.x + width / 2 > FIELD_WIDTH)
+	{
+		world.x -= width / 2;
+	}
+	else if (world.x - width / 2 < 0)
+	{
+		world.x += width / 2;
+	}
+}
+
+// 宝石が上下に揺れる処理
+void Gem::GemSway()
+{
+	// sin用
+	if (count < 60)
+	{
+		count++;
+	}
+	else
+	{
+		count = 0;
+	}
+
+	world.y = world.y - sinf((float)M_PI * 2.0f / 60.0f * (float)count) * 0.5f;
+}
+
+// 宝石取得seを鳴らす処理
 void Gem::PlayGetSound()
 {
-	//is_deete = true;
-
 	if (play_get_sound == true && CheckSoundMem(get_gem_sound) == FALSE)
 	{
 		// ゲットse

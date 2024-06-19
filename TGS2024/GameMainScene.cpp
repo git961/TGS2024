@@ -1541,7 +1541,6 @@ void GameMainScene::Draw() const
 		{
 			stage_block[j]->DrawKanban();
 		}
-
 	}
 	
 	if (game_state == TUTORIAL)
@@ -1616,10 +1615,7 @@ void GameMainScene::Draw() const
 			// 歩行エネミーの宝石描画処理
 			if (walk_gem[i] != nullptr)
 			{
-				if (walk_gem[i]->GetPlaySoundFlg() == true)
-				{
-					walk_gem[i]->Draw();
-				}
+				walk_gem[i]->Draw();
 			}
 		}
 	
@@ -1628,11 +1624,8 @@ void GameMainScene::Draw() const
 		{
 			if (roll_gem[i] != nullptr)
 			{
-				if (roll_gem[i]->GetPlaySoundFlg() == true)
-				{
-					// 転がるエネミーの宝石描画処理
-					roll_gem[i]->Draw();
-				}
+				// 転がるエネミーの宝石描画処理
+				roll_gem[i]->Draw();
 			}
 		}
 
