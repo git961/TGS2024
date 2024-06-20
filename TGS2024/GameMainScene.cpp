@@ -1786,11 +1786,11 @@ void GameMainScene::Draw() const
 		//DrawFormatString(400, 100, 0xffffff, "TUTORIAL_NOW");
 		break;
 	case POSE:
-		DrawFormatString(400, 100, 0xffffff, "POSE_NOW");
+		//DrawFormatString(400, 100, 0xffffff, "POSE_NOW");
 		break;
 		
 	case GOAL:
-		DrawFormatString(400, 100, 0xffffff, "GOAL!!");
+		//DrawFormatString(400, 100, 0xffffff, "GOAL!!");
 		break;
 	case PLAY:
 		//DrawFormatString(400, 100, 0xffffff, "PLAY_NOW");

@@ -173,11 +173,18 @@ void Player::Update(GameMainScene* gamemain)
 			p_imgnum = 31;
 		}
 
+
+
 		if (CheckSoundMem(damage_sound) == FALSE)
 		{
 			PlaySoundMem(damage_sound, DX_PLAYTYPE_BACK);
 		}
 
+		attacking = false;
+		attack_cnt = 0;
+		anim_cnt = 0;
+		attacking = false;
+		wait_flg = true;
 
 		if ((unsigned)move_x > 0) {
 			move_x *= 0.9f;
@@ -255,6 +262,10 @@ void Player::Update(GameMainScene* gamemain)
 		//敵からダメージを食らったら
 		if (hit_damage == true)
 		{
+			if (CheckSoundMem(atk_sound) == TRUE)
+			{
+				StopSoundMem(atk_sound);
+			}
 			player_state = HITDAMAGE;
 
 			//ノックバック処理
@@ -842,6 +853,7 @@ void Player::PlayerAttack()
 
 			if (next_attackflg == false || attack_cnt >= 2)
 			{
+				p_atk_imgnum = 0;
 				attack_cnt = 0;
 				anim_cnt = 0;
 				atk_cnt_timer = 0;
@@ -850,17 +862,6 @@ void Player::PlayerAttack()
 				attacking = false;
 				wait_flg = true;
 				player_state = NOMAL;
-
-			}
-			else
-			{
-				//次の攻撃をする準備
-				anim_cnt = 0;
-				atk_cnt_timer = 0;
-				attack_cnt++;
-				is_atk_putout = false;
-				attacking = false;
-				next_attackflg = false;
 
 			}
 		}
