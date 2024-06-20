@@ -107,6 +107,15 @@ void EndCreditsScene::Update()
 		player->EndCreditsAnimUpdate();
 	}
 
+	if (change_cnt <= 0)
+	{
+		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+		{
+			// プレイヤーつるはしアニメーション開始
+			player->SetPushBFlg();
+		}
+	}
+
 }
 
 void EndCreditsScene::Draw() const
@@ -160,19 +169,15 @@ void EndCreditsScene::Draw() const
 
 AbstractScene* EndCreditsScene::Change()
 {
-	if (change_cnt <= 0)
+	if (player->GetChangeToTitleFlg() == true)
 	{
-		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+		// クレジットbgm停止
+		if (CheckSoundMem(credits_bgm) == TRUE)
 		{
-			// クレジットbgm停止
-			if (CheckSoundMem(credits_bgm) == TRUE)
-			{
-				StopSoundMem(credits_bgm);
-			}
-
-			// Bボタンでタイトルに遷移
-			return new TitleScene();
+			StopSoundMem(credits_bgm);
 		}
+
+		return new TitleScene();
 	}
 
 	return this;
