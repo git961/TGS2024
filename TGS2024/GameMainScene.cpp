@@ -1116,6 +1116,12 @@ void GameMainScene::Update()
 								player_damage_once = true;
 								player->SetDamageFlg(player_damage_once);
 								player->SetDamage(10);
+
+								//HPeffect
+								if (ui != nullptr)
+								{
+									ui->SetBreakHpFlg(true);
+								}
 							}
 						}
 					}
@@ -1134,6 +1140,12 @@ void GameMainScene::Update()
 								player_damage_once = true;
 								player->SetDamageFlg(player_damage_once);
 								player->SetDamage(10);
+
+								//HPui用
+								if (ui != nullptr)
+								{
+									ui->SetBreakHpFlg(true);
+								}
 							}
 						}
 					}
@@ -1206,6 +1218,7 @@ void GameMainScene::Update()
 					if (player->GetHp() <= 0) {
 						ui->Update(0, 0);
 					}
+					
 				}
 			}
 

@@ -36,8 +36,12 @@ UI::UI(int set_hp, int set_dyna_num)
 	break_flg = false;
 	break_cnt = 0;
 	break_num = 0;
-	hp_x = 0;
-	hp_y = (int)y-3;
+	hp_x_num = 4;
+
+	for (int i = 0; i < heart_num; i++)
+	{
+		hp_x[i] = (int)x + 35 * i;
+	}
 }
 
 UI::~UI()
@@ -46,16 +50,15 @@ UI::~UI()
 
 void UI::Update(int set_hp,int set_dyna_num)
 {
-	if (old_hp - set_hp==10)
-	{
-		break_flg = true;
-		hp_x = (old_hp / 10) + x + 35;
-	}
-	else {
-		old_hp = set_hp;
-	}
+
+
 	heart_num = set_hp / 10;
 	dyna_num = set_dyna_num;
+
+	if (heart_num <= 0)
+	{
+		hp_x_num = 4;
+	}
 
 	HeartAnim();
 
@@ -90,7 +93,7 @@ void UI::Draw() const
 
 	if (break_flg == true)
 	{
-		DrawRotaGraph(hp_x, (int)y - 3, 0.5, 0, heart_break_img[break_num], TRUE, 0);
+		DrawRotaGraph(hp_x[hp_x_num], (int)y - 3, 0.5, 0, heart_break_img[break_num], TRUE, 0);
 	}
 
 	for (int i = 0; i < dyna_num; i++)
@@ -283,12 +286,14 @@ void UI::HeartAnim()
 void UI::BreakHpAnim()
 {
 	break_cnt++;
-	if (break_cnt > 10)
+	if (break_cnt > 5)
 	{
 		break_num = 1;
 	}
-	else if (break_cnt > 20)
+	
+	if (break_cnt > 15)
 	{
+		hp_x_num -= 1;
 		break_cnt = 0;
 		break_num = 0;
 		break_flg = false;

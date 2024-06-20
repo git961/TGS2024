@@ -25,7 +25,9 @@ private:
 
 	float x, y;
 
-	int hp_x, hp_y;
+	//int hp_x, hp_y;
+	int hp_x[6];
+	int hp_x_num;
 
 	bool break_flg;
 	int old_hp;
@@ -49,4 +51,5 @@ public:
 	void DrawTutorial(Player* player) const;
 	void HeartAnim();
 	void BreakHpAnim();
+	void SetBreakHpFlg(bool set_flg) { break_flg = set_flg; }
 };
