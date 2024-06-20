@@ -1,11 +1,15 @@
 #pragma once
 #include "AbstractScene.h"
 #include "TitleScene.h"
-#include "AnimScene.h"
+#include "Player.h"
+
+class Player;
 
 class EndCreditsScene : public AbstractScene
 {
 private:
+	Player* player;
+
 	int text_x;
 	int text_y;
 	int timer;

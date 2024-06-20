@@ -2,6 +2,8 @@
 
 EndCreditsScene::EndCreditsScene(int set_score)
 {
+	player = new Player(-80.0f);
+
 	text_x = 700;
 	text_y = 720;
 	timer = 0;
@@ -51,6 +53,7 @@ EndCreditsScene::EndCreditsScene(int set_score)
 
 EndCreditsScene::~EndCreditsScene()
 {
+	delete player;
 	// 画像削除
 	for (int i = 0; i < 12; i++)
 	{
@@ -97,6 +100,22 @@ void EndCreditsScene::Update()
 			ChangeVolumeSoundMem(volume, credits_bgm);
 		}
 	}
+
+	if (volume >= 40)
+	{
+		// プレイヤーアニメーション更新処理
+		player->EndCreditsAnimUpdate();
+	}
+
+	if (change_cnt <= 0)
+	{
+		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+		{
+			// プレイヤーつるはしアニメーション開始
+			player->SetPushBFlg();
+		}
+	}
+
 }
 
 void EndCreditsScene::Draw() const
@@ -140,23 +159,25 @@ void EndCreditsScene::Draw() const
 	{
 		DrawRotaGraph(640, 600, 1.0, 0.0, push_b_img, TRUE, FALSE);
 	}
+
+	if (volume >= 40)
+	{
+		// プレイヤーアニメーション描画処理
+		player->EndCreditsAnimDraw();
+	}
 }
 
 AbstractScene* EndCreditsScene::Change()
 {
-	if (change_cnt <= 0)
+	if (player->GetChangeToTitleFlg() == true)
 	{
-		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+		// クレジットbgm停止
+		if (CheckSoundMem(credits_bgm) == TRUE)
 		{
-			// クレジットbgm停止
-			if (CheckSoundMem(credits_bgm) == TRUE)
-			{
-				StopSoundMem(credits_bgm);
-			}
-
-			// Bボタンでタイトルに遷移
-			return new TitleScene();
+			StopSoundMem(credits_bgm);
 		}
+
+		return new TitleScene();
 	}
 
 	return this;

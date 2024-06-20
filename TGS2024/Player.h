@@ -118,6 +118,30 @@ private:
     float helmet_down;
     int helmet_img;//
 
+    // エンド画面用
+    int player_end_img[3];          // エンド画面でのプレイヤー画像
+    int end_img_num;                // プレイヤーエンド画像の画像番号
+    int end_anim_cnt;               // エンドアニメーション用カウント
+
+    // エンドクレジット画面用
+    int player_credits_img[8];          // クレジット画面でのプレイヤー画像
+    int applause_img[4];                // 拍手画像
+    int cracker_img[5];                 // クラッカー画像
+    int ribbon_img[5];                  // クラッカーのリボン画像
+    int credits_img_num;                // プレイヤークレジット画像の画像番号
+    int ribbon_img_num;                 // クラッカーのリボンの画像番号
+    int credits_anim_cnt;               // クレジットアニメーション用カウント
+    int ribbon_anim_cnt;                // クラッカーのリボンアニメーション用カウント
+    int cracker_anim_cnt;               // クラッカーアニメーション用カウント
+    int credits_timer;                  // クレジット画面の経過時間
+    bool facing_left_flg;               // 左向きか？
+    bool push_b_flg;                    // Bボタンを押したか？
+    int dash_anim_cnt;                  // push_bに向かって走るアニメーションカウント
+    bool change_to_title_flg;           // シーンをタイトルに変更するか？
+    int ribbon_x;                       // クラッカーのリボンx座標
+    int ribbon_y;                       // クラッカーのリボンy座標
+    bool set_ribbon_pos_flg;            // リボンの座標をセットしたか？
+
 public:
     Player(float set_x);
     ~Player();
@@ -180,4 +204,20 @@ public:
     bool GetTutoAnimDynaFlg() { return tuto_anim_dynaflg; }
     bool GetStartFlg() { return start_flg; }
 
+    // エンド用
+    void EndAnimUpdate();               // エンド画面用アニメーション更新処理
+    void EndAnimDraw() const;           // エンド画面用アニメーション描画処理
+
+    // エンドクレジット用
+    void EndCreditsAnimUpdate();        // エンドクレジット画面用アニメーション更新処理
+    void EndCreditsAnimDraw() const;    // エンドクレジット画面用アニメーション描画処理
+    void PlayerMoveEndCredits();        // クレジット画面でのプレイヤー移動処理
+    void ChangeSceneAnim();             // Bボタンでシーンを変えるときのアニメーション
+    void DanceAnim();                   // コサックダンスアニメーション
+    void ApplauseAnim();                // 拍手アニメーション
+    void CrackerAnim();                 // クラッカーアニメーション
+    void RibbonAnim();                  // リボンアニメーション
+
+    void SetPushBFlg() { push_b_flg = true; }       // Bボタン押したフラグの設定
+    bool GetChangeToTitleFlg() const { return change_to_title_flg; }
 };

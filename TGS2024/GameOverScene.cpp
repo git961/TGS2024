@@ -25,7 +25,7 @@ GameOverScene::GameOverScene()
 	LoadDivGraph("images/scene/title/cursor01.png", 3, 3, 1, 128, 92, cursor_img);
 	ring_img = LoadGraph("images/scene/gameover/ring.png");
 	push_b_img = LoadGraph("images/scene/title/push_b_blue01.png");
-	move_cursor_se = LoadSoundMem("sounds/se/system/cursor.mp3");
+	move_cursor_se = LoadSoundMem("sounds/se/scene/title/cursor.mp3");
 	font_img[2] = LoadGraph("images/scene/gameover/gameover.png");
 	ChangeVolumeSoundMem(200, move_cursor_se);
 	//640, 400,

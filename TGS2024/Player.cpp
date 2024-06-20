@@ -25,7 +25,7 @@ Player::Player(float set_x)
 
 
 
-	atk_sound = LoadSoundMem("sounds/Attack.mp3");
+	atk_sound = LoadSoundMem("sounds/se/player/Attack.mp3");
 	op_run_sound = LoadSoundMem("sounds/se/player/run.mp3");
 	damage_sound = LoadSoundMem("sounds/se/player/damage.mp3");
 	throw_dynamite_sound = LoadSoundMem("sounds/se/player/Throw.mp3");
@@ -118,7 +118,7 @@ Player::Player(float set_x)
 	ChangeVolumeSoundMem(180, op_run_sound);
 	ChangeVolumeSoundMem(180, damage_sound);
 	ChangeVolumeSoundMem(180, throw_dynamite_sound);
-	ChangeVolumeSoundMem(230, death_sound);
+	ChangeVolumeSoundMem(210, death_sound);
 
 	dyna_anm_start = false;
 	walk_stop_flg = false;
@@ -127,6 +127,30 @@ Player::Player(float set_x)
 
 	helmet_flg = false;
 	helmet_down = -1000;
+
+	// エンド画面用変数
+	LoadDivGraph("images/Player/player_end1.png", 3, 3, 1, 170, 170, player_end_img);
+	end_img_num = 0;
+	end_anim_cnt = 0;
+
+	// エンドクレジット画面用変数
+	LoadDivGraph("images/Player/dance.png", 8, 4, 2, 170, 170, player_credits_img);
+	LoadDivGraph("images/Player/applause.png", 4, 4, 1, 170, 170, applause_img);
+	LoadDivGraph("images/Player/cracker.png", 5, 5, 1, 170, 170, cracker_img);
+	LoadDivGraph("images/Player/ribbon.png", 5, 5, 1, 150, 220, ribbon_img);
+	credits_img_num = 0;
+	ribbon_img_num = 0;
+	credits_anim_cnt = 0;
+	cracker_anim_cnt = 0;
+	ribbon_anim_cnt = 0;
+	credits_timer = 0;
+	facing_left_flg = false;
+	push_b_flg = false;
+	dash_anim_cnt = 0;
+	change_to_title_flg = false;
+	ribbon_x = 0;
+	ribbon_y = 0;
+	set_ribbon_pos_flg = false;
 }
 
 Player::~Player()
@@ -137,7 +161,6 @@ Player::~Player()
 	DeleteSoundMem(damage_sound);
 	DeleteSoundMem(throw_dynamite_sound);
 	DeleteSoundMem(death_sound);
-
 }
 
 void Player::Update(GameMainScene* gamemain)
@@ -156,10 +179,6 @@ void Player::Update(GameMainScene* gamemain)
 
 		break;
 	case DYNAMITE:
-		if (CheckSoundMem(throw_dynamite_sound) == FALSE)
-		{
-			PlaySoundMem(throw_dynamite_sound, DX_PLAYTYPE_BACK);
-		}
 
 		ThrowAnim();
 
@@ -684,6 +703,7 @@ void Player::ThrowAnim()
 		switch (dyna_anmcnt)
 		{
 		case 1:
+			PlaySoundMem(throw_dynamite_sound, DX_PLAYTYPE_BACK);
 			dyna_stock_num -= 1;
 			//dyna_throw_num = 0;
 			p_imgnum = 35;
@@ -1601,4 +1621,288 @@ void Player::RespawnAnimUpdate()
 	}
 
 	
+}
+
+// エンド画面用アニメーション更新処理
+void Player::EndAnimUpdate()
+{
+	if (world.y != 50.0f)
+	{
+		world.y = 50.0f;
+	}
+
+	if (end_anim_cnt < 29)
+	{
+		end_anim_cnt++;
+		end_img_num = end_anim_cnt / 10;
+	}
+	else
+	{
+		end_anim_cnt = 0;
+	}
+
+	// 右に移動
+	world.x += 6.0f;
+}
+
+// エンド画面用アニメーション描画処理
+void Player::EndAnimDraw() const
+{
+	// プレイヤーが袋を持って走る画像
+	DrawRotaGraph((int)world.x, (int)world.y, 10.0, 0.0, player_end_img[end_img_num], TRUE, direction);
+}
+
+// エンドクレジット画面用アニメーション更新処理
+void Player::EndCreditsAnimUpdate()
+{
+	if (credits_anim_cnt < 2700)
+	{
+		credits_timer++;
+
+		// コサックダンス中の移動処理
+		PlayerMoveEndCredits();
+	}
+	
+	if (push_b_flg == true)
+	{
+		// Bボタンでシーンを変えるときのアニメーション
+		ChangeSceneAnim();
+	}
+
+	if (credits_timer < 2150)
+	{
+		// コサックダンスアニメーション
+		DanceAnim();
+	}
+	else if(credits_timer >= 2250 && credits_timer < 2550)
+	{
+		// 拍手アニメーション
+		ApplauseAnim();
+	}
+	else if(credits_timer >= 2550)
+	{
+		if (cracker_anim_cnt < 50)
+		{
+			// クラッカーアニメーション
+			CrackerAnim();
+		}
+
+		if (credits_img_num >= 3)
+		{
+			// リボンアニメーション
+			RibbonAnim();
+		}
+	}
+}
+
+// エンドクレジット画面用アニメーション描画処理
+void Player::EndCreditsAnimDraw() const
+{
+	//int ax, ay;
+	//GetMousePoint(&ax, &ay);
+	//DrawFormatString(1000, 10, 0xffff00, "%d,%d", ax, ay);
+
+	if (credits_timer < 2250)
+	{
+		// コサックダンス画像
+		DrawRotaGraph((int)world.x, (int)world.y, 1.1, 0.0, player_credits_img[credits_img_num], TRUE, direction);
+	}
+	else if(credits_timer < 2550)
+	{
+		// 拍手画像
+		DrawRotaGraph((int)world.x, (int)world.y, 1.1, 0.0, applause_img[credits_img_num], TRUE, direction);
+	}
+	else
+	{
+		if (credits_img_num >= 3)
+		{
+			// クラッカーのリボン画像
+			DrawRotaGraph(ribbon_x, ribbon_y, 1.5, 0.0, ribbon_img[ribbon_img_num], TRUE, direction);
+		}
+
+		// クラッカー画像
+		DrawRotaGraph((int)world.x, (int)world.y, 1.1, 0.0, cracker_img[credits_img_num], TRUE, direction);
+	}
+
+}
+
+// クレジット画面でのプレイヤー移動処理
+void Player::PlayerMoveEndCredits()
+{
+	if (credits_timer < 400)
+	{
+		world.x += 1.0f;
+		//world.y -= 0.3f;
+	}
+	else if (credits_timer >= 500 && credits_timer < 600)
+	{
+		world.x -= 0.5f;
+		world.y -= 0.7f;
+
+		// 左向きの画像に変更
+		facing_left_flg = true;
+	}
+	else if (credits_timer >= 750 && credits_timer < 800)
+	{
+		world.x += 0.7f;
+
+		// 右向きの画像に変更
+		facing_left_flg = false;
+	}
+	else if (credits_timer >= 850 && credits_timer < 1100)
+	{
+		world.x += 1.2f;
+		world.y -= 1.0f;
+	}
+	else if (credits_timer >= 1100 && credits_timer < 1300)
+	{
+		world.x += 1.0f;
+		world.y -= 1.0f;
+
+		// 左向きの画像に変更
+		facing_left_flg = true;
+	}
+	else if (credits_timer >= 1400 && credits_timer < 1700)
+	{
+		world.x += 1.2f;
+		world.y += 1.0f;
+
+		// 右向きの画像に変更
+		facing_left_flg = false;
+	}
+	else if (credits_timer >= 1800 && credits_timer < 1950)
+	{
+		world.x -= 0.6f;
+		world.y += 1.0f;
+
+		// 左向きの画像に変更
+		facing_left_flg = true;
+	}
+	else if (credits_timer >= 2500 && credits_timer < 2550)
+	{
+		world.x -= 1.0f;
+		world.y -= 0.5f;
+	}
+}
+
+// Bボタンでシーンを変えるときのアニメーション
+void Player::ChangeSceneAnim()
+{
+	if (dash_anim_cnt < 300)
+	{
+		dash_anim_cnt++;
+	}
+	else
+	{
+		// アニメーションが終わったらシーンをタイトルに変更
+		change_to_title_flg = true;
+	}
+
+	if (dash_anim_cnt < 150)
+	{
+		// push_bに向かって走る
+		world.x -= 3.0f;
+	}
+	else if (dash_anim_cnt < 200)
+	{
+		world.x -= 3.0f;
+		world.y += 1.4f;
+	}
+
+	// つるはしアニメーション
+
+}
+
+// コサックダンスアニメーション
+void Player::DanceAnim()
+{
+	if (credits_anim_cnt < 40)
+	{
+		credits_anim_cnt++;
+	}
+	else
+	{
+		credits_anim_cnt = 0;
+	}
+
+	// 10fごとに画像切り替え
+	credits_img_num = credits_anim_cnt / 10;
+
+	if (facing_left_flg == true)
+	{
+		// 左向き画像
+		if (credits_img_num > 3)
+		{
+			credits_img_num = 3;
+		}
+	}
+	else
+	{
+		// 右向き画像
+		credits_img_num += 4;
+		if (credits_img_num > 7)
+		{
+			credits_img_num = 7;
+		}
+	}
+}
+
+// 拍手アニメーション
+void Player::ApplauseAnim()
+{
+	if (credits_anim_cnt < 12)
+	{
+		credits_anim_cnt++;
+	}
+	else
+	{
+		credits_anim_cnt = 0;
+	}
+
+	// 5fごとに画像切り替え
+	credits_img_num = credits_anim_cnt / 3;
+
+	if (credits_img_num > 3)
+	{
+		credits_img_num = 3;
+	}
+}
+
+// クラッカーアニメーション
+void Player::CrackerAnim()
+{
+	cracker_anim_cnt++;
+
+	// 10fごとに画像切り替え
+	credits_img_num = cracker_anim_cnt / 10;
+
+	if (credits_img_num > 4)
+	{
+		credits_img_num = 4;
+	}
+}
+
+// リボンアニメーション
+void Player::RibbonAnim()
+{
+	if (set_ribbon_pos_flg == false)
+	{
+		// リボンの座標を設定する
+		ribbon_x = (int)world.x - 150;
+		ribbon_y = (int)world.y;
+		set_ribbon_pos_flg = true;
+	}
+
+	if (ribbon_anim_cnt < 50)
+	{
+		ribbon_anim_cnt++;
+
+		// 10fごとに画像切り替え
+		ribbon_img_num = ribbon_anim_cnt / 10;
+
+		if (ribbon_img_num > 4)
+		{
+			ribbon_img_num = 4;
+		}
+	}
 }

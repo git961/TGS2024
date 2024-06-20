@@ -158,7 +158,6 @@
     <ClCompile Include="Dynamite.cpp" />
     <ClCompile Include="EndScene.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="FallingEnemy.cpp" />
     <ClCompile Include="FallingRock.cpp" />
     <ClCompile Include="fps.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
