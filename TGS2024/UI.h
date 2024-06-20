@@ -26,6 +26,8 @@ private:
 	float x, y;
 
 	//int hp_x, hp_y;
+
+
 	int hp_x[6];
 	int hp_x_num;
 

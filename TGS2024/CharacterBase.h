@@ -30,6 +30,7 @@ protected:
 	float speed;
 	bool direction;//向き　0:右 1:左
 
+	bool stop_walk_snd;//音を止めるか？
 
 public:
 	//コンストラクタとデストラクタ
@@ -140,6 +141,8 @@ public:
 			if (box_vertex.lower_rightx > set_box_vertex.upper_leftx)
 			{
 				world.x = set_world.x - width / 2 - 35;
+				stop_walk_snd = true;
+
 			}
 		}
 
