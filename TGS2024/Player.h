@@ -128,7 +128,8 @@ public:
     //プレイヤー移動用
     void PlayerMove();
     void WalkAnim();
-    
+    void DeathAnim();
+    void ThrowAnim();
 
     void PlayerAttack();
     void PlayerTutoAttack();

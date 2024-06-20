@@ -152,32 +152,8 @@ void Player::Update(GameMainScene* gamemain)
 	{
 	case DEATH:
 
-		death_anim_cnt++;
-		switch (death_anim_cnt)
-		{
-		case 1:
-			p_imgnum = 46;
-			break;
-		case 5:
-			p_imgnum = 47;
-			break;
-		case 15:
-			if (CheckSoundMem(death_sound) == FALSE)
-			{
-				PlaySoundMem(death_sound, DX_PLAYTYPE_BACK);
-			}
-			p_imgnum = 48;
-			break;
-		case 20:
-			p_imgnum = 49;
-			break;
-		case 25:
-			death_flg = true;
-			death_anim_cnt = 0;
-			break;
-		default:
-			break;
-		}
+		DeathAnim();
+
 		break;
 	case DYNAMITE:
 		if (CheckSoundMem(throw_dynamite_sound) == FALSE)
@@ -185,34 +161,18 @@ void Player::Update(GameMainScene* gamemain)
 			PlaySoundMem(throw_dynamite_sound, DX_PLAYTYPE_BACK);
 		}
 
-		//ダイナマイト投擲
-		switch (dyna_anmcnt)
-		{
-		case 1:
-			dyna_stock_num-=1;
-			//dyna_throw_num = 0;
-			p_imgnum = 32;
-			break;
-		case 5:
-			//dyna_throw_num = 1;
-			p_imgnum = 33;
-			break;
-		case 10:
-			//dyna_throw_num = 2;
-			p_imgnum = 34;
-			atk_dynamite = true;
-			break;
-		case 15:
-			dyna_anmcnt = 0;
-			player_state = NOMAL;
-			break;
-		default:
-			break;
-		}
-		dyna_anmcnt++;
+		ThrowAnim();
 
 		break;
 	case HITDAMAGE:
+		if (direction == false)
+		{
+			p_imgnum = 30;
+		}
+		else {
+			p_imgnum = 31;
+		}
+
 		if (CheckSoundMem(damage_sound) == FALSE)
 		{
 			PlaySoundMem(damage_sound, DX_PLAYTYPE_BACK);
@@ -240,7 +200,7 @@ void Player::Update(GameMainScene* gamemain)
 		{
 			if (direction == false)
 			{
-				p_imgnum = 25;
+				p_imgnum = 27;
 			}
 			else {
 				p_imgnum = 28;
@@ -485,7 +445,7 @@ void Player::Draw() const
 	if (player_state==ATTACK)
 	{
 		DrawRotaGraph((int)location.x, (int)location.y - (int)img_down, 1, 0, pickaxe_img[p_atk_imgnum], TRUE, direction);
-		if (p_imgnum > 2)
+		if (p_atk_imgnum > 2)
 		{
 			//DrawRotaGraph(location.x, location.y - img_down, 1, 0, effect_img[effect_num], TRUE, direction);
 			DrawRotaGraph((int)location.x, (int)location.y - (int)img_down, 1, 0, soil_effect[effect_num], TRUE, direction);
@@ -618,10 +578,128 @@ void Player::WalkAnim()
 
 }
 
+void Player::DeathAnim()
+{
+	death_anim_cnt++;
+	if (direction == false)
+	{
+		switch (death_anim_cnt)
+		{
+		case 1:
+			p_imgnum = 46;
+			break;
+		case 5:
+			p_imgnum = 47;
+			break;
+		case 15:
+			if (CheckSoundMem(death_sound) == FALSE)
+			{
+				PlaySoundMem(death_sound, DX_PLAYTYPE_BACK);
+			}
+			p_imgnum = 48;
+			break;
+		case 20:
+			p_imgnum = 49;
+			break;
+		case 25:
+			death_flg = true;
+			death_anim_cnt = 0;
+			break;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		switch (death_anim_cnt)
+		{
+		case 1:
+			p_imgnum = 50;
+			break;
+		case 5:
+			p_imgnum = 51;
+			break;
+		case 15:
+			if (CheckSoundMem(death_sound) == FALSE)
+			{
+				PlaySoundMem(death_sound, DX_PLAYTYPE_BACK);
+			}
+			p_imgnum = 52;
+			break;
+		case 20:
+			p_imgnum = 53;
+			break;
+		case 25:
+			death_flg = true;
+			death_anim_cnt = 0;
+			break;
+		default:
+			break;
+		}
+
+	}
+}
+
+void Player::ThrowAnim()
+{
+	//ダイナマイト投擲
+	if (direction == false)
+	{
+		switch (dyna_anmcnt)
+		{
+		case 1:
+			dyna_stock_num -= 1;
+			//dyna_throw_num = 0;
+			p_imgnum = 32;
+			break;
+		case 5:
+			//dyna_throw_num = 1;
+			p_imgnum = 33;
+			break;
+		case 10:
+			//dyna_throw_num = 2;
+			p_imgnum = 34;
+			atk_dynamite = true;
+			break;
+		case 15:
+			dyna_anmcnt = 0;
+			player_state = NOMAL;
+			break;
+		default:
+			break;
+		}
+	}
+	else {
+		switch (dyna_anmcnt)
+		{
+		case 1:
+			dyna_stock_num -= 1;
+			//dyna_throw_num = 0;
+			p_imgnum = 35;
+			break;
+		case 5:
+			//dyna_throw_num = 1;
+			p_imgnum = 36;
+			break;
+		case 10:
+			//dyna_throw_num = 2;
+			p_imgnum = 37;
+			atk_dynamite = true;
+			break;
+		case 15:
+			dyna_anmcnt = 0;
+			player_state = NOMAL;
+			break;
+		default:
+			break;
+		}
+
+	}
+	dyna_anmcnt++;
+}
+
 void Player::PlayerAttack()
 {
-
-
 
 	if (attacking == true)
 	{
@@ -679,6 +757,8 @@ void Player::PlayerAttack()
 
 			//p_atk_imgnum = 0;
 			//初段
+		if (direction == false)
+		{
 			switch (anim_cnt)
 			{
 			case 0:
@@ -701,17 +781,37 @@ void Player::PlayerAttack()
 				p_imgnum = 41;
 				break;
 			}
+		}
+		else
+		{
+			switch (anim_cnt)
+			{
+			case 0:
+				p_atk_imgnum = 0;
+				p_imgnum = 42;
+				break;
+			case 7:
+				p_atk_imgnum = 1;
+				p_imgnum = 43;
+				break;
+			case 10:
+				p_atk_imgnum = 2;
+				is_atk_putout = true;
+				effect_num = 0;
+				p_imgnum = 44;
+				break;
+			case 13:
+				p_atk_imgnum = 3;
+				effect_num = 1;
+				p_imgnum = 45;
+				break;
+			}
 
+		}
 		
 
 
 	}
-	else {
-		//p_imgnum = 0;
-	}
-
-
-
 
 	//何秒か経ったら攻撃中フラグを戻す？
 	if (attacking == true)
@@ -774,8 +874,8 @@ void Player::PlayerTutoAttack()
 
 	if (attacking == true)
 	{
-		//if (direction == false)
-		//{
+		if (direction == false)
+		{
 			//初段
 			switch (anim_cnt)
 			{
@@ -799,10 +899,31 @@ void Player::PlayerTutoAttack()
 				p_imgnum = 16;
 				break;
 			}
-		//}
-		//else {
-
-		//}
+		}
+		else {
+			switch (anim_cnt)
+			{
+			case 0:
+				p_atk_imgnum = 0;
+				p_imgnum = 17;
+				break;
+			case 7:
+				p_atk_imgnum = 1;
+				p_imgnum = 18;
+				break;
+			case 10:
+				p_atk_imgnum = 2;
+				is_atk_putout = true;
+				effect_num = 0;
+				p_imgnum = 19;
+				break;
+			case 13:
+				p_atk_imgnum = 3;
+				effect_num = 1;
+				p_imgnum = 20;
+				break;
+			}
+		}
 
 
 

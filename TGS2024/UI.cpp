@@ -48,8 +48,8 @@ void UI::Update(int set_hp,int set_dyna_num)
 
 void UI::Draw() const
 {
-	int ax, ay;
-	GetMousePoint(&ax, &ay);
+	//int ax, ay;
+	//GetMousePoint(&ax, &ay);
 	//DrawFormatString(1000, 10, 0xffff00, "%d,%d", ax, ay);
 	
 	//if (player->GetTutoAtkFlg() == true)
@@ -65,7 +65,7 @@ void UI::Draw() const
 
 	for (int i = 0; i < heart_num; i++)
 	{
-		DrawRotaGraph(x+35*i, (int)y-3.0f, 0.5, 0, heart_img[heart_anim_num], TRUE, 0);
+		DrawRotaGraph((int)x+35*i, (int)y-3, 0.5, 0, heart_img[heart_anim_num], TRUE, 0);
 	}
 	for (int i = 0; i < dyna_num; i++)
 	{

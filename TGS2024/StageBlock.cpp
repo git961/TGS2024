@@ -25,7 +25,7 @@ StageBlock::StageBlock(int set_block_num,float set_x, float set_y)
 		block_img = LoadGraph("images/Stage/block.png");
 		break;
 	case 3:
-		block_img = LoadGraph("images/Stage/Goal.png");
+		//block_img = LoadGraph("images/Stage/Goal.png");
 		break;
 	case 4:
 		block_img = LoadGraph("images/Stage/rock.png");
@@ -208,7 +208,7 @@ void StageBlock::Draw() const
 	{
 		DrawRotaGraph((int)location.x, (int)hely + 10, 1, angle, block_img, TRUE, 0);
 	}
-	else if (block_num != 6&& block_num != 10 && block_num != 11&&block_num!=4)
+	else if (block_num != 6&& block_num != 10 && block_num != 11&&block_num!=4&&block_num!=3)
 	{
 		DrawRotaGraph((int)location.x, (int)location.y, 1, 0, block_img, TRUE, 0);
 	}

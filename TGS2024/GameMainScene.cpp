@@ -224,7 +224,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	alpha = 255;
 	black_flg = false;
 
-	p_life_num = 3;
+	p_life_num = 2;
 	gameover_anim_cnt = 0;
 	fadein_snd_flg = true;
 }
@@ -1186,8 +1186,14 @@ void GameMainScene::Update()
 				if (ui != nullptr)
 				{
 					ui->Update((int)player->GetHp(), player->GetDynaNum());
+					if (player->GetHp() <= 0) {
+						ui->Update(0, 0);
+					}
 				}
 			}
+
+
+
 
 			screen_origin_position = {
 				camera_pos.x - SCREEN_WIDTH / 2.0f,
