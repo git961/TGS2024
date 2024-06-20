@@ -51,8 +51,8 @@ Player::Player(float set_x)
 	old_worldx = world.x;
 
 	//体力
-	//hp = 50;
-	hp = 10;
+	hp = 50;
+	//hp = 10;
 
 	//幅と座標
 	width = 50;
@@ -151,6 +151,7 @@ Player::Player(float set_x)
 	ribbon_x = 0;
 	ribbon_y = 0;
 	set_ribbon_pos_flg = false;
+
 }
 
 Player::~Player()
@@ -222,6 +223,7 @@ void Player::Update(GameMainScene* gamemain)
 	case WALK:
 	case NOMAL:
 
+
 		if (player_state == NOMAL)
 		{
 			if (direction == false)
@@ -256,10 +258,12 @@ void Player::Update(GameMainScene* gamemain)
 			if (world.x + width / 2 > FIELD_WIDTH)
 			{
 				world.x = FIELD_WIDTH - 20;
-
+				StopSoundMem(op_run_sound);
 			}
 			else if (world.x - width / 2 < 0) {
 				world.x = width / 2;
+				StopSoundMem(op_run_sound);
+
 			}
 		}
 		else
@@ -267,11 +271,15 @@ void Player::Update(GameMainScene* gamemain)
 			if (world.x + width / 2 > FIELD_WIDTH)
 			{
 				world.x = FIELD_WIDTH - 20;
+				StopSoundMem(op_run_sound);
+
 
 			}
 			else if (world.x - width / 2 < 2100) {
 				// 看板に来たら跳ね返る
 				world.x = 2100 + width / 2;
+				StopSoundMem(op_run_sound);
+
 
 			}
 		}
@@ -334,10 +342,7 @@ void Player::Update(GameMainScene* gamemain)
 			//	StopSoundMem(atk_sound);
 			//}
 
-			if (CheckSoundMem(atk_sound) == FALSE)
-			{
-				PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
-			}
+
 
 			//右向きだったら
 			if (direction == 0)
@@ -801,6 +806,11 @@ void Player::PlayerAttack()
 			case 7:
 				p_atk_imgnum = 1;
 				p_imgnum = 39;
+				if (CheckSoundMem(atk_sound) == FALSE)
+				{
+					PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+				}
+
 				break;
 			case 10:
 				p_atk_imgnum = 2;
@@ -826,6 +836,10 @@ void Player::PlayerAttack()
 			case 7:
 				p_atk_imgnum = 1;
 				p_imgnum = 43;
+				if (CheckSoundMem(atk_sound) == FALSE)
+				{
+					PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+				}
 				break;
 			case 10:
 				p_atk_imgnum = 2;
@@ -909,6 +923,10 @@ void Player::PlayerTutoAttack()
 			case 7:
 				p_atk_imgnum = 1;
 				p_imgnum = 14;
+				if (CheckSoundMem(atk_sound) == FALSE)
+				{
+					PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+				}
 				break;
 			case 10:
 				p_atk_imgnum = 2;
@@ -933,6 +951,10 @@ void Player::PlayerTutoAttack()
 			case 7:
 				p_atk_imgnum = 1;
 				p_imgnum = 18;
+				if (CheckSoundMem(atk_sound) == FALSE)
+				{
+					PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+				}
 				break;
 			case 10:
 				p_atk_imgnum = 2;
@@ -1571,11 +1593,15 @@ void Player::TutorialAnimUpdate()
 	if (world.x + width / 2 > FIELD_WIDTH)
 	{
 		world.x = FIELD_WIDTH - 20;
+		StopSoundMem(op_run_sound);
 
 	}
 	else if (world.x - width / 2 < 0) {
 		world.x = width / 2;
+		StopSoundMem(op_run_sound);
+
 	}
+
 
 }
 

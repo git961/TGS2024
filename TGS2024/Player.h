@@ -75,6 +75,7 @@ private:
    // bool walk;//true:歩いてる false:止まってる
     bool attacking;//true:攻撃中 false:攻撃してない 
 
+
     //ダイナマイト投擲用
 
     int dyna_anmcnt;//ダイナマイト投擲アニメーション切り替え用
