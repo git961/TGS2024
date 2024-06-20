@@ -678,6 +678,8 @@ void Player::ThrowAnim()
 		switch (dyna_anmcnt)
 		{
 		case 1:
+			PlaySoundMem(throw_dynamite_sound, DX_PLAYTYPE_BACK);
+
 			dyna_stock_num -= 1;
 			//dyna_throw_num = 0;
 			p_imgnum = 32;
