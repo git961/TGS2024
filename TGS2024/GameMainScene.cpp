@@ -224,7 +224,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	alpha = 255;
 	black_flg = false;
 
-	p_life_num = 3;
+	p_life_num = 2;
 	gameover_anim_cnt = 0;
 	fadein_snd_flg = true;
 
@@ -330,13 +330,14 @@ void GameMainScene::ResetMap()
 
 				if (mapio->GetMapData(i, j) == 2)
 				{
-					enemy[enemy_count++] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, false);
+					enemy[enemy_count] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, false);
+					enemy[enemy_count++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				}
 
 				if (mapio->GetMapData(i, j) == 8)
 				{
-					enemy[enemy_count++] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, true);
-
+					enemy[enemy_count] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, true);
+					enemy[enemy_count++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				}
 			}
 
@@ -344,7 +345,9 @@ void GameMainScene::ResetMap()
 			{
 				if (mapio->GetMapData(i, j) == 9)
 				{
-					rolling_enemy[rolling_enemy_cnt++] = new RollingEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2);
+					rolling_enemy[rolling_enemy_cnt] = new RollingEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2);
+					rolling_enemy[rolling_enemy_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
 				}
 			}
 		}
@@ -1200,8 +1203,14 @@ void GameMainScene::Update()
 				if (ui != nullptr)
 				{
 					ui->Update((int)player->GetHp(), player->GetDynaNum());
+					if (player->GetHp() <= 0) {
+						ui->Update(0, 0);
+					}
 				}
 			}
+
+
+
 
 			screen_origin_position = {
 				camera_pos.x - SCREEN_WIDTH / 2.0f,
@@ -1791,7 +1800,7 @@ void GameMainScene::Draw() const
 		break;
 		
 	case GOAL:
-		DrawFormatString(400, 100, 0xffffff, "GOAL!!");
+		//DrawFormatString(400, 100, 0xffffff, "GOAL!!");
 		break;
 	case PLAY:
 		//DrawFormatString(400, 100, 0xffffff, "PLAY_NOW");

@@ -27,25 +27,25 @@ private:
     Input input;
     PlayerState player_state;
 
-    int player_img[10];
-    int player_walk_img[10];
-    int player_attack_img[15];
-    int player_throw_img[15];
-    int player_death_img[15];
+    int player_img[80];
+    //int player_walk_img[10];
+    //int player_attack_img[15];
+    //int player_throw_img[15];
+    //int player_death_img[15];
     int pickaxe_img[15];
     int soil_effect[10];
 
-    int player_ase_img[10];
+    //int player_ase_img[10];
 
 
 
     float img_down;//画像の表示位置を下げる用
     int p_imgnum;//プレイヤーの画像番号切り替え用
-    int p_nomal_num;
+    //int p_nomal_num;
 
-    int p_atk_imgnum;//攻撃画像切り替え用
+    int p_atk_imgnum;//つるはし画像切り替え用
 
-    int walk_num;//プレイヤ歩行画像切り替え用
+    //int walk_num;//プレイヤ歩行画像切り替え用
     int walk_abs;//プレイヤ歩行画像切りかえ計算用
     float old_worldx;
 
@@ -75,10 +75,11 @@ private:
    // bool walk;//true:歩いてる false:止まってる
     bool attacking;//true:攻撃中 false:攻撃してない 
 
+
     //ダイナマイト投擲用
 
     int dyna_anmcnt;//ダイナマイト投擲アニメーション切り替え用
-    int dyna_throw_num;
+    //int dyna_throw_num;
     bool dyna_anm_start;
     bool atk_dynamite;//true:発射する false:発射してない 
     
@@ -96,11 +97,11 @@ private:
 
    //死亡アニメーション
     int death_anim_cnt;
-    int death_num;
+   // int death_num;
     bool death_flg;//死んだよフラグ
 
 
-    int op_num;
+    //int op_num;
     int op_cnt;
 
     bool tuto_anim_flg;
@@ -151,8 +152,13 @@ public:
 
     //プレイヤー移動用
     void PlayerMove();
+    void WalkAnim();
+    void DeathAnim();
+    void ThrowAnim();
 
     void PlayerAttack();
+    void PlayerTutoAttack();
+    void TutoWalkAnim();
 
     bool GetAttacking() { return is_atk_putout; }
     

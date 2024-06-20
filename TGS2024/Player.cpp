@@ -5,21 +5,22 @@
 Player::Player(float set_x)
 {
 	//画像読込
-	player_img[0] = LoadGraph("images/Player/player.png");
-	player_img[1] = LoadGraph("images/Player/damage.png");
-	player_img[2] = LoadGraph("images/Player/bagopen.png");
-	player_img[3] = LoadGraph("images/Player/bagopen2.png");
-	player_img[4] = LoadGraph("images/Player/plookup.png");
-	player_img[5] = LoadGraph("images/Player/wakeup.png");
-	player_img[6] = LoadGraph("images/Player/player_tutoend1.png");
-	player_img[7] = LoadGraph("images/Player/player_tutoend2.png");
-	helmet_img= LoadGraph("images/Player/p_helmet.png");
-	LoadDivGraph("images/Player/player_walk.png", 4, 4, 1, 170, 170, player_walk_img);
-	LoadDivGraph("images/Player/player_ase.png", 4, 4, 1, 170, 170, player_ase_img);
-	LoadDivGraph("images/Player/p_death.png", 4, 4, 1, 170, 170, player_death_img);
-	LoadDivGraph("images/Player/p_attack.png", 4, 4, 1, 170, 170, player_attack_img);
-	LoadDivGraph("images/Player/throw.png", 3, 3, 1, 170, 170, player_throw_img);
-	LoadDivGraph("images/Player/pickaxe.png", 4, 4, 1, 170, 170, pickaxe_img);
+	//player_img[0] = LoadGraph("images/Player/player.png");
+	//player_img[1] = LoadGraph("images/Player/damage.png");
+	//player_img[2] = LoadGraph("images/Player/bagopen.png");
+	//player_img[3] = LoadGraph("images/Player/bagopen2.png");
+	//player_img[4] = LoadGraph("images/Player/plookup.png");
+	//player_img[5] = LoadGraph("images/Player/wakeup.png");
+	//player_img[6] = LoadGraph("images/Player/player_tutoend1.png");
+	//player_img[7] = LoadGraph("images/Player/player_tutoend2.png");
+	//helmet_img= LoadGraph("images/Player/p_helmet.png");
+	//LoadDivGraph("images/Player/player_walk.png", 4, 4, 1, 170, 170, player_walk_img);
+	//LoadDivGraph("images/Player/player_ase.png", 4, 4, 1, 170, 170, player_ase_img);
+	//LoadDivGraph("images/Player/p_death.png", 4, 4, 1, 170, 170, player_death_img);
+	//LoadDivGraph("images/Player/p_attack.png", 4, 4, 1, 170, 170, player_attack_img);
+	//LoadDivGraph("images/Player/throw.png", 3, 3, 1, 170, 170, player_throw_img);
+	LoadDivGraph("images/Player/player_img.png",68, 4, 17, 170, 170, player_img);
+	LoadDivGraph("images/Player/pickaxe.png", 8, 4, 2, 170, 170, pickaxe_img);
 	LoadDivGraph("images/Player/soil_effect.png", 2, 2, 1, 170, 170, soil_effect);
 
 
@@ -35,9 +36,9 @@ Player::Player(float set_x)
 
 	reset_timer = 0;
 	p_imgnum = 0;
-	p_atk_imgnum = 0;
+	//p_atk_imgnum = 0;
 	effect_num = 0;
-	walk_num = 0;
+	//walk_num = 0;
 
 	anim_cnt = 0;
 
@@ -51,7 +52,7 @@ Player::Player(float set_x)
 
 	//体力
 	hp = 50;
-	//hp = 10;
+	//hp = 0;
 
 	//幅と座標
 	width = 50;
@@ -77,7 +78,7 @@ Player::Player(float set_x)
 
 	//ダイナマイトに使用
 	atk_dynamite = false;
-	dyna_throw_num = 0;
+	//dyna_throw_num = 0;
 	dyna_anmcnt = 0;
 
 	dyna_stock_num = 5;
@@ -96,10 +97,10 @@ Player::Player(float set_x)
 	flash_cnt = 0;
 
 	death_anim_cnt = 0;
-	death_num = 0;
+	//death_num = 0;
 	death_flg = false;
 
-	op_num = 2;
+	//op_num = 2;
 	op_cnt = 0;
 	tuto_anim_flg=false;
 	tuto_atk_flg = false;
@@ -108,7 +109,9 @@ Player::Player(float set_x)
 	tuto_ui_num = 0;
 	rock_break_flg = false;
 	rock_cnt = 0;
-	p_nomal_num = 0;
+
+	p_atk_imgnum = 0;
+	//p_nomal_num = 0;
 
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(200, atk_sound);
@@ -148,6 +151,7 @@ Player::Player(float set_x)
 	ribbon_x = 0;
 	ribbon_y = 0;
 	set_ribbon_pos_flg = false;
+
 }
 
 Player::~Player()
@@ -172,66 +176,35 @@ void Player::Update(GameMainScene* gamemain)
 	{
 	case DEATH:
 
-		death_anim_cnt++;
-		switch (death_anim_cnt)
-		{
-		case 1:
-			death_num = 0;
-			break;
-		case 5:
-			death_num = 1;
-			break;
-		case 15:
-			if (CheckSoundMem(death_sound) == FALSE)
-			{
-				PlaySoundMem(death_sound, DX_PLAYTYPE_BACK);
-			}
-			death_num = 2;
-			break;
-		case 20:
-			death_num = 3;
-			break;
-		case 25:
-			death_flg = true;
-			death_anim_cnt = 0;
-			break;
-		default:
-			break;
-		}
+		DeathAnim();
+
 		break;
 	case DYNAMITE:
 
-		switch (dyna_anmcnt)
-		{
-		case 1:
-			PlaySoundMem(throw_dynamite_sound, DX_PLAYTYPE_BACK);
-			dyna_stock_num-=1;
-			dyna_throw_num = 0;
-			break;
-		case 5:
-			dyna_throw_num = 1;
-			break;
-		case 10:
-			dyna_throw_num = 2;
-			atk_dynamite = true;
-			break;
-		case 15:
-			dyna_anmcnt = 0;
-			dyna_throw_num = 0;
-			player_state = NOMAL;
-			break;
-		default:
-			break;
-		}
-		dyna_anmcnt++;
+		ThrowAnim();
 
 		break;
 	case HITDAMAGE:
+		if (direction == false)
+		{
+			p_imgnum = 30;
+		}
+		else {
+			p_imgnum = 31;
+		}
+
+
+
 		if (CheckSoundMem(damage_sound) == FALSE)
 		{
 			PlaySoundMem(damage_sound, DX_PLAYTYPE_BACK);
 		}
 
+		attacking = false;
+		attack_cnt = 0;
+		anim_cnt = 0;
+		attacking = false;
+		wait_flg = true;
 
 		if ((unsigned)move_x > 0) {
 			move_x *= 0.9f;
@@ -249,6 +222,19 @@ void Player::Update(GameMainScene* gamemain)
 	case ATTACK:
 	case WALK:
 	case NOMAL:
+
+
+		if (player_state == NOMAL)
+		{
+			if (direction == false)
+			{
+				p_imgnum = 27;
+			}
+			else {
+				p_imgnum = 28;
+			}
+		}
+
 		PlayerAttack();
 
 		SetVertex();
@@ -263,22 +249,7 @@ void Player::Update(GameMainScene* gamemain)
 			move_x = 0;
 		}
 
-		if (player_state == WALK)
-		{
-			if (abs((int)world.x - (int)old_worldx) > 160)
-			{
-				old_worldx = world.x;
-			}
-
-			walk_abs = abs((int)world.x - (int)old_worldx);
-			// 歩行
-			// 5カウントごとに変わる
-			if (walk_abs != 0)
-			{
-				walk_num = walk_abs / 40;
-			}
-		}
-
+		WalkAnim();
 
 
 		if (gamemain->GetPlayerNotBack() ==false)
@@ -287,10 +258,12 @@ void Player::Update(GameMainScene* gamemain)
 			if (world.x + width / 2 > FIELD_WIDTH)
 			{
 				world.x = FIELD_WIDTH - 20;
-
+				StopSoundMem(op_run_sound);
 			}
 			else if (world.x - width / 2 < 0) {
 				world.x = width / 2;
+				StopSoundMem(op_run_sound);
+
 			}
 		}
 		else
@@ -298,11 +271,15 @@ void Player::Update(GameMainScene* gamemain)
 			if (world.x + width / 2 > FIELD_WIDTH)
 			{
 				world.x = FIELD_WIDTH - 20;
+				StopSoundMem(op_run_sound);
+
 
 			}
 			else if (world.x - width / 2 < 2100) {
 				// 看板に来たら跳ね返る
 				world.x = 2100 + width / 2;
+				StopSoundMem(op_run_sound);
+
 
 			}
 		}
@@ -312,6 +289,10 @@ void Player::Update(GameMainScene* gamemain)
 		//敵からダメージを食らったら
 		if (hit_damage == true)
 		{
+			if (CheckSoundMem(atk_sound) == TRUE)
+			{
+				StopSoundMem(atk_sound);
+			}
 			player_state = HITDAMAGE;
 
 			//ノックバック処理
@@ -361,10 +342,7 @@ void Player::Update(GameMainScene* gamemain)
 			//	StopSoundMem(atk_sound);
 			//}
 
-			if (CheckSoundMem(atk_sound) == FALSE)
-			{
-				PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
-			}
+
 
 			//右向きだったら
 			if (direction == 0)
@@ -417,7 +395,7 @@ void Player::Draw() const
 
 	//DrawBoxAA(location.x - width/2, location.y - height/2, location.x + width / 2, location.y + height / 2, 0xffffff,true);
 	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
-	DrawFormatString(location.x, location.y - 80, 0xffffff, "drawnam%d",walk_num);
+	//DrawFormatString(location.x, location.y - 80, 0xffffff, "draw%d",p_imgnum);
 
 
 	//プレイヤー画像表示
@@ -435,7 +413,9 @@ void Player::Draw() const
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	}
-		switch (player_state)
+		
+	/*
+	switch (player_state)
 		{
 
 		case NOMAL:
@@ -493,18 +473,26 @@ void Player::Draw() const
 		default:
 			break;
 		}
-	
-		//if (tuto_atk_flg == true)
-		//{
-		//	DrawFormatString(location.x, location.y-20, 0xffffff, "PUSH:B!!!");
+	*/
 
-		//}
-		if (helmet_flg==true)
+
+	DrawRotaGraph((int)location.x, (int)location.y - (int)img_down, 1, 0, player_img[p_imgnum], TRUE, false);
+	if (player_state==ATTACK)
+	{
+		DrawRotaGraph((int)location.x, (int)location.y - (int)img_down, 1, 0, pickaxe_img[p_atk_imgnum], TRUE, direction);
+		if (p_atk_imgnum > 2)
 		{
-			DrawRotaGraph((int)location.x, (int)location.y +helmet_down, 1, 0,helmet_img, TRUE, direction);
+			//DrawRotaGraph(location.x, location.y - img_down, 1, 0, effect_img[effect_num], TRUE, direction);
+			DrawRotaGraph((int)location.x, (int)location.y - (int)img_down, 1, 0, soil_effect[effect_num], TRUE, direction);
 		}
+	}
 
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+/*	if (helmet_flg == true)
+	{
+		DrawRotaGraph((int)location.x, (int)location.y +helmet_down, 1, 0,helmet_img, TRUE, direction);
+	}
+	*/
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 #ifdef DEBUG
 
@@ -599,13 +587,161 @@ void Player::PlayerMove()
 
 }
 
+void Player::WalkAnim()
+{
+	if (player_state == WALK)
+	{
+		if (abs((int)world.x - (int)old_worldx) > 119)
+		{
+			old_worldx = world.x;
+		}
+
+		walk_abs = abs((int)world.x - (int)old_worldx);
+		// 歩行
+		// 5カウントごとに変わる
+		if (walk_abs != 0)
+		{
+			if (direction == false)
+			{
+				p_imgnum = 54 + walk_abs / 40;
+			}
+			else {
+				p_imgnum = 57 + walk_abs / 40;
+			}
+		}
+	}
+
+}
+
+void Player::DeathAnim()
+{
+	death_anim_cnt++;
+	if (direction == false)
+	{
+		switch (death_anim_cnt)
+		{
+		case 1:
+			p_imgnum = 46;
+			break;
+		case 5:
+			p_imgnum = 47;
+			break;
+		case 15:
+			if (CheckSoundMem(death_sound) == FALSE)
+			{
+				PlaySoundMem(death_sound, DX_PLAYTYPE_BACK);
+			}
+			p_imgnum = 48;
+			break;
+		case 20:
+			p_imgnum = 49;
+			break;
+		case 25:
+			death_flg = true;
+			death_anim_cnt = 0;
+			break;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		switch (death_anim_cnt)
+		{
+		case 1:
+			p_imgnum = 50;
+			break;
+		case 5:
+			p_imgnum = 51;
+			break;
+		case 15:
+			if (CheckSoundMem(death_sound) == FALSE)
+			{
+				PlaySoundMem(death_sound, DX_PLAYTYPE_BACK);
+			}
+			p_imgnum = 52;
+			break;
+		case 20:
+			p_imgnum = 53;
+			break;
+		case 25:
+			death_flg = true;
+			death_anim_cnt = 0;
+			break;
+		default:
+			break;
+		}
+
+	}
+}
+
+void Player::ThrowAnim()
+{
+	//ダイナマイト投擲
+	if (direction == false)
+	{
+		switch (dyna_anmcnt)
+		{
+		case 1:
+			PlaySoundMem(throw_dynamite_sound, DX_PLAYTYPE_BACK);
+
+			dyna_stock_num -= 1;
+			//dyna_throw_num = 0;
+			p_imgnum = 32;
+			break;
+		case 5:
+			//dyna_throw_num = 1;
+			p_imgnum = 33;
+			break;
+		case 10:
+			//dyna_throw_num = 2;
+			p_imgnum = 34;
+			atk_dynamite = true;
+			break;
+		case 15:
+			dyna_anmcnt = 0;
+			player_state = NOMAL;
+			break;
+		default:
+			break;
+		}
+	}
+	else {
+		switch (dyna_anmcnt)
+		{
+		case 1:
+			PlaySoundMem(throw_dynamite_sound, DX_PLAYTYPE_BACK);
+			dyna_stock_num -= 1;
+			//dyna_throw_num = 0;
+			p_imgnum = 35;
+			break;
+		case 5:
+			//dyna_throw_num = 1;
+			p_imgnum = 36;
+			break;
+		case 10:
+			//dyna_throw_num = 2;
+			p_imgnum = 37;
+			atk_dynamite = true;
+			break;
+		case 15:
+			dyna_anmcnt = 0;
+			player_state = NOMAL;
+			break;
+		default:
+			break;
+		}
+
+	}
+	dyna_anmcnt++;
+}
+
 void Player::PlayerAttack()
 {
 
-
-
 	if (attacking == true)
 	{
+		/*
 		if (attack_cnt == 1)
 		{
 			p_atk_imgnum = 4;
@@ -631,57 +767,97 @@ void Player::PlayerAttack()
 
 		}
 		else if (attack_cnt == 2)
-		{
-			p_atk_imgnum = 8;
+		{*/
+			//p_atk_imgnum = 8;
 			//初段
-			switch (anim_cnt)
-			{
-			case 0:
-				p_imgnum = 0;
-				break;
-			case 12:
-				p_imgnum = 1;
-				break;
-			case 15:
-				is_atk_putout = true;
-				effect_num = 0;
-				p_imgnum = 2;
-				break;
-			case 18:
-				effect_num = 1;
-				p_imgnum = 3;
-				break;
-			}
+		//	switch (anim_cnt)
+		//	{
+		//	case 0:
+		//		p_imgnum = 0;
+		//		break;
+		//	case 12:
+		//		p_imgnum = 1;
+		//		break;
+		//	case 15:
+		//		is_atk_putout = true;
+		//		effect_num = 0;
+		//		p_imgnum = 2;
+		//		break;
+		//	case 18:
+		//		effect_num = 1;
+		//		p_imgnum = 3;
+		//		break;
+		//	}
 
-		}
-		else {
-			p_atk_imgnum = 0;
+		//}
+		//else {
+
+
+			//p_atk_imgnum = 0;
 			//初段
+		if (direction == false)
+		{
 			switch (anim_cnt)
 			{
 			case 0:
-				p_imgnum = 0;
+				p_atk_imgnum = 0;
+				p_imgnum = 38;
 				break;
 			case 7:
-				p_imgnum = 1;
+				p_atk_imgnum = 1;
+				p_imgnum = 39;
+				if (CheckSoundMem(atk_sound) == FALSE)
+				{
+					PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+				}
+
 				break;
 			case 10:
+				p_atk_imgnum = 2;
 				is_atk_putout = true;
 				effect_num = 0;
-				p_imgnum = 2;
+				p_imgnum = 40;
 				break;
 			case 13:
+				p_atk_imgnum = 3;
 				effect_num = 1;
-				p_imgnum = 3;
+				p_imgnum = 41;
+				break;
+			}
+		}
+		else
+		{
+			switch (anim_cnt)
+			{
+			case 0:
+				p_atk_imgnum = 0;
+				p_imgnum = 42;
+				break;
+			case 7:
+				p_atk_imgnum = 1;
+				p_imgnum = 43;
+				if (CheckSoundMem(atk_sound) == FALSE)
+				{
+					PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+				}
+				break;
+			case 10:
+				p_atk_imgnum = 2;
+				is_atk_putout = true;
+				effect_num = 0;
+				p_imgnum = 44;
+				break;
+			case 13:
+				p_atk_imgnum = 3;
+				effect_num = 1;
+				p_imgnum = 45;
 				break;
 			}
 
 		}
+		
 
 
-	}
-	else {
-		p_imgnum = 0;
 	}
 
 	//何秒か経ったら攻撃中フラグを戻す？
@@ -713,6 +889,7 @@ void Player::PlayerAttack()
 
 			if (next_attackflg == false || attack_cnt >= 2)
 			{
+				p_atk_imgnum = 0;
 				attack_cnt = 0;
 				anim_cnt = 0;
 				atk_cnt_timer = 0;
@@ -723,20 +900,133 @@ void Player::PlayerAttack()
 				player_state = NOMAL;
 
 			}
-			else
+		}
+	}
+	
+
+}
+
+void Player::PlayerTutoAttack()
+{
+
+	if (attacking == true)
+	{
+		if (direction == false)
+		{
+			//初段
+			switch (anim_cnt)
 			{
-				//次の攻撃をする準備
+			case 0:
+				p_atk_imgnum = 0;
+				p_imgnum = 13;
+				break;
+			case 7:
+				p_atk_imgnum = 1;
+				p_imgnum = 14;
+				if (CheckSoundMem(atk_sound) == FALSE)
+				{
+					PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+				}
+				break;
+			case 10:
+				p_atk_imgnum = 2;
+				is_atk_putout = true;
+				effect_num = 0;
+				p_imgnum = 15;
+				break;
+			case 13:
+				p_atk_imgnum = 3;
+				effect_num = 1;
+				p_imgnum = 16;
+				break;
+			}
+		}
+		else {
+			switch (anim_cnt)
+			{
+			case 0:
+				p_atk_imgnum = 0;
+				p_imgnum = 17;
+				break;
+			case 7:
+				p_atk_imgnum = 1;
+				p_imgnum = 18;
+				if (CheckSoundMem(atk_sound) == FALSE)
+				{
+					PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+				}
+				break;
+			case 10:
+				p_atk_imgnum = 2;
+				is_atk_putout = true;
+				effect_num = 0;
+				p_imgnum = 19;
+				break;
+			case 13:
+				p_atk_imgnum = 3;
+				effect_num = 1;
+				p_imgnum = 20;
+				break;
+			}
+		}
+
+
+
+	}
+
+
+
+	//何秒か経ったら攻撃中フラグを戻す？
+	if (attacking == true)
+	{
+		anim_cnt++;
+
+		//20フレーム回ったら
+		if (atk_cnt_timer++ > 20)
+		{
+			if (CheckSoundMem(atk_sound) == TRUE)
+			{
+				StopSoundMem(atk_sound);
+			}
+
+				attack_cnt = 0;
 				anim_cnt = 0;
 				atk_cnt_timer = 0;
-				attack_cnt++;
 				is_atk_putout = false;
 				attacking = false;
-				next_attackflg = false;
+				wait_flg = true;
+				player_state = NOMAL;
+		}
+	}
+
+
+
+}
+
+void Player::TutoWalkAnim()
+{
+
+	if (player_state == WALK)
+	{
+		if (abs((int)world.x - (int)old_worldx) > 59)
+		{
+			old_worldx = world.x;
+		}
+
+		walk_abs = abs((int)world.x - (int)old_worldx);
+		// 歩行
+		if (walk_abs != 0)
+		{
+			if (direction == false)
+			{
+				p_imgnum = 4 + walk_abs / 20;
+			}
+			else {
+				p_imgnum = 7 + walk_abs / 20;
 
 			}
 		}
 	}
-
 
 }
 
@@ -780,7 +1070,7 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 			location.x += 4;
 			world.x += 4;
 
-			if (abs((int)world.x - (int)old_worldx) > 61)
+			if (abs((int)world.x - (int)old_worldx) > 59)
 			{
 				old_worldx = world.x;
 			}
@@ -790,14 +1080,15 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 			// 5カウントごとに変わる
 			if (walk_abs != 0)
 			{
-				walk_num = walk_abs / 20;
+				p_imgnum = 4+walk_abs / 20;
 			}
 
 		}
 		else {
 			if (op_cnt++ >60)
 			{
-				player_state = PANIM;
+				//player_state = PANIM;
+				p_imgnum = 63;
 				if (op_cnt++ > 140)
 				{
 					anim_scene->SetAnimScene(3);
@@ -806,40 +1097,43 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 			}
 			else
 			{
-				player_state = NOMAL;
+				//player_state = NOMAL;
+				p_imgnum = 0;
 			}
 		}
 		
 		
 	break;
 	case 4:
-		op_num = 3;
+		p_imgnum = 64;
 		break;
 	case 5:
-		world.x = 600;
-		location.x = 600;
+		world.x = 620;
+		location.x = 620;
 		player_state =PANIM;
-		op_num = 4;
 		op_cnt++;
 		switch (op_cnt)
 		{
+		case 1:
+			p_imgnum = 0;
+			break;
 		case 30:
-			direction = 1;
+			p_imgnum = 1;
 			break;
 		case 60:
-			direction = 0;
+			p_imgnum = 0;
 			break;
 		case 90:
 			anim_scene->SetShakeFlg(false);
 			break;
 		case 120:
-			direction = 1;
+			p_imgnum = 2;
 			anim_scene->SetExc(true);
 			break;
 		case 140:
 			anim_scene->SetExc(false);
 			anim_scene->SetRun(true);
-			direction = 0;
+
 			break;
 		case 150:
 			anim_scene->SetAnimScene(6);
@@ -855,7 +1149,7 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 			location.x += 4;
 			world.x += 4;
 
-			if (abs((int)world.x - (int)old_worldx) > 61)
+			if (abs((int)world.x - (int)old_worldx) > 59)
 			{
 				old_worldx = world.x;
 			}
@@ -865,7 +1159,7 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 			// 5カウントごとに変わる
 			if (walk_abs != 0)
 			{
-				walk_num = walk_abs / 20;
+				p_imgnum = 10+walk_abs / 20;
 			}
 			//走る音
 			if (CheckSoundMem(op_run_sound) == FALSE)
@@ -903,7 +1197,7 @@ void Player::TutorialAnimUpdate()
 				location.x += 3;
 				world.x += 3;
 
-				if (abs((int)world.x - (int)old_worldx) > 61)
+				if (abs((int)world.x - (int)old_worldx) > 59)
 				{
 					old_worldx = world.x;
 				}
@@ -913,7 +1207,7 @@ void Player::TutorialAnimUpdate()
 				// 5カウントごとに変わる
 				if (walk_abs != 0)
 				{
-					walk_num = walk_abs / 20;
+					p_imgnum = 10+walk_abs / 20;
 				}
 				//走る音
 				if (CheckSoundMem(op_run_sound) == FALSE)
@@ -932,12 +1226,12 @@ void Player::TutorialAnimUpdate()
 					player_state = DEATH;
 					world.x += -10;
 					location.x += -10;
-					death_num = 0;
+					p_imgnum = 21;
 					break;
 				case 5:
 					world.x += -10;
 					location.x += -10;
-					death_num = 1;
+					p_imgnum = 22;
 					break;
 				case 15:
 					if (CheckSoundMem(death_sound) == FALSE)
@@ -945,10 +1239,10 @@ void Player::TutorialAnimUpdate()
 						PlaySoundMem(death_sound, DX_PLAYTYPE_BACK);
 					}
 
-					death_num = 2;
+					p_imgnum = 23;
 					break;
 				case 20:
-					death_num = 3;
+					p_imgnum = 24;
 					break;
 				case 80:
 					world.x += 1;
@@ -965,10 +1259,12 @@ void Player::TutorialAnimUpdate()
 					break;
 				case 100:
 					player_state = PANIM;
-					op_num = 5;
+					//op_num = 5;
+					p_imgnum = 3;
 					break;
 				case 150:
 					player_state = ATTACK;
+					p_imgnum = 13;
 					tuto_atk_flg = true;
 					tuto_ui_num = 1;
 					death_anim_cnt = 0;
@@ -1024,7 +1320,7 @@ void Player::TutorialAnimUpdate()
 					wait_flg = false;
 				}
 
-				PlayerAttack();
+				PlayerTutoAttack();
 
 			}
 	
@@ -1069,7 +1365,7 @@ void Player::TutorialAnimUpdate()
 			player_state = ATTACK;
 			wait_flg = false;
 		}
-		PlayerAttack();
+		PlayerTutoAttack();
 
 
 		if (player_state != ATTACK)
@@ -1082,21 +1378,7 @@ void Player::TutorialAnimUpdate()
 			move_x = 0;
 		}
 
-		if (player_state == WALK)
-		{
-			if (abs((int)world.x - (int)old_worldx) > 61)
-			{
-				old_worldx = world.x;
-			}
-
-			walk_abs = abs((int)world.x - (int)old_worldx);
-			// 歩行
-			// 5カウントごとに変わる
-			if (walk_abs != 0)
-			{
-				walk_num = walk_abs / 20;
-			}
-		}
+		TutoWalkAnim();
 
 	break;
 	case 2:
@@ -1104,7 +1386,8 @@ void Player::TutorialAnimUpdate()
 		if (walk_stop_flg == true)
 		{
 			player_state = PANIM;
-			op_num = 2;
+			p_imgnum = 63;
+			//op_num = 2;
 			if (tuto_cnt++ > 60)
 			{
 				tuto_cnt = 0;
@@ -1116,23 +1399,8 @@ void Player::TutorialAnimUpdate()
 		else{
 			location.x += 1;
 			world.x += 1;
-
-			if (player_state == WALK)
-			{
-				if (abs((int)world.x - (int)old_worldx) > 61)
-				{
-					old_worldx = world.x;
-				}
-
-				walk_abs = abs((int)world.x - (int)old_worldx);
-				// 歩行
-				// 5カウントごとに変わる
-				if (walk_abs != 0)
-				{
-					walk_num = walk_abs / 20;
-				}
-			}
-
+			player_state = WALK;
+			TutoWalkAnim();
 		}
 
 		break;
@@ -1160,13 +1428,13 @@ void Player::TutorialAnimUpdate()
 				{
 				case 1:
 					dyna_stock_num -= 1;
-					dyna_throw_num = 0;
+					p_imgnum = 60;
 					break;
 				case 5:
-					dyna_throw_num = 1;
+					p_imgnum = 61;
 					break;
 				case 10:
-					dyna_throw_num = 2;
+					p_imgnum = 62;
 					atk_dynamite = true;
 					break;
 				case 150:
@@ -1175,7 +1443,7 @@ void Player::TutorialAnimUpdate()
 					break;
 				case 200:
 					dyna_anmcnt = 0;
-					dyna_throw_num = 0;
+					p_imgnum = 0;
 					player_state = NOMAL;
 					tuto_num = 4;
 					break;
@@ -1216,7 +1484,7 @@ void Player::TutorialAnimUpdate()
 			player_state = ATTACK;
 			wait_flg = false;
 		}
-		PlayerAttack();
+		PlayerTutoAttack();
 
 
 		if (player_state != ATTACK)
@@ -1229,22 +1497,7 @@ void Player::TutorialAnimUpdate()
 			move_x = 0;
 		}
 
-		if (player_state == WALK)
-		{
-			if (abs((int)world.x - (int)old_worldx) > 61)
-			{
-				old_worldx = world.x;
-			}
-
-			walk_abs = abs((int)world.x - (int)old_worldx);
-			// 歩行
-			// 5カウントごとに変わる
-			if (walk_abs != 0)
-			{
-				walk_num = walk_abs / 20;
-			}
-		}
-
+		TutoWalkAnim();
 
 		if (world.x > 1950)
 		{
@@ -1260,21 +1513,25 @@ void Player::TutorialAnimUpdate()
 		{
 			//helmet_flg = true;
 			player_state = PANIM;
-			op_num = 4;
+			p_imgnum = 65;
 			tuto_cnt++;
 			if (tuto_cnt > 60)
 			{
 				tuto_num = 6;
-				player_state = NOMAL;
+				p_imgnum = 25;
+
+				player_state = PANIM;
+				tuto_cnt = 0;
 			}
 		}
 		else {
 			location.x += 4;
 			world.x += 4;
 
+			/*
 			if (player_state == WALK)
 			{
-				if (abs((int)world.x - (int)old_worldx) > 61)
+				if (abs((int)world.x - (int)old_worldx) > 59)
 				{
 					old_worldx = world.x;
 				}
@@ -1284,10 +1541,18 @@ void Player::TutorialAnimUpdate()
 				// 5カウントごとに変わる
 				if (walk_abs != 0)
 				{
-					walk_num = walk_abs / 20;
+					if (direction == false)
+					{
+						p_imgnum = 4 + walk_abs / 20;
+					}
+					else {
+						p_imgnum = 7 + walk_abs / 20;
+
+					}
 				}
 			}
-
+			*/
+			TutoWalkAnim();
 		}
 
 		break;
@@ -1295,29 +1560,48 @@ void Player::TutorialAnimUpdate()
 		//チュートリアル終anim
 		if (tuto_cnt++>60)
 		{
-			p_nomal_num = 7;
+			p_imgnum = 27;
+
 		}else if(tuto_cnt>30) {
-			p_nomal_num = 6;
+			p_imgnum = 26;
+
 		}
+
+
 
 		if (tuto_cnt > 100)
 		{
+
 			move_x = 0;
 			start_flg = true;
+			player_state = NOMAL;
 		}
 		break;
 	}
 
-
+	if (player_state==NOMAL)
+	{
+		if (direction == false)
+		{
+			p_imgnum = 0;
+		}
+		else {
+			p_imgnum = 1;
+		}
+	}
 	// 端に来たら跳ね返る
 	if (world.x + width / 2 > FIELD_WIDTH)
 	{
 		world.x = FIELD_WIDTH - 20;
+		StopSoundMem(op_run_sound);
 
 	}
 	else if (world.x - width / 2 < 0) {
 		world.x = width / 2;
+		StopSoundMem(op_run_sound);
+
 	}
+
 
 }
 
@@ -1328,15 +1612,14 @@ void Player::RespawnAnimUpdate()
 	{
 	case 1:
 		player_state = DEATH;
-		death_num = 3;
+		p_imgnum= 49;
 		break;
 	case 40:
 		player_state = PANIM;
-		op_num = 5;
+		p_imgnum = 29;
 		break;
 	case 80:
-		death_num = 0;
-		p_nomal_num = 7;
+		p_imgnum = 27;
 		player_state = NOMAL;
 		death_anim_cnt = 0;
 		start_flg = true;

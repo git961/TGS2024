@@ -10,6 +10,7 @@ class UI
 private:
 	
 	int heart_img[6];//Hp画像
+	int heart_break_img[3];
 	int p_img;
 	int dyna_img;//ダイナマイト残弾
 	int btnB_img[2];
@@ -24,7 +25,12 @@ private:
 
 	float x, y;
 
-	int player_hp;
+	int hp_x, hp_y;
+
+	bool break_flg;
+	int old_hp;
+	int break_num;
+	int break_cnt;
 	int heart_num;//表示するhpの数
 	int heart_anim_num;//HP画像切り替え用
 	int anim_cnt;
@@ -42,4 +48,5 @@ public:
 	void UpdateTutorial(Player* player);
 	void DrawTutorial(Player* player) const;
 	void HeartAnim();
+	void BreakHpAnim();
 };

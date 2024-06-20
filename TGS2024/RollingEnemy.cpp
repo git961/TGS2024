@@ -4,10 +4,11 @@ RollingEnemy::RollingEnemy(float set_x)
 {
 	// 中心座標
 	//location.x = 200;
-	//location.y = 600;
+	//	location.y = 608.0f;
 
 	world.x = set_x;
 	world.y = 608.0f;
+
 
 	width = 60.0f;
 	height = 60.0f;

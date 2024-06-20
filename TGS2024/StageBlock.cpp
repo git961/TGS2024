@@ -25,7 +25,7 @@ StageBlock::StageBlock(int set_block_num,float set_x, float set_y)
 		block_img = LoadGraph("images/Stage/block.png");
 		break;
 	case 3:
-		block_img = LoadGraph("images/Stage/Goal.png");
+		//block_img = LoadGraph("images/Stage/Goal.png");
 		break;
 	case 4:
 		block_img = LoadGraph("images/Stage/rock.png");
@@ -33,7 +33,7 @@ StageBlock::StageBlock(int set_block_num,float set_x, float set_y)
 		shake_cnt = 0;
 		shakex = 0;
 		shake_flg = false;
-		LoadDivGraph("images/Enemy/fragment.png", 4, 4, 1, 64, 64, fragment_img);
+		LoadDivGraph("images/Stage/fragment.png", 4, 4, 1, 64, 64, fragment_img);
 
 		for (int i = 0; i < 4; i++)
 		{
@@ -146,10 +146,10 @@ void StageBlock::Update()
 			case 3:
 				shakex = 5;
 				break;
-			case 5:
+			case 10:
 				shake_cnt = 0;
-				shake_flg = false;
 
+				shake_flg = false;
 				break;
 			default:
 				shakex = 0;
@@ -208,7 +208,7 @@ void StageBlock::Draw() const
 	{
 		DrawRotaGraph((int)location.x, (int)hely + 10, 1, angle, block_img, TRUE, 0);
 	}
-	else if (block_num != 6&& block_num != 10 && block_num != 11&&block_num!=4)
+	else if (block_num != 6&& block_num != 10 && block_num != 11&&block_num!=4&&block_num!=3)
 	{
 		DrawRotaGraph((int)location.x, (int)location.y, 1, 0, block_img, TRUE, 0);
 	}
@@ -216,10 +216,13 @@ void StageBlock::Draw() const
 	if (block_num == 4)
 	{
 		DrawRotaGraph((int)location.x, (int)location.y, 1, 0, block_img, TRUE, 0);
-		for (int i = 0; i < 4; i++)
+		if (shake_flg == true)
 		{
-			// 破片描画
-			DrawRotaGraph((int)fragment[i].x, (int)fragment[i].y, 1.0, 0.0, fragment_img[i], TRUE, direction);
+			for (int i = 0; i < 4; i++)
+			{
+				// 破片描画
+				DrawRotaGraph((int)fragment[i].x, (int)fragment[i].y, 1.0, 0.0, fragment_img[i], TRUE, direction);
+			}
 		}
 	}
 
