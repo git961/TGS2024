@@ -3,6 +3,7 @@
 UI::UI(int set_hp, int set_dyna_num)
 {
 	LoadDivGraph("images/UI/heart.png", 6, 6, 1, 128, 128, heart_img);
+	LoadDivGraph("images/UI/hpdeath.png", 2, 2, 1, 128, 128, heart_break_img);
 	p_img = LoadGraph("images/UI/player.png");
 	dyna_img= LoadGraph("images/UI/dynamite.png");
 	LoadDivGraph("images/UI/UIB.png", 2, 2, 1, 128, 128, btnB_img);
@@ -14,7 +15,7 @@ UI::UI(int set_hp, int set_dyna_num)
 	//tuto_backimg[3] = LoadGraph("images/Animscene/kanbananim3.png");
 	//tuto_backimg[4] = LoadGraph("images/Animscene/kanbananim4.png");
 	//btnY_img= LoadGraph("images/UI/buttonY.png");
-	player_hp = set_hp;
+	old_hp = set_hp;
 	heart_num = set_hp / 10;
 	dyna_num=set_dyna_num;
 	x = 100;
@@ -31,6 +32,12 @@ UI::UI(int set_hp, int set_dyna_num)
 
 	heart_anim_num = 0;
 	anim_cnt=0;
+
+	break_flg = false;
+	break_cnt = 0;
+	break_num = 0;
+	hp_x = 0;
+	hp_y = (int)y-3;
 }
 
 UI::~UI()
@@ -39,10 +46,23 @@ UI::~UI()
 
 void UI::Update(int set_hp,int set_dyna_num)
 {
+	if (old_hp - set_hp==10)
+	{
+		break_flg = true;
+		hp_x = (old_hp / 10) + x + 35;
+	}
+	else {
+		old_hp = set_hp;
+	}
 	heart_num = set_hp / 10;
 	dyna_num = set_dyna_num;
 
 	HeartAnim();
+
+	if (break_flg == true)
+	{
+		BreakHpAnim();
+	}
 
 }
 
@@ -50,7 +70,7 @@ void UI::Draw() const
 {
 	//int ax, ay;
 	//GetMousePoint(&ax, &ay);
-	//DrawFormatString(1000, 10, 0xffff00, "%d,%d", ax, ay);
+	DrawFormatString(1000, 10, 0xffff00, "hp%d", old_hp);
 	
 	//if (player->GetTutoAtkFlg() == true)
 	//{
@@ -67,6 +87,12 @@ void UI::Draw() const
 	{
 		DrawRotaGraph((int)x+35*i, (int)y-3, 0.5, 0, heart_img[heart_anim_num], TRUE, 0);
 	}
+
+	if (break_flg == true)
+	{
+		DrawRotaGraph(hp_x, (int)y - 3, 0.5, 0, heart_break_img[break_num], TRUE, 0);
+	}
+
 	for (int i = 0; i < dyna_num; i++)
 	{
 		DrawRotaGraph(32+35 * i, (int)y+64, 1, 0, dyna_img, TRUE, 0);
@@ -252,4 +278,19 @@ void UI::HeartAnim()
 	}
 
 	anim_cnt++;
+}
+
+void UI::BreakHpAnim()
+{
+	break_cnt++;
+	if (break_cnt > 10)
+	{
+		break_num = 1;
+	}
+	else if (break_cnt > 20)
+	{
+		break_cnt = 0;
+		break_num = 0;
+		break_flg = false;
+	}
 }
