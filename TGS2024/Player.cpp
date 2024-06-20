@@ -1349,6 +1349,11 @@ void Player::RespawnAnimUpdate()
 // エンド画面用アニメーション更新処理
 void Player::EndAnimUpdate()
 {
+	if (world.y != 50.0f)
+	{
+		world.y = 50.0f;
+	}
+
 	if (end_anim_cnt < 29)
 	{
 		end_anim_cnt++;
@@ -1360,14 +1365,14 @@ void Player::EndAnimUpdate()
 	}
 
 	// 右に移動
-	world.x += 3.0f;
+	world.x += 6.0f;
 }
 
 // エンド画面用アニメーション描画処理
 void Player::EndAnimDraw() const
 {
 	// プレイヤーが袋を持って走る画像
-	DrawRotaGraph((int)world.x, (int)world.y, 1.0, 0.0, player_end_img[end_img_num], TRUE, direction);
+	DrawRotaGraph((int)world.x, (int)world.y, 10.0, 0.0, player_end_img[end_img_num], TRUE, direction);
 }
 
 // エンドクレジット画面用アニメーション更新処理

@@ -60,7 +60,7 @@ void EndScene::Draw() const
 	//DrawFormatString(300, 10, 0xffffff, "end_cnt: %d", end_cnt);
 
 	// 背景画像
-	DrawRotaGraph(640, 360, 1.0, 0.0, back_img, TRUE, FALSE);
+	//DrawRotaGraph(640, 360, 1.0, 0.0, back_img, TRUE, FALSE);
 
 	// テキスト画像
 	DrawRotaGraph(640, 250, 0.8, 0.0, thank_you_img, TRUE, FALSE);
