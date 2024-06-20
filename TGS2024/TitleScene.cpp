@@ -28,10 +28,15 @@ TitleScene::TitleScene()
 	tmp_sin = 0.0f;
 	speed = 5.0;
 
-	start_text_y = 750.0f;
-	end_text_y = 860.0f;
+	start_text_y = 760.0f;
+	end_text_y = 870.0f;
 	tmp_start_text_y = start_text_y;
 	tmp_end_text_y = end_text_y;
+
+	sparkling_size = 0.0;	
+	sparkling_degree = 0.0;
+	sparkling_radian = 0.0;
+	sparkling_anim_cnt = 0;
 
 	push_b_flg = false;
 	scene_change_cnt = 90;
@@ -60,7 +65,7 @@ TitleScene::TitleScene()
 	text_img[3] = LoadGraph("images/scene/title/push_b_blue01.png");
 	LoadDivGraph("images/scene/title/TitleRockAnim01.png", 3, 1, 3, 850, 320, rock_img);
 	LoadDivGraph("images/scene/title/TitleRocks01.png", 10, 10, 1, 430, 320, rock_fragments_img);
-	//sparkling = LoadGraph("images/scene/title/sparkling.png");
+	sparkling_img = LoadGraph("images/scene/title/sparkling.png");
 
 	pickaxe_img_num = 0;
 
@@ -88,6 +93,7 @@ TitleScene::~TitleScene()
 	// 画像削除
 	DeleteGraph(back_img);
 	DeleteGraph(pickaxe_img);
+	DeleteGraph(sparkling_img);
 	for (int i = 0; i < 4; i++)
 	{
 		DeleteGraph(text_img[i]);
@@ -210,6 +216,8 @@ void TitleScene::Update()
 						count = 0;
 					}
 
+					// きらきらアニメーション
+					SparklingAnimation();
 				}
 				else
 				{
@@ -251,49 +259,11 @@ void TitleScene::Draw() const
 
 #endif // DEBUG
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 170);
-	// タイトル配置目安画像
-	//DrawRotaGraph(640, 330, 1.0, 0.0, rock_break_img[0], TRUE, FALSE);
-
-	// タイトル岩
-	//DrawRotaGraph(640, 170, 1.0, 0.0, rock_img[rock_img_num], TRUE, FALSE);
-
-						// 岩の破片右側、下から順
-	//DrawRotaGraph(1000, 300, 1.0, (double)DEGREE_RADIAN(20.0), rock_fragments_img[0], TRUE, FALSE);
-	//DrawRotaGraph(950, 160, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[1], TRUE, FALSE);
-	//DrawRotaGraph(970, 50, 1.0, (double)DEGREE_RADIAN(40.0), rock_fragments_img[2], TRUE, FALSE);
-
-	//DrawRotaGraph(720, 60, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[3], TRUE, FALSE);
-	//DrawRotaGraph(740, 200, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[4], TRUE, FALSE);
-	//DrawRotaGraph(720, 330, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[5], TRUE, FALSE);
-	//DrawRotaGraph(550, 240, 1.0, (double)DEGREE_RADIAN(50.0), rock_fragments_img[6], TRUE, FALSE);
-
-	// 岩の破片左側、上から順
-	//DrawRotaGraph(450, 60, 1.0, (double)DEGREE_RADIAN(350.0), rock_fragments_img[7], TRUE, FALSE);
-	//DrawRotaGraph(290, 180, 1.0, (double)DEGREE_RADIAN(320.0), rock_fragments_img[8], TRUE, FALSE);
-	//DrawRotaGraph(300, 310, 1.0, (double)DEGREE_RADIAN(340.0), rock_fragments_img[9], TRUE, FALSE);
-
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
 	// 背景画像
 	DrawRotaGraph(640, 360, 1.0, 0.0, back_img, TRUE, FALSE);
 
 	// タイトル
 	DrawRotaGraph(640, 180, 1.0, 0.0, text_img[0], TRUE, FALSE);
-
-						// 岩の破片画像
-				// パズルテスト
-	//DrawRotaGraph(950, 270, 1.0, 0.0, rock_fragments_img[0], TRUE, FALSE);
-	//DrawRotaGraph(930, 120, 1.0, 0.0, rock_fragments_img[1], TRUE, FALSE);
-	//DrawRotaGraph(940, 50, 1.0, 0.0, rock_fragments_img[2], TRUE, FALSE);
-	//DrawRotaGraph(720, 90, 1.0, 0.0, rock_fragments_img[3], TRUE, FALSE);
-	//DrawRotaGraph(780, 200, 1.0, 0.0, rock_fragments_img[4], TRUE, FALSE);
-	//DrawRotaGraph(690, 280, 1.0, 0.0, rock_fragments_img[5], TRUE, FALSE);
-	//DrawRotaGraph(570, 200, 1.0, 0.0, rock_fragments_img[6], TRUE, FALSE);
-	//DrawRotaGraph(470, 70, 1.0, 0.0, rock_fragments_img[7], TRUE, FALSE);
-	//DrawRotaGraph(330, 140, 1.0, 0.0, rock_fragments_img[8], TRUE, FALSE);
-	//DrawRotaGraph(360, 270, 1.0, 0.0, rock_fragments_img[9], TRUE, FALSE);
-
 
 	// start・end
 	DrawRotaGraph(640, (int)start_text_y, 1.0, 0.0, text_img[1], TRUE, FALSE);
@@ -313,24 +283,9 @@ void TitleScene::Draw() const
 		}
 		else
 		{
-			// 岩の破片左側、上から順
-			//DrawRotaGraph(450, 60, 1.0, (double)DEGREE_RADIAN(350.0), rock_fragments_img[7], TRUE, FALSE);
-			//DrawRotaGraph(290, 180, 1.0, (double)DEGREE_RADIAN(320.0), rock_fragments_img[8], TRUE, FALSE);
-			//DrawRotaGraph(300, 310, 1.0, (double)DEGREE_RADIAN(340.0), rock_fragments_img[9], TRUE, FALSE);
-
-			//DrawRotaGraph(1000, 300 + move_y, 1.0, (double)DEGREE_RADIAN(20.0), rock_fragments_img[0], TRUE, FALSE);
-			//DrawRotaGraph(950, 160 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[1], TRUE, FALSE);
-			//DrawRotaGraph(970, 50 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[2], TRUE, FALSE);
-
-			//DrawRotaGraph(720, 60 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[3], TRUE, FALSE);
-			//DrawRotaGraph(740, 200 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[4], TRUE, FALSE);
-			//DrawRotaGraph(720, 330 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[5], TRUE, FALSE);
-			//DrawRotaGraph(550, 240 + move_y, 1.0, (double)DEGREE_RADIAN(0.0), rock_fragments_img[6], TRUE, FALSE);
-
 			if (fragment_anim_cnt < 7)
 			{
 				// 岩の破片画像
-				// パズルテスト
 				DrawRotaGraph(950 + move_x, 270 + move_y, 1.0, 0.0, rock_fragments_img[0], TRUE, FALSE);
 				DrawRotaGraph(930 + move_x, 120 + move_y, 1.0, 0.0, rock_fragments_img[1], TRUE, FALSE);
 				DrawRotaGraph(940 + move_x, 50 + move_y, 1.0, 0.0, rock_fragments_img[2], TRUE, FALSE);
@@ -367,12 +322,26 @@ void TitleScene::Draw() const
 	{
 		// カーソル画像
 		DrawRotaGraph((int)pickaxe_x, (int)pickaxe_y, 1.2, 0.0, cursor_img[pickaxe_img_num], TRUE, FALSE);
+		
+		// キラキラ画像
+		DrawRotaGraph(100, 100, sparkling_size, sparkling_radian, sparkling_img, TRUE, FALSE);
+		DrawRotaGraph(240, 250, sparkling_size, sparkling_radian, sparkling_img, TRUE, FALSE);
+		DrawRotaGraph(400, 520, sparkling_size, sparkling_radian, sparkling_img, TRUE, FALSE);
+		DrawRotaGraph(1100, 500, sparkling_size, sparkling_radian, sparkling_img, TRUE, FALSE);
+		DrawRotaGraph(900, 400, sparkling_size, sparkling_radian, sparkling_img, TRUE, FALSE);
+		DrawRotaGraph(910, 570, sparkling_size, sparkling_radian, sparkling_img, TRUE, FALSE);
+		DrawRotaGraph(1170, 330, sparkling_size, sparkling_radian, sparkling_img, TRUE, FALSE);
 	}
 	else
 	{
 		// つるはし画像
 		DrawRotaGraph((int)pickaxe_x, (int)pickaxe_y, 1.2, radian, pickaxe_img, TRUE, FALSE);
 	}
+
+	int ax, ay;
+	GetMousePoint(&ax, &ay);
+	DrawFormatString(1000, 10, 0xffff00, "%d,%d", ax, ay);
+
 }
 
 AbstractScene* TitleScene::Change()
@@ -648,5 +617,37 @@ void TitleScene::PickaxeFalling()
 			count = 0;
 		}
 	}
+
+}
+
+// きらきらアニメーション
+void TitleScene::SparklingAnimation()
+{
+	sparkling_anim_cnt++;
+
+	// サイズ変更
+	if (sparkling_anim_cnt <= 50)
+	{
+		sparkling_size += 0.01;
+	}
+	else
+	{
+		sparkling_size -= 0.01;
+		if (sparkling_size <= 0.0)
+		{
+			sparkling_anim_cnt = 0;
+		}
+	}
+
+	// 回転
+	if (sparkling_degree < 360.0)
+	{
+		sparkling_degree += 6.0;
+	}
+	else
+	{
+		sparkling_degree = 0.0;
+	}
+	sparkling_radian = (double)DEGREE_RADIAN(sparkling_degree);
 
 }
