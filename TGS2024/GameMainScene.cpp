@@ -330,13 +330,14 @@ void GameMainScene::ResetMap()
 
 				if (mapio->GetMapData(i, j) == 2)
 				{
-					enemy[enemy_count++] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, false);
+					enemy[enemy_count] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, false);
+					enemy[enemy_count++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				}
 
 				if (mapio->GetMapData(i, j) == 8)
 				{
-					enemy[enemy_count++] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, true);
-
+					enemy[enemy_count] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, true);
+					enemy[enemy_count++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				}
 			}
 
@@ -344,7 +345,9 @@ void GameMainScene::ResetMap()
 			{
 				if (mapio->GetMapData(i, j) == 9)
 				{
-					rolling_enemy[rolling_enemy_cnt++] = new RollingEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2);
+					rolling_enemy[rolling_enemy_cnt] = new RollingEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2);
+					rolling_enemy[rolling_enemy_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
 				}
 			}
 		}

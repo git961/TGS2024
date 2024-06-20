@@ -51,8 +51,8 @@ Player::Player(float set_x)
 	old_worldx = world.x;
 
 	//体力
-	hp = 50;
-	//hp = 10;
+	//hp = 50;
+	hp = 10;
 
 	//幅と座標
 	width = 50;
@@ -993,7 +993,6 @@ void Player::TutoWalkAnim()
 
 		walk_abs = abs((int)world.x - (int)old_worldx);
 		// 歩行
-		// 5カウントごとに変わる
 		if (walk_abs != 0)
 		{
 			if (direction == false)
@@ -1378,28 +1377,7 @@ void Player::TutorialAnimUpdate()
 		else{
 			location.x += 1;
 			world.x += 1;
-
-			//if (player_state == WALK)
-			//{
-			//	if (abs((int)world.x - (int)old_worldx) > 59)
-			//	{
-			//		old_worldx = world.x;
-			//	}
-			//	walk_abs = abs((int)world.x - (int)old_worldx);
-			//	// 歩行
-			//	// 5カウントごとに変わる
-			//	if (walk_abs != 0)
-			//	{
-			//		if (direction == false)
-			//		{
-			//			p_imgnum = 4 + walk_abs / 20;
-			//		}
-			//		else {
-			//			p_imgnum = 7 + walk_abs / 20;
-
-			//		}
-			//	}
-			//}
+			player_state = WALK;
 			TutoWalkAnim();
 		}
 
