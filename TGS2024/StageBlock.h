@@ -46,6 +46,8 @@ private:
 	int stage_blockdata[map_blockmax_y][map_blockmax_x];
 	int block_num;//1:ステージブロック　3:Goal
 	int block_img;
+	int rock_img[7];
+	int rock_num;
 
 	int fragment_img[4];
 

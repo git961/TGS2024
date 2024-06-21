@@ -28,11 +28,16 @@ StageBlock::StageBlock(int set_block_num,float set_x, float set_y)
 		//block_img = LoadGraph("images/Stage/Goal.png");
 		break;
 	case 4:
-		block_img = LoadGraph("images/Stage/rock.png");
+		//block_img = LoadGraph("images/Stage/rock.png");
+		LoadDivGraph("images/Stage/rock.png", 7, 7, 1, 64, 64, rock_img);
 		hp = 30;
 		shake_cnt = 0;
 		shakex = 0;
 		shake_flg = false;
+		rock_num = 0;
+		delete_flg = false;
+		delete_cnt = 0;
+
 		LoadDivGraph("images/Stage/fragment.png", 4, 4, 1, 64, 64, fragment_img);
 
 		for (int i = 0; i < 4; i++)
@@ -141,7 +146,9 @@ void StageBlock::Update()
 				effect_flg = true;
 				FragmentSet();
 				shakex = -5;
-
+				if (hp > 0) {
+					rock_num++;
+				}
 				break;
 			case 3:
 				shakex = 5;
@@ -162,6 +169,29 @@ void StageBlock::Update()
 		if (effect_flg == true)
 		{
 			FragmentEffect();
+		}
+
+		if (hp <= 0) {
+
+			switch (delete_cnt)
+			{
+			case 0:
+				rock_num++;
+				break;
+			case 3:
+				rock_num++;
+				break;
+			case 6:
+				rock_num++;
+				break;
+			case 9:
+				rock_num++;
+				break;
+			case 15:
+				delete_flg = true;
+				break;
+			}
+			delete_cnt++;
 		}
 	}
 
@@ -215,7 +245,7 @@ void StageBlock::Draw() const
 	
 	if (block_num == 4)
 	{
-		DrawRotaGraph((int)location.x, (int)location.y, 1, 0, block_img, TRUE, 0);
+		DrawRotaGraph((int)location.x, (int)location.y, 1, 0, rock_img[rock_num], TRUE, 0);
 		if (shake_flg == true)
 		{
 			for (int i = 0; i < 4; i++)

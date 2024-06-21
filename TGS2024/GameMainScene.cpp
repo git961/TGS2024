@@ -50,7 +50,8 @@ GameMainScene::GameMainScene(bool set_flg)
 	rock_damage_once = false;
 	player_damage_once = false;
 	//back.png
-	back_img[0] = LoadGraph("images/Backimg/backimg01.png", TRUE);
+	back_img[0] = LoadGraph("images/Backimg/backimg0.png", TRUE);
+	back_img[1] = LoadGraph("images/Backimg/backimg01.png", TRUE);
 	//back_img[0] = LoadGraph("images/Backimg/backimg.png", TRUE);
 	//back_img[9] = LoadGraph("images/Backimg/backimgGoal.png", TRUE);
 	back_img[9] = LoadGraph("images/Backimg/backimgGoal01.png", TRUE);
@@ -1485,7 +1486,7 @@ void GameMainScene::Update()
 		{
 			if (stage_block[j] != nullptr)
 			{
-				if (stage_block[j]->GetBlockNum()==4 && stage_block[j]->GetHp() <= 0)
+				if (stage_block[j]->GetBlockNum()==4 && stage_block[j]->GetDeleteFlg()==true)
 				{
 					stage_block[j] = nullptr;
 				}
@@ -1564,9 +1565,11 @@ void GameMainScene::Draw() const
 	// 背景画像描画（仮）
 	for (int i = 0; i < 8; i++)
 	{
-		DrawGraph((int)location_x+1280*i, (int)location_y, back_img[0], FALSE);
+		DrawGraph((int)location_x+1280*i, (int)location_y, back_img[1], FALSE);
 	}
+
 	DrawGraph((int)location_x + 1280 * 8, (int)location_y, back_img[9], FALSE);
+	DrawGraph((int)location_x+1280, (int)location_y, back_img[0], FALSE);
 
 
 
@@ -2023,7 +2026,7 @@ void GameMainScene::Tutorial()
 						rock_damage_once = false;
 					}
 
-					if (stage_block[j]->GetHp() <= 0)
+					if (stage_block[j]->GetHp() <= 0&& stage_block[j]->GetDeleteFlg() == true)
 					{
 						stage_block[j] = nullptr;
 					}
