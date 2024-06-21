@@ -37,6 +37,11 @@ private:
 	float tmp_start_text_y;
 	float tmp_end_text_y;
 
+	double sparkling_size;		// キラキラ画像の大きさ
+	double sparkling_degree;	// キラキラ画像の角度（デグリー）
+	double sparkling_radian;	// キラキラ画像の角度（ラジアン）
+	int sparkling_anim_cnt;		// キラキラ画像アニメーション用カウント
+
 	enum CursorPos
 	{
 		Start,
@@ -57,7 +62,7 @@ private:
 	int text_img[4];
 	int rock_img[3];			// タイトル名に重なっている岩
 	int rock_fragments_img[10];	// 岩の破片
-	//int sparkling;				// きらきら画像
+	int sparkling_img;			// きらきら画像
 
 	int pickaxe_img_num;		// つるはし画像番号
 	int rock_img_num;			// 岩画像番号
@@ -96,4 +101,5 @@ private:
 	void PickaxeAnimation();		// つるはしアニメーション
 	void RockCollapses();			// 岩が崩れるアニメーション
 	void PickaxeFalling();			// つるはし落下アニメーション
+	void SparklingAnimation();		// きらきらアニメーション
 };
