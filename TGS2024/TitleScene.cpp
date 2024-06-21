@@ -338,9 +338,9 @@ void TitleScene::Draw() const
 		DrawRotaGraph((int)pickaxe_x, (int)pickaxe_y, 1.2, radian, pickaxe_img, TRUE, FALSE);
 	}
 
-	int ax, ay;
-	GetMousePoint(&ax, &ay);
-	DrawFormatString(1000, 10, 0xffff00, "%d,%d", ax, ay);
+	//int ax, ay;
+	//GetMousePoint(&ax, &ay);
+	//DrawFormatString(1000, 10, 0xffff00, "%d,%d", ax, ay);
 
 }
 
@@ -626,7 +626,7 @@ void TitleScene::SparklingAnimation()
 	sparkling_anim_cnt++;
 
 	// サイズ変更
-	if (sparkling_anim_cnt <= 50)
+	if (sparkling_anim_cnt <= 60)
 	{
 		sparkling_size += 0.01;
 	}
