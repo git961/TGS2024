@@ -111,6 +111,9 @@ void EndCreditsScene::Update()
 	{
 		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 		{
+			// bgmを小さくする
+			ChangeVolumeSoundMem(115, credits_bgm);
+
 			// プレイヤーつるはしアニメーション開始
 			player->SetPushBFlg();
 		}

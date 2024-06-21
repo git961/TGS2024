@@ -151,7 +151,9 @@ Player::Player(float set_x)
 	ribbon_x = 0;
 	ribbon_y = 0;
 	set_ribbon_pos_flg = false;
-
+	change_scene_cnt = 0;
+	credits_walk_cnt = 0;
+	walk_cnt_up_flg = true;
 }
 
 Player::~Player()
@@ -251,7 +253,6 @@ void Player::Update(GameMainScene* gamemain)
 		}
 
 		WalkAnim();
-
 
 		if (gamemain->GetPlayerNotBack() ==false)
 		{
@@ -597,6 +598,7 @@ void Player::WalkAnim()
 {
 	if (player_state == WALK)
 	{
+
 		if (abs((int)world.x - (int)old_worldx) > 119)
 		{
 			old_worldx = world.x;
@@ -630,7 +632,6 @@ void Player::WalkAnim()
 			}
 		}
 	}
-
 }
 
 void Player::DeathAnim()
@@ -1703,16 +1704,10 @@ void Player::EndCreditsAnimUpdate()
 	{
 		credits_timer++;
 
-		// コサックダンス中の移動処理
+		// クレジット画面でのプレイヤー移動処理
 		PlayerMoveEndCredits();
 	}
 	
-	if (push_b_flg == true)
-	{
-		// Bボタンでシーンを変えるときのアニメーション
-		ChangeSceneAnim();
-	}
-
 	if (credits_timer < 2150)
 	{
 		// コサックダンスアニメーション
@@ -1737,6 +1732,12 @@ void Player::EndCreditsAnimUpdate()
 			RibbonAnim();
 		}
 	}
+
+	if (push_b_flg == true)
+	{
+		// Bボタンでシーンを変えるときのアニメーション
+		ChangeSceneAnim();
+	}
 }
 
 // エンドクレジット画面用アニメーション描画処理
@@ -1749,12 +1750,12 @@ void Player::EndCreditsAnimDraw() const
 	if (credits_timer < 2250)
 	{
 		// コサックダンス画像
-		DrawRotaGraph((int)world.x, (int)world.y, 1.1, 0.0, player_credits_img[credits_img_num], TRUE, direction);
+		DrawRotaGraph((int)world.x, (int)world.y, 1.0, 0.0, player_credits_img[credits_img_num], TRUE, direction);
 	}
 	else if(credits_timer < 2550)
 	{
 		// 拍手画像
-		DrawRotaGraph((int)world.x, (int)world.y, 1.1, 0.0, applause_img[credits_img_num], TRUE, direction);
+		DrawRotaGraph((int)world.x, (int)world.y, 1.0, 0.0, applause_img[credits_img_num], TRUE, direction);
 	}
 	else
 	{
@@ -1764,10 +1765,23 @@ void Player::EndCreditsAnimDraw() const
 			DrawRotaGraph(ribbon_x, ribbon_y, 1.5, 0.0, ribbon_img[ribbon_img_num], TRUE, direction);
 		}
 
-		// クラッカー画像
-		DrawRotaGraph((int)world.x, (int)world.y, 1.1, 0.0, cracker_img[credits_img_num], TRUE, direction);
-	}
+		if (push_b_flg == true)
+		{
+			// プレイヤー歩行画像
+			DrawRotaGraph((int)world.x, (int)world.y, 1.0, 0.0, player_img[p_imgnum], TRUE, FALSE);
 
+			if (change_scene_cnt >= 240)
+			{
+				// つるはし画像
+				DrawRotaGraph((int)world.x, (int)world.y, 1.0, 0.0, pickaxe_img[p_atk_imgnum], TRUE, FALSE);
+			}
+		}
+		else
+		{
+			 // クラッカー画像
+			DrawRotaGraph((int)world.x, (int)world.y, 1.0, 0.0, cracker_img[credits_img_num], TRUE, direction);
+		}
+	}
 }
 
 // クレジット画面でのプレイヤー移動処理
@@ -1776,7 +1790,6 @@ void Player::PlayerMoveEndCredits()
 	if (credits_timer < 400)
 	{
 		world.x += 1.0f;
-		//world.y -= 0.3f;
 	}
 	else if (credits_timer >= 500 && credits_timer < 600)
 	{
@@ -1832,9 +1845,9 @@ void Player::PlayerMoveEndCredits()
 // Bボタンでシーンを変えるときのアニメーション
 void Player::ChangeSceneAnim()
 {
-	if (dash_anim_cnt < 300)
+	if (change_scene_cnt < 300)
 	{
-		dash_anim_cnt++;
+		change_scene_cnt++;
 	}
 	else
 	{
@@ -1842,18 +1855,80 @@ void Player::ChangeSceneAnim()
 		change_to_title_flg = true;
 	}
 
-	if (dash_anim_cnt < 150)
+	if (change_scene_cnt < 200)
 	{
-		// push_bに向かって走る
-		world.x -= 3.0f;
-	}
-	else if (dash_anim_cnt < 200)
-	{
-		world.x -= 3.0f;
-		world.y += 1.4f;
-	}
+		dash_anim_cnt++;
 
-	// つるはしアニメーション
+		if (dash_anim_cnt < 150)
+		{
+			// push_bに向かって走る
+			world.x -= 3.0f;
+		}
+		else
+		{
+			world.x -= 3.0f;
+			world.y += 1.4f;
+		}
+
+		if (credits_walk_cnt >= 30)
+		{
+			walk_cnt_up_flg = false;
+		}
+		if (credits_walk_cnt <= 0)
+		{
+			walk_cnt_up_flg = true;
+		}
+
+		if (walk_cnt_up_flg == true)
+		{
+			credits_walk_cnt++;
+		}
+		else
+		{
+			credits_walk_cnt--;
+		}
+
+		// プレイヤー歩行アニメーション
+		if (credits_walk_cnt < 29)
+		{
+			p_imgnum = credits_walk_cnt / 10 + 57;
+			if (p_imgnum == 59)
+			{
+				// 走る音
+				if (CheckSoundMem(op_run_sound) == FALSE)
+				{
+					PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+				}
+			}
+		}
+		else
+		{
+			credits_walk_cnt = 0;
+		}
+	}
+	else if(change_scene_cnt < 240)
+	{
+		// 右向きの直立画像
+		p_imgnum = 27;
+	}
+	else
+	{
+		// つるはし攻撃アニメーション
+		if (p_imgnum != 41)
+		{
+			p_imgnum = (change_scene_cnt - 240) / 5 + 38;
+			p_atk_imgnum = (change_scene_cnt - 240) / 5;
+		}
+
+		if (p_atk_imgnum == 2)
+		{
+			if (CheckSoundMem(atk_sound) == FALSE)
+			{
+				// つるはしse
+				PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
+			}
+		}
+	}
 
 }
 

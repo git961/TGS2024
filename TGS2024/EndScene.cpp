@@ -2,7 +2,7 @@
 
 EndScene::EndScene()
 {
-	player = new Player(250.0f);
+	player = new Player(0.0f);
 
 	end_cnt = 240;			// 300f経過したら終了
 	endflg = false;

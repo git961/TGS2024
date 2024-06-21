@@ -142,6 +142,9 @@ private:
     int ribbon_x;                       // クラッカーのリボンx座標
     int ribbon_y;                       // クラッカーのリボンy座標
     bool set_ribbon_pos_flg;            // リボンの座標をセットしたか？
+    int change_scene_cnt;               // タイトルへ遷移するカウント
+    int credits_walk_cnt;               // クレジット画面の歩行アニメーションカウント
+    bool walk_cnt_up_flg;               // 歩行アニメーションのカウントを増やすか？
 
 public:
     Player(float set_x);
