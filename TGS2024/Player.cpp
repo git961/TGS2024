@@ -546,14 +546,7 @@ void Player::PlayerMove()
 		{
 			player_state = WALK;
 		}
-		//if (world.x + width / 2 < FIELD_WIDTH)
-		//{
-		//	//走る音
-		//	if (CheckSoundMem(op_run_sound) == FALSE)
-		//	{
-		//		PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
-		//	}
-		//}
+
 	}
 
 	//左移動
@@ -575,13 +568,7 @@ void Player::PlayerMove()
 		{
 			player_state = WALK;
 		}
-		//if (world.x - width / 2 > 0) {
-		//	//走る音
-		//	if (CheckSoundMem(op_run_sound) == FALSE)
-		//	{
-		//		PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
-		//	}
-		//}
+
 	}
 
 	//右左移動してない時
@@ -1041,7 +1028,11 @@ void Player::TutoWalkAnim()
 
 	if (player_state == WALK)
 	{
-		if (abs((int)world.x - (int)old_worldx) > 59)
+		//if (abs((int)world.x - (int)old_worldx) > 59)
+		//{
+		//	old_worldx = world.x;
+		//}
+		if (abs((int)world.x - (int)old_worldx) > 119)
 		{
 			old_worldx = world.x;
 		}
@@ -1052,11 +1043,25 @@ void Player::TutoWalkAnim()
 		{
 			if (direction == false)
 			{
-				p_imgnum = 4 + walk_abs / 20;
+				p_imgnum = 4 + walk_abs / 40;
 			}
 			else {
-				p_imgnum = 7 + walk_abs / 20;
+				p_imgnum = 7 + walk_abs / 40;
 
+			}
+		}
+
+
+		//走るSE再生
+		if (p_imgnum == 5 || p_imgnum == 8)
+		{
+			if (world.x + width / 2 < FIELD_WIDTH)
+			{
+				//走る音
+				if (CheckSoundMem(op_run_sound) == FALSE)
+				{
+					PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+				}
 			}
 		}
 	}
@@ -1460,6 +1465,7 @@ void Player::TutorialAnimUpdate()
 				switch (dyna_anmcnt)
 				{
 				case 1:
+					PlaySoundMem(throw_dynamite_sound, DX_PLAYTYPE_BACK);
 					dyna_stock_num -= 1;
 					p_imgnum = 60;
 					break;
@@ -1604,7 +1610,6 @@ void Player::TutorialAnimUpdate()
 
 		if (tuto_cnt > 100)
 		{
-
 			move_x = 0;
 			start_flg = true;
 			player_state = NOMAL;
@@ -1612,7 +1617,7 @@ void Player::TutorialAnimUpdate()
 		break;
 	}
 
-	if (player_state==NOMAL)
+	if (player_state==NOMAL&&p_imgnum!=27)
 	{
 		if (direction == false)
 		{
