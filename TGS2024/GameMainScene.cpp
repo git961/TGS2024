@@ -616,6 +616,11 @@ void GameMainScene::Update()
 				screen_origin_position = { camera_pos.x - SCREEN_WIDTH / 2.0f,camera_pos.y - SCREEN_HEIGHT / 2.0f };
 				player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
+				//残機数を渡す
+				if (ui != nullptr)
+				{
+					ui->SetLifeNum(p_life_num);
+				}
 				ResetMap();
 			}
 			else {
@@ -1214,6 +1219,7 @@ void GameMainScene::Update()
 				//UIアップデート
 				if (ui != nullptr)
 				{
+					ui->SetLifeNum(p_life_num);
 					ui->Update((int)player->GetHp(), player->GetDynaNum());
 					if (player->GetHp() <= 0) {
 						ui->Update(0, 0);

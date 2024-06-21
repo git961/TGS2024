@@ -546,14 +546,14 @@ void Player::PlayerMove()
 		{
 			player_state = WALK;
 		}
-		if (world.x + width / 2 < FIELD_WIDTH)
-		{
-			//走る音
-			if (CheckSoundMem(op_run_sound) == FALSE)
-			{
-				PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
-			}
-		}
+		//if (world.x + width / 2 < FIELD_WIDTH)
+		//{
+		//	//走る音
+		//	if (CheckSoundMem(op_run_sound) == FALSE)
+		//	{
+		//		PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+		//	}
+		//}
 	}
 
 	//左移動
@@ -575,13 +575,13 @@ void Player::PlayerMove()
 		{
 			player_state = WALK;
 		}
-		if (world.x - width / 2 > 0) {
-			//走る音
-			if (CheckSoundMem(op_run_sound) == FALSE)
-			{
-				PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
-			}
-		}
+		//if (world.x - width / 2 > 0) {
+		//	//走る音
+		//	if (CheckSoundMem(op_run_sound) == FALSE)
+		//	{
+		//		PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+		//	}
+		//}
 	}
 
 	//右左移動してない時
@@ -620,12 +620,26 @@ void Player::WalkAnim()
 		// 5カウントごとに変わる
 		if (walk_abs != 0)
 		{
+
 			if (direction == false)
 			{
 				p_imgnum = 54 + walk_abs / 40;
 			}
 			else {
 				p_imgnum = 57 + walk_abs / 40;
+			}
+
+			//走るSE再生
+			if (p_imgnum == 55||p_imgnum==58)
+			{
+				if (world.x + width / 2 < FIELD_WIDTH)
+				{
+					//走る音
+					if (CheckSoundMem(op_run_sound) == FALSE)
+					{
+						PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+					}
+				}
 			}
 		}
 	}

@@ -11,11 +11,11 @@ UI::UI(int set_hp, int set_dyna_num)
 	LoadDivGraph("images/UI/walk_UI.png", 4, 4, 1, 128, 128, btnmove_img);
 	tuto_backimg[0] = LoadGraph("images/Animscene/dynapic.png");
 	tuto_backimg[1] = LoadGraph("images/Animscene/kanbananim.png");
+	LoadDivGraph("images/UI/num.png", 10, 10, 1, 64, 64, num_img);
 	//tuto_backimg[2] = LoadGraph("images/Animscene/kanbananim2.png");
 	//tuto_backimg[3] = LoadGraph("images/Animscene/kanbananim3.png");
 	//tuto_backimg[4] = LoadGraph("images/Animscene/kanbananim4.png");
 	//btnY_img= LoadGraph("images/UI/buttonY.png");
-	old_hp = set_hp;
 	heart_num = set_hp / 10;
 	dyna_num=set_dyna_num;
 	x = 100;
@@ -42,6 +42,8 @@ UI::UI(int set_hp, int set_dyna_num)
 	{
 		hp_x[i] = (int)x + 35 * i;
 	}
+
+	life_num = 0;
 }
 
 UI::~UI()
@@ -55,10 +57,7 @@ void UI::Update(int set_hp,int set_dyna_num)
 	heart_num = set_hp / 10;
 	dyna_num = set_dyna_num;
 
-	if (heart_num <= 0)
-	{
-		hp_x_num = 4;
-	}
+
 
 	HeartAnim();
 
@@ -73,7 +72,6 @@ void UI::Draw() const
 {
 	//int ax, ay;
 	//GetMousePoint(&ax, &ay);
-	DrawFormatString(1000, 10, 0xffff00, "hp%d", old_hp);
 	
 	//if (player->GetTutoAtkFlg() == true)
 	//{
@@ -85,6 +83,7 @@ void UI::Draw() const
 	//DrawRotaGraph(1120, 30, 1, 0, score_img, TRUE, 0);
 
 	DrawRotaGraph(140, (int)y, 1, 0, p_img, TRUE, 0);
+
 
 	for (int i = 0; i < heart_num; i++)
 	{
@@ -101,6 +100,7 @@ void UI::Draw() const
 		DrawRotaGraph(32+35 * i, (int)y+64, 1, 0, dyna_img, TRUE, 0);
 	}
 
+	DrawRotaGraph(55,51, 0.5, 0, num_img[life_num], TRUE, 0);
 
 }
 
@@ -297,5 +297,9 @@ void UI::BreakHpAnim()
 		break_cnt = 0;
 		break_num = 0;
 		break_flg = false;
+		if (heart_num <= 0)
+		{
+			hp_x_num = 4;
+		}
 	}
 }

@@ -17,6 +17,9 @@ private:
 	int btnY_img[2];
 	int btnmove_img[4];
 	int tuto_backimg[10];
+	int num_img[10];
+
+	int life_num;//
 	float alpha;
 	float alpha2;
 	bool alpha_flg;
@@ -32,7 +35,6 @@ private:
 	int hp_x_num;
 
 	bool break_flg;
-	int old_hp;
 	int break_num;
 	int break_cnt;
 	int heart_num;//表示するhpの数
@@ -54,4 +56,5 @@ public:
 	void HeartAnim();
 	void BreakHpAnim();
 	void SetBreakHpFlg(bool set_flg) { break_flg = set_flg; }
+	void SetLifeNum(int set_num){life_num = set_num; }
 };
