@@ -2,18 +2,28 @@
 
 Dynamite::Dynamite(World set_xy,int set_direction)
 {
+	direction = set_direction;
+
 	width = 60;
 	height = 50;
-	location.x = set_xy.x;
-	location.y = set_xy.y+20;
-	world.x = set_xy.x;
-	world.y = set_xy.y+20;
+	if (direction == false)
+	{
+		location.x = set_xy.x+20;
+		location.y = set_xy.y + 20;
+		world.x = set_xy.x+20;
+		world.y = set_xy.y + 20;
+	}
+	else {
+		location.x = set_xy.x-20;
+		location.y = set_xy.y + 20;
+		world.x = set_xy.x-20;
+		world.y = set_xy.y + 20;
+	}
 	move_x = 5;
 	rotation = 0;
 	dynamite_img = LoadGraph("images/Player/dynamite.png");
 	LoadDivGraph("images/Player/explosion.png", 3, 3, 1, 128,128, explosion_img);
 
-	direction = set_direction;
 	dynamite_flg = false;
 	damage_flg = false;
 	dynamite_death = false;
