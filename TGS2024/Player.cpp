@@ -154,6 +154,13 @@ Player::Player(float set_x)
 	change_scene_cnt = 0;
 	credits_walk_cnt = 0;
 	walk_cnt_up_flg = true;
+
+	/*ジャンプ用変数初期化*/
+	vy = 0;
+	initial_vel_y = -36;
+	gravity = 3;
+	jump_flg = false;
+	limmit_y = world.y;
 }
 
 Player::~Player()
@@ -166,6 +173,37 @@ Player::~Player()
 	DeleteSoundMem(death_sound);
 }
 
+void Player::Playerjump()
+{
+	//Aボタンが押されたら
+	if (input.CheckBtn(XINPUT_BUTTON_A) == TRUE && jump_flg==false)
+	{
+		//vyに初速度を入れる
+		vy = initial_vel_y;
+		//ジャンプしたよ
+		jump_flg = true;
+	}
+
+	if (jump_flg == true)
+	{
+		//上昇と落下
+
+		world.y += vy;
+		//location.y += vy;
+
+		//vyに重力を加算する
+		vy += gravity;
+
+		//もし座標が着地の座標より大きくなったら
+		if (world.y > limmit_y)
+		{
+			world.y = limmit_y;
+			jump_flg = false;
+		}
+	}
+
+}
+
 void Player::Update(GameMainScene* gamemain)
 {
 	//プレイヤー状態によってスイッチで変えよう
@@ -173,6 +211,7 @@ void Player::Update(GameMainScene* gamemain)
 
 	input.InputUpdate();
 	
+	Playerjump();
 
 	switch (player_state)
 	{

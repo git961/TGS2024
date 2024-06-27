@@ -146,9 +146,19 @@ private:
     int credits_walk_cnt;               // クレジット画面の歩行アニメーションカウント
     bool walk_cnt_up_flg;               // 歩行アニメーションのカウントを増やすか？
 
+
+    /*ジャンプ用*/
+    float vy;//ｙ軸方向の速度を入れる
+    float initial_vel_y;//初速度　ボタンを押したら初速度を入れる
+    float gravity;//重力加速度
+    bool jump_flg;//ジャンプしているか？
+    float limmit_y;//着地の座標
+
 public:
     Player(float set_x);
     ~Player();
+
+    void Playerjump();
 
     void Update(GameMainScene* gamemain);
     void Draw() const;
