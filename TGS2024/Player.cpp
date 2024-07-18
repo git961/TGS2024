@@ -31,7 +31,7 @@ Player::Player(float set_x)
 	throw_dynamite_sound = LoadSoundMem("sounds/se/player/Throw.mp3");
 	death_sound = LoadSoundMem("sounds/se/player/death.mp3");
 
-
+	
 	img_down = 15;
 
 	reset_timer = 0;
@@ -53,6 +53,9 @@ Player::Player(float set_x)
 	//体力
 	hp = 50;
 	//hp = 0;
+
+	//攻撃力
+	attack = 10;
 
 	//幅と座標
 	width = 50;
@@ -168,7 +171,7 @@ Player::~Player()
 
 void Player::Update(GameMainScene* gamemain)
 {
-	//プレイヤー状態によってスイッチで変えよう
+	
 
 
 	input.InputUpdate();

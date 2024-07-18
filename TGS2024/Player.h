@@ -4,10 +4,12 @@
 #include "StageBlock.h"
 #include "AnimScene.h"
 #include "padinput.h"
+#include "Enemy.h"
 
 class GameMainScene;
 class StageBlock;
 class AnimScene;
+class Enemy;
 
 enum PlayerState {
     NOMAL,//地面に居る：歩くのが可能
@@ -197,7 +199,7 @@ public:
         }
     }
 
-    
+    void testdamage(Enemy* enemy);
 
     void OpAnimUpdate(AnimScene *anim_scene,int set_case);//最初のアニメーション用
     void TutorialAnimUpdate();//チュートリアル用アップデート

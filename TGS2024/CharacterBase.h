@@ -25,7 +25,7 @@ protected:
 	float move_y;
 
 	float hp;//体力
-	float attack;//攻撃力
+
 
 	float speed;
 	bool direction;//向き　0:右 1:左

@@ -52,6 +52,8 @@ protected:
 	float width;//幅
 	float height;//高さ
 
+	float attack;//攻撃力
+
 	float distance_x;//x同士の距離の計算用
 	float distance_y;//y同士の距離の計算用
 
@@ -104,6 +106,9 @@ public:
 		}
 
 	}
+
+
+	float GetAttack() { return attack; }
 
 
 	Vec2 GetLocation() { return location; }

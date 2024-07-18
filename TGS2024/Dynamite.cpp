@@ -30,7 +30,7 @@ Dynamite::Dynamite(World set_xy,int set_direction)
 	explosion_cnt = 0;
 	explosion_num = 0;
 
-	attack = 30;
+	attack = 40.0f;
 	enemy_x = 0.0f;
 	tmp_abs = 0.0f;
 	bomb_sound = LoadSoundMem("sounds/se/player/bomb.mp3");
@@ -121,7 +121,7 @@ void Dynamite::DamageCalculation()
 	// 敵との距離
 	tmp_abs = fabsf(world.x - enemy_x);
 
-	if (tmp_abs < 35)
+	if (tmp_abs < 50)
 	{
 		attack = 30;
 	}

@@ -61,7 +61,6 @@ private:
     StageBlock **stage_block;
     Gem** walk_gem;             // 配列
     Gem** roll_gem;
-   // Gem** rock_gem;
     Score* score;
 
     UI* ui;
@@ -80,7 +79,7 @@ private:
     bool player_damage_once;
     bool enemy_damage_once;
     bool rock_damage_once;
-    bool checkhit;
+    //bool checkhit;
     //bool enemyhit;      // 歩行エネミー同士の当たり判定チェック用、後に削除
 
     int back_img[10];//背景入れるよう
@@ -167,6 +166,21 @@ public:
     bool GetPlayerNotBack() { return p_notback_flg; }
 
     void Tutorial();
+
+    /*
+    *	enemy[enemynum]->Damege(damage);
+	// 歩行エネミーのノックバック処理
+	enemy[enemynum]->SetKnockBackStartFlg(true);
+	enemy[enemynum]->SetStarDrawFlg(true);
+	enemy[enemynum]->SetPlayerWorldLocation(player->GetWorldLocation());
+	enemy_damage_once = true;
+    */
+    void EnemyDamage(int enemynum,float damage);
+    void PlayerDamage();
+
+    void 
+    void GemUpDate();
+    void PlayerHitEnemy();
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };
