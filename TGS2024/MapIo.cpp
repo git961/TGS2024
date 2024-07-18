@@ -28,7 +28,7 @@ MapIo::~MapIo()
 void MapIo::LoadMapData()
 {
 	//ファイルを読込モードで開く
-	fopen_s(&fp, "stage/stage1.csv", "r");
+	fopen_s(&fp, "stage/teststage.csv", "r");
 
 	for (int i = 0; i < map_blockmax_y; i++)
 	{
@@ -209,7 +209,7 @@ void MapIo::InputTest(GameMainScene* gamemain)
 void MapIo::SaveMapData()
 {
 	//ファイルを書き込みモードで開く
-	fopen_s(&fp, "stage/stage1.csv", "w");
+	fopen_s(&fp, "stage/teststage.csv", "w");
 
 	for (int i = 0; i < map_blockmax_y; i++)
 	{

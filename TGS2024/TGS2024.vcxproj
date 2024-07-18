@@ -172,6 +172,7 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="StageBlock.cpp" />
+    <ClCompile Include="TestStageScene.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
@@ -197,10 +198,12 @@
     <ClInclude Include="MapIo.h" />
     <ClInclude Include="padinput.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PmoveBlockBase.h" />
     <ClInclude Include="RollingEnemy.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Score.h" />
     <ClInclude Include="StageBlock.h" />
+    <ClInclude Include="TestStageScene.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Vec2I.h" />
