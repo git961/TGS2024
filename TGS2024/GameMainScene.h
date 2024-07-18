@@ -177,10 +177,13 @@ public:
     */
     void EnemyDamage(int enemynum,float damage);
     void PlayerDamage();
-
-    void 
+    void GemGenerate();
     void GemUpDate();
+    void EnemyHitEnemy();
+    void PlayerHitGem();
     void PlayerHitEnemy();
+    void PickaxeHitEnemy();
+    void DynamiteHitEnemy();
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };
