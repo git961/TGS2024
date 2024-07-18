@@ -707,6 +707,7 @@ void GameMainScene::Update()
 		//プレイヤーがエネミーに当たったときの被弾処理
 		PlayerHitEnemy();
 
+		//プレイヤー更新処理
 		PlayerUpDate();
 
 		//カメラとUIのアップデート

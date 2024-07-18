@@ -230,7 +230,7 @@
     <ClInclude Include="BlackOut.h">
       <Filter>ヘッダー ファイル\AnimS</Filter>
     </ClInclude>
-    <ClInclude Include="PmoveBlockBase.h">
+    <ClInclude Include="LiftBase.h">
       <Filter>ヘッダー ファイル\BaseFile</Filter>
     </ClInclude>
     <ClInclude Include="TestStageScene.h">
