@@ -180,6 +180,8 @@ public:
     void GemGenerate();
     void GemUpDate();
     void EnemyHitEnemy();
+    void EnemyUpDate();
+    void PlayerUpDate();
     void PlayerHitGem();
     void PlayerHitEnemy();
     void PickaxeHitEnemy();
