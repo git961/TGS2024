@@ -16,6 +16,7 @@
 #include "GameClearScene.h"
 #include "GameOverScene.h"
 #include "BlackOut.h"
+#include "Lift.h"
 
 class Player;
 class Enemy;
@@ -26,6 +27,7 @@ class StageBlock;
 class UI;
 class Dynamite;
 class Gem;
+class Lift;
 
 struct cameraposition
 {
@@ -62,6 +64,8 @@ private:
     Gem** walk_gem;             // 配列
     Gem** roll_gem;
     Score* score;
+
+    Lift** lift;
 
     UI* ui;
 

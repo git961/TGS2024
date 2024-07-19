@@ -43,6 +43,10 @@ GameMainScene::GameMainScene(bool set_flg)
 	roll_gem = new Gem * [ROLLING_ENEMY_MAXNUM];
 	score = new Score;
 
+	/*リフトテスト 後で消す*/
+	lift = new Lift * [1];
+	lift[0] = nullptr;
+	lift[0] = new Lift(2500, 600);
 
 	dynamite = new Dynamite * [DYNAMITE_MAXNUM];
 	enemy_damage_once = false;
@@ -89,7 +93,6 @@ GameMainScene::GameMainScene(bool set_flg)
 	{
 		enemy[i] = nullptr;
 		walk_gem[i] = nullptr;
-		
 	}
 
 	//ローリングエネミーとジェム
@@ -663,17 +666,16 @@ void GameMainScene::Update()
 		}
 
 
-#ifdef DEBUG
-		//if (rolling_enemy == nullptr)
-		//{
-		//	// 転がるエネミーが消えたら新しく出現させる
-		//	//rolling_enemy = new RollingEnemy;
-		//}
-#endif
-
 		//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
 		location_x = world_x - screen_origin_position.x;
 		location_y = world_y - screen_origin_position.y;
+
+		//リフトテスト後で消す
+		if (lift[0] != nullptr)
+		{
+			lift[0]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			lift[0]->Update();
+		}
 
 		//押されたらポーズへ
 		if (input.CheckBtn(XINPUT_BUTTON_START) == TRUE)
@@ -934,6 +936,11 @@ void GameMainScene::Draw() const
 		{
 			stage_block[j]->DrawKanban();
 		}
+	}
+
+	if (lift[0] != nullptr)
+	{
+		lift[0]->Draw();
 	}
 	
 	if (game_state == TUTORIAL)

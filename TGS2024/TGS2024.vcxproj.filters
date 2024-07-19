@@ -144,6 +144,9 @@
     <ClCompile Include="TestStageScene.cpp">
       <Filter>ソース ファイル\StageFile</Filter>
     </ClCompile>
+    <ClCompile Include="Lift.cpp">
+      <Filter>ソース ファイル\StageObjectFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fps.h">
@@ -235,6 +238,9 @@
     </ClInclude>
     <ClInclude Include="TestStageScene.h">
       <Filter>ヘッダー ファイル\StageFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Lift.h">
+      <Filter>ヘッダー ファイル\StageObjectFile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
