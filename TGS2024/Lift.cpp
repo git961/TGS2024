@@ -9,6 +9,11 @@ Lift::Lift(float set_x,float set_y)
 	location.y = set_y;
 	move_y = 5.0f;
 	limit_y = 200;
+
+	width = 192;
+	height = 40;
+
+	canmove_flg = false;
 }
 
 Lift::~Lift()
@@ -17,12 +22,16 @@ Lift::~Lift()
 
 void Lift::Update()
 {
-	if (world.y > limit_y)
+	
+
+	//もし動けたら
+	if (canmove_flg == true)
 	{
-		world.y = world.y - move_y;
-	}
-	else {
-		world.y = 200;
+		//上まで上がる
+		if (world.y > limit_y)
+		{
+			world.y = world.y - move_y;
+		}
 	}
 }
 

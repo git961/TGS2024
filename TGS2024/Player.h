@@ -195,8 +195,12 @@ public:
         if (world.x + width / 2 > set_x)
         {
             world.x = set_x - 64;
-
         }
+    }
+
+    void SetY(float set_y)
+    {
+           world.y = set_y-35;
     }
 
     void testdamage(Enemy* enemy);

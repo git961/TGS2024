@@ -178,12 +178,6 @@ GameMainScene::GameMainScene(bool set_flg)
 		dynamite[i] = nullptr;
 	}
 
-	//rock_gem = new Gem*[rock_count];
-
-	//for (int i = 0; i < rock_count; i++)
-	//{
-	//	rock_gem[i] = nullptr;
-	//}
 
 	check_num = 0;
 
@@ -292,11 +286,8 @@ void GameMainScene::ResetMap()
 		dynamite[i] = nullptr;
 	}
 
-	//for()
-
 	block_count = 0;
 	enemy_count = 0;
-	//rock_count = 0;
 	rolling_enemy_cnt = 0;
 
 	//マップチップに反映する
@@ -675,6 +666,15 @@ void GameMainScene::Update()
 		{
 			lift[0]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 			lift[0]->Update();
+		}
+
+		if (lift[0] != nullptr && player != nullptr)
+		{
+			if (player->HitCheck(lift[0]->GetWorldLocation(), lift[0]->GetWidth(), lift[0]->GetHeight()) == true){
+				lift[0]->SetCanMove(true);
+				player->SetY(lift[0]->GetWorldLocation().y);
+				
+			}
 		}
 
 		//押されたらポーズへ
