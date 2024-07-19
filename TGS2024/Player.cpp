@@ -157,6 +157,8 @@ Player::Player(float set_x)
 	change_scene_cnt = 0;
 	credits_walk_cnt = 0;
 	walk_cnt_up_flg = true;
+
+	limit_y = 600;
 }
 
 Player::~Player()
@@ -758,6 +760,14 @@ void Player::ThrowAnim()
 
 	}
 	dyna_anmcnt++;
+}
+
+void Player::Falling()
+{
+	if (limit_y > world.y)
+	{
+		world.y += move_y;
+	}
 }
 
 void Player::PlayerAttack()

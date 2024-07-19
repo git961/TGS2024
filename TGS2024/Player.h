@@ -39,7 +39,9 @@ private:
 
     //int player_ase_img[10];
 
-
+    
+    float limit_y;//落下の上限用
+    bool fall_flg;//落ちるか？
 
     float img_down;//画像の表示位置を下げる用
     int p_imgnum;//プレイヤーの画像番号切り替え用
@@ -161,6 +163,8 @@ public:
     void DeathAnim();
     void ThrowAnim();
 
+    void Falling();
+
     void PlayerAttack();
     void PlayerTutoAttack();
     void TutoWalkAnim();
@@ -176,9 +180,15 @@ public:
     bool GetDeathFlg() { return death_flg; }
 
 
-
+    void SetFallFlg(bool set_flg) {
+        fall_flg = set_flg;
+    }
     void SetLocationY(float set_y) {
         location.y = set_y;
+    }
+    void SetLimitY(float set_y) {
+        //いる所によって落下する所を更新する
+        limit_y = set_y;
     }
 
     void SetEnemyHit(bool set_hitflg)
