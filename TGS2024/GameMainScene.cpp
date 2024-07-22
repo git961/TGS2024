@@ -670,10 +670,17 @@ void GameMainScene::Update()
 
 		if (lift[0] != nullptr && player != nullptr)
 		{
+
 			if (player->HitCheck(lift[0]->GetWorldLocation(), lift[0]->GetWidth(), lift[0]->GetHeight()) == true){
 				lift[0]->SetCanMove(true);
 				player->SetY(lift[0]->GetWorldLocation().y);
 				
+			}
+			else if(player->GetLimitY()-30>player->GetWorldLocation().y)
+			{
+				//当たってないかつプレイヤーがlimitの値より上に居たら
+				//プレイヤーが落ちる
+				player->SetFallFlg(true);
 			}
 		}
 

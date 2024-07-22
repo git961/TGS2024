@@ -163,7 +163,8 @@ public:
     void DeathAnim();
     void ThrowAnim();
 
-    void Falling();
+    void PlayerFall();//プレイヤーが落下する処理
+
 
     void PlayerAttack();
     void PlayerTutoAttack();
@@ -179,17 +180,15 @@ public:
 
     bool GetDeathFlg() { return death_flg; }
 
-
+    //足元になにもなかったら落ちる
     void SetFallFlg(bool set_flg) {
         fall_flg = set_flg;
     }
-    void SetLocationY(float set_y) {
-        location.y = set_y;
-    }
+    //いる所によって落下する所を更新する
     void SetLimitY(float set_y) {
-        //いる所によって落下する所を更新する
         limit_y = set_y;
     }
+    float GetLimitY() { return limit_y; }
 
     void SetEnemyHit(bool set_hitflg)
     {
@@ -200,7 +199,8 @@ public:
 
     void SetDamageFlg(bool set_damageflg) { hit_damage = set_damageflg; }
 
-    void SetX(float set_x) {
+    void SetX(float set_x)
+    {
         // 端に来たら跳ね返る
         if (world.x + width / 2 > set_x)
         {
@@ -208,12 +208,12 @@ public:
         }
     }
 
+    //リフトのYをプレイヤーのワールド座標に入れる
     void SetY(float set_y)
     {
            world.y = set_y-35;
     }
 
-    void testdamage(Enemy* enemy);
 
     void OpAnimUpdate(AnimScene *anim_scene,int set_case);//最初のアニメーション用
     void TutorialAnimUpdate();//チュートリアル用アップデート

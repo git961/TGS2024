@@ -67,7 +67,7 @@ Player::Player(float set_x)
 	speed = 1;
 
 	move_x = 0;
-	move_y = 0;
+	move_y = 3;
 
 	walk_abs = 0;
 
@@ -230,8 +230,6 @@ void Player::Update(GameMainScene* gamemain)
 	case WALK:
 	case NOMAL:
 
-
-
 		if (player_state == NOMAL)
 		{
 			if (direction == false)
@@ -258,6 +256,8 @@ void Player::Update(GameMainScene* gamemain)
 		}
 
 		WalkAnim();
+
+		PlayerFall();
 
 		if (gamemain->GetPlayerNotBack() ==false)
 		{
@@ -526,7 +526,7 @@ void Player::Draw() const
 	////DrawFormatString(100, 100, 0xffffff, "Right:%d", a);
 	//DrawFormatString(100, 120, 0xffffff, "btnnum: % d", input.Btnnum);
 
-	////DrawFormatString(100, 150, 0xffffff, "location.x: %f",location.x);
+	DrawFormatString(location.x, location.y-60, 0xffffff, "world.y: %f,limit_y:%f",world.y,limit_y);
 
 
 #endif // DEBUG
@@ -762,11 +762,26 @@ void Player::ThrowAnim()
 	dyna_anmcnt++;
 }
 
-void Player::Falling()
+
+
+void Player::PlayerFall()
 {
-	if (limit_y > world.y)
+	//落ちても良かったら
+	if (fall_flg == true)
 	{
-		world.y += move_y;
+		//着地座標がプレイヤーのワールド座標よりも大きかったら
+		if (limit_y-30 > world.y)
+		{
+			//ワールド座標に動く分のY座標をプラスする
+			world.y += move_y;
+		}
+		else
+		{
+			//プレイヤーが着地座標に付いたら
+			//着地座標をワールド座標に入れる
+			world.y = limit_y-30;
+			fall_flg = false;
+		}
 	}
 }
 

@@ -37,6 +37,7 @@ void Lift::Update()
 
 void Lift::Draw() const
 {
+	DrawRotaGraph((int)location.x, (int)location.y, 1,0, lift_img, TRUE);
+	DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + width / 2, (int)location.y + height / 2,0x00ffff,FALSE);
 	DrawFormatString((int)location.x, (int)location.y, 0xFFFFFF, "y:%f", world.y);
-	DrawGraph((int)location.x, (int)location.y, lift_img, TRUE);
 }
