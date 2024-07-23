@@ -192,6 +192,7 @@ public:
     void FragileWallUpdate();               // 脆い壁更新処理
     void DynamiteHitFragileWall();          // ダイナマイトと脆い壁の当たり判定処理
     void PlayerHitFragileWall();            // プレイヤーと脆い壁の当たり判定処理
+    void PlayerHitRock();                   // プレイヤーと壊れる岩の当たり判定処理
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };

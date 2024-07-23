@@ -720,6 +720,9 @@ void GameMainScene::Update()
 		// プレイヤーと脆い壁の当たり判定処理
 		PlayerHitFragileWall();
 
+		// プレイヤーと壊れる岩の当たり判定処理
+		PlayerHitRock();
+
 		//カメラとUIのアップデート
 		if (player != nullptr) {
 
@@ -773,11 +776,11 @@ void GameMainScene::Update()
 						//{
 						
 						// プレイヤーと岩が当たっていたら
-						if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-						{
-							// プレイヤーの歩行を止める
-							player->HitCheckB(stage_block[j]->GetVertex());
-						}
+						//if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+						//{
+						//	// プレイヤーの歩行を止める
+						//	player->HitCheckB(stage_block[j]->GetVertex());
+						//}
 
 						//}
 
@@ -930,7 +933,6 @@ void GameMainScene::Update()
 		
 
 	}
-
 }
 
 void GameMainScene::Draw() const
@@ -1206,7 +1208,6 @@ void GameMainScene::Draw() const
 #endif // DEBUG
 }
 
-
 void GameMainScene::UpdateCamera(World world)
 {
 	//追従する相手のワールド座標をもらう
@@ -1242,8 +1243,6 @@ void GameMainScene::UpdateCamera(World world)
 	}
 
 }
-
-
 
 void GameMainScene::ShakeCamera(bool set_true, int set_num)
 {
@@ -1375,11 +1374,11 @@ void GameMainScene::Tutorial()
 					//if (player->GetDirection() == 0)
 					//{
 					// プレイヤーと岩が当たっていたら
-					if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-					{
-						// プレイヤーの歩行を止める
-						player->HitCheckB(stage_block[j]->GetVertex());
-					}
+					//if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+					//{
+					//	// プレイヤーの歩行を止める
+					//	player->HitCheckB(stage_block[j]->GetVertex());
+					//}
 					//}
 
 					//つるはしを振るってる時だけ
@@ -1490,6 +1489,9 @@ void GameMainScene::Tutorial()
 			}
 		}
 	}
+
+	// プレイヤーと壊れる岩の当たり判定処理
+	PlayerHitRock();
 
 	//プレイヤーの攻撃
 	if (ac != nullptr) {
@@ -2087,6 +2089,22 @@ void GameMainScene::PlayerHitFragileWall()
 	}
 }
 
+// プレイヤーと壊れる岩の当たり判定処理
+void GameMainScene::PlayerHitRock()
+{
+	for (int i = 0; i < block_count; i++)
+	{
+		if (player != nullptr && stage_block[i] != nullptr && stage_block[i]->GetBlockNum() == 4)
+		{
+			// プレイヤーと岩が当たっていたら
+			if (player->HitCheck(stage_block[i]->GetWorldLocation(), stage_block[i]->GetWidth(), stage_block[i]->GetHeight()) == true)
+			{
+				// プレイヤーの歩行を止める
+				player->HitCheckB(stage_block[i]->GetVertex());
+			}
+		}
+	}
+}
 
 AbstractScene* GameMainScene::Change()
 {
