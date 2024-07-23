@@ -160,6 +160,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FallingRock.cpp" />
     <ClCompile Include="fps.cpp" />
+    <ClCompile Include="FragileWall.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
     <ClCompile Include="GameMainScene.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="Define.h" />
     <ClInclude Include="EndScene.h" />
     <ClInclude Include="FallingRock.h" />
+    <ClInclude Include="FragileWall.h" />
     <ClInclude Include="GameClearScene.h" />
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="Gem.h" />

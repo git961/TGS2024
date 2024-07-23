@@ -19,6 +19,7 @@ GameMainScene::GameMainScene(bool set_flg)
 
 	mapio = new MapIo;
 	fade = new BlackOut;
+	fragile_wall = new FragileWall;				// 脆い壁
 
 	//プレイヤー生成
 	if (retry_flg == false)
@@ -247,6 +248,7 @@ GameMainScene::~GameMainScene()
 	delete[] walk_gem;
 	delete roll_gem;
 	delete score;
+	delete fragile_wall;
 
 	// 画像削除
 	DeleteGraph(back_img[0]);
@@ -709,6 +711,12 @@ void GameMainScene::Update()
 
 		PlayerUpDate();
 
+		// 脆い壁更新処理
+		FragileWallUpdate();
+
+		// ダイナマイトと脆い壁の当たり判定処理
+		DynamiteHitFragileWall();
+
 		//カメラとUIのアップデート
 		if (player != nullptr) {
 
@@ -1051,6 +1059,12 @@ void GameMainScene::Draw() const
 				stage_block[j]->Draw();
 			}
 
+		}
+
+		// 脆い壁描画
+		if (fragile_wall != nullptr)
+		{
+			fragile_wall->Draw();
 		}
 
 		//ダイナマイト描画
@@ -2003,6 +2017,45 @@ void GameMainScene::DynamiteHitEnemy()
 		}
 	}
 
+}
+
+// 脆い壁更新処理
+void GameMainScene::FragileWallUpdate()
+{
+	if (fragile_wall != nullptr)
+	{
+		// カメラから見た座標の設定
+		fragile_wall->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+		// 更新
+		fragile_wall->Update();
+	}
+}
+
+// ダイナマイトと脆い壁の当たり判定処理
+void GameMainScene::DynamiteHitFragileWall()
+{
+	if (fragile_wall != nullptr)
+	{
+		for (int i = 0; i < DYNAMITE_MAXNUM; i++)
+		{
+			if (dynamite[i] != nullptr)
+			{
+				// ダイナマイト本体との当たり判定
+				if (dynamite[i]->GetDynamite() == false)
+				{
+					if (dynamite[i]->HitCheck(fragile_wall->GetWorldLocation(), fragile_wall->GetWidth(), fragile_wall->GetHeight()) == true)
+					{
+						dynamite[i]->SetDynamite(true);
+
+						// 脆い壁を削除する
+						delete fragile_wall;
+						fragile_wall = nullptr;
+					}
+				}
+			}
+		}
+	}
 }
 
 
