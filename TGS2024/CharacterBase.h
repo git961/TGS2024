@@ -20,7 +20,7 @@ class CharacterBase
 	:public ObjectBase
 {
 protected:
-	
+
 	float move_x;
 	float move_y;
 
@@ -45,7 +45,7 @@ public:
 
 
 	};
-	~CharacterBase(){};
+	~CharacterBase() {};
 
 
 	bool GetDirection() { return direction; }//キャラの向きを返す　0:右 1:左
@@ -81,9 +81,9 @@ public:
 		}
 
 	}*/
-	
 
-	void HitCheckB(Boxvertex set_box_vertex, World set_world)
+
+	void HitCheckB(Boxvertex set_box_vertex)
 	{
 
 		/*
@@ -119,38 +119,26 @@ public:
 			}
 		}
 
-		//もしキャラクタがブロックのｙ座標の幅の内側に居たら
-		if (world.y<=set_box_vertex.lower_lefty && world.y>=set_box_vertex.upper_lefty)
-		{
 		*/
-		//キャラがブロックの右に居る場合
-		if (world.x >= set_world.x)
-		{
 
-			//ブロックの右にぶつかる処理
-			if (box_vertex.lower_leftx < set_box_vertex.upper_rightx)
-			{
-				world.x = set_world.x + width / 2 + BLOCKSIZE;
-			}
+		//キャラがブロックの左からぶつかった場合
+		if (box_vertex.right_x >= set_box_vertex.left_x)
+		{
+			world.x = world.x - move_x;
 		}
 
-		//キャラがブロックの左に居る場合
-		if (world.x <= set_world.x)
+		//キャラがブロックの右からぶつかった場合
+		if (box_vertex.left_x <= set_box_vertex.right_x)
 		{
-			//ブロックの左にぶつかる処理
-			if (box_vertex.lower_rightx > set_box_vertex.upper_leftx)
-			{
-				world.x = set_world.x - width / 2 - 35;
-				stop_walk_snd = true;
-
-			}
+			world.x = world.x - move_x;
 		}
 
 		//}
 
+		//}
 
-	//
-	}
+
+	};
 
 };
 

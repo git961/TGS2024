@@ -526,6 +526,9 @@ void Player::Draw() const
 
 	////DrawFormatString(100, 150, 0xffffff, "location.x: %f",location.x);
 
+	DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
+	DrawFormatString(700, 500, 0xff0000, "move_x : %f", move_x);
+
 
 #endif // DEBUG
 }

@@ -17,29 +17,11 @@ struct World
 //vertex 頂点
 struct Boxvertex
 {
-	//右上の頂点
-	float upper_rightx=0.0f;
-	float upper_righty=0.0f;
-
-	//右下の頂点
-	float lower_rightx=0.0f;
-	float lower_righty=0.0f;
-
-	//左上の頂点
-	float upper_leftx=0.0f;
-	float upper_lefty=0.0f;
-
-	//左下の頂点
-	float lower_leftx=0.0f;
-	float lower_lefty=0.0f;
+	float right_x = 0.0f;
+	float left_x = 0.0f;
+	float upper_y = 0.0f;
+	float lower_y = 0.0f;
 };
-//
-////左上の頂点
-//struct vertexupperleft
-//{
-//	float x;
-//	float y;
-//};
 
 class ObjectBase
 {
@@ -131,30 +113,17 @@ public:
 	//各頂点の座標をセット
 	void SetVertex()
 	{
+		//右の座標をセット
+		box_vertex.right_x = location.x + width / 2;
 
-		//右上の座標をセット
-		box_vertex.upper_rightx = world.x+BLOCK_HALFSIZE;
-		box_vertex.upper_righty= world.y-BLOCK_HALFSIZE;
+		//左の座標をセット
+		box_vertex.left_x = location.x - width / 2;
 
-		//右下の座標をセット
-		//右下のx座標＝中心ｘ＋ボックスの半分X
-		box_vertex.lower_rightx=world.x+BLOCKSIZE/2;
-		//右下のy座標＝中心y＋ボックスの半分Y
-		box_vertex.lower_righty = world.y + BLOCKSIZE / 2;
+		//上の座標をセット
+		box_vertex.upper_y = location.y - height / 2;
 
-
-		//左上の座標をセット
-		//左上のx座標＝中心ｘ-ボックスの半分X
-		box_vertex.upper_leftx = world.x - BLOCKSIZE / 2;
-		//左上のy座標＝中心y-ボックスの半分Y
-		box_vertex.upper_lefty = world.y - BLOCKSIZE / 2;
-
-
-		//左下の座標をセット
-		box_vertex.lower_leftx = world.x - BLOCK_HALFSIZE;
-		box_vertex.lower_lefty = world.y + BLOCK_HALFSIZE;
-
-
+		//下の座標をセット
+		box_vertex.lower_y = location.y + height / 2;
 	};
 
 

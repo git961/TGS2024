@@ -717,6 +717,9 @@ void GameMainScene::Update()
 		// ダイナマイトと脆い壁の当たり判定処理
 		DynamiteHitFragileWall();
 
+		// プレイヤーと脆い壁の当たり判定処理
+		PlayerHitFragileWall();
+
 		//カメラとUIのアップデート
 		if (player != nullptr) {
 
@@ -766,10 +769,17 @@ void GameMainScene::Update()
 						stage_block[j]->Update();
 
 						//プレイヤが右向きだったら
-						if (player->GetDirection() == 0)
+						//if (player->GetDirection() == 0)
+						//{
+						
+						// プレイヤーと岩が当たっていたら
+						if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
 						{
-							player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
+							// プレイヤーの歩行を止める
+							player->HitCheckB(stage_block[j]->GetVertex());
 						}
+
+						//}
 
 						//つるはしを振るってる時だけ
 						if (player->GetAttacking() == true)
@@ -1362,10 +1372,15 @@ void GameMainScene::Tutorial()
 					stage_block[j]->Update();
 
 					//プレイヤが右向きだったら
-					if (player->GetDirection() == 0)
+					//if (player->GetDirection() == 0)
+					//{
+					// プレイヤーと岩が当たっていたら
+					if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
 					{
-						player->HitCheckB(stage_block[j]->GetVertex(), stage_block[j]->GetWorldLocation());
+						// プレイヤーの歩行を止める
+						player->HitCheckB(stage_block[j]->GetVertex());
 					}
+					//}
 
 					//つるはしを振るってる時だけ
 					if (player->GetAttacking() == true)
@@ -2054,6 +2069,20 @@ void GameMainScene::DynamiteHitFragileWall()
 					}
 				}
 			}
+		}
+	}
+}
+
+// プレイヤーと脆い壁の当たり判定処理
+void GameMainScene::PlayerHitFragileWall()
+{
+	if (player != nullptr && fragile_wall != nullptr)
+	{
+		// プレイヤーが脆い壁に当たっていたら
+		if (player->HitCheck(fragile_wall->GetWorldLocation(), fragile_wall->GetWidth(), fragile_wall->GetHeight()) == true)
+		{
+			// プレイヤーの歩行を止める
+			player->HitCheckB(fragile_wall->GetVertex());
 		}
 	}
 }

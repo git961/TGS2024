@@ -136,6 +136,9 @@ StageBlock::~StageBlock()
 
 void StageBlock::Update()
 {
+	// box_vertexの値を更新し続ける
+	SetVertex();
+
 	if(block_num==4){
 		if (shake_flg == true)
 		{
@@ -259,7 +262,8 @@ void StageBlock::Draw() const
 	//DrawCircle(box_vertex.upper_leftx, box_vertex.upper_lefty, 2, 0xff00ff, TRUE);
 	//DrawCircle(box_vertex.lower_leftx, box_vertex.lower_lefty, 2, 0xff00ff, TRUE);
 	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);			// 中心座標
-
+	
+	DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
 
 }
 
