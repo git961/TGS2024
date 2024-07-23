@@ -186,7 +186,8 @@ public:
     }
     //いる所によって落下する所を更新する
     void SetLimitY(float set_y) {
-        limit_y = set_y;
+        //30px分開いてしまうのでプラスしている
+        limit_y = set_y/*+30*/;
     }
     float GetLimitY() { return limit_y; }
 

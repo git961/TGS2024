@@ -14,7 +14,9 @@ static cameraposition screen_origin_position =
 GameMainScene::GameMainScene(bool set_flg)
 {
 	retry_flg = set_flg;
-
+	checkhit = false;
+	block_cnt = 0;
+	check_cnt=0;
 	//check_abs = 0;
 
 	mapio = new MapIo;
@@ -661,6 +663,7 @@ void GameMainScene::Update()
 		location_x = world_x - screen_origin_position.x;
 		location_y = world_y - screen_origin_position.y;
 
+		/*
 		//リフトテスト後で消す
 		if (lift[0] != nullptr)
 		{
@@ -683,6 +686,10 @@ void GameMainScene::Update()
 				player->SetFallFlg(true);
 			}
 		}
+		*/
+
+		//リフトアップデート
+		LiftUpDate();
 
 		//押されたらポーズへ
 		if (input.CheckBtn(XINPUT_BUTTON_START) == TRUE)
@@ -915,6 +922,9 @@ void GameMainScene::Update()
 				game_state = RESPAWN;
 			}
 		}
+
+		PlayerHitBlock();
+
 			break;
 	default:
 		break;
@@ -1005,6 +1015,13 @@ void GameMainScene::Draw() const
 		if (player != nullptr)
 		{
 			player->Draw();
+			if (checkhit == true)
+			{
+				DrawFormatString(player->GetLocation().x, player->GetLocation().y - 80, 0xffffff, "true");
+			}
+			DrawFormatString(player->GetLocation().x, player->GetLocation().y - 100, 0xffffff, "bcnt:%d", block_cnt);
+			DrawFormatString(player->GetLocation().x, player->GetLocation().y - 120, 0xffffff, "0:%d,1:%d,2:%d",checkhit_block[0],checkhit_block[1],checkhit_block[2]);
+
 		}
 
 		//プレイヤー攻撃描画
@@ -1096,6 +1113,7 @@ void GameMainScene::Draw() const
 		if (player != nullptr)
 		{
 			player->Draw();
+
 		}
 	}
 
@@ -2018,6 +2036,136 @@ void GameMainScene::DynamiteHitEnemy()
 		}
 	}
 
+}
+
+void GameMainScene::LiftUpDate()
+{
+	//リフトテスト後で消す
+	if (lift[0] != nullptr)
+	{
+		lift[0]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+		lift[0]->Update();
+	}
+
+	if (lift[0] != nullptr && player != nullptr)
+	{
+
+		if (player->HitCheck(lift[0]->GetWorldLocation(), lift[0]->GetWidth(), lift[0]->GetHeight()) == true) {
+			lift[0]->SetCanMove(true);
+			player->SetY(lift[0]->GetWorldLocation().y);
+
+		}
+		else if (player->GetLimitY() > player->GetWorldLocation().y)
+		{
+			//当たってないかつプレイヤーがlimitの値より上に居たら
+			//プレイヤーが落ちる
+			player->SetFallFlg(true);
+		}
+	}
+
+}
+
+void GameMainScene::PlayerHitBlock()
+{
+	//範囲内にいくつブロックが当たってるか数える
+	for (int i = 0; i < block_count; i++)
+	{
+		if (player != nullptr && stage_block[i] != nullptr && stage_block[i]->GetBlockNum() == 1)
+		{
+			if (stage_block[i]->HitCheck(player->GetWorldLocation(), player->GetWidth()+78.0f, 128.0f) == true)
+			{
+				block_num[block_cnt] = i;
+				block_cnt++;
+			}
+		}
+	}
+	//当たったらTrue
+	
+	for (int i = 0; i < block_cnt; i++)
+	{
+		if (player != nullptr && stage_block[block_num[i]] != nullptr && stage_block[block_num[i]]->GetBlockNum() == 1)
+		{
+			//if(player->HitCheck(stage_block[block_num[i]]->GetWorldLocation(),stage_block[block_num[i]]->GetWidth(),stage_block[block_num[i]]->GetHeight())==true)
+			if (stage_block[block_num[i]]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
+			{
+				player->SetFallFlg(false);
+				player->SetLimitY(stage_block[block_num[i]]->GetLocation().y - (stage_block[block_num[i]]->GetHeight() / 2 + 5)- player->GetHeight() / 2);
+				checkhit_block[i] = true;
+			}
+			else
+			{
+				checkhit_block[i] = false;
+			}
+		
+
+			//checkhit = false;
+			//player->SetFallFlg(true);
+
+		}
+	}
+
+	//for (int i = 0; i < block_cnt; i++)
+	//{
+	//	if (player != nullptr && stage_block[block_num[i]] != nullptr && stage_block[block_num[i]]->GetBlockNum() == 1)
+	//	{
+	//		if (player->HitCheck(stage_block[block_num[i]]->GetWorldLocation(), stage_block[block_num[i]]->GetWidth(), stage_block[block_num[i]]->GetHeight()) == false)
+	//			//if (stage_block[i]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
+	//		{
+	//			checkhit_block[i] = false;
+	//		}
+	//	}
+	//}
+
+
+	if (checkhit_block[0] == false&&checkhit_block[1]==false&&checkhit_block[2]==false)
+	{
+		player->SetFallFlg(true);
+	}
+
+	//if (check_cnt == 0)
+	//{
+	//	checkhit = false;
+	//	player->SetFallFlg(true);
+	//}
+
+	for (int i = 0; i < block_cnt; i++)
+	{
+		checkhit_block[i] = false;
+		block_num[i] = 0;
+	}
+	block_cnt = 0;
+
+	/*
+	for (int i = 0; i < block_count; i++)
+	{
+		//if (player!=nullptr && stage_block[i] != nullptr && stage_block[i]->GetBlockNum() == 1)
+		//{
+		//	if (stage_block[i]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
+		//	//if(player->HitCheck(stage_block[i]->GetWorldLocation(),stage_block[i]->GetWidth(),stage_block[i]->GetHeight())==true)
+		//	{
+		//			player->SetFallFlg(false);
+		//			
+		//			player->SetLimitY(stage_block[i]->GetLocation().y - stage_block[i]->GetHeight() / 2+5);
+		//			checkhit = true;
+
+		//	}
+
+		//}
+
+
+		//地面ブロックの画面内の全部と当たって無かったら
+		if (player != nullptr && stage_block[i] != nullptr && stage_block[i]->GetBlockNum() == 1)
+		{
+			if (stage_block[i]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == false)
+			{
+				checkhit = false;
+				//player->SetFallFlg(true);
+				
+			}
+		}
+
+	}
+	*/
 }
 
 

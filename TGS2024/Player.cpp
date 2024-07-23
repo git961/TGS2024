@@ -32,7 +32,7 @@ Player::Player(float set_x)
 	death_sound = LoadSoundMem("sounds/se/player/death.mp3");
 
 	
-	img_down = 15;
+	img_down = 45;
 
 	reset_timer = 0;
 	p_imgnum = 0;
@@ -43,10 +43,10 @@ Player::Player(float set_x)
 	anim_cnt = 0;
 
 	world.x = set_x;
-	world.y = 600.0f-30;
+	world.y = 600.0f;
 
 	location.x = 0;
-	location.y = 600.0f-30;
+	location.y = 600.0f;
 
 	old_worldx = world.x;
 
@@ -59,7 +59,7 @@ Player::Player(float set_x)
 
 	//幅と座標
 	width = 50;
-	height = 100;
+	height = 90;
 
 	direction = 0;
 
@@ -413,7 +413,6 @@ void Player::Draw() const
 
 
 	//DrawBoxAA(location.x - width/2, location.y - height/2, location.x + width / 2, location.y + height / 2, 0xffffff,true);
-	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 	//DrawFormatString(location.x, location.y - 80, 0xffffff, "draw%d",p_imgnum);
 
 
@@ -525,8 +524,11 @@ void Player::Draw() const
 	//}
 	////DrawFormatString(100, 100, 0xffffff, "Right:%d", a);
 	//DrawFormatString(100, 120, 0xffffff, "btnnum: % d", input.Btnnum);
+	DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + width / 2, (int)location.y + height / 2, 0x00ffff, FALSE);
+	DrawBox((int)location.x - 128 / 2, (int)location.y - 128 / 2, (int)location.x + 128 / 2, (int)location.y + 128 / 2, 0x00ffff, FALSE);
 
 	DrawFormatString(location.x, location.y-60, 0xffffff, "world.y: %f,limit_y:%f",world.y,limit_y);
+	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 
 
 #endif // DEBUG
@@ -769,8 +771,10 @@ void Player::PlayerFall()
 	//落ちても良かったら
 	if (fall_flg == true)
 	{
+
+		limit_y = 600.0f + height / 2;
 		//着地座標がプレイヤーのワールド座標よりも大きかったら
-		if (limit_y-30 > world.y)
+		if (limit_y > world.y+height / 2)
 		{
 			//ワールド座標に動く分のY座標をプラスする
 			world.y += move_y;
@@ -779,7 +783,7 @@ void Player::PlayerFall()
 		{
 			//プレイヤーが着地座標に付いたら
 			//着地座標をワールド座標に入れる
-			world.y = limit_y-30;
+			world.y = limit_y-height / 2;
 			fall_flg = false;
 		}
 	}

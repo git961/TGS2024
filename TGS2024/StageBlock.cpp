@@ -258,9 +258,14 @@ void StageBlock::Draw() const
 
 	//DrawCircle(box_vertex.upper_leftx, box_vertex.upper_lefty, 2, 0xff00ff, TRUE);
 	//DrawCircle(box_vertex.lower_leftx, box_vertex.lower_lefty, 2, 0xff00ff, TRUE);
-	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);			// 中心座標
+	DrawCircle(location.x, location.y, 2, 0xffffff, true);			// 中心座標
+	DrawCircle(location.x, location.y - height / 2, 2, 0xffffff, true);			// 中心座標
+	if (block_num == 1)
+	{
+		DrawFormatString(location.x, location.y - 60, 0xffffff, "%.0f", location.y - height / 2);
+		DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + width / 2, (int)location.y + height / 2, 0x00ffff, FALSE);
 
-
+	}
 }
 
 void StageBlock::DrawKanban() const
