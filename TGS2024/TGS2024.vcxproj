@@ -154,6 +154,7 @@
     <ClCompile Include="AnimScene.cpp" />
     <ClCompile Include="AttackCheck.cpp" />
     <ClCompile Include="BlackOut.cpp" />
+    <ClCompile Include="Cage.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Dynamite.cpp" />
     <ClCompile Include="EndScene.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="AnimScene.h" />
     <ClInclude Include="AttackCheck.h" />
     <ClInclude Include="BlackOut.h" />
+    <ClInclude Include="Cage.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="EndScene.h" />
     <ClInclude Include="FallingRock.h" />

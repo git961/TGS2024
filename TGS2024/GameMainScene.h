@@ -17,6 +17,7 @@
 #include "GameOverScene.h"
 #include "BlackOut.h"
 #include "FragileWall.h"
+#include "Cage.h"
 
 class Player;
 class Enemy;
@@ -68,6 +69,7 @@ private:
 
     BlackOut* fade;
     FragileWall* fragile_wall;          // 脆い壁
+    Cage* cage;                         // 檻
 
     cameraposition camera_pos;
 
@@ -193,6 +195,8 @@ public:
     void DynamiteHitFragileWall();          // ダイナマイトと脆い壁の当たり判定処理
     void PlayerHitFragileWall();            // プレイヤーと脆い壁の当たり判定処理
     void PlayerHitRock();                   // プレイヤーと壊れる岩の当たり判定処理
+
+    void CageUpdate();                      // 檻の更新処理
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };

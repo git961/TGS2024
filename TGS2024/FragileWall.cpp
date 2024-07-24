@@ -26,6 +26,7 @@ FragileWall::~FragileWall()
 // 更新処理
 void FragileWall::Update()
 {
+	// 頂点の設定
 	SetVertex();
 
 	if (hp <= 0)

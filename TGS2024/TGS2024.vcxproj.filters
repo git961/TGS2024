@@ -147,6 +147,9 @@
     <ClCompile Include="FragileWall.cpp">
       <Filter>ソース ファイル\StageFile</Filter>
     </ClCompile>
+    <ClCompile Include="Cage.cpp">
+      <Filter>ソース ファイル\StageFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fps.h">
@@ -240,6 +243,9 @@
       <Filter>ヘッダー ファイル\StageFile</Filter>
     </ClInclude>
     <ClInclude Include="FragileWall.h">
+      <Filter>ヘッダー ファイル\StageFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Cage.h">
       <Filter>ヘッダー ファイル\StageFile</Filter>
     </ClInclude>
   </ItemGroup>

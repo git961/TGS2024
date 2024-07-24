@@ -25,6 +25,6 @@ private:
 public:
 	void Damege(int damege);            // 被ダメージ処理
 
-	bool GetDeleteFlg() { return delete_flg; }
+	bool GetDeleteFlg() const { return delete_flg; }
 
 };
