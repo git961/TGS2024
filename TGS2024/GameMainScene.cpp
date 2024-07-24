@@ -2072,23 +2072,27 @@ void GameMainScene::PlayerHitBlock()
 	{
 		if (player != nullptr && stage_block[i] != nullptr && stage_block[i]->GetBlockNum() == 1)
 		{
+			//プレイヤーを中心に128*128の範囲内にブロックが何個あるのか数える
 			if (stage_block[i]->HitCheck(player->GetWorldLocation(), player->GetWidth()+78.0f, 128.0f) == true)
 			{
+				//何番目のブロックが範囲内にあるのか格納する
 				block_num[block_cnt] = i;
 				block_cnt++;
 			}
 		}
 	}
-	//当たったらTrue
-	
+
+
 	for (int i = 0; i < block_cnt; i++)
 	{
 		if (player != nullptr && stage_block[block_num[i]] != nullptr && stage_block[block_num[i]]->GetBlockNum() == 1)
 		{
-			//if(player->HitCheck(stage_block[block_num[i]]->GetWorldLocation(),stage_block[block_num[i]]->GetWidth(),stage_block[block_num[i]]->GetHeight())==true)
+			//もし範囲内のブロックと当たっていたら
 			if (stage_block[block_num[i]]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
 			{
+				//落ちれない状態にする
 				player->SetFallFlg(false);
+				//当たったブロックの上部の座標をプレイヤーの着地座標にいれる（プレイヤーの画像分ずらしている）
 				player->SetLimitY(stage_block[block_num[i]]->GetLocation().y - (stage_block[block_num[i]]->GetHeight() / 2 + 5)- player->GetHeight() / 2);
 				checkhit_block[i] = true;
 			}
@@ -2097,37 +2101,17 @@ void GameMainScene::PlayerHitBlock()
 				checkhit_block[i] = false;
 			}
 		
-
-			//checkhit = false;
-			//player->SetFallFlg(true);
-
 		}
 	}
 
-	//for (int i = 0; i < block_cnt; i++)
-	//{
-	//	if (player != nullptr && stage_block[block_num[i]] != nullptr && stage_block[block_num[i]]->GetBlockNum() == 1)
-	//	{
-	//		if (player->HitCheck(stage_block[block_num[i]]->GetWorldLocation(), stage_block[block_num[i]]->GetWidth(), stage_block[block_num[i]]->GetHeight()) == false)
-	//			//if (stage_block[i]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
-	//		{
-	//			checkhit_block[i] = false;
-	//		}
-	//	}
-	//}
-
-
+	//もし範囲内のブロックに当たっていなかったら
 	if (checkhit_block[0] == false&&checkhit_block[1]==false&&checkhit_block[2]==false)
 	{
+		//プレイヤーを落ちる状態にする
 		player->SetFallFlg(true);
 	}
 
-	//if (check_cnt == 0)
-	//{
-	//	checkhit = false;
-	//	player->SetFallFlg(true);
-	//}
-
+	//初期化する
 	for (int i = 0; i < block_cnt; i++)
 	{
 		checkhit_block[i] = false;
@@ -2135,37 +2119,6 @@ void GameMainScene::PlayerHitBlock()
 	}
 	block_cnt = 0;
 
-	/*
-	for (int i = 0; i < block_count; i++)
-	{
-		//if (player!=nullptr && stage_block[i] != nullptr && stage_block[i]->GetBlockNum() == 1)
-		//{
-		//	if (stage_block[i]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
-		//	//if(player->HitCheck(stage_block[i]->GetWorldLocation(),stage_block[i]->GetWidth(),stage_block[i]->GetHeight())==true)
-		//	{
-		//			player->SetFallFlg(false);
-		//			
-		//			player->SetLimitY(stage_block[i]->GetLocation().y - stage_block[i]->GetHeight() / 2+5);
-		//			checkhit = true;
-
-		//	}
-
-		//}
-
-
-		//地面ブロックの画面内の全部と当たって無かったら
-		if (player != nullptr && stage_block[i] != nullptr && stage_block[i]->GetBlockNum() == 1)
-		{
-			if (stage_block[i]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == false)
-			{
-				checkhit = false;
-				//player->SetFallFlg(true);
-				
-			}
-		}
-
-	}
-	*/
 }
 
 
