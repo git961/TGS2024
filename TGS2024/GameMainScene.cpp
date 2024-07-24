@@ -2046,6 +2046,13 @@ void GameMainScene::FragileWallUpdate()
 
 		// 更新
 		fragile_wall->Update();
+
+		if (fragile_wall->GetDeleteFlg() == true)
+		{
+			// 脆い壁の削除
+			delete fragile_wall;
+			fragile_wall = nullptr;
+		}
 	}
 }
 
@@ -2064,10 +2071,7 @@ void GameMainScene::DynamiteHitFragileWall()
 					if (dynamite[i]->HitCheck(fragile_wall->GetWorldLocation(), fragile_wall->GetWidth(), fragile_wall->GetHeight()) == true)
 					{
 						dynamite[i]->SetDynamite(true);
-
-						// 脆い壁を削除する
-						delete fragile_wall;
-						fragile_wall = nullptr;
+						fragile_wall->Damege(100);
 					}
 				}
 			}
