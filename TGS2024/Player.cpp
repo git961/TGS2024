@@ -344,12 +344,6 @@ void Player::Update(GameMainScene* gamemain)
 		//つるはし攻撃
 		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 		{
-			//if (CheckSoundMem(atk_sound) == TRUE)
-			//{
-			//	StopSoundMem(atk_sound);
-			//}
-
-
 
 			//右向きだったら
 			if (direction == 0)
@@ -797,60 +791,7 @@ void Player::PlayerAttack()
 
 	if (attacking == true)
 	{
-		/*
-		if (attack_cnt == 1)
-		{
-			p_atk_imgnum = 4;
-			//2段
-			switch (anim_cnt)
-			{
-			case 0:
-				p_imgnum = 0;
-				break;
-			case 10:
-				p_imgnum = 1;
-				break;
-			case 13:
-				is_atk_putout = true;
-				effect_num = 0;
-				p_imgnum = 2;
-				break;
-			case 16:
-				effect_num = 1;
-				p_imgnum = 3;
-				break;
-			}
 
-		}
-		else if (attack_cnt == 2)
-		{*/
-			//p_atk_imgnum = 8;
-			//初段
-		//	switch (anim_cnt)
-		//	{
-		//	case 0:
-		//		p_imgnum = 0;
-		//		break;
-		//	case 12:
-		//		p_imgnum = 1;
-		//		break;
-		//	case 15:
-		//		is_atk_putout = true;
-		//		effect_num = 0;
-		//		p_imgnum = 2;
-		//		break;
-		//	case 18:
-		//		effect_num = 1;
-		//		p_imgnum = 3;
-		//		break;
-		//	}
-
-		//}
-		//else {
-
-
-			//p_atk_imgnum = 0;
-			//初段
 		if (direction == false)
 		{
 			switch (anim_cnt)
@@ -923,16 +864,7 @@ void Player::PlayerAttack()
 		if (anim_cnt > 1)
 		{
 			//そのままやるとそのままcheckBtnの中に入ってしまうので、数フレーム待たせる
-			//受付を１０までにする
-			//123.じゃなくて1,23ってなるときがあるので治す？
-	/*		if (atk_cnt_timer < 20)
-			{
-				if (input.CheckBtn(XINPUT_BUTTON_X) == TRUE)
-				{
-					color13 = 0x000000;
-					next_attackflg = true;
-				}
-			}*/
+
 		}
 		//20フレーム回ったら
 		if (atk_cnt_timer++ > 20)
