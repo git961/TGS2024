@@ -144,6 +144,9 @@
     <ClCompile Include="TestStageScene.cpp">
       <Filter>ソース ファイル\StageFile</Filter>
     </ClCompile>
+    <ClCompile Include="FragileWall.cpp">
+      <Filter>ソース ファイル\StageFile</Filter>
+    </ClCompile>
     <ClCompile Include="Lift.cpp">
       <Filter>ソース ファイル\StageObjectFile</Filter>
     </ClCompile>
@@ -237,6 +240,9 @@
       <Filter>ヘッダー ファイル\BaseFile</Filter>
     </ClInclude>
     <ClInclude Include="TestStageScene.h">
+      <Filter>ヘッダー ファイル\StageFile</Filter>
+    </ClInclude>
+    <ClInclude Include="FragileWall.h">
       <Filter>ヘッダー ファイル\StageFile</Filter>
     </ClInclude>
     <ClInclude Include="Lift.h">
