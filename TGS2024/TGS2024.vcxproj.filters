@@ -150,6 +150,9 @@
     <ClCompile Include="Lift.cpp">
       <Filter>ソース ファイル\StageObjectFile</Filter>
     </ClCompile>
+    <ClCompile Include="Switch.cpp">
+      <Filter>ソース ファイル\StageObjectFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fps.h">
@@ -246,6 +249,9 @@
       <Filter>ヘッダー ファイル\StageFile</Filter>
     </ClInclude>
     <ClInclude Include="Lift.h">
+      <Filter>ヘッダー ファイル\StageObjectFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Switch.h">
       <Filter>ヘッダー ファイル\StageObjectFile</Filter>
     </ClInclude>
   </ItemGroup>

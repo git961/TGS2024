@@ -33,6 +33,8 @@ void Lift::Update()
 			world.y = world.y - move_y;
 		}
 	}
+
+
 }
 
 void Lift::Draw() const
