@@ -22,8 +22,8 @@ GameMainScene::GameMainScene(bool set_flg)
 	mapio = new MapIo;
 	fade = new BlackOut;
 	fragile_wall = new FragileWall;				// 脆い壁
-	cage = new Cage;							// 檻
 	cage_door = new CageDoor(2500.0f, 250.0f);	// 檻のドア
+	cage = new Cage(cage_door->GetWorldLocation().x, cage_door->GetWorldLocation().y);							// 檻
 
 	//プレイヤー生成
 	if (retry_flg == false)

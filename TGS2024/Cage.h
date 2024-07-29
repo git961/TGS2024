@@ -8,7 +8,7 @@ private:
 	int cage_grate_img;					// 檻の格子の画像
 
 public:
-	Cage();
+	Cage(float set_x, float set_y);
 	~Cage();
 
 	void Update();						// 更新処理

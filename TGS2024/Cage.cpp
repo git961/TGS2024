@@ -1,9 +1,10 @@
 #include "Cage.h"
 
-Cage::Cage()
+Cage::Cage(float set_x, float set_y)
 {
-	world.x = 2500.0f;
-	world.y = 250.0f;
+	// 檻のドアの座標から檻の座標を求める
+	world.x = set_x - 192.0f;
+	world.y = set_y - 64.0f;
 	location.x = world.x;
 	location.y = world.y;
 	width = 512.0f;
