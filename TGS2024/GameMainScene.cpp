@@ -2285,8 +2285,8 @@ void GameMainScene::PlayerHitCageDoor()
 {
 	if (player != nullptr && cage_door != nullptr)
 	{
-		// プレイヤーが檻のドアに当たっていたら
-		if (player->HitCheck(cage_door->GetWorldLocation(), cage_door->GetWidth(), cage_door->GetHeight()) == true)
+		// プレイヤーが閉まっている檻のドアに当たっていたら
+		if (cage_door->GetOpenFlg() == false && player->HitCheck(cage_door->GetWorldLocation(), cage_door->GetWidth(), cage_door->GetHeight()) == true)
 		{
 			// プレイヤーの歩行を止める
 			player->HitCheckB(cage_door->GetVertex());

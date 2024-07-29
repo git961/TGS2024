@@ -12,6 +12,7 @@ CageDoor::CageDoor(float set_x, float set_y)
 	// 画像の読み込み
 	cage_door_img = LoadGraph("images/Stage/Cage_Door.png");
 
+	hp = 100.0f;
 	img_num = 0;
 	anim_cnt = 0;
 	open_flg = false;			// ドアが開いてない
@@ -27,6 +28,13 @@ void CageDoor::Update()
 {
 	// 頂点の設定
 	SetVertex();
+
+	if (hp <= 0.0f)
+	{
+		open_flg = true;
+		// ドアが開くアニメーション
+		DoorOpenAnimation();
+	}
 }
 
 void CageDoor::Draw() const
@@ -44,12 +52,13 @@ void CageDoor::DoorOpenAnimation()
 
 }
 
-void CageDoor::SetOpenFlg(bool set_flg)
-{
-	open_flg = set_flg;
-}
-
 bool CageDoor::GetOpenFlg() const
 {
 	return open_flg;
+}
+
+// 被ダメージ処理
+void CageDoor::Damege(float damege)
+{
+	hp -= damege;
 }

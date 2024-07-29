@@ -6,6 +6,7 @@ class CageDoor : public ObjectBase
 private:
 	int cage_door_img;					// 檻のドアの画像
 
+	float hp;							// 体力
 	int img_num;						// 画像番号
 	int anim_cnt;						// アニメーション用カウント
 	bool open_flg;						// 入口が開いたか？
@@ -21,8 +22,8 @@ private:
 	void DoorOpenAnimation();			// ドアが開くアニメーション
 
 public:
-	void SetOpenFlg(bool set_flg);
-
 	bool GetOpenFlg() const;
+
+	void Damege(float damege);
 
 };
