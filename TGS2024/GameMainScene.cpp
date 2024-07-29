@@ -21,6 +21,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	fade = new BlackOut;
 	fragile_wall = new FragileWall;				// 脆い壁
 	cage = new Cage;							// 檻
+	cage_door = new CageDoor(2500.0f, 250.0f);	// 檻のドア
 
 	//プレイヤー生成
 	if (retry_flg == false)
@@ -251,6 +252,7 @@ GameMainScene::~GameMainScene()
 	delete score;
 	delete fragile_wall;
 	delete cage;
+	delete cage_door;
 
 	// 画像削除
 	DeleteGraph(back_img[0]);
@@ -719,6 +721,9 @@ void GameMainScene::Update()
 		// 檻の更新処理
 		CageUpdate();
 
+		// 檻のドアの更新処理
+		CageDoorUpdate();
+
 		// ダイナマイトと脆い壁の当たり判定処理
 		DynamiteHitFragileWall();
 
@@ -1088,6 +1093,12 @@ void GameMainScene::Draw() const
 		if (cage != nullptr)
 		{
 			cage->Draw();
+		}
+
+		// 檻のドアの描画
+		if (cage_door != nullptr)
+		{
+			cage_door->Draw();
 		}
 
 		//ダイナマイト描画
@@ -2131,6 +2142,19 @@ void GameMainScene::CageUpdate()
 
 		// 更新処理
 		cage->Update();
+	}
+}
+
+// 檻のドアの更新処理
+void GameMainScene::CageDoorUpdate()
+{
+	if (cage_door != nullptr)
+	{
+		// カメラから見た座標の設定
+		cage_door->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+		// 更新処理
+		cage_door->Update();
 	}
 }
 
