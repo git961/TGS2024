@@ -39,7 +39,9 @@ private:
 
     //int player_ase_img[10];
 
-
+    
+    float limit_y;//落下の上限用
+    bool fall_flg;//落ちるか？
 
     float img_down;//画像の表示位置を下げる用
     int p_imgnum;//プレイヤーの画像番号切り替え用
@@ -161,6 +163,9 @@ public:
     void DeathAnim();
     void ThrowAnim();
 
+    void PlayerFall();//プレイヤーが落下する処理
+
+
     void PlayerAttack();
     void PlayerTutoAttack();
     void TutoWalkAnim();
@@ -175,11 +180,16 @@ public:
 
     bool GetDeathFlg() { return death_flg; }
 
-
-
-    void SetLocationY(float set_y) {
-        location.y = set_y;
+    //足元になにもなかったら落ちる
+    void SetFallFlg(bool set_flg) {
+        fall_flg = set_flg;
     }
+    //いる所によって落下する所を更新する
+    void SetLimitY(float set_y) {
+        //30px分開いてしまうのでプラスしている
+        limit_y = set_y/*+30*/;
+    }
+    float GetLimitY() { return limit_y; }
 
     void SetEnemyHit(bool set_hitflg)
     {
@@ -190,16 +200,21 @@ public:
 
     void SetDamageFlg(bool set_damageflg) { hit_damage = set_damageflg; }
 
-    void SetX(float set_x) {
+    void SetX(float set_x)
+    {
         // 端に来たら跳ね返る
         if (world.x + width / 2 > set_x)
         {
             world.x = set_x - 64;
-
         }
     }
 
-    void testdamage(Enemy* enemy);
+    //リフトのYをプレイヤーのワールド座標に入れる
+    void SetY(float set_y)
+    {
+           world.y = set_y-35;
+    }
+
 
     void OpAnimUpdate(AnimScene *anim_scene,int set_case);//最初のアニメーション用
     void TutorialAnimUpdate();//チュートリアル用アップデート

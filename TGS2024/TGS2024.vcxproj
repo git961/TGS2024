@@ -168,6 +168,7 @@
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="Gem.cpp" />
     <ClCompile Include="EndCreditsScene.cpp" />
+    <ClCompile Include="Lift.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapIo.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="Gem.h" />
     <ClInclude Include="Dynamite.h" />
     <ClInclude Include="EndCreditsScene.h" />
+    <ClInclude Include="Lift.h" />
     <ClInclude Include="ObjectBase.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CharacterBase.h" />
@@ -204,7 +206,7 @@
     <ClInclude Include="MapIo.h" />
     <ClInclude Include="padinput.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="PmoveBlockBase.h" />
+    <ClInclude Include="LiftBase.h" />
     <ClInclude Include="RollingEnemy.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Score.h" />

@@ -153,6 +153,9 @@
     <ClCompile Include="CageDoor.cpp">
       <Filter>ソース ファイル\StageFile</Filter>
     </ClCompile>
+    <ClCompile Include="Lift.cpp">
+      <Filter>ソース ファイル\StageObjectFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fps.h">
@@ -239,7 +242,7 @@
     <ClInclude Include="BlackOut.h">
       <Filter>ヘッダー ファイル\AnimS</Filter>
     </ClInclude>
-    <ClInclude Include="PmoveBlockBase.h">
+    <ClInclude Include="LiftBase.h">
       <Filter>ヘッダー ファイル\BaseFile</Filter>
     </ClInclude>
     <ClInclude Include="TestStageScene.h">
@@ -253,6 +256,9 @@
     </ClInclude>
     <ClInclude Include="CageDoor.h">
       <Filter>ヘッダー ファイル\StageFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Lift.h">
+      <Filter>ヘッダー ファイル\StageObjectFile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

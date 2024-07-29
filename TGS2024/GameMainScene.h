@@ -19,6 +19,7 @@
 #include "FragileWall.h"
 #include "Cage.h"
 #include "CageDoor.h"
+#include "Lift.h"
 
 class Player;
 class Enemy;
@@ -29,6 +30,7 @@ class StageBlock;
 class UI;
 class Dynamite;
 class Gem;
+class Lift;
 
 struct cameraposition
 {
@@ -65,6 +67,8 @@ private:
     Gem** walk_gem;             // 配列
     Gem** roll_gem;
     Score* score;
+
+    Lift** lift;
 
     UI* ui;
 
@@ -152,6 +156,13 @@ private:
     int start_pause_se;            // ポーズ開始音
     int unpause_se;                    // ポーズ解除音
 
+
+    bool checkhit;//当たり判定当たっているかチェック用：後で消す
+    int block_cnt = 0;
+    int check_cnt = 0;
+    bool checkhit_block[3] = { false };
+    int block_num[3] = { 0 };
+
 public:
     GameMainScene(bool set_flg);
     ~GameMainScene();
@@ -192,6 +203,8 @@ public:
     void PlayerHitEnemy();
     void PickaxeHitEnemy();
     void DynamiteHitEnemy();
+    void LiftUpDate();
+    void PlayerHitBlock();
 
     void FragileWallUpdate();               // 脆い壁更新処理
     void DynamiteHitFragileWall();          // ダイナマイトと脆い壁の当たり判定処理

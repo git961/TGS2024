@@ -14,7 +14,9 @@ static cameraposition screen_origin_position =
 GameMainScene::GameMainScene(bool set_flg)
 {
 	retry_flg = set_flg;
-
+	checkhit = false;
+	block_cnt = 0;
+	check_cnt=0;
 	//check_abs = 0;
 
 	mapio = new MapIo;
@@ -46,6 +48,10 @@ GameMainScene::GameMainScene(bool set_flg)
 	roll_gem = new Gem * [ROLLING_ENEMY_MAXNUM];
 	score = new Score;
 
+	/*リフトテスト 後で消す*/
+	lift = new Lift * [1];
+	lift[0] = nullptr;
+	lift[0] = new Lift(2500, 600);
 
 	dynamite = new Dynamite * [DYNAMITE_MAXNUM];
 	enemy_damage_once = false;
@@ -92,7 +98,6 @@ GameMainScene::GameMainScene(bool set_flg)
 	{
 		enemy[i] = nullptr;
 		walk_gem[i] = nullptr;
-		
 	}
 
 	//ローリングエネミーとジェム
@@ -178,12 +183,6 @@ GameMainScene::GameMainScene(bool set_flg)
 		dynamite[i] = nullptr;
 	}
 
-	//rock_gem = new Gem*[rock_count];
-
-	//for (int i = 0; i < rock_count; i++)
-	//{
-	//	rock_gem[i] = nullptr;
-	//}
 
 	check_num = 0;
 
@@ -295,11 +294,8 @@ void GameMainScene::ResetMap()
 		dynamite[i] = nullptr;
 	}
 
-	//for()
-
 	block_count = 0;
 	enemy_count = 0;
-	//rock_count = 0;
 	rolling_enemy_cnt = 0;
 
 	//マップチップに反映する
@@ -669,17 +665,37 @@ void GameMainScene::Update()
 		}
 
 
-#ifdef DEBUG
-		//if (rolling_enemy == nullptr)
-		//{
-		//	// 転がるエネミーが消えたら新しく出現させる
-		//	//rolling_enemy = new RollingEnemy;
-		//}
-#endif
-
 		//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
 		location_x = world_x - screen_origin_position.x;
 		location_y = world_y - screen_origin_position.y;
+
+		/*
+		//リフトテスト後で消す
+		if (lift[0] != nullptr)
+		{
+			lift[0]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			lift[0]->Update();
+		}
+
+		if (lift[0] != nullptr && player != nullptr)
+		{
+
+			if (player->HitCheck(lift[0]->GetWorldLocation(), lift[0]->GetWidth(), lift[0]->GetHeight()) == true){
+				lift[0]->SetCanMove(true);
+				player->SetY(lift[0]->GetWorldLocation().y);
+				
+			}
+			else if(player->GetLimitY()-30>player->GetWorldLocation().y)
+			{
+				//当たってないかつプレイヤーがlimitの値より上に居たら
+				//プレイヤーが落ちる
+				player->SetFallFlg(true);
+			}
+		}
+		*/
+
+		//リフトアップデート
+		LiftUpDate();
 
 		//押されたらポーズへ
 		if (input.CheckBtn(XINPUT_BUTTON_START) == TRUE)
@@ -713,6 +729,7 @@ void GameMainScene::Update()
 		//プレイヤーがエネミーに当たったときの被弾処理
 		PlayerHitEnemy();
 
+		//プレイヤー更新処理
 		PlayerUpDate();
 
 		// 脆い壁更新処理
@@ -936,6 +953,9 @@ void GameMainScene::Update()
 				game_state = RESPAWN;
 			}
 		}
+
+		PlayerHitBlock();
+
 			break;
 	default:
 		break;
@@ -963,6 +983,11 @@ void GameMainScene::Draw() const
 		{
 			stage_block[j]->DrawKanban();
 		}
+	}
+
+	if (lift[0] != nullptr)
+	{
+		lift[0]->Draw();
 	}
 	
 	if (game_state == TUTORIAL)
@@ -1020,6 +1045,13 @@ void GameMainScene::Draw() const
 		if (player != nullptr)
 		{
 			player->Draw();
+			if (checkhit == true)
+			{
+				DrawFormatString(player->GetLocation().x, player->GetLocation().y - 80, 0xffffff, "true");
+			}
+			DrawFormatString(player->GetLocation().x, player->GetLocation().y - 100, 0xffffff, "bcnt:%d", block_cnt);
+			DrawFormatString(player->GetLocation().x, player->GetLocation().y - 120, 0xffffff, "0:%d,1:%d,2:%d",checkhit_block[0],checkhit_block[1],checkhit_block[2]);
+
 		}
 
 		//プレイヤー攻撃描画
@@ -1129,6 +1161,7 @@ void GameMainScene::Draw() const
 		if (player != nullptr)
 		{
 			player->Draw();
+
 		}
 	}
 
@@ -2156,6 +2189,89 @@ void GameMainScene::CageDoorUpdate()
 		// 更新処理
 		cage_door->Update();
 	}
+}
+
+void GameMainScene::LiftUpDate()
+{
+	//リフトテスト後で消す
+	if (lift[0] != nullptr)
+	{
+		lift[0]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+		lift[0]->Update();
+	}
+
+	if (lift[0] != nullptr && player != nullptr)
+	{
+
+		if (player->HitCheck(lift[0]->GetWorldLocation(), lift[0]->GetWidth(), lift[0]->GetHeight()) == true) {
+			lift[0]->SetCanMove(true);
+			player->SetY(lift[0]->GetWorldLocation().y);
+
+		}
+		else if (player->GetLimitY() > player->GetWorldLocation().y)
+		{
+			//当たってないかつプレイヤーがlimitの値より上に居たら
+			//プレイヤーが落ちる
+			player->SetFallFlg(true);
+		}
+	}
+
+}
+
+void GameMainScene::PlayerHitBlock()
+{
+	//範囲内にいくつブロックが当たってるか数える
+	for (int i = 0; i < block_count; i++)
+	{
+		if (player != nullptr && stage_block[i] != nullptr && stage_block[i]->GetBlockNum() == 1)
+		{
+			//プレイヤーを中心に128*128の範囲内にブロックが何個あるのか数える
+			if (stage_block[i]->HitCheck(player->GetWorldLocation(), player->GetWidth() + 78.0f, 128.0f) == true)
+			{
+				//何番目のブロックが範囲内にあるのか格納する
+				block_num[block_cnt] = i;
+				block_cnt++;
+			}
+		}
+	}
+
+
+	for (int i = 0; i < block_cnt; i++)
+	{
+		if (player != nullptr && stage_block[block_num[i]] != nullptr && stage_block[block_num[i]]->GetBlockNum() == 1)
+		{
+			//もし範囲内のブロックと当たっていたら
+			if (stage_block[block_num[i]]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
+			{
+				//落ちれない状態にする
+				player->SetFallFlg(false);
+				//当たったブロックの上部の座標をプレイヤーの着地座標にいれる（プレイヤーの画像分ずらしている）
+				player->SetLimitY(stage_block[block_num[i]]->GetLocation().y - (stage_block[block_num[i]]->GetHeight() / 2 + 5) - player->GetHeight() / 2);
+				checkhit_block[i] = true;
+			}
+			else
+			{
+				checkhit_block[i] = false;
+			}
+
+		}
+	}
+
+	//もし範囲内のブロックに当たっていなかったら
+	if (checkhit_block[0] == false && checkhit_block[1] == false && checkhit_block[2] == false)
+	{
+		//プレイヤーを落ちる状態にする
+		player->SetFallFlg(true);
+	}
+
+	//初期化する
+	for (int i = 0; i < block_cnt; i++)
+	{
+		checkhit_block[i] = false;
+		block_num[i] = 0;
+	}
+	block_cnt = 0;
+
 }
 
 AbstractScene* GameMainScene::Change()

@@ -32,7 +32,7 @@ Player::Player(float set_x)
 	death_sound = LoadSoundMem("sounds/se/player/death.mp3");
 
 	
-	img_down = 15;
+	img_down = 45;
 
 	reset_timer = 0;
 	p_imgnum = 0;
@@ -43,10 +43,10 @@ Player::Player(float set_x)
 	anim_cnt = 0;
 
 	world.x = set_x;
-	world.y = 600.0f-30;
+	world.y = 600.0f;
 
 	location.x = 0;
-	location.y = 600.0f-30;
+	location.y = 600.0f;
 
 	old_worldx = world.x;
 
@@ -59,7 +59,7 @@ Player::Player(float set_x)
 
 	//幅と座標
 	width = 50;
-	height = 100;
+	height = 90;
 
 	direction = 0;
 
@@ -67,7 +67,7 @@ Player::Player(float set_x)
 	speed = 1;
 
 	move_x = 0;
-	move_y = 0;
+	move_y = 3;
 
 	walk_abs = 0;
 
@@ -157,6 +157,8 @@ Player::Player(float set_x)
 	change_scene_cnt = 0;
 	credits_walk_cnt = 0;
 	walk_cnt_up_flg = true;
+
+	limit_y = 600;
 }
 
 Player::~Player()
@@ -228,8 +230,6 @@ void Player::Update(GameMainScene* gamemain)
 	case WALK:
 	case NOMAL:
 
-
-
 		if (player_state == NOMAL)
 		{
 			if (direction == false)
@@ -256,6 +256,8 @@ void Player::Update(GameMainScene* gamemain)
 		}
 
 		WalkAnim();
+
+		PlayerFall();
 
 		if (gamemain->GetPlayerNotBack() ==false)
 		{
@@ -342,12 +344,6 @@ void Player::Update(GameMainScene* gamemain)
 		//つるはし攻撃
 		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 		{
-			//if (CheckSoundMem(atk_sound) == TRUE)
-			//{
-			//	StopSoundMem(atk_sound);
-			//}
-
-
 
 			//右向きだったら
 			if (direction == 0)
@@ -411,7 +407,6 @@ void Player::Draw() const
 
 
 	//DrawBoxAA(location.x - width/2, location.y - height/2, location.x + width / 2, location.y + height / 2, 0xffffff,true);
-	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 	//DrawFormatString(location.x, location.y - 80, 0xffffff, "draw%d",p_imgnum);
 
 
@@ -523,8 +518,11 @@ void Player::Draw() const
 	//}
 	////DrawFormatString(100, 100, 0xffffff, "Right:%d", a);
 	//DrawFormatString(100, 120, 0xffffff, "btnnum: % d", input.Btnnum);
+	DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + width / 2, (int)location.y + height / 2, 0x00ffff, FALSE);
+	DrawBox((int)location.x - 128 / 2, (int)location.y - 128 / 2, (int)location.x + 128 / 2, (int)location.y + 128 / 2, 0x00ffff, FALSE);
 
-	////DrawFormatString(100, 150, 0xffffff, "location.x: %f",location.x);
+	DrawFormatString(location.x, location.y-60, 0xffffff, "world.y: %f,limit_y:%f",world.y,limit_y);
+	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 
 	DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
 	DrawFormatString(700, 500, 0xff0000, "move_x : %f", move_x);
@@ -763,65 +761,37 @@ void Player::ThrowAnim()
 	dyna_anmcnt++;
 }
 
+
+
+void Player::PlayerFall()
+{
+	//落ちても良かったら
+	if (fall_flg == true)
+	{
+
+		limit_y = 600.0f + height / 2;
+		//着地座標がプレイヤーのワールド座標よりも大きかったら
+		if (limit_y > world.y+height / 2)
+		{
+			//ワールド座標に動く分のY座標をプラスする
+			world.y += move_y;
+		}
+		else
+		{
+			//プレイヤーが着地座標に付いたら
+			//着地座標をワールド座標に入れる
+			world.y = limit_y-height / 2;
+			fall_flg = false;
+		}
+	}
+}
+
 void Player::PlayerAttack()
 {
 
 	if (attacking == true)
 	{
-		/*
-		if (attack_cnt == 1)
-		{
-			p_atk_imgnum = 4;
-			//2段
-			switch (anim_cnt)
-			{
-			case 0:
-				p_imgnum = 0;
-				break;
-			case 10:
-				p_imgnum = 1;
-				break;
-			case 13:
-				is_atk_putout = true;
-				effect_num = 0;
-				p_imgnum = 2;
-				break;
-			case 16:
-				effect_num = 1;
-				p_imgnum = 3;
-				break;
-			}
 
-		}
-		else if (attack_cnt == 2)
-		{*/
-			//p_atk_imgnum = 8;
-			//初段
-		//	switch (anim_cnt)
-		//	{
-		//	case 0:
-		//		p_imgnum = 0;
-		//		break;
-		//	case 12:
-		//		p_imgnum = 1;
-		//		break;
-		//	case 15:
-		//		is_atk_putout = true;
-		//		effect_num = 0;
-		//		p_imgnum = 2;
-		//		break;
-		//	case 18:
-		//		effect_num = 1;
-		//		p_imgnum = 3;
-		//		break;
-		//	}
-
-		//}
-		//else {
-
-
-			//p_atk_imgnum = 0;
-			//初段
 		if (direction == false)
 		{
 			switch (anim_cnt)
@@ -894,16 +864,7 @@ void Player::PlayerAttack()
 		if (anim_cnt > 1)
 		{
 			//そのままやるとそのままcheckBtnの中に入ってしまうので、数フレーム待たせる
-			//受付を１０までにする
-			//123.じゃなくて1,23ってなるときがあるので治す？
-	/*		if (atk_cnt_timer < 20)
-			{
-				if (input.CheckBtn(XINPUT_BUTTON_X) == TRUE)
-				{
-					color13 = 0x000000;
-					next_attackflg = true;
-				}
-			}*/
+
 		}
 		//20フレーム回ったら
 		if (atk_cnt_timer++ > 20)
