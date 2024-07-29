@@ -13,7 +13,7 @@ private:
 	bool delete_flg;					// 削除するか？
 
 public:
-	FragileWall();
+	FragileWall(float set_x, float set_y);
 	~FragileWall();
 
 	void Update();						// 更新処理

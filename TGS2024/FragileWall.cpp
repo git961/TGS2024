@@ -1,9 +1,9 @@
 #include "FragileWall.h"
 
-FragileWall::FragileWall()
+FragileWall::FragileWall(float set_x, float set_y)
 {
-	world.x = 2500.0f;
-	world.y = 550.0f;
+	world.x = set_x;
+	world.y = set_y;
 	location.x = world.x;
 	location.y = world.y;
 	width = 128.0f;

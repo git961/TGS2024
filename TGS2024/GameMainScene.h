@@ -213,6 +213,8 @@ public:
 
     void CageUpdate();                      // 檻の更新処理
     void CageDoorUpdate();                  // 檻のドアの更新処理
+    void PlayerHitCageDoor();               // プレイヤーと檻のドアの当たり判定
+    void CheckPlayerInCage();               // プレイヤーが檻の中にいるのか調べる
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };

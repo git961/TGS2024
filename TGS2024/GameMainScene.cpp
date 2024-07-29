@@ -21,8 +21,8 @@ GameMainScene::GameMainScene(bool set_flg)
 
 	mapio = new MapIo;
 	fade = new BlackOut;
-	fragile_wall = new FragileWall;				// 脆い壁
-	cage_door = new CageDoor(2500.0f, 250.0f);	// 檻のドア
+	fragile_wall = new FragileWall(3000.0f, 200.0f);					// 脆い壁
+	cage_door = new CageDoor(3000.0f, 550.0f);							// 檻のドア
 	cage = new Cage(cage_door->GetWorldLocation().x, cage_door->GetWorldLocation().y);							// 檻
 
 	//プレイヤー生成
@@ -749,6 +749,12 @@ void GameMainScene::Update()
 
 		// プレイヤーと壊れる岩の当たり判定処理
 		PlayerHitRock();
+
+		// プレイヤーと檻のドアの当たり判定処理
+		PlayerHitCageDoor();
+
+		// プレイヤーが檻の中にいるのか調べる
+		CheckPlayerInCage();
 
 		//カメラとUIのアップデート
 		if (player != nullptr) {
@@ -2091,6 +2097,89 @@ void GameMainScene::DynamiteHitEnemy()
 
 }
 
+void GameMainScene::LiftUpDate()
+{
+	//リフトテスト後で消す
+	if (lift[0] != nullptr)
+	{
+		lift[0]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+		lift[0]->Update();
+	}
+
+	if (lift[0] != nullptr && player != nullptr)
+	{
+
+		if (player->HitCheck(lift[0]->GetWorldLocation(), lift[0]->GetWidth(), lift[0]->GetHeight()) == true) {
+			lift[0]->SetCanMove(true);
+			player->SetY(lift[0]->GetWorldLocation().y);
+
+		}
+		else if (player->GetLimitY() > player->GetWorldLocation().y)
+		{
+			//当たってないかつプレイヤーがlimitの値より上に居たら
+			//プレイヤーが落ちる
+			player->SetFallFlg(true);
+		}
+	}
+
+}
+
+void GameMainScene::PlayerHitBlock()
+{
+	//範囲内にいくつブロックが当たってるか数える
+	for (int i = 0; i < block_count; i++)
+	{
+		if (player != nullptr && stage_block[i] != nullptr && stage_block[i]->GetBlockNum() == 1)
+		{
+			//プレイヤーを中心に128*128の範囲内にブロックが何個あるのか数える
+			if (stage_block[i]->HitCheck(player->GetWorldLocation(), player->GetWidth() + 78.0f, 128.0f) == true)
+			{
+				//何番目のブロックが範囲内にあるのか格納する
+				block_num[block_cnt] = i;
+				block_cnt++;
+			}
+		}
+	}
+
+
+	for (int i = 0; i < block_cnt; i++)
+	{
+		if (player != nullptr && stage_block[block_num[i]] != nullptr && stage_block[block_num[i]]->GetBlockNum() == 1)
+		{
+			//もし範囲内のブロックと当たっていたら
+			if (stage_block[block_num[i]]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
+			{
+				//落ちれない状態にする
+				player->SetFallFlg(false);
+				//当たったブロックの上部の座標をプレイヤーの着地座標にいれる（プレイヤーの画像分ずらしている）
+				player->SetLimitY(stage_block[block_num[i]]->GetLocation().y - (stage_block[block_num[i]]->GetHeight() / 2 + 5) - player->GetHeight() / 2);
+				checkhit_block[i] = true;
+			}
+			else
+			{
+				checkhit_block[i] = false;
+			}
+
+		}
+	}
+
+	//もし範囲内のブロックに当たっていなかったら
+	if (checkhit_block[0] == false && checkhit_block[1] == false && checkhit_block[2] == false)
+	{
+		//プレイヤーを落ちる状態にする
+		player->SetFallFlg(true);
+	}
+
+	//初期化する
+	for (int i = 0; i < block_cnt; i++)
+	{
+		checkhit_block[i] = false;
+		block_num[i] = 0;
+	}
+	block_cnt = 0;
+
+}
+
 // 脆い壁更新処理
 void GameMainScene::FragileWallUpdate()
 {
@@ -2191,87 +2280,37 @@ void GameMainScene::CageDoorUpdate()
 	}
 }
 
-void GameMainScene::LiftUpDate()
+// プレイヤーと檻のドアの当たり判定
+void GameMainScene::PlayerHitCageDoor()
 {
-	//リフトテスト後で消す
-	if (lift[0] != nullptr)
+	if (player != nullptr && cage_door != nullptr)
 	{
-		lift[0]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-		lift[0]->Update();
-	}
-
-	if (lift[0] != nullptr && player != nullptr)
-	{
-
-		if (player->HitCheck(lift[0]->GetWorldLocation(), lift[0]->GetWidth(), lift[0]->GetHeight()) == true) {
-			lift[0]->SetCanMove(true);
-			player->SetY(lift[0]->GetWorldLocation().y);
-
-		}
-		else if (player->GetLimitY() > player->GetWorldLocation().y)
+		// プレイヤーが檻のドアに当たっていたら
+		if (player->HitCheck(cage_door->GetWorldLocation(), cage_door->GetWidth(), cage_door->GetHeight()) == true)
 		{
-			//当たってないかつプレイヤーがlimitの値より上に居たら
-			//プレイヤーが落ちる
-			player->SetFallFlg(true);
+			// プレイヤーの歩行を止める
+			player->HitCheckB(cage_door->GetVertex());
 		}
 	}
-
 }
 
-void GameMainScene::PlayerHitBlock()
+// プレイヤーが檻の中にいるのか調べる
+void GameMainScene::CheckPlayerInCage()
 {
-	//範囲内にいくつブロックが当たってるか数える
-	for (int i = 0; i < block_count; i++)
+	if (player != nullptr && cage_door != nullptr)
 	{
-		if (player != nullptr && stage_block[i] != nullptr && stage_block[i]->GetBlockNum() == 1)
+		// プレイヤーが檻の中にいたら
+		if (player->HitCheck(cage->GetWorldLocation(), cage->GetWidth(), cage->GetHeight()) == true)
 		{
-			//プレイヤーを中心に128*128の範囲内にブロックが何個あるのか数える
-			if (stage_block[i]->HitCheck(player->GetWorldLocation(), player->GetWidth() + 78.0f, 128.0f) == true)
-			{
-				//何番目のブロックが範囲内にあるのか格納する
-				block_num[block_cnt] = i;
-				block_cnt++;
-			}
+			// 檻にフラグの設定
+			cage->SetInsideFlg(true);
+		}
+		else
+		{
+			// 檻にフラグの設定
+			cage->SetInsideFlg(false);
 		}
 	}
-
-
-	for (int i = 0; i < block_cnt; i++)
-	{
-		if (player != nullptr && stage_block[block_num[i]] != nullptr && stage_block[block_num[i]]->GetBlockNum() == 1)
-		{
-			//もし範囲内のブロックと当たっていたら
-			if (stage_block[block_num[i]]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
-			{
-				//落ちれない状態にする
-				player->SetFallFlg(false);
-				//当たったブロックの上部の座標をプレイヤーの着地座標にいれる（プレイヤーの画像分ずらしている）
-				player->SetLimitY(stage_block[block_num[i]]->GetLocation().y - (stage_block[block_num[i]]->GetHeight() / 2 + 5) - player->GetHeight() / 2);
-				checkhit_block[i] = true;
-			}
-			else
-			{
-				checkhit_block[i] = false;
-			}
-
-		}
-	}
-
-	//もし範囲内のブロックに当たっていなかったら
-	if (checkhit_block[0] == false && checkhit_block[1] == false && checkhit_block[2] == false)
-	{
-		//プレイヤーを落ちる状態にする
-		player->SetFallFlg(true);
-	}
-
-	//初期化する
-	for (int i = 0; i < block_cnt; i++)
-	{
-		checkhit_block[i] = false;
-		block_num[i] = 0;
-	}
-	block_cnt = 0;
-
 }
 
 AbstractScene* GameMainScene::Change()
