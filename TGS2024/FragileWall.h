@@ -23,7 +23,7 @@ private:
 	void BrokenAnimation();				// 壊れるアニメーション
 
 public:
-	void Damege(int damege);            // 被ダメージ処理
+	void Damege(float damege);            // 被ダメージ処理
 
 	bool GetDeleteFlg() const { return delete_flg; }
 

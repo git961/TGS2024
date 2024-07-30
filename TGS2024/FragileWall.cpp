@@ -48,7 +48,7 @@ void FragileWall::Draw() const
 
 	DrawFormatString((int)location.x - 50, (int)location.y, 0xffff00, "anim : %d", anim_cnt);
 
-	DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
+	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
 }
 
 // 壊れるアニメーション
@@ -66,7 +66,7 @@ void FragileWall::BrokenAnimation()
 }
 
 // 被ダメージ処理
-void FragileWall::Damege(int damege)
+void FragileWall::Damege(float damege)
 {
-	hp -= (float)damege;
+	hp -= damege;
 }

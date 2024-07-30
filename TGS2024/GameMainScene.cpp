@@ -2215,7 +2215,7 @@ void GameMainScene::DynamiteHitFragileWall()
 					if (dynamite[i]->HitCheck(fragile_wall->GetWorldLocation(), fragile_wall->GetWidth(), fragile_wall->GetHeight()) == true)
 					{
 						dynamite[i]->SetDynamite(true);
-						fragile_wall->Damege(100);
+						fragile_wall->Damege(dynamite[i]->GetAttack());
 					}
 				}
 			}
