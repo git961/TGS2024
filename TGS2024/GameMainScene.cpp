@@ -94,7 +94,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	rolling_enemy_cnt = 0;
 
 	// 読み込みたいステージ
-	stage_num = stage1;
+	stage_num = stage2;
 
 	mapio->LoadMapData(stage_num);
 	for (int i = 0; i < ENEMYMAXNUM; i++)
@@ -2317,8 +2317,8 @@ void GameMainScene::CheckPlayerInCage()
 			// 檻にフラグの設定
 			cage->SetInsideFlg(true);
 
-			// プレイヤーが檻の端にいたら歩行を止める
-
+			// プレイヤーが檻の端についたら歩行を止める
+			player->CheckEdgeCage(cage->GetVertex().left_x);
 		}
 		else
 		{

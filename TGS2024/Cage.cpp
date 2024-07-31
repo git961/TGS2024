@@ -7,7 +7,7 @@ Cage::Cage(float set_x, float set_y)
 	world.y = set_y - 64.0f;
 	location.x = world.x;
 	location.y = world.y;
-	width = 512.0f;
+	width = 490.0f;
 	height = 256.0f;
 
 	cage_img = LoadGraph("images/Stage/Cage.png");
@@ -54,7 +54,7 @@ void Cage::Draw() const
 	}
 	
 	// 頂点の確認
-	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
+	DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
 }
 
 void Cage::SetInsideFlg(bool set_flg)

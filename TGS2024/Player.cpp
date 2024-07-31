@@ -519,7 +519,7 @@ void Player::Draw() const
 	////DrawFormatString(100, 100, 0xffffff, "Right:%d", a);
 	//DrawFormatString(100, 120, 0xffffff, "btnnum: % d", input.Btnnum);
 	DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + width / 2, (int)location.y + height / 2, 0x00ffff, FALSE);
-	DrawBox((int)location.x - 128 / 2, (int)location.y - 128 / 2, (int)location.x + 128 / 2, (int)location.y + 128 / 2, 0x00ffff, FALSE);
+	//DrawBox((int)location.x - 128 / 2, (int)location.y - 128 / 2, (int)location.x + 128 / 2, (int)location.y + 128 / 2, 0x00ffff, FALSE);
 
 	DrawFormatString(location.x, location.y-60, 0xffffff, "world.y: %f,limit_y:%f",world.y,limit_y);
 	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
@@ -1990,5 +1990,14 @@ void Player::RibbonAnim()
 		{
 			ribbon_img_num = 4;
 		}
+	}
+}
+
+// 檻の端にプレイヤーがいるのか調べる
+void Player::CheckEdgeCage(float cage_x)
+{
+	if (cage_x >= location.x - width / 2)
+	{
+		world.x = world.x - move_x;
 	}
 }
