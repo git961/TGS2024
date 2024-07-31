@@ -10,7 +10,7 @@ FragileWall::FragileWall(float set_x, float set_y)
 	height = 128.0f;
 
 	fragile_wall_img = LoadGraph("images/Stage/Fragile_Wall.png");
-	hp = 100.0f;
+	hp = 40.0f;
 	img_num = 0;
 	anim_cnt = 0;
 	broken_flg = false;			// 壊れていない

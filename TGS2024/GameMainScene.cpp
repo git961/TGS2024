@@ -21,7 +21,7 @@ GameMainScene::GameMainScene(bool set_flg)
 
 	mapio = new MapIo;
 	fade = new BlackOut;
-	fragile_wall = new FragileWall(3000.0f, 200.0f);					// 脆い壁
+	fragile_wall = new FragileWall(2500.0f, 200.0f);					// 脆い壁
 	cage_door = new CageDoor(3000.0f, 550.0f);							// 檻のドア
 	cage = new Cage(cage_door->GetWorldLocation().x, cage_door->GetWorldLocation().y);							// 檻
 
@@ -755,6 +755,9 @@ void GameMainScene::Update()
 
 		// プレイヤーが檻の中にいるのか調べる
 		CheckPlayerInCage();
+
+		// 檻のドアへの攻撃判定
+		AttackCageDoor();
 
 		//カメラとUIのアップデート
 		if (player != nullptr) {
@@ -2304,11 +2307,57 @@ void GameMainScene::CheckPlayerInCage()
 		{
 			// 檻にフラグの設定
 			cage->SetInsideFlg(true);
+
+			// プレイヤーが檻の端にいたら歩行を止める
+
 		}
 		else
 		{
 			// 檻にフラグの設定
 			cage->SetInsideFlg(false);
+		}
+	}
+}
+
+// 檻のドアへの攻撃判定
+void GameMainScene::AttackCageDoor()
+{
+	if (player != nullptr && cage_door != nullptr)
+	{
+		for (int i = 0; i < DYNAMITE_MAXNUM; i++)
+		{
+			if (dynamite[i] != nullptr)
+			{
+				// ダイナマイト本体との当たり判定
+				if (dynamite[i]->GetDynamite() == false)
+				{
+					if (dynamite[i]->HitCheck(cage_door->GetWorldLocation(), cage_door->GetWidth(), cage_door->GetHeight()) == true)
+					{
+						dynamite[i]->SetDynamite(true);
+						cage_door->Damege(dynamite[i]->GetAttack());
+					}
+				}
+			}
+		}
+
+		//つるはしを振るってる時だけ
+		if (player->GetAttacking() == true)
+		{
+			//ダメージを一回だけ与える
+			if (enemy_damage_once == false)
+			{
+				//つるはしとエネミーと当たってるかのチェック
+				if (ac->HitCheck(cage_door->GetWorldLocation(), cage_door->GetWidth(), cage_door->GetHeight()) == true)
+				{
+					cage_door->Damege(player->GetAttack());
+					enemy_damage_once = true;
+				}
+			}
+		}
+		else
+		{
+			//プレイヤーがつるはし振ってなかったら
+			enemy_damage_once = false;
 		}
 	}
 }
