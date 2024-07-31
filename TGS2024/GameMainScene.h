@@ -163,6 +163,8 @@ private:
     bool checkhit_block[3] = { false };
     int block_num[3] = { 0 };
 
+    int stage_num;                  // 今いるステージの番号
+
 public:
     GameMainScene(bool set_flg);
     ~GameMainScene();

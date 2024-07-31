@@ -7,9 +7,13 @@
 #include "padinput.h"
 #include <math.h>
 
-
 class GameMainScene;
 
+enum StageNum
+{
+	stage1,
+	stage2
+};
 
 class MapIo
 {
@@ -57,11 +61,13 @@ private:
 	//	location.y = world.y - set_origin_posy;
 	//};
 
+	int stage_num;				// 開きたいステージファイル判別用
+
 public:
 	MapIo();
 	~MapIo();
 
-	void LoadMapData();//マップデータ読込
+	void LoadMapData(int set_stage_num);//マップデータ読込
 	void InputTest(GameMainScene* gamemain);//エディタテスト
 	void SaveMapData();//マップデータ保存
 	void Draw() const;

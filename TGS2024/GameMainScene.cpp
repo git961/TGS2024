@@ -93,7 +93,10 @@ GameMainScene::GameMainScene(bool set_flg)
 	//rock_count = 0;
 	rolling_enemy_cnt = 0;
 
-	mapio->LoadMapData();
+	// 読み込みたいステージ
+	stage_num = stage1;
+
+	mapio->LoadMapData(stage_num);
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
 		enemy[i] = nullptr;
@@ -732,32 +735,35 @@ void GameMainScene::Update()
 		//プレイヤー更新処理
 		PlayerUpDate();
 
-		// 脆い壁更新処理
-		FragileWallUpdate();
+		if (stage_num == stage2)
+		{
+			// 脆い壁更新処理
+			FragileWallUpdate();
 
-		// 檻の更新処理
-		CageUpdate();
+			// 檻の更新処理
+			CageUpdate();
 
-		// 檻のドアの更新処理
-		CageDoorUpdate();
+			// 檻のドアの更新処理
+			CageDoorUpdate();
 
-		// ダイナマイトと脆い壁の当たり判定処理
-		DynamiteHitFragileWall();
+			// ダイナマイトと脆い壁の当たり判定処理
+			DynamiteHitFragileWall();
 
-		// プレイヤーと脆い壁の当たり判定処理
-		PlayerHitFragileWall();
+			// プレイヤーと脆い壁の当たり判定処理
+			PlayerHitFragileWall();
 
-		// プレイヤーと壊れる岩の当たり判定処理
-		PlayerHitRock();
+			// プレイヤーと壊れる岩の当たり判定処理
+			PlayerHitRock();
 
-		// プレイヤーと檻のドアの当たり判定処理
-		PlayerHitCageDoor();
+			// プレイヤーと檻のドアの当たり判定処理
+			PlayerHitCageDoor();
 
-		// プレイヤーが檻の中にいるのか調べる
-		CheckPlayerInCage();
+			// プレイヤーが檻の中にいるのか調べる
+			CheckPlayerInCage();
 
-		// 檻のドアへの攻撃判定
-		AttackCageDoor();
+			// 檻のドアへの攻撃判定
+			AttackCageDoor();
+		}
 
 		//カメラとUIのアップデート
 		if (player != nullptr) {
@@ -1124,22 +1130,25 @@ void GameMainScene::Draw() const
 
 		}
 
-		// 脆い壁描画
-		if (fragile_wall != nullptr)
+		if (stage_num == stage2)
 		{
-			fragile_wall->Draw();
-		}
+			// 脆い壁描画
+			if (fragile_wall != nullptr)
+			{
+				fragile_wall->Draw();
+			}
 
-		// 檻の描画
-		if (cage != nullptr)
-		{
-			cage->Draw();
-		}
+			// 檻の描画
+			if (cage != nullptr)
+			{
+				cage->Draw();
+			}
 
-		// 檻のドアの描画
-		if (cage_door != nullptr)
-		{
-			cage_door->Draw();
+			// 檻のドアの描画
+			if (cage_door != nullptr)
+			{
+				cage_door->Draw();
+			}
 		}
 
 		//ダイナマイト描画
