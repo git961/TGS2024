@@ -57,8 +57,8 @@ TitleScene::TitleScene()
 
 	// 画像読込
 	back_img = LoadGraph("images/scene/title/back.png");
-	pickaxe_img = LoadGraph("images/scene/title/pickaxe01.png");
-	LoadDivGraph("images/scene/title/cursor01.png", 3, 3, 1, 128, 92, cursor_img);
+	pickaxe_img = LoadGraph("images/scene/title/Pickaxe.png");
+	LoadDivGraph("images/scene/title/Cursor02.png", 3, 3, 1, 128, 92, cursor_img);
 	text_img[0] = LoadGraph("images/scene/title/gangancrush01.png");
 	text_img[1] = LoadGraph("images/scene/title/start01.png");
 	text_img[2] = LoadGraph("images/scene/title/end01.png");

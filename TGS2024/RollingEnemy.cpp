@@ -17,7 +17,7 @@ RollingEnemy::RollingEnemy(float set_x)
 	move_y = 0.0f;			// 未使用
 	hp = 10.0f;
 	attack = 10.0f;
-	speed = 8.0f;
+	speed = 3.0f;
 	direction = false;	// 左向き
 
 	//画像読込
