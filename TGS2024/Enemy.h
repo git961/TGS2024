@@ -85,7 +85,7 @@ public:
     void KnockBackPreparation();                // ノックバック準備処理
     void StarEffect();                          // 星エフェクトの処理
     void FragmentEffect();                      // 石の破片エフェクトの処理
-    void Damege(int damege);                    // 被ダメージ処理
+    void Damage(int damage);                    // 被ダメージ処理
     void Fall();
 
     // set関数

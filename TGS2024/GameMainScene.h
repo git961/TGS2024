@@ -191,7 +191,7 @@ public:
     void Tutorial();
 
     /*
-    *	enemy[enemynum]->Damege(damage);
+    *	enemy[enemynum]->Damage(damage);
 	// 歩行エネミーのノックバック処理
 	enemy[enemynum]->SetKnockBackStartFlg(true);
 	enemy[enemynum]->SetStarDrawFlg(true);
@@ -229,6 +229,7 @@ public:
     void FallingFloorUpdate();              // 落ちる床の更新処理
     void PlayerHitFallingFloor();           // プレイヤーと落ちる床の当たり判定
     void PickaxeHitFallingFloor();          // つるはしと落ちる床の当たり判定
+    void FallingFloorHitMagma();            // 落ちる床とマグマの当たり判定
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };

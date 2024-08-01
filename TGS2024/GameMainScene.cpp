@@ -25,7 +25,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	cage_door = new CageDoor(3000.0f, 550.0f);							// 檻のドア生成
 	cage = new Cage(cage_door->GetWorldLocation());						// 檻生成
 	magma = new Magma(2000.0f, 675.0f);									// マグマ生成
-	falling_floor = new FallingFloor(2000.0f, 200.0f);					// 落ちる床生成
+	falling_floor = new FallingFloor(2300.0f, 400.0f);					// 落ちる床生成
 
 	//プレイヤー生成
 	if (retry_flg == false)
@@ -775,9 +775,16 @@ void GameMainScene::Update()
 			AttackCageDoor();
 
 			// プレイヤーとマグマの当たり判定処理
-			// PlayerHitMagma();
+			PlayerHitMagma();
 
 			// プレイヤーと落ちる床の当たり判定
+			PlayerHitFallingFloor();
+
+			// つるはしと落ちる床の当たり判定
+			PickaxeHitFallingFloor();
+
+			// 落ちる床とマグマの当たり判定
+			FallingFloorHitMagma();
 		}
 
 		//カメラとUIのアップデート
@@ -1674,7 +1681,7 @@ void GameMainScene::Tutorial()
 
 void GameMainScene::EnemyDamage(int enemynum,float damage)
 {
-	enemy[enemynum]->Damege(damage);
+	enemy[enemynum]->Damage(damage);
 	// 歩行エネミーのノックバック処理
 	enemy[enemynum]->SetKnockBackStartFlg(true);
 	enemy[enemynum]->SetStarDrawFlg(true);
@@ -2046,7 +2053,7 @@ void GameMainScene::PickaxeHitEnemy()
 							//つるはしとエネミーと当たってるかのチェック
 							if (ac->HitCheck(rolling_enemy[i]->GetWorldLocation(), rolling_enemy[i]->GetWidth(), rolling_enemy[i]->GetHeight()) == true) {
 
-								rolling_enemy[i]->Damege(10);
+								rolling_enemy[i]->Damage(10);
 								enemy_damage_once = true;
 							}
 						}
@@ -2115,7 +2122,7 @@ void GameMainScene::DynamiteHitEnemy()
 						if (dynamite[i]->HitCheck(rolling_enemy[j]->GetWorldLocation(), rolling_enemy[j]->GetWidth(), rolling_enemy[j]->GetHeight()) == true)
 						{
 							dynamite[i]->SetDynamite(true);
-							rolling_enemy[j]->Damege(dynamite[i]->GetAttack());
+							rolling_enemy[j]->Damage(dynamite[i]->GetAttack());
 						}
 					}
 					//ダイナマイトの爆発とエネミーの当たり判定
@@ -2254,7 +2261,7 @@ void GameMainScene::DynamiteHitFragileWall()
 					if (dynamite[i]->HitCheck(fragile_wall->GetWorldLocation(), fragile_wall->GetWidth(), fragile_wall->GetHeight()) == true)
 					{
 						dynamite[i]->SetDynamite(true);
-						fragile_wall->Damege(dynamite[i]->GetAttack());
+						fragile_wall->Damage(dynamite[i]->GetAttack());
 					}
 				}
 			}
@@ -2370,7 +2377,7 @@ void GameMainScene::AttackCageDoor()
 					if (dynamite[i]->HitCheck(cage_door->GetWorldLocation(), cage_door->GetWidth(), cage_door->GetHeight()) == true)
 					{
 						dynamite[i]->SetDynamite(true);
-						cage_door->Damege(dynamite[i]->GetAttack());
+						cage_door->Damage(dynamite[i]->GetAttack());
 					}
 				}
 			}
@@ -2385,7 +2392,7 @@ void GameMainScene::AttackCageDoor()
 				//つるはしとエネミーと当たってるかのチェック
 				if (ac->HitCheck(cage_door->GetWorldLocation(), cage_door->GetWidth(), cage_door->GetHeight()) == true)
 				{
-					cage_door->Damege(player->GetAttack());
+					cage_door->Damage(player->GetAttack());
 					enemy_damage_once = true;
 				}
 			}
@@ -2441,11 +2448,62 @@ void GameMainScene::FallingFloorUpdate()
 // プレイヤーと落ちる床の当たり判定
 void GameMainScene::PlayerHitFallingFloor()
 {
+	if (player != nullptr && falling_floor != nullptr)
+	{
+		// プレイヤーが閉まっている檻のドアに当たっていたら
+		if (player->HitCheck(falling_floor->GetWorldLocation(), falling_floor->GetWidth(), falling_floor->GetHeight()) == true)
+		{
+			// プレイヤーの歩行を止める
+			player->HitCheckB(falling_floor->GetVertex());
+		}
+	}
 }
 
 // つるはしと落ちる床の当たり判定
 void GameMainScene::PickaxeHitFallingFloor()
 {
+	if (player != nullptr && falling_floor != nullptr)
+	{
+		//つるはしを振るってる時だけ
+		if (player->GetAttacking() == true)
+		{
+			//ダメージを一回だけ与える
+			if (enemy_damage_once == false)
+			{
+				//つるはしとエネミーと当たってるかのチェック
+				if (ac->HitCheck(falling_floor->GetWorldLocation(), falling_floor->GetWidth(), falling_floor->GetHeight()) == true)
+				{
+					falling_floor->Damage(player->GetAttack());
+					enemy_damage_once = true;
+				}
+			}
+		}
+		else
+		{
+			//プレイヤーがつるはし振ってなかったら
+			enemy_damage_once = false;
+		}
+	}
+
+}
+
+// 落ちる床とマグマの当たり判定
+void GameMainScene::FallingFloorHitMagma()
+{
+	if (falling_floor != nullptr && magma != nullptr)
+	{
+		// 落ちる床がマグマに当たっていたら
+		if (falling_floor->HitCheck(magma->GetWorldLocation(), magma->GetWidth(), magma->GetHeight()) == true)
+		{
+			// 落ちる床の下の座標がマグマの中心座標以上になったら
+			if (falling_floor->GetVertex().lower_y >= magma->GetWorldLocation().y)
+			{
+				// 落ちる床の落下を止める
+				falling_floor->StopFalling();
+			}
+		}
+	}
+
 }
 
 AbstractScene* GameMainScene::Change()

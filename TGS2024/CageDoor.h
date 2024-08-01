@@ -24,6 +24,6 @@ private:
 public:
 	bool GetOpenFlg() const;
 
-	void Damege(float damege);
+	void Damage(float damage);
 
 };

@@ -121,16 +121,24 @@ public:
 
 		*/
 
-		//キャラがブロックの左からぶつかった場合
-		if (box_vertex.right_x >= set_box_vertex.left_x)
+		//キャラがブロックの上からぶつかった場合
+		if (box_vertex.lower_y <= set_box_vertex.upper_y)
 		{
-			world.x = world.x - move_x;
+			world.y = world.y - move_y;
 		}
-
-		//キャラがブロックの右からぶつかった場合
-		if (box_vertex.left_x <= set_box_vertex.right_x)
+		else
 		{
-			world.x = world.x - move_x;
+			//キャラがブロックの左からぶつかった場合
+			if (box_vertex.right_x >= set_box_vertex.left_x)
+			{
+				world.x = world.x - move_x;
+			}
+
+			//キャラがブロックの右からぶつかった場合
+			if (box_vertex.left_x <= set_box_vertex.right_x)
+			{
+				world.x = world.x - move_x;
+			}
 		}
 
 		//}

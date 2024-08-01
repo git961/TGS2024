@@ -68,7 +68,7 @@ bool CageDoor::GetOpenFlg() const
 }
 
 // 被ダメージ処理
-void CageDoor::Damege(float damege)
+void CageDoor::Damage(float damage)
 {
-	hp -= damege;
+	hp -= damage;
 }

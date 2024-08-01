@@ -66,7 +66,7 @@ void FragileWall::BrokenAnimation()
 }
 
 // 被ダメージ処理
-void FragileWall::Damege(float damege)
+void FragileWall::Damage(float damage)
 {
-	hp -= damege;
+	hp -= damage;
 }

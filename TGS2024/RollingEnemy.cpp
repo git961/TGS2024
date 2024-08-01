@@ -225,7 +225,7 @@ void RollingEnemy::Draw() const
 }
 
 // 被ダメージ処理
-void RollingEnemy::Damege(int damege)
+void RollingEnemy::Damage(int damage)
 {
-	hp -= (float)damege;
+	hp -= (float)damage;
 }

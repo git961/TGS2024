@@ -40,7 +40,7 @@ public:
     void Update(GameMainScene* gamemain);
     void Draw() const;
 
-    void Damege(int damege);                // 被ダメージ処理
+    void Damage(int damage);                // 被ダメージ処理
 
     float GetHp() const { return hp; }            // hp取得
     float GetAttack() const { return attack; }// 攻撃力取得

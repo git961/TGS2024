@@ -14,7 +14,7 @@ FallingFloor::FallingFloor(float set_x, float set_y)
 	hp = 10.0f;
 	img_num = 0;
 	anim_cnt = 0;
-
+	touched_ground = false;			// 地面に触れていない
 }
 
 FallingFloor::~FallingFloor()
@@ -27,6 +27,12 @@ void FallingFloor::Update()
 {
 	// 頂点の更新
 	SetVertex();
+
+	if (hp <= 0.0f && touched_ground == false)
+	{
+		// 落下
+		world.y++;
+	}
 }
 
 void FallingFloor::Draw() const
@@ -36,4 +42,17 @@ void FallingFloor::Draw() const
 
 	// 頂点の確認
 	DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
+}
+
+// 被ダメージ処理
+void FallingFloor::Damage(float damage)
+{
+	hp -= damage;
+}
+
+// 床の落下を止める
+void FallingFloor::StopFalling()
+{
+	// 地面に触れた
+	touched_ground = true;
 }
