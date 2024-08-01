@@ -767,6 +767,9 @@ void GameMainScene::Update()
 
 			// 檻のドアへの攻撃判定
 			AttackCageDoor();
+
+			// プレイヤーとマグマの当たり判定処理
+			// PlayerHitMagma();
 		}
 
 		//カメラとUIのアップデート
@@ -2392,7 +2395,20 @@ void GameMainScene::MagmaUpdete()
 		// 更新処理
 		magma->Update();
 	}
+}
 
+// プレイヤーとマグマの当たり判定処理
+void GameMainScene::PlayerHitMagma()
+{
+	if (player != nullptr && magma != nullptr)
+	{
+		// プレイヤーがマグマに当たっていたら
+		if (player->HitCheck(magma->GetWorldLocation(), magma->GetWidth(), magma->GetHeight()) == true)
+		{
+			//プレイヤーに一回だけダメージを与える
+			PlayerDamage();
+		}
+	}
 }
 
 AbstractScene* GameMainScene::Change()

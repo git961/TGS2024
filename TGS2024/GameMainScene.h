@@ -222,6 +222,7 @@ public:
     void AttackCageDoor();                  // 檻のドアへの攻撃判定
 
     void MagmaUpdete();                     // マグマの更新処理
+    void PlayerHitMagma();                  // プレイヤーとマグマの当たり判定処理
 
 
     //float GetCameraX() { return camera_x; };
