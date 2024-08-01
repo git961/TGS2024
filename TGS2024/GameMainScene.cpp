@@ -21,10 +21,10 @@ GameMainScene::GameMainScene(bool set_flg)
 
 	mapio = new MapIo;
 	fade = new BlackOut;
-	fragile_wall = new FragileWall(2500.0f, 200.0f);					// 脆い壁
-	cage_door = new CageDoor(3000.0f, 550.0f);							// 檻のドア
-	cage = new Cage(cage_door->GetWorldLocation().x, cage_door->GetWorldLocation().y);							// 檻
-	magma = new Magma(2000.0f, 675.0f);									// マグマ
+	fragile_wall = new FragileWall(2500.0f, 200.0f);					// 脆い壁生成
+	cage_door = new CageDoor(3000.0f, 550.0f);							// 檻のドア生成
+	cage = new Cage(cage_door->GetWorldLocation());						// 檻生成
+	magma = new Magma(2000.0f, 675.0f);									// マグマ生成
 
 	//プレイヤー生成
 	if (retry_flg == false)

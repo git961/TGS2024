@@ -10,7 +10,7 @@ private:
 	bool inside_flg;					// プレイヤーが檻の中にいるか？
 
 public:
-	Cage(float set_x, float set_y);
+	Cage(World set_world);
 	~Cage();
 
 	void Update();						// 更新処理
