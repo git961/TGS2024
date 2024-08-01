@@ -25,6 +25,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	cage_door = new CageDoor(3000.0f, 550.0f);							// 檻のドア生成
 	cage = new Cage(cage_door->GetWorldLocation());						// 檻生成
 	magma = new Magma(2000.0f, 675.0f);									// マグマ生成
+	falling_floor = new FallingFloor(2000.0f, 200.0f);					// 落ちる床生成
 
 	//プレイヤー生成
 	if (retry_flg == false)
@@ -256,6 +257,8 @@ GameMainScene::~GameMainScene()
 	delete fragile_wall;
 	delete cage;
 	delete cage_door;
+	delete magma;
+	delete falling_floor;
 
 	// 画像削除
 	DeleteGraph(back_img[0]);
@@ -750,6 +753,9 @@ void GameMainScene::Update()
 			// マグマの更新処理
 			MagmaUpdete();
 
+			// 落ちる床の更新処理
+			FallingFloorUpdate();
+
 			// ダイナマイトと脆い壁の当たり判定処理
 			DynamiteHitFragileWall();
 
@@ -770,6 +776,8 @@ void GameMainScene::Update()
 
 			// プレイヤーとマグマの当たり判定処理
 			// PlayerHitMagma();
+
+			// プレイヤーと落ちる床の当たり判定
 		}
 
 		//カメラとUIのアップデート
@@ -1161,6 +1169,12 @@ void GameMainScene::Draw() const
 			if (magma != nullptr)
 			{
 				magma->Draw();
+			}
+
+			// 落ちる床の描画
+			if (falling_floor != nullptr)
+			{
+				falling_floor->Draw();
 			}
 		}
 
@@ -2409,6 +2423,29 @@ void GameMainScene::PlayerHitMagma()
 			PlayerDamage();
 		}
 	}
+}
+
+// 落ちる床の更新処理
+void GameMainScene::FallingFloorUpdate()
+{
+	if (falling_floor != nullptr)
+	{
+		// カメラから見た座標の設定
+		falling_floor->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+		// 更新処理
+		falling_floor->Update();
+	}
+}
+
+// プレイヤーと落ちる床の当たり判定
+void GameMainScene::PlayerHitFallingFloor()
+{
+}
+
+// つるはしと落ちる床の当たり判定
+void GameMainScene::PickaxeHitFallingFloor()
+{
 }
 
 AbstractScene* GameMainScene::Change()

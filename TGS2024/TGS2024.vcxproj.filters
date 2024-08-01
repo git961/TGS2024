@@ -165,6 +165,9 @@
     <ClCompile Include="Magma.cpp">
       <Filter>ソース ファイル\StageObjectFile</Filter>
     </ClCompile>
+    <ClCompile Include="FallingFloor.cpp">
+      <Filter>ソース ファイル\StageObjectFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fps.h">
@@ -270,6 +273,9 @@
       <Filter>ヘッダー ファイル\StageObjectFile\Cage</Filter>
     </ClInclude>
     <ClInclude Include="Magma.h">
+      <Filter>ヘッダー ファイル\StageObjectFile</Filter>
+    </ClInclude>
+    <ClInclude Include="FallingFloor.h">
       <Filter>ヘッダー ファイル\StageObjectFile</Filter>
     </ClInclude>
   </ItemGroup>

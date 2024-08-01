@@ -160,6 +160,7 @@
     <ClCompile Include="Dynamite.cpp" />
     <ClCompile Include="EndScene.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="FallingFloor.cpp" />
     <ClCompile Include="FallingRock.cpp" />
     <ClCompile Include="fps.cpp" />
     <ClCompile Include="FragileWall.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="CageDoor.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="EndScene.h" />
+    <ClInclude Include="FallingFloor.h" />
     <ClInclude Include="FallingRock.h" />
     <ClInclude Include="FragileWall.h" />
     <ClInclude Include="GameClearScene.h" />

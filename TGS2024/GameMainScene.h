@@ -21,6 +21,7 @@
 #include "CageDoor.h"
 #include "Lift.h"
 #include "Magma.h"
+#include "FallingFloor.h"
 
 class Player;
 class Enemy;
@@ -78,6 +79,7 @@ private:
     Cage* cage;                         // 檻
     CageDoor* cage_door;                // 檻のドア
     Magma* magma;                       // マグマ
+    FallingFloor* falling_floor;        // 落ちる床
 
     cameraposition camera_pos;
 
@@ -224,6 +226,9 @@ public:
     void MagmaUpdete();                     // マグマの更新処理
     void PlayerHitMagma();                  // プレイヤーとマグマの当たり判定処理
 
+    void FallingFloorUpdate();              // 落ちる床の更新処理
+    void PlayerHitFallingFloor();           // プレイヤーと落ちる床の当たり判定
+    void PickaxeHitFallingFloor();          // つるはしと落ちる床の当たり判定
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };
