@@ -9,7 +9,7 @@ FragileWall::FragileWall(float set_x, float set_y)
 	width = 128.0f;
 	height = 128.0f;
 
-	fragile_wall_img = LoadGraph("images/Stage/Fragile_Wall.png");
+	fragile_wall_img = LoadGraph("images/Stage/Gimmick/Fragile_Wall.png");
 	hp = 40.0f;
 	img_num = 0;
 	anim_cnt = 0;

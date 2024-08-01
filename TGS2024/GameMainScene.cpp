@@ -24,6 +24,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	fragile_wall = new FragileWall(2500.0f, 200.0f);					// 脆い壁
 	cage_door = new CageDoor(3000.0f, 550.0f);							// 檻のドア
 	cage = new Cage(cage_door->GetWorldLocation().x, cage_door->GetWorldLocation().y);							// 檻
+	magma = new Magma(2000.0f, 675.0f);									// マグマ
 
 	//プレイヤー生成
 	if (retry_flg == false)
@@ -746,6 +747,9 @@ void GameMainScene::Update()
 			// 檻のドアの更新処理
 			CageDoorUpdate();
 
+			// マグマの更新処理
+			MagmaUpdete();
+
 			// ダイナマイトと脆い壁の当たり判定処理
 			DynamiteHitFragileWall();
 
@@ -1148,6 +1152,12 @@ void GameMainScene::Draw() const
 			if (cage_door != nullptr)
 			{
 				cage_door->Draw();
+			}
+
+			// マグマの描画
+			if (magma != nullptr)
+			{
+				magma->Draw();
 			}
 		}
 
@@ -2369,6 +2379,20 @@ void GameMainScene::AttackCageDoor()
 			enemy_damage_once = false;
 		}
 	}
+}
+
+// マグマの更新処理
+void GameMainScene::MagmaUpdete()
+{
+	if (magma != nullptr)
+	{
+		// カメラから見た座標の設定
+		magma->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+		// 更新処理
+		magma->Update();
+	}
+
 }
 
 AbstractScene* GameMainScene::Change()

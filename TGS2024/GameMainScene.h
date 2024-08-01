@@ -20,6 +20,7 @@
 #include "Cage.h"
 #include "CageDoor.h"
 #include "Lift.h"
+#include "Magma.h"
 
 class Player;
 class Enemy;
@@ -76,6 +77,7 @@ private:
     FragileWall* fragile_wall;          // 脆い壁
     Cage* cage;                         // 檻
     CageDoor* cage_door;                // 檻のドア
+    Magma* magma;                       // マグマ
 
     cameraposition camera_pos;
 
@@ -218,6 +220,9 @@ public:
     void PlayerHitCageDoor();               // プレイヤーと檻のドアの当たり判定
     void CheckPlayerInCage();               // プレイヤーが檻の中にいるのか調べる
     void AttackCageDoor();                  // 檻のドアへの攻撃判定
+
+    void MagmaUpdete();                     // マグマの更新処理
+
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };

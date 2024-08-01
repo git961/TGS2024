@@ -10,8 +10,8 @@ Cage::Cage(float set_x, float set_y)
 	width = 490.0f;
 	height = 256.0f;
 
-	cage_img = LoadGraph("images/Stage/Cage.png");
-	cage_grate_img = LoadGraph("images/Stage/Cage_Grate.png");
+	cage_img = LoadGraph("images/Stage/Gimmick/Cage.png");
+	cage_grate_img = LoadGraph("images/Stage/Gimmick/Cage_Grate.png");
 
 	inside_flg = false;				// プレイヤーは檻の中にいない
 }

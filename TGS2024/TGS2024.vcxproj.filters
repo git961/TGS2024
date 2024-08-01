@@ -70,6 +70,12 @@
     <Filter Include="ヘッダー ファイル\StageObjectFile">
       <UniqueIdentifier>{952b0140-6c91-4db9-a6a5-0e04c390c980}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\StageObjectFile\Cage">
+      <UniqueIdentifier>{76ae8a77-bd94-45f3-88eb-1221787c8884}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\StageObjectFile\Cage">
+      <UniqueIdentifier>{06725fcc-332d-4cc3-9bc2-79f7bc83bfd4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -144,16 +150,19 @@
     <ClCompile Include="TestStageScene.cpp">
       <Filter>ソース ファイル\StageFile</Filter>
     </ClCompile>
+    <ClCompile Include="Lift.cpp">
+      <Filter>ソース ファイル\StageObjectFile</Filter>
+    </ClCompile>
     <ClCompile Include="FragileWall.cpp">
-      <Filter>ソース ファイル\StageFile</Filter>
+      <Filter>ソース ファイル\StageObjectFile</Filter>
     </ClCompile>
     <ClCompile Include="Cage.cpp">
-      <Filter>ソース ファイル\StageFile</Filter>
+      <Filter>ソース ファイル\StageObjectFile\Cage</Filter>
     </ClCompile>
     <ClCompile Include="CageDoor.cpp">
-      <Filter>ソース ファイル\StageFile</Filter>
+      <Filter>ソース ファイル\StageObjectFile\Cage</Filter>
     </ClCompile>
-    <ClCompile Include="Lift.cpp">
+    <ClCompile Include="Magma.cpp">
       <Filter>ソース ファイル\StageObjectFile</Filter>
     </ClCompile>
   </ItemGroup>
@@ -248,16 +257,19 @@
     <ClInclude Include="TestStageScene.h">
       <Filter>ヘッダー ファイル\StageFile</Filter>
     </ClInclude>
+    <ClInclude Include="Lift.h">
+      <Filter>ヘッダー ファイル\StageObjectFile</Filter>
+    </ClInclude>
     <ClInclude Include="FragileWall.h">
-      <Filter>ヘッダー ファイル\StageFile</Filter>
+      <Filter>ヘッダー ファイル\StageObjectFile</Filter>
     </ClInclude>
     <ClInclude Include="Cage.h">
-      <Filter>ヘッダー ファイル\StageFile</Filter>
+      <Filter>ヘッダー ファイル\StageObjectFile\Cage</Filter>
     </ClInclude>
     <ClInclude Include="CageDoor.h">
-      <Filter>ヘッダー ファイル\StageFile</Filter>
+      <Filter>ヘッダー ファイル\StageObjectFile\Cage</Filter>
     </ClInclude>
-    <ClInclude Include="Lift.h">
+    <ClInclude Include="Magma.h">
       <Filter>ヘッダー ファイル\StageObjectFile</Filter>
     </ClInclude>
   </ItemGroup>
