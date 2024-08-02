@@ -6,7 +6,7 @@ Magma::Magma(float set_x, float set_y)
 	world.y = set_y;
 	location.x = world.x;
 	location.y = world.y;
-	width = 512.0f;
+	width = 128.0f;
 	height = 64.0f;
 
 	magma_img = LoadGraph("images/Stage/Gimmick/Magma.png");

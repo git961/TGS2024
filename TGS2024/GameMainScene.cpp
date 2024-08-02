@@ -24,7 +24,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	fragile_wall = new FragileWall(2500.0f, 200.0f);					// 脆い壁生成
 	cage_door = new CageDoor(3000.0f, 550.0f);							// 檻のドア生成
 	cage = new Cage(cage_door->GetWorldLocation());						// 檻生成
-	magma = new Magma(2000.0f, 675.0f);									// マグマ生成
+	magma = new Magma(2300.0f, 675.0f);									// マグマ生成
 	falling_floor = new FallingFloor(2300.0f, 400.0f);					// 落ちる床生成
 
 	//プレイヤー生成
@@ -1172,17 +1172,18 @@ void GameMainScene::Draw() const
 				cage_door->Draw();
 			}
 
+			// 落ちる床の描画
+			if (falling_floor != nullptr)
+			{
+				falling_floor->Draw();
+			}
+
 			// マグマの描画
 			if (magma != nullptr)
 			{
 				magma->Draw();
 			}
 
-			// 落ちる床の描画
-			if (falling_floor != nullptr)
-			{
-				falling_floor->Draw();
-			}
 		}
 
 		//ダイナマイト描画
@@ -2495,15 +2496,14 @@ void GameMainScene::FallingFloorHitMagma()
 		// 落ちる床がマグマに当たっていたら
 		if (falling_floor->HitCheck(magma->GetWorldLocation(), magma->GetWidth(), magma->GetHeight()) == true)
 		{
-			// 落ちる床の下の座標がマグマの中心座標以上になったら
-			if (falling_floor->GetVertex().lower_y >= magma->GetWorldLocation().y)
+			// 落ちる床の中心座標がマグマの中心座標以上になったら
+			if (falling_floor->GetWorldLocation().y >= magma->GetWorldLocation().y)
 			{
 				// 落ちる床の落下を止める
 				falling_floor->StopFalling();
 			}
 		}
 	}
-
 }
 
 AbstractScene* GameMainScene::Change()
