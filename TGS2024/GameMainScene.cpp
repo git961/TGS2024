@@ -26,6 +26,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	cage = new Cage(cage_door->GetWorldLocation());						// 檻生成
 	magma = new Magma(2300.0f, 675.0f);									// マグマ生成
 	falling_floor = new FallingFloor(2300.0f, 400.0f);					// 落ちる床生成
+	geyser = new Geyser(2100.0f, 550.0f);								// 間欠泉生成
 
 	//プレイヤー生成
 	if (retry_flg == false)
@@ -756,6 +757,9 @@ void GameMainScene::Update()
 			// 落ちる床の更新処理
 			FallingFloorUpdate();
 
+			// 間欠泉の更新処理
+			GeyserUpdete();
+
 			// ダイナマイトと脆い壁の当たり判定処理
 			DynamiteHitFragileWall();
 
@@ -785,6 +789,12 @@ void GameMainScene::Update()
 
 			// 落ちる床とマグマの当たり判定
 			FallingFloorHitMagma();
+
+			// プレイヤーと間欠泉の当たり判定
+			PlayerHitGeyser();
+
+			// つるはしと間欠泉の当たり判定
+			PickaxeHitGeyser();
 		}
 
 		//カメラとUIのアップデート
@@ -1182,6 +1192,12 @@ void GameMainScene::Draw() const
 			if (magma != nullptr)
 			{
 				magma->Draw();
+			}
+
+			// 間欠泉の描画
+			if (geyser != nullptr)
+			{
+				geyser->Draw();
 			}
 
 		}
@@ -2451,10 +2467,10 @@ void GameMainScene::PlayerHitFallingFloor()
 {
 	if (player != nullptr && falling_floor != nullptr)
 	{
-		// プレイヤーが閉まっている檻のドアに当たっていたら
+		// プレイヤーが落ちる床に当たったら
 		if (player->HitCheck(falling_floor->GetWorldLocation(), falling_floor->GetWidth(), falling_floor->GetHeight()) == true)
 		{
-			// プレイヤーの歩行を止める
+			// プレイヤーの落下を止める
 			player->HitCheckB(falling_floor->GetVertex());
 		}
 	}
@@ -2471,7 +2487,7 @@ void GameMainScene::PickaxeHitFallingFloor()
 			//ダメージを一回だけ与える
 			if (enemy_damage_once == false)
 			{
-				//つるはしとエネミーと当たってるかのチェック
+				//つるはしと落ちる床が当たってるかのチェック
 				if (ac->HitCheck(falling_floor->GetWorldLocation(), falling_floor->GetWidth(), falling_floor->GetHeight()) == true)
 				{
 					falling_floor->Damage(player->GetAttack());
@@ -2485,7 +2501,6 @@ void GameMainScene::PickaxeHitFallingFloor()
 			enemy_damage_once = false;
 		}
 	}
-
 }
 
 // 落ちる床とマグマの当たり判定
@@ -2502,6 +2517,65 @@ void GameMainScene::FallingFloorHitMagma()
 				// 落ちる床の落下を止める
 				falling_floor->StopFalling();
 			}
+		}
+	}
+}
+
+// 間欠泉の更新処理
+void GameMainScene::GeyserUpdete()
+{
+	if (geyser != nullptr)
+	{
+		// カメラから見た座標の設定
+		geyser->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+		// 更新処理
+		geyser->Update();
+	}
+}
+
+// プレイヤーと間欠泉の当たり判定
+void GameMainScene::PlayerHitGeyser()
+{
+	if (player != nullptr && geyser != nullptr)
+	{
+		// プレイヤーが落ちる床に当たったら
+		if (player->HitCheck(geyser->GetWorldLocation(), geyser->GetWidth(), geyser->GetHeight()) == true)
+		{
+			// プレイヤーの落下を止める
+			player->HitCheckB(geyser->GetVertex());
+		}
+	}
+}
+
+// つるはしと間欠泉の当たり判定
+void GameMainScene::PickaxeHitGeyser()
+{
+	if (player != nullptr && geyser != nullptr)
+	{
+		//つるはしを振るってる時だけ
+		if (player->GetAttacking() == true)
+		{
+			// 間欠泉から水が出ていなかったら
+			if (geyser->GetStopWaterFlg() == true)
+			{
+				//ダメージを一回だけ与える
+				if (enemy_damage_once == false)
+				{
+					//つるはしと間欠泉が当たってるかのチェック
+					if (ac->HitCheck(geyser->GetWorldLocation(), geyser->GetWidth(), geyser->GetHeight()) == true)
+					{
+						// 間欠泉から水が噴き出る
+						geyser->WaterComesOut();
+						enemy_damage_once = true;
+					}
+				}
+			}
+		}
+		else
+		{
+			//プレイヤーがつるはし振ってなかったら
+			enemy_damage_once = false;
 		}
 	}
 }

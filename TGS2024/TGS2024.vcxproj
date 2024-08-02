@@ -169,6 +169,7 @@
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="Gem.cpp" />
     <ClCompile Include="EndCreditsScene.cpp" />
+    <ClCompile Include="Geyser.cpp" />
     <ClCompile Include="Lift.cpp" />
     <ClCompile Include="Magma.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="Gem.h" />
     <ClInclude Include="Dynamite.h" />
     <ClInclude Include="EndCreditsScene.h" />
+    <ClInclude Include="Geyser.h" />
     <ClInclude Include="Lift.h" />
     <ClInclude Include="Magma.h" />
     <ClInclude Include="ObjectBase.h" />

@@ -22,6 +22,7 @@
 #include "Lift.h"
 #include "Magma.h"
 #include "FallingFloor.h"
+#include "Geyser.h"
 
 class Player;
 class Enemy;
@@ -80,6 +81,7 @@ private:
     CageDoor* cage_door;                // 檻のドア
     Magma* magma;                       // マグマ
     FallingFloor* falling_floor;        // 落ちる床
+    Geyser* geyser;                     // 間欠泉
 
     cameraposition camera_pos;
 
@@ -230,6 +232,10 @@ public:
     void PlayerHitFallingFloor();           // プレイヤーと落ちる床の当たり判定
     void PickaxeHitFallingFloor();          // つるはしと落ちる床の当たり判定
     void FallingFloorHitMagma();            // 落ちる床とマグマの当たり判定
+
+    void GeyserUpdete();                    // 間欠泉の更新処理
+    void PlayerHitGeyser();                 // プレイヤーと間欠泉の当たり判定
+    void PickaxeHitGeyser();                // つるはしと間欠泉の当たり判定
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };

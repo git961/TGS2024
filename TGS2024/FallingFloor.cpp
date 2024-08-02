@@ -37,11 +37,11 @@ void FallingFloor::Update()
 
 void FallingFloor::Draw() const
 {
-	// マグマ画像の描画
+	// 落ちる床画像の描画
 	DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, falling_floor_img, TRUE);
 
 	// 頂点の確認
-	DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
+	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
 }
 
 // 被ダメージ処理

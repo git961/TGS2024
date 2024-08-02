@@ -168,6 +168,9 @@
     <ClCompile Include="FallingFloor.cpp">
       <Filter>ソース ファイル\StageObjectFile</Filter>
     </ClCompile>
+    <ClCompile Include="Geyser.cpp">
+      <Filter>ソース ファイル\StageObjectFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fps.h">
@@ -276,6 +279,9 @@
       <Filter>ヘッダー ファイル\StageObjectFile</Filter>
     </ClInclude>
     <ClInclude Include="FallingFloor.h">
+      <Filter>ヘッダー ファイル\StageObjectFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Geyser.h">
       <Filter>ヘッダー ファイル\StageObjectFile</Filter>
     </ClInclude>
   </ItemGroup>
