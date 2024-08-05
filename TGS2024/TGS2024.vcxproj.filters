@@ -1,294 +1,76 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ソース ファイル">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="ヘッダー ファイル">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="リソース ファイル">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="ソース ファイル\SceneFile">
-      <UniqueIdentifier>{ce6410fa-ae18-4517-bac0-e1f385861692}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\PlayerFile">
-      <UniqueIdentifier>{a79fc751-6672-4d78-b287-8a11a0f1405f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\SystemFile">
-      <UniqueIdentifier>{f6c47b5b-b1ef-4468-b00b-ff52a217499d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\EnemyFile">
-      <UniqueIdentifier>{1d51929e-c160-4c6c-ad12-398e5310ad41}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\EnemyFile">
-      <UniqueIdentifier>{f40034a9-880e-4ace-b9e2-c1c56d8cfc12}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\SystemFile">
-      <UniqueIdentifier>{1b86ff3a-f271-42cc-a694-1bce854c181b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\PlayerFile">
-      <UniqueIdentifier>{5cca5498-0a7c-4c2b-8d80-c25350dd4e58}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\SceneFile">
-      <UniqueIdentifier>{ede19924-4a21-4359-b33c-cb55480b21a4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\BaseFile">
-      <UniqueIdentifier>{79a129c6-5f3c-41ce-8135-a225556113e9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\StageFile">
-      <UniqueIdentifier>{9bb80dd1-8eb0-4dc4-a1e0-4025818cb88c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\StageFile">
-      <UniqueIdentifier>{12e94412-d881-465b-9799-0a039c7757e5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\UI">
-      <UniqueIdentifier>{97f5c3f5-5d09-4dd9-8e46-7f467ea66bf7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\UI">
-      <UniqueIdentifier>{32392257-384e-48ab-a8e4-2aa6d1f227ae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\AnimS">
-      <UniqueIdentifier>{ba933a93-de73-4832-9fba-459e6b8c2f96}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\AnimS">
-      <UniqueIdentifier>{29436ef8-94bf-437a-980e-282514109fde}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\GemFile">
-      <UniqueIdentifier>{576f5eea-c131-414d-be93-6e1d0dfffdaa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\GemFile">
-      <UniqueIdentifier>{68208c42-f972-49d9-9c67-8ae847f9271d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\StageObjectFile">
-      <UniqueIdentifier>{9b4f39c7-0e09-4ddf-add8-bc7e1a65d47f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\StageObjectFile">
-      <UniqueIdentifier>{952b0140-6c91-4db9-a6a5-0e04c390c980}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\StageObjectFile\Cage">
-      <UniqueIdentifier>{76ae8a77-bd94-45f3-88eb-1221787c8884}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\StageObjectFile\Cage">
-      <UniqueIdentifier>{06725fcc-332d-4cc3-9bc2-79f7bc83bfd4}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="AnimScene.cpp" />
+    <ClCompile Include="AttackCheck.cpp" />
+    <ClCompile Include="BlackOut.cpp" />
+    <ClCompile Include="Cage.cpp" />
+    <ClCompile Include="CageDoor.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Dynamite.cpp" />
+    <ClCompile Include="EndScene.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="FallingFloor.cpp" />
+    <ClCompile Include="FallingRock.cpp" />
+    <ClCompile Include="fps.cpp" />
+    <ClCompile Include="FragileWall.cpp" />
+    <ClCompile Include="GameClearScene.cpp" />
+    <ClCompile Include="GameMainScene.cpp" />
+    <ClCompile Include="GameOverScene.cpp" />
+    <ClCompile Include="Gem.cpp" />
+    <ClCompile Include="EndCreditsScene.cpp" />
+    <ClCompile Include="Geyser.cpp" />
+    <ClCompile Include="Lift.cpp" />
+    <ClCompile Include="Magma.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MapIo.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RollingEnemy.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Score.cpp" />
+    <ClCompile Include="StageBlock.cpp" />
+    <ClCompile Include="Switch.cpp" />
+    <ClCompile Include="TestStageScene.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="fps.cpp">
-      <Filter>ソース ファイル\SystemFile</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>ソース ファイル\SceneFile</Filter>
-    </ClCompile>
-    <ClCompile Include="GameMainScene.cpp">
-      <Filter>ソース ファイル\SceneFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル\PlayerFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル\EnemyFile</Filter>
-    </ClCompile>
-    <ClCompile Include="AttackCheck.cpp">
-      <Filter>ソース ファイル\PlayerFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>ソース ファイル\SystemFile</Filter>
-    </ClCompile>
-    <ClCompile Include="MapIo.cpp">
-      <Filter>ソース ファイル\SystemFile</Filter>
-    </ClCompile>
-    <ClCompile Include="StageBlock.cpp">
-      <Filter>ソース ファイル\StageFile</Filter>
-    </ClCompile>
-    <ClCompile Include="RollingEnemy.cpp">
-      <Filter>ソース ファイル\EnemyFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Gem.cpp">
-      <Filter>ソース ファイル\GemFile</Filter>
-    </ClCompile>
-    <ClCompile Include="UI.cpp">
-      <Filter>ソース ファイル\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="FallingRock.cpp">
-      <Filter>ソース ファイル\AnimS</Filter>
-    </ClCompile>
-    <ClCompile Include="Dynamite.cpp">
-      <Filter>ソース ファイル\PlayerFile</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimScene.cpp">
-      <Filter>ソース ファイル\SceneFile</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleScene.cpp">
-      <Filter>ソース ファイル\SceneFile</Filter>
-    </ClCompile>
-    <ClCompile Include="EndCreditsScene.cpp">
-      <Filter>ソース ファイル\SceneFile</Filter>
-    </ClCompile>
-    <ClCompile Include="EndScene.cpp">
-      <Filter>ソース ファイル\SceneFile</Filter>
-    </ClCompile>
-    <ClCompile Include="GameClearScene.cpp">
-      <Filter>ソース ファイル\SceneFile</Filter>
-    </ClCompile>
-    <ClCompile Include="GameOverScene.cpp">
-      <Filter>ソース ファイル\SceneFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Score.cpp">
-      <Filter>ソース ファイル\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="BlackOut.cpp">
-      <Filter>ソース ファイル\AnimS</Filter>
-    </ClCompile>
-    <ClCompile Include="TestStageScene.cpp">
-      <Filter>ソース ファイル\StageFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Lift.cpp">
-      <Filter>ソース ファイル\StageObjectFile</Filter>
-    </ClCompile>
-    <ClCompile Include="FragileWall.cpp">
-      <Filter>ソース ファイル\StageObjectFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Cage.cpp">
-      <Filter>ソース ファイル\StageObjectFile\Cage</Filter>
-    </ClCompile>
-    <ClCompile Include="CageDoor.cpp">
-      <Filter>ソース ファイル\StageObjectFile\Cage</Filter>
-    </ClCompile>
-    <ClCompile Include="Magma.cpp">
-      <Filter>ソース ファイル\StageObjectFile</Filter>
-    </ClCompile>
-    <ClCompile Include="FallingFloor.cpp">
-      <Filter>ソース ファイル\StageObjectFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Geyser.cpp">
-      <Filter>ソース ファイル\StageObjectFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Switch.cpp">
-      <Filter>ソース ファイル\StageObjectFile</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="fps.h">
-      <Filter>ヘッダー ファイル\SystemFile</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>ヘッダー ファイル\SceneFile</Filter>
-    </ClInclude>
-    <ClInclude Include="AbstractScene.h">
-      <Filter>ヘッダー ファイル\SceneFile</Filter>
-    </ClInclude>
-    <ClInclude Include="padinput.h">
-      <Filter>ヘッダー ファイル\SystemFile</Filter>
-    </ClInclude>
-    <ClInclude Include="GameMainScene.h">
-      <Filter>ヘッダー ファイル\SceneFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ヘッダー ファイル\PlayerFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>ヘッダー ファイル\EnemyFile</Filter>
-    </ClInclude>
-    <ClInclude Include="CharacterBase.h">
-      <Filter>ヘッダー ファイル\BaseFile</Filter>
-    </ClInclude>
-    <ClInclude Include="AttackCheck.h">
-      <Filter>ヘッダー ファイル\PlayerFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>ヘッダー ファイル\SystemFile</Filter>
-    </ClInclude>
-    <ClInclude Include="MapIo.h">
-      <Filter>ヘッダー ファイル\SystemFile</Filter>
-    </ClInclude>
-    <ClInclude Include="StageBlock.h">
-      <Filter>ヘッダー ファイル\StageFile</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectBase.h">
-      <Filter>ヘッダー ファイル\BaseFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Define.h">
-      <Filter>ヘッダー ファイル\SystemFile</Filter>
-    </ClInclude>
-    <ClInclude Include="RollingEnemy.h">
-      <Filter>ヘッダー ファイル\EnemyFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Vec2I.h">
-      <Filter>ヘッダー ファイル\SystemFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Gem.h">
-      <Filter>ヘッダー ファイル\GemFile</Filter>
-    </ClInclude>
-    <ClInclude Include="UI.h">
-      <Filter>ヘッダー ファイル\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Dynamite.h">
-      <Filter>ヘッダー ファイル\PlayerFile</Filter>
-    </ClInclude>
-    <ClInclude Include="FallingRock.h">
-      <Filter>ヘッダー ファイル\AnimS</Filter>
-    </ClInclude>
-    <ClInclude Include="AnimScene.h">
-      <Filter>ヘッダー ファイル\SceneFile</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleScene.h">
-      <Filter>ヘッダー ファイル\SceneFile</Filter>
-    </ClInclude>
-    <ClInclude Include="EndCreditsScene.h">
-      <Filter>ヘッダー ファイル\SceneFile</Filter>
-    </ClInclude>
-    <ClInclude Include="EndScene.h">
-      <Filter>ヘッダー ファイル\SceneFile</Filter>
-    </ClInclude>
-    <ClInclude Include="GameClearScene.h">
-      <Filter>ヘッダー ファイル\SceneFile</Filter>
-    </ClInclude>
-    <ClInclude Include="GameOverScene.h">
-      <Filter>ヘッダー ファイル\SceneFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Score.h">
-      <Filter>ヘッダー ファイル\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="BlackOut.h">
-      <Filter>ヘッダー ファイル\AnimS</Filter>
-    </ClInclude>
-    <ClInclude Include="LiftBase.h">
-      <Filter>ヘッダー ファイル\BaseFile</Filter>
-    </ClInclude>
-    <ClInclude Include="TestStageScene.h">
-      <Filter>ヘッダー ファイル\StageFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Lift.h">
-      <Filter>ヘッダー ファイル\StageObjectFile</Filter>
-    </ClInclude>
-    <ClInclude Include="FragileWall.h">
-      <Filter>ヘッダー ファイル\StageObjectFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Cage.h">
-      <Filter>ヘッダー ファイル\StageObjectFile\Cage</Filter>
-    </ClInclude>
-    <ClInclude Include="CageDoor.h">
-      <Filter>ヘッダー ファイル\StageObjectFile\Cage</Filter>
-    </ClInclude>
-    <ClInclude Include="Magma.h">
-      <Filter>ヘッダー ファイル\StageObjectFile</Filter>
-    </ClInclude>
-    <ClInclude Include="FallingFloor.h">
-      <Filter>ヘッダー ファイル\StageObjectFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Geyser.h">
-      <Filter>ヘッダー ファイル\StageObjectFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Switch.h">
-      <Filter>ヘッダー ファイル\StageObjectFile</Filter>
-    </ClInclude>
+    <ClInclude Include="AbstractScene.h" />
+    <ClInclude Include="AnimScene.h" />
+    <ClInclude Include="AttackCheck.h" />
+    <ClInclude Include="BlackOut.h" />
+    <ClInclude Include="Cage.h" />
+    <ClInclude Include="CageDoor.h" />
+    <ClInclude Include="Define.h" />
+    <ClInclude Include="EndScene.h" />
+    <ClInclude Include="FallingFloor.h" />
+    <ClInclude Include="FallingRock.h" />
+    <ClInclude Include="FragileWall.h" />
+    <ClInclude Include="GameClearScene.h" />
+    <ClInclude Include="GameOverScene.h" />
+    <ClInclude Include="Gem.h" />
+    <ClInclude Include="Dynamite.h" />
+    <ClInclude Include="EndCreditsScene.h" />
+    <ClInclude Include="Geyser.h" />
+    <ClInclude Include="Lift.h" />
+    <ClInclude Include="Magma.h" />
+    <ClInclude Include="ObjectBase.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CharacterBase.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="fps.h" />
+    <ClInclude Include="GameMainScene.h" />
+    <ClInclude Include="MapIo.h" />
+    <ClInclude Include="padinput.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="RollingEnemy.h" />
+    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Score.h" />
+    <ClInclude Include="StageBlock.h" />
+    <ClInclude Include="Switch.h" />
+    <ClInclude Include="TestStageScene.h" />
+    <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="UI.h" />
+    <ClInclude Include="Vec2I.h" />
   </ItemGroup>
 </Project>

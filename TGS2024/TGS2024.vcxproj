@@ -213,7 +213,6 @@
     <ClInclude Include="MapIo.h" />
     <ClInclude Include="padinput.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="LiftBase.h" />
     <ClInclude Include="RollingEnemy.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Score.h" />

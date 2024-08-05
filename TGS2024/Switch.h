@@ -15,7 +15,7 @@ public:
     void Update();
     void Draw()const;
     bool GetCanMoveFlg() { return canmove_flg; }
-    void SetLimit_y(float Set_y) { limit_y = Set_y; }
+    void SetY(float set_y) { world.y = set_y; }
     void SetX(float set_x) { world.x = set_x; }
     void SetOnFlg(bool set_flg) { on_flg = set_flg; }
 };

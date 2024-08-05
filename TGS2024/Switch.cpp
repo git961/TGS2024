@@ -8,8 +8,8 @@ Switch::Switch(float set_x, float set_y)
 	canmove_flg = false;
 	up_down_flg = false;
 	on_flg=false;
-	height = 36.0f;
-	width = 36.0f;
+	height = 64.0f;
+	width = 64.0f;
 
 	world.x = set_x;
 	world.y = set_y;
