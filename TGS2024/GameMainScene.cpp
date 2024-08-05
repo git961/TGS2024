@@ -2160,33 +2160,6 @@ void GameMainScene::DynamiteHitEnemy()
 
 }
 
-void GameMainScene::LiftUpDate()
-{
-	//リフトテスト後で消す
-	if (lift[0] != nullptr)
-	{
-		lift[0]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-		lift[0]->Update();
-	}
-
-	if (lift[0] != nullptr && player != nullptr)
-	{
-
-		if (player->HitCheck(lift[0]->GetWorldLocation(), lift[0]->GetWidth(), lift[0]->GetHeight()) == true) {
-			lift[0]->SetCanMove(true);
-			player->SetY(lift[0]->GetWorldLocation().y);
-
-		}
-		else if (player->GetLimitY() > player->GetWorldLocation().y)
-		{
-			//当たってないかつプレイヤーがlimitの値より上に居たら
-			//プレイヤーが落ちる
-			player->SetFallFlg(true);
-		}
-	}
-
-}
-
 void GameMainScene::PlayerHitBlock()
 {
 	//範囲内にいくつブロックが当たってるか数える
