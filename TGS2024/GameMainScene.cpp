@@ -2139,20 +2139,26 @@ void GameMainScene::PlayerHitRock()
 	}
 }
 
+//リフトアップデート
 void GameMainScene::LiftUpDate()
 {
 	//リフトテスト後で消す
 	if (lift[0] != nullptr)
 	{
 		lift[0]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-		lift[0]->Update();
+		lift[0]->SetScreenPos(screen_origin_position.x, screen_origin_position.y);
+
+		if (ac != nullptr)
+		{
+			lift[0]->Update(ac);
+		}
 	}
 
 	if (lift[0] != nullptr && player != nullptr)
 	{
 
 		if (player->HitCheck(lift[0]->GetWorldLocation(), lift[0]->GetWidth(), lift[0]->GetHeight()) == true) {
-			lift[0]->SetCanMove(true);
+			//lift[0]->SetCanMove(true);
 			player->SetY(lift[0]->GetWorldLocation().y);
 
 		}
