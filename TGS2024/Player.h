@@ -241,4 +241,6 @@ public:
 
     void SetPushBFlg() { push_b_flg = true; }       // Bボタン押したフラグの設定
     bool GetChangeToTitleFlg() const { return change_to_title_flg; }
+
+    void CheckEdgeCage(float cage_x);       // 檻の端にプレイヤーがいるのか調べる
 };

@@ -18,31 +18,43 @@ MapIo::MapIo()
 	mouse_y = 0;
 	now_abs = 0.0f;
 	posx = 0.0f;
-	
+	stage_num = stage1;
 }
 
 MapIo::~MapIo()
 {
 }
 
-void MapIo::LoadMapData()
+void MapIo::LoadMapData(int set_stage_num)
 {
-	//ファイルを読込モードで開く
-	fopen_s(&fp, "stage/teststage.csv", "r");
+	stage_num = set_stage_num;
 
-	for (int i = 0; i < map_blockmax_y; i++)
+	if (stage_num == stage1)
 	{
-		for (int j = 0; j < map_blockmax_x; j++)
-		{
-			//ファイル読込
-			if (fscanf_s(fp, "%d,", &map_array[i][j]) != EOF) {
-				count++;
-			}
-		}
+		//ファイルを読込モードで開く
+		fopen_s(&fp, "stage/teststage.csv", "r");
+	}
+	else if (stage_num == stage2)
+	{
+		//ファイルを読込モードで開く
+		fopen_s(&fp, "stage/stage2.csv", "r");
 	}
 
+	if (fp)
+	{
+		for (int i = 0; i < map_blockmax_y; i++)
+		{
+			for (int j = 0; j < map_blockmax_x; j++)
+			{
+				//ファイル読込
+				if (fscanf_s(fp, "%d,", &map_array[i][j]) != EOF) {
+					count++;
+				}
+			}
+		}
 
-	fclose(fp);
+		fclose(fp);
+	}
 }
 
 void MapIo::InputTest(GameMainScene* gamemain)
@@ -208,21 +220,32 @@ void MapIo::InputTest(GameMainScene* gamemain)
 
 void MapIo::SaveMapData()
 {
-	//ファイルを書き込みモードで開く
-	fopen_s(&fp, "stage/teststage.csv", "w");
-
-	for (int i = 0; i < map_blockmax_y; i++)
+	if (stage_num == stage1)
 	{
-		for (int j = 0; j < map_blockmax_x; j++)
-		{
-			//ファイル書き込み
-			//ファイルポインタ、%dで書き込み,map_arrayを入力
-			fprintf_s(fp, "%d,", map_array[i][j]);
-
-		}
+		//ファイルを書き込みモードで開く
+		fopen_s(&fp, "stage/teststage.csv", "w");
+	}
+	else if (stage_num == stage2)
+	{
+		//ファイルを書き込みモードで開く
+		fopen_s(&fp, "stage/stage2.csv", "w");
 	}
 
-	fclose(fp);
+	if (fp)
+	{
+		for (int i = 0; i < map_blockmax_y; i++)
+		{
+			for (int j = 0; j < map_blockmax_x; j++)
+			{
+				//ファイル書き込み
+				//ファイルポインタ、%dで書き込み,map_arrayを入力
+				fprintf_s(fp, "%d,", map_array[i][j]);
+
+			}
+		}
+
+		fclose(fp);
+	}
 }
 
 void MapIo::Draw() const

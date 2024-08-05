@@ -654,9 +654,9 @@ void Enemy::FragmentEffect()
 }
 
 // 被ダメージ処理
-void Enemy::Damege(int damege)
+void Enemy::Damage(int damage)
 {
-	hp -= (float)damege;
+	hp -= (float)damage;
 }
 
 void Enemy::Fall()

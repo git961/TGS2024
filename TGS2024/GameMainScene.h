@@ -17,7 +17,12 @@
 #include "GameOverScene.h"
 #include "BlackOut.h"
 #include "FragileWall.h"
+#include "Cage.h"
+#include "CageDoor.h"
 #include "Lift.h"
+#include "Magma.h"
+#include "FallingFloor.h"
+#include "Geyser.h"
 
 class Player;
 class Enemy;
@@ -72,6 +77,11 @@ private:
 
     BlackOut* fade;
     FragileWall* fragile_wall;          // 脆い壁
+    Cage* cage;                         // 檻
+    CageDoor* cage_door;                // 檻のドア
+    Magma* magma;                       // マグマ
+    FallingFloor* falling_floor;        // 落ちる床
+    Geyser* geyser;                     // 間欠泉
 
     cameraposition camera_pos;
 
@@ -159,6 +169,8 @@ private:
     bool checkhit_block[3] = { false };
     int block_num[3] = { 0 };
 
+    int stage_num;                  // 今いるステージの番号
+
 public:
     GameMainScene(bool set_flg);
     ~GameMainScene();
@@ -181,7 +193,7 @@ public:
     void Tutorial();
 
     /*
-    *	enemy[enemynum]->Damege(damage);
+    *	enemy[enemynum]->Damage(damage);
 	// 歩行エネミーのノックバック処理
 	enemy[enemynum]->SetKnockBackStartFlg(true);
 	enemy[enemynum]->SetStarDrawFlg(true);
@@ -206,6 +218,24 @@ public:
     void DynamiteHitFragileWall();          // ダイナマイトと脆い壁の当たり判定処理
     void PlayerHitFragileWall();            // プレイヤーと脆い壁の当たり判定処理
     void PlayerHitRock();                   // プレイヤーと壊れる岩の当たり判定処理
+
+    void CageUpdate();                      // 檻の更新処理
+    void CageDoorUpdate();                  // 檻のドアの更新処理
+    void PlayerHitCageDoor();               // プレイヤーと檻のドアの当たり判定
+    void CheckPlayerInCage();               // プレイヤーが檻の中にいるのか調べる
+    void AttackCageDoor();                  // 檻のドアへの攻撃判定
+
+    void MagmaUpdete();                     // マグマの更新処理
+    void PlayerHitMagma();                  // プレイヤーとマグマの当たり判定処理
+
+    void FallingFloorUpdate();              // 落ちる床の更新処理
+    void PlayerHitFallingFloor();           // プレイヤーと落ちる床の当たり判定
+    void PickaxeHitFallingFloor();          // つるはしと落ちる床の当たり判定
+    void FallingFloorHitMagma();            // 落ちる床とマグマの当たり判定
+
+    void GeyserUpdete();                    // 間欠泉の更新処理
+    void PlayerHitGeyser();                 // プレイヤーと間欠泉の当たり判定
+    void PickaxeHitGeyser();                // つるはしと間欠泉の当たり判定
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };

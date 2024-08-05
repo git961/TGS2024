@@ -154,10 +154,13 @@
     <ClCompile Include="AnimScene.cpp" />
     <ClCompile Include="AttackCheck.cpp" />
     <ClCompile Include="BlackOut.cpp" />
+    <ClCompile Include="Cage.cpp" />
+    <ClCompile Include="CageDoor.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Dynamite.cpp" />
     <ClCompile Include="EndScene.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="FallingFloor.cpp" />
     <ClCompile Include="FallingRock.cpp" />
     <ClCompile Include="fps.cpp" />
     <ClCompile Include="FragileWall.cpp" />
@@ -166,7 +169,9 @@
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="Gem.cpp" />
     <ClCompile Include="EndCreditsScene.cpp" />
+    <ClCompile Include="Geyser.cpp" />
     <ClCompile Include="Lift.cpp" />
+    <ClCompile Include="Magma.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapIo.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -184,8 +189,11 @@
     <ClInclude Include="AnimScene.h" />
     <ClInclude Include="AttackCheck.h" />
     <ClInclude Include="BlackOut.h" />
+    <ClInclude Include="Cage.h" />
+    <ClInclude Include="CageDoor.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="EndScene.h" />
+    <ClInclude Include="FallingFloor.h" />
     <ClInclude Include="FallingRock.h" />
     <ClInclude Include="FragileWall.h" />
     <ClInclude Include="GameClearScene.h" />
@@ -193,7 +201,9 @@
     <ClInclude Include="Gem.h" />
     <ClInclude Include="Dynamite.h" />
     <ClInclude Include="EndCreditsScene.h" />
+    <ClInclude Include="Geyser.h" />
     <ClInclude Include="Lift.h" />
+    <ClInclude Include="Magma.h" />
     <ClInclude Include="ObjectBase.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CharacterBase.h" />
