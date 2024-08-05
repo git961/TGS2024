@@ -119,7 +119,8 @@ GameMainScene::GameMainScene(bool set_flg)
 		//リトライじゃなかったら
 		game_state = TUTORIAL;
 
-		if (mapio != nullptr) {
+		if (mapio != nullptr)
+		{
 			//stage_block = new StageBlock(this->mapio);
 
 			for (int i = 0; i < map_blockmax_y; i++)
@@ -140,7 +141,6 @@ GameMainScene::GameMainScene(bool set_flg)
 						stage_block[block_count++] = new StageBlock(3, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 4:
-						//rock_count++;
 						stage_block[block_count++] = new StageBlock(4, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 5:
@@ -165,8 +165,6 @@ GameMainScene::GameMainScene(bool set_flg)
 						stage_block[block_count++] = new StageBlock(11, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					}
-
-
 				}
 			}
 		}
@@ -279,8 +277,7 @@ void GameMainScene::ResetMap()
 	{
 		if (stage_block[j] != nullptr)
 		{
-				stage_block[j] = nullptr;
-		
+			stage_block[j] = nullptr;
 		}
 	}
 
@@ -311,7 +308,6 @@ void GameMainScene::ResetMap()
 	{
 		for (int j = 0; j < map_blockmax_x; j++)
 		{
-
 			switch (mapio->GetMapData(i, j))
 			{
 			case 1:
@@ -332,12 +328,10 @@ void GameMainScene::ResetMap()
 			case 11:
 				stage_block[block_count++] = new StageBlock(11, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
-
 			}
 
 			if (enemy_count < ENEMYMAXNUM)
 			{
-
 				if (mapio->GetMapData(i, j) == 2)
 				{
 					enemy[enemy_count] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, false);
@@ -357,12 +351,10 @@ void GameMainScene::ResetMap()
 				{
 					rolling_enemy[rolling_enemy_cnt] = new RollingEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2);
 					rolling_enemy[rolling_enemy_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-
 				}
 			}
 		}
 	}
-
 
 	for (int j = 0; j < block_count; j++)
 	{
@@ -446,7 +438,6 @@ void GameMainScene::Update()
 			}
 		}
 
-
 		//エネミー削除
 		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
@@ -459,7 +450,6 @@ void GameMainScene::Update()
 			rolling_enemy[i] = nullptr;
 			roll_gem[i] = nullptr;
 		}
-
 
 		//右スティック押し込み
 		if (input.CheckBtn(XINPUT_BUTTON_RIGHT_THUMB) == TRUE || CheckHitKey(KEY_INPUT_P) == TRUE)
@@ -476,7 +466,6 @@ void GameMainScene::Update()
 			{
 				for (int j = 0; j < map_blockmax_x; j++)
 				{
-
 					switch (mapio->GetMapData(i, j))
 					{
 					case 1:
@@ -486,7 +475,6 @@ void GameMainScene::Update()
 						stage_block[block_count++] = new StageBlock(3, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 4:
-						//rock_count++;
 						stage_block[block_count++] = new StageBlock(4, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 5:
@@ -504,12 +492,10 @@ void GameMainScene::Update()
 					case 11:
 						stage_block[block_count++] = new StageBlock(11, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
-
 					}
 
 					if (enemy_count < ENEMYMAXNUM)
 					{
-
 						if (mapio->GetMapData(i, j) == 2)
 						{
 							enemy[enemy_count++] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, false);
@@ -518,7 +504,6 @@ void GameMainScene::Update()
 						if (mapio->GetMapData(i, j) == 8)
 						{
 							enemy[enemy_count++] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, true);
-
 						}
 					}
 
@@ -529,26 +514,22 @@ void GameMainScene::Update()
 							rolling_enemy[rolling_enemy_cnt++] = new RollingEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2);
 						}
 					}
-
-
 				}
 			}
-
-
 			game_state = PLAY;
 		}
-
 		break;
-	case TUTORIAL:
 
+
+	case TUTORIAL:
 		if (CheckHitKey(KEY_INPUT_SPACE) == 1)
 		{
 			game_state = EDITOR;
 		}
-
 		Tutorial();
-
 		break;
+
+
 	case POSE:
 		if (input.CheckBtn(XINPUT_BUTTON_START) == TRUE)
 		{
@@ -558,16 +539,20 @@ void GameMainScene::Update()
 			game_state = PLAY;
 		}
 		break;
+
+
 	case GOAL:
-		if (clear_alpha++ > 300) {
+		if (clear_alpha++ > 300)
+		{
 			clear_flg = true;
 		}
 		break;
+
+
 	case RESPAWN:
 		//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
 		location_x = world_x - screen_origin_position.x;
 		location_y = world_y - screen_origin_position.y;
-
 
 		if (p_life_num < 0)
 		{
@@ -582,7 +567,6 @@ void GameMainScene::Update()
 				//gameover_flg = true;
 				if (gameover_anim_cnt++ > 30)
 				{
-
 					CircleSize -= 8;
 					if (CircleSize <= -6)
 					{
@@ -602,6 +586,7 @@ void GameMainScene::Update()
 				fadein_snd_flg =false;
 				PlaySoundMem(fadein_sound, DX_PLAYTYPE_BACK);
 			}
+
 			if (CircleSize <= -6 && black_flg == false)
 			{
 				fadein_flg = false;
@@ -625,7 +610,8 @@ void GameMainScene::Update()
 				}
 				ResetMap();
 			}
-			else {
+			else
+			{
 				CircleSize -= 8;
 			}
 
@@ -633,11 +619,10 @@ void GameMainScene::Update()
 			{
 				if (player != nullptr)
 				{
-
 					player->RespawnAnimUpdate();
-
 				}
 				alpha -= 5;
+
 				if (player->GetStartFlg() == true)
 				{
 					volume = 150;
@@ -649,11 +634,10 @@ void GameMainScene::Update()
 					CircleSize = 700;
 				}
 			}
-
 		}
-
-
 		break;
+
+
 	case PLAY:
 
 		if (CheckHitKey(KEY_INPUT_SPACE) == 1)
@@ -667,40 +651,15 @@ void GameMainScene::Update()
 			{
 				fade->Fadein();
 			}
-			else {
+			else
+			{
 				fade = nullptr;
 			}
 		}
 
-
 		//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
 		location_x = world_x - screen_origin_position.x;
 		location_y = world_y - screen_origin_position.y;
-
-		/*
-		//リフトテスト後で消す
-		if (lift[0] != nullptr)
-		{
-			lift[0]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-			lift[0]->Update();
-		}
-
-		if (lift[0] != nullptr && player != nullptr)
-		{
-
-			if (player->HitCheck(lift[0]->GetWorldLocation(), lift[0]->GetWidth(), lift[0]->GetHeight()) == true){
-				lift[0]->SetCanMove(true);
-				player->SetY(lift[0]->GetWorldLocation().y);
-				
-			}
-			else if(player->GetLimitY()-30>player->GetWorldLocation().y)
-			{
-				//当たってないかつプレイヤーがlimitの値より上に居たら
-				//プレイヤーが落ちる
-				player->SetFallFlg(true);
-			}
-		}
-		*/
 
 		//リフトアップデート
 		LiftUpDate();
@@ -798,8 +757,8 @@ void GameMainScene::Update()
 		}
 
 		//カメラとUIのアップデート
-		if (player != nullptr) {
-
+		if (player != nullptr)
+		{
 			UpdateCamera(player->GetWorldLocation());
 
 			//UIアップデート
@@ -807,15 +766,12 @@ void GameMainScene::Update()
 			{
 				ui->SetLifeNum(p_life_num);
 				ui->Update((int)player->GetHp(), player->GetDynaNum());
-				if (player->GetHp() <= 0) {
+				if (player->GetHp() <= 0)
+				{
 					ui->Update(0, 0);
 				}
-					
 			}
 		}
-
-
-
 
 		screen_origin_position = {
 			camera_pos.x - SCREEN_WIDTH / 2.0f,
@@ -828,10 +784,8 @@ void GameMainScene::Update()
 			{
 				stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
-
 				if (player != nullptr)
 				{
-
 					if (stage_block[j]->GetBlockNum() == 3)
 					{
 						if (stage_block[j]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
@@ -844,19 +798,6 @@ void GameMainScene::Update()
 					{
 
 						stage_block[j]->Update();
-
-						//プレイヤが右向きだったら
-						//if (player->GetDirection() == 0)
-						//{
-						
-						// プレイヤーと岩が当たっていたら
-						//if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-						//{
-						//	// プレイヤーの歩行を止める
-						//	player->HitCheckB(stage_block[j]->GetVertex());
-						//}
-
-						//}
 
 						//つるはしを振るってる時だけ
 						if (player->GetAttacking() == true)
@@ -877,58 +818,45 @@ void GameMainScene::Update()
 							//プレイヤーがつるはし振ってなかったら
 							rock_damage_once = false;
 						}
-
 					}
 				}
-
-
 			}
-
 		}
 
 		//ダメージを一回だけ与える
-
 		for (int i = 0; i < DYNAMITE_MAXNUM; i++)
 		{
 			if (dynamite[i] != nullptr)
 			{
 				for (int j = 0; j < block_count; j++)
 				{
-
 					if (stage_block[j] != nullptr)
 					{
 						if (stage_block[j]->GetBlockNum() == 4)
 						{
-								//ダイナマイトが岩と当たってるかのチェック
-								if (dynamite[i]->GetDynamite() == false && stage_block[j] != nullptr)
+							//ダイナマイトが岩と当たってるかのチェック
+							if (dynamite[i]->GetDynamite() == false && stage_block[j] != nullptr)
+							{
+								if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
 								{
-									if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-									{
-										dynamite[i]->SetDynamite(true);
+									dynamite[i]->SetDynamite(true);
 
-									}
 								}
-								//ダイナマイトの爆発とエネミーの当たり判定
-								if (dynamite[i]->Getdamage_flg() == true)
+							}
+							//ダイナマイトの爆発とエネミーの当たり判定
+							if (dynamite[i]->Getdamage_flg() == true)
+							{
+								if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
 								{
-									if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-									{
-										dynamite[i]->SetEnemyX(stage_block[j]->GetWorldLocation().x);
-										dynamite[i]->DamageCalculation();
-										stage_block[j]->SetDamage(30);
-										stage_block[j]->SetShakeFlg(true);
-
-										//rock_damage_once = true;
-									}
+									dynamite[i]->SetEnemyX(stage_block[j]->GetWorldLocation().x);
+									dynamite[i]->DamageCalculation();
+									stage_block[j]->SetDamage(30);
+									stage_block[j]->SetShakeFlg(true);
 								}
-
-
-							
+							}
 						}
 					}
-
 				}
-
 			}
 		}
 			
@@ -941,7 +869,6 @@ void GameMainScene::Update()
 					stage_block[j] = nullptr;
 				}
 			}
-
 		}
 
 		//エネミーと岩ブロックの当たり判定
@@ -951,28 +878,26 @@ void GameMainScene::Update()
 			{
 				stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
-	
-					for (int i = 0; i < ENEMYMAXNUM; i++)
+				for (int i = 0; i < ENEMYMAXNUM; i++)
+				{
+					if (enemy[i] != nullptr && enemy[i]->GetHp() > 0)
 					{
-						if (enemy[i] != nullptr && enemy[i]->GetHp() > 0)
+						if (enemy[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
 						{
-							if (enemy[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+							if (enemy[i]->GetIsKnockBack() == true)
 							{
-								if (enemy[i]->GetIsKnockBack() == true)
-								{
-									// ノックバックしている敵に当たったら自身もノックバックを開始する
-									enemy[i]->SetKnockBackStartFlg(true);
-								}
-								else
-								{
-									// 当たっていたら２体とも進行方向を反対に変更する
-									enemy[i]->SetHitEnemyX(stage_block[j]->GetWorldLocation().x);
-									enemy[i]->ChangeDirection();
-								}
+								// ノックバックしている敵に当たったら自身もノックバックを開始する
+								enemy[i]->SetKnockBackStartFlg(true);
+							}
+							else
+							{
+								// 当たっていたら２体とも進行方向を反対に変更する
+								enemy[i]->SetHitEnemyX(stage_block[j]->GetWorldLocation().x);
+								enemy[i]->ChangeDirection();
 							}
 						}
 					}
-					
+				}
 			}
 		}
 
@@ -1023,7 +948,6 @@ void GameMainScene::Draw() const
 	DrawGraph((int)location_x + 1280 * 8, (int)location_y, back_img[9], FALSE);
 	DrawGraph((int)location_x+1280, (int)location_y, back_img[0], FALSE);
 
-	
 	for (int j = 0; j < block_count; j++)
 	{
 		if (stage_block[j] != nullptr)
@@ -1039,7 +963,6 @@ void GameMainScene::Draw() const
 	
 	if (game_state == TUTORIAL)
 	{
-
 		//プレイヤー描画
 		if (player != nullptr)
 		{
@@ -1052,7 +975,6 @@ void GameMainScene::Draw() const
 				ac->Draw();
 			}
 		}
-
 
 		for (int j = 0; j < block_count; j++)
 		{
@@ -1072,9 +994,6 @@ void GameMainScene::Draw() const
 			}
 		}
 
-
-
-
 		if (ui != nullptr)
 		{
 			if (player != nullptr)
@@ -1082,12 +1001,9 @@ void GameMainScene::Draw() const
 				ui->DrawTutorial(player);
 			}
 		}
-
-
 	}
 	else
 	{
-
 		//プレイヤー描画
 		if (player != nullptr)
 		{
@@ -1098,7 +1014,6 @@ void GameMainScene::Draw() const
 			}
 			DrawFormatString(player->GetLocation().x, player->GetLocation().y - 100, 0xffffff, "bcnt:%d", block_cnt);
 			DrawFormatString(player->GetLocation().x, player->GetLocation().y - 120, 0xffffff, "0:%d,1:%d,2:%d",checkhit_block[0],checkhit_block[1],checkhit_block[2]);
-
 		}
 
 		//プレイヤー攻撃描画
@@ -1110,7 +1025,6 @@ void GameMainScene::Draw() const
 			}
 		}
 
-
 		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
 			// 歩行エネミーの宝石描画処理
@@ -1119,7 +1033,6 @@ void GameMainScene::Draw() const
 				walk_gem[i]->Draw();
 			}
 		}
-	
 
 		for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
 		{
@@ -1129,7 +1042,6 @@ void GameMainScene::Draw() const
 				roll_gem[i]->Draw();
 			}
 		}
-
 
 		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
@@ -1159,7 +1071,6 @@ void GameMainScene::Draw() const
 			{
 				stage_block[j]->Draw();
 			}
-
 		}
 
 		if (stage_num == stage2)
@@ -1221,7 +1132,6 @@ void GameMainScene::Draw() const
 		{
 			score->Draw();
 		}
-
 	}
 
 	if (p_life_num < 0)
@@ -1230,7 +1140,6 @@ void GameMainScene::Draw() const
 		if (player != nullptr)
 		{
 			player->Draw();
-
 		}
 	}
 
@@ -1255,15 +1164,11 @@ void GameMainScene::Draw() const
 		DrawGraph(0, 0, ScreenHandle, TRUE);
 	}
 
-
-
 	if (black_flg == true)
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha);
 		DrawGraph(0, 0, death_img, FALSE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
-
 	}
 
 	if (game_state == GOAL)
@@ -1271,11 +1176,10 @@ void GameMainScene::Draw() const
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)clear_alpha);
 		DrawGraph(0, 0, goal_img, FALSE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
 	}
 
-	if (game_state == POSE) {
-
+	if (game_state == POSE)
+	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 150);
 		DrawGraph(0, 0, death_img, FALSE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
@@ -1309,7 +1213,6 @@ void GameMainScene::Draw() const
 	case EDITOR:
 		DrawFormatString(400, 100, 0xffffff, "EDITOR_NOW");
 		mapio->Draw();
-
 		break;
 	case TUTORIAL:
 		//DrawFormatString(400, 100, 0xffffff, "TUTORIAL_NOW");
@@ -1317,7 +1220,6 @@ void GameMainScene::Draw() const
 	case POSE:
 		//DrawFormatString(400, 100, 0xffffff, "POSE_NOW");
 		break;
-		
 	case GOAL:
 		//DrawFormatString(400, 100, 0xffffff, "GOAL!!");
 		break;
@@ -1327,7 +1229,6 @@ void GameMainScene::Draw() const
 	default:
 		break;
 	}
-
 
 #endif // DEBUG
 }
