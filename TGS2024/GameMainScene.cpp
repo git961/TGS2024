@@ -2344,13 +2344,17 @@ void GameMainScene::MagmaUpdete()
 // プレイヤーとマグマの当たり判定処理
 void GameMainScene::PlayerHitMagma()
 {
-	if (player != nullptr && magma != nullptr)
+	if (player != nullptr && magma != nullptr && falling_floor != nullptr)
 	{
-		// プレイヤーがマグマに当たっていたら
-		if (player->HitCheck(magma->GetWorldLocation(), magma->GetWidth(), magma->GetHeight()) == true)
+		// 落ちる床がマグマに当たっていなかったら
+		if (falling_floor->HitCheck(magma->GetWorldLocation(), magma->GetWidth(), magma->GetHeight()) == false)
 		{
-			//プレイヤーに一回だけダメージを与える
-			PlayerDamage();
+			// プレイヤーがマグマに当たっていたら
+			if (player->HitCheck(magma->GetWorldLocation(), magma->GetWidth(), magma->GetHeight()) == true)
+			{
+				//プレイヤーに一回だけダメージを与える
+				PlayerDamage();
+			}
 		}
 	}
 }
