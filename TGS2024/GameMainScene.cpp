@@ -21,7 +21,7 @@ GameMainScene::GameMainScene(bool set_flg)
 
 	mapio = new MapIo;
 	fade = new BlackOut;
-	fragile_wall = new FragileWall(2500.0f, 200.0f);					// 脆い壁生成
+	fragile_wall = new FragileWall(3000.0f, 200.0f);					// 脆い壁生成
 	cage_door = new CageDoor(3000.0f, 550.0f);							// 檻のドア生成
 	cage = new Cage(cage_door->GetWorldLocation());						// 檻生成
 	magma = new Magma(2300.0f, 675.0f);									// マグマ生成
@@ -970,10 +970,10 @@ void GameMainScene::Draw() const
 		}
 		//プレイヤー攻撃描画
 		if (ac != nullptr) {
-			if (ac->GetAttackFlg() == true)
-			{
+			//if (ac->GetAttackFlg() == true)
+			//{
 				ac->Draw();
-			}
+			//}
 		}
 
 		for (int j = 0; j < block_count; j++)
@@ -1521,6 +1521,8 @@ void GameMainScene::Tutorial()
 	//プレイヤーの攻撃
 	if (ac != nullptr) {
 		ac->Update(this, player);
+		//ac->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
 	}
 
 	//ダイナマイト
