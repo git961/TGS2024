@@ -13,6 +13,9 @@ static cameraposition screen_origin_position =
 
 GameMainScene::GameMainScene(bool set_flg)
 {
+	// 読み込みたいステージ
+	stage_num = stage2;
+
 	retry_flg = set_flg;
 	checkhit = false;
 	block_cnt = 0;
@@ -37,7 +40,12 @@ GameMainScene::GameMainScene(bool set_flg)
 	else
 	{
 		player = new Player(2200.0f);
-		p_notback_flg = true;
+		if (stage_num == stage1) {
+			p_notback_flg = true;
+		}
+		else {
+			p_notback_flg = false;
+		}
 	}
 
 	enemy = new Enemy * [ENEMYMAXNUM];
@@ -96,8 +104,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	//rock_count = 0;
 	rolling_enemy_cnt = 0;
 
-	// 読み込みたいステージ
-	stage_num = stage2;
+
 
 	mapio->LoadMapData(stage_num);
 	for (int i = 0; i < ENEMYMAXNUM; i++)
