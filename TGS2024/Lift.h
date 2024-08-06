@@ -1,12 +1,13 @@
 #pragma once
 #include "Switch.h"
 #include "AttackCheck.h"
+#include "Player.h"
 
 class Switch;
 class AttackCheck;
+class Player;
 
-class Lift:
-    public ObjectBase
+class Lift : public ObjectBase
 {
 private:
     Switch *switch_object;
@@ -27,7 +28,7 @@ public:
     Lift(float set_x, float set_y);
     ~Lift();
 
-    void Update(AttackCheck* ac);
+    void Update(AttackCheck* ac,Player* player);
     void Draw() const;
 
     void SetCanMove(bool set_flg) { canmove_flg = set_flg; }

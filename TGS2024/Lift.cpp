@@ -26,9 +26,13 @@ Lift::~Lift()
 {
 }
 
-void Lift::Update(AttackCheck* ac)
+void Lift::Update(AttackCheck* ac,Player* player)
 {
 	
+	if (player->GetWorldLocation().y> world.y && down_flg==true)
+	{
+		canmove_flg = true;
+	}
 
 	//もし動ける状態で上に上がれたら
 	if (canmove_flg == true && down_flg == false)
@@ -50,7 +54,6 @@ void Lift::Update(AttackCheck* ac)
 		}
 
 	}
-
 	//もし動けて、下に下がれたら
 	if (canmove_flg == true && down_flg == true)
 	{
@@ -83,6 +86,7 @@ void Lift::Update(AttackCheck* ac)
 		}
 		switch_object->Update();
 	}
+
 }
 
 void Lift::Draw() const

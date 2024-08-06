@@ -2199,9 +2199,9 @@ void GameMainScene::LiftUpDate()
 	{
 		lift[0]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 		lift[0]->SetScreenPos(screen_origin_position.x, screen_origin_position.y);
-		if (ac != nullptr)
+		if (ac != nullptr && player != nullptr)
 		{
-			lift[0]->Update(ac);
+			lift[0]->Update(ac,player);
 		}
 	}
 
