@@ -74,14 +74,14 @@ private:
     Lift** lift;
 
     UI* ui;
-
     BlackOut* fade;
-    FragileWall* fragile_wall;          // 脆い壁
-    Cage* cage;                         // 檻
-    CageDoor* cage_door;                // 檻のドア
-    Magma* magma;                       // マグマ
-    FallingFloor* falling_floor;        // 落ちる床
-    Geyser* geyser;                     // 間欠泉
+
+    FragileWall** fragile_wall;          // 脆い壁
+    Cage** cage;                         // 檻
+    CageDoor** cage_door;                // 檻のドア
+    Magma** magma;                       // マグマ
+    FallingFloor** falling_floor;        // 落ちる床
+    Geyser** geyser;                     // 間欠泉
 
     cameraposition camera_pos;
 

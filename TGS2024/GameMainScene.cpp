@@ -25,12 +25,42 @@ GameMainScene::GameMainScene(bool set_flg)
 	mapio = new MapIo;
 	fade = new BlackOut;
 
-	cage_door = new CageDoor(3000.0f, 550.0f);							// 檻のドア生成
-	cage = new Cage(cage_door->GetWorldLocation());						// 檻生成
+	fragile_wall = new FragileWall * [FRAGILE_WALL_MAXNUM];
+	cage_door = new CageDoor * [CAGE_DOOR_MAXNUM];
+	cage = new Cage * [CAGE_DOOR_MAXNUM];
+	magma = new Magma * [MAGMA_MAXMUN];
+	falling_floor = new FallingFloor * [FALLING_FLOOR_MAXNUM];
+	geyser = new Geyser * [GEYSER_MAXNUM];
 
-	magma = new Magma(2300.0f, 675.0f);									// マグマ生成
-	falling_floor = new FallingFloor(2300.0f, 400.0f);					// 落ちる床生成
-	geyser = new Geyser(2100.0f, 550.0f);								// 間欠泉生成
+	for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
+	{
+		fragile_wall[i] = nullptr;
+	}
+	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
+	{
+		cage_door[i] = nullptr;
+		cage[i] = nullptr;
+	}
+	for (int i = 0; i < MAGMA_MAXMUN; i++)
+	{
+		magma[i] = nullptr;
+	}
+	for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
+	{
+		magma[i] = nullptr;
+	}
+	for (int i = 0; i < GEYSER_MAXNUM; i++)
+	{
+		geyser[i] = nullptr;
+	}
+
+	// ギミックテスト生成
+	fragile_wall[0] = new FragileWall(3000.0f, 200.0f);
+	cage_door[0] = new CageDoor(3000.0f, 550.0f);
+	cage[0] = new Cage(cage_door[0]->GetWorldLocation());
+	magma[0] = new Magma(2300.0f, 675.0f);
+	falling_floor[0] = new FallingFloor(2300.0f, 400.0f);
+	geyser[0] = new Geyser(2100.0f, 550.0f);
 
 	//プレイヤー生成
 	if (retry_flg == false)
@@ -1106,39 +1136,55 @@ void GameMainScene::Draw() const
 		if (stage_num == stage2)
 		{
 			// 脆い壁描画
-			if (fragile_wall != nullptr)
+			for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
 			{
-				fragile_wall->Draw();
+				if (fragile_wall[i] != nullptr)
+				{
+					fragile_wall[i]->Draw();
+				}			
 			}
 
-			// 檻の描画
-			if (cage != nullptr)
-			{
-				cage->Draw();
-			}
+			for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
+			{			
+				// 檻の描画
+				if (cage[i] != nullptr)
+				{
+					cage[i]->Draw();
+				}
 
-			// 檻のドアの描画
-			if (cage_door != nullptr)
-			{
-				cage_door->Draw();
+				// 檻のドアの描画
+				if (cage_door[i] != nullptr)
+				{
+					cage_door[i]->Draw();
+				}
 			}
 
 			// 落ちる床の描画
-			if (falling_floor != nullptr)
+			for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
 			{
-				falling_floor->Draw();
+				if (falling_floor[i] != nullptr)
+				{
+					falling_floor[i]->Draw();
+				}
+
 			}
 
 			// マグマの描画
-			if (magma != nullptr)
+			for (int i = 0; i < MAGMA_MAXMUN; i++)
 			{
-				magma->Draw();
+				if (magma[i] != nullptr)
+				{
+					magma[i]->Draw();
+				}
 			}
 
 			// 間欠泉の描画
-			if (geyser != nullptr)
+			for (int i = 0; i < GEYSER_MAXNUM; i++)
 			{
-				geyser->Draw();
+				if (geyser[i] != nullptr)
+				{
+					geyser[i]->Draw();
+				}
 			}
 
 		}
@@ -2157,19 +2203,22 @@ void GameMainScene::PlayerHitBlock()
 // 脆い壁更新処理
 void GameMainScene::FragileWallUpdate()
 {
-	if (fragile_wall != nullptr)
+	for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
 	{
-		// カメラから見た座標の設定
-		fragile_wall->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-
-		// 更新
-		fragile_wall->Update();
-
-		if (fragile_wall->GetDeleteFlg() == true)
+		if (fragile_wall[i] != nullptr)
 		{
-			// 脆い壁の削除
-			delete fragile_wall;
-			fragile_wall = nullptr;
+			// カメラから見た座標の設定
+			fragile_wall[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+			// 更新
+			fragile_wall[i]->Update();
+
+			if (fragile_wall[i]->GetDeleteFlg() == true)
+			{
+				// 脆い壁の削除
+				delete fragile_wall[i];
+				fragile_wall[i] = nullptr;
+			}
 		}
 	}
 }
@@ -2177,19 +2226,22 @@ void GameMainScene::FragileWallUpdate()
 // ダイナマイトと脆い壁の当たり判定処理
 void GameMainScene::DynamiteHitFragileWall()
 {
-	if (fragile_wall != nullptr)
+	for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
 	{
-		for (int i = 0; i < DYNAMITE_MAXNUM; i++)
+		if (fragile_wall[i] != nullptr)
 		{
-			if (dynamite[i] != nullptr)
+			for (int j = 0; j < DYNAMITE_MAXNUM; j++)
 			{
-				// ダイナマイト本体との当たり判定
-				if (dynamite[i]->GetDynamite() == false)
+				if (dynamite[j] != nullptr)
 				{
-					if (dynamite[i]->HitCheck(fragile_wall->GetWorldLocation(), fragile_wall->GetWidth(), fragile_wall->GetHeight()) == true)
+					// ダイナマイト本体との当たり判定
+					if (dynamite[j]->GetDynamite() == false)
 					{
-						dynamite[i]->SetDynamite(true);
-						fragile_wall->Damage(dynamite[i]->GetAttack());
+						if (dynamite[j]->HitCheck(fragile_wall[i]->GetWorldLocation(), fragile_wall[i]->GetWidth(), fragile_wall[i]->GetHeight()) == true)
+						{
+							dynamite[j]->SetDynamite(true);
+							fragile_wall[i]->Damage(dynamite[j]->GetAttack());
+						}
 					}
 				}
 			}
@@ -2200,13 +2252,16 @@ void GameMainScene::DynamiteHitFragileWall()
 // プレイヤーと脆い壁の当たり判定処理
 void GameMainScene::PlayerHitFragileWall()
 {
-	if (player != nullptr && fragile_wall != nullptr)
+	for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
 	{
-		// プレイヤーが脆い壁に当たっていたら
-		if (player->HitCheck(fragile_wall->GetWorldLocation(), fragile_wall->GetWidth(), fragile_wall->GetHeight()) == true)
+		if (player != nullptr && fragile_wall[i] != nullptr)
 		{
-			// プレイヤーの歩行を止める
-			player->HitCheckB(fragile_wall->GetVertex());
+			// プレイヤーが脆い壁に当たっていたら
+			if (player->HitCheck(fragile_wall[i]->GetWorldLocation(), fragile_wall[i]->GetWidth(), fragile_wall[i]->GetHeight()) == true)
+			{
+				// プレイヤーの歩行を止める
+				player->HitCheckB(fragile_wall[i]->GetVertex());
+			}
 		}
 	}
 }
@@ -2263,39 +2318,46 @@ void GameMainScene::LiftUpDate()
 // 檻の更新処理
 void GameMainScene::CageUpdate()
 {
-	if (cage != nullptr)
+	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
 	{
-		// カメラから見た座標の設定
-		cage->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+		if (cage[i] != nullptr)
+		{
+			// カメラから見た座標の設定
+			cage[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
-		// 更新処理
-		cage->Update();
+			cage[i]->Update();
+		}
 	}
 }
 
 // 檻のドアの更新処理
 void GameMainScene::CageDoorUpdate()
 {
-	if (cage_door != nullptr)
+	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
 	{
-		// カメラから見た座標の設定
-		cage_door->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+		if (cage_door[i] != nullptr)
+		{
+			// カメラから見た座標の設定
+			cage_door[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
-		// 更新処理
-		cage_door->Update();
+			cage_door[i]->Update();
+		}
 	}
 }
 
 // プレイヤーと檻のドアの当たり判定
 void GameMainScene::PlayerHitCageDoor()
 {
-	if (player != nullptr && cage_door != nullptr)
+	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
 	{
-		// プレイヤーが閉まっている檻のドアに当たっていたら
-		if (cage_door->GetOpenFlg() == false && player->HitCheck(cage_door->GetWorldLocation(), cage_door->GetWidth(), cage_door->GetHeight()) == true)
+		if (player != nullptr && cage_door[i] != nullptr)
 		{
-			// プレイヤーの歩行を止める
-			player->HitCheckB(cage_door->GetVertex());
+			// プレイヤーが閉まっている檻のドアに当たっていたら
+			if (cage_door[i]->GetOpenFlg() == false && player->HitCheck(cage_door[i]->GetWorldLocation(), cage_door[i]->GetWidth(), cage_door[i]->GetHeight()) == true)
+			{
+				// プレイヤーの歩行を止める
+				player->HitCheckB(cage_door[i]->GetVertex());
+			}
 		}
 	}
 }
@@ -2303,21 +2365,24 @@ void GameMainScene::PlayerHitCageDoor()
 // プレイヤーが檻の中にいるのか調べる
 void GameMainScene::CheckPlayerInCage()
 {
-	if (player != nullptr && cage_door != nullptr)
+	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
 	{
-		// プレイヤーが檻の中にいたら
-		if (player->HitCheck(cage->GetWorldLocation(), cage->GetWidth(), cage->GetHeight()) == true)
+		if (player != nullptr && cage_door[i] != nullptr)
 		{
-			// 檻にフラグの設定
-			cage->SetInsideFlg(true);
+			// プレイヤーが檻の中にいたら
+			if (player->HitCheck(cage[i]->GetWorldLocation(), cage[i]->GetWidth(), cage[i]->GetHeight()) == true)
+			{
+				// 檻が透ける
+				cage[i]->SetInsideFlg(true);
 
-			// プレイヤーが檻の端についたら歩行を止める
-			player->CheckEdgeCage(cage->GetVertex().left_x);
-		}
-		else
-		{
-			// 檻にフラグの設定
-			cage->SetInsideFlg(false);
+				// プレイヤーが檻の端についたら歩行を止める
+				player->CheckEdgeCage(cage[i]->GetVertex().left_x);
+			}
+			else
+			{
+				// 檻が透けない
+				cage[i]->SetInsideFlg(false);
+			}
 		}
 	}
 }
@@ -2325,42 +2390,45 @@ void GameMainScene::CheckPlayerInCage()
 // 檻のドアへの攻撃判定
 void GameMainScene::AttackCageDoor()
 {
-	if (player != nullptr && cage_door != nullptr)
+	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
 	{
-		for (int i = 0; i < DYNAMITE_MAXNUM; i++)
+		if (player != nullptr && cage_door[i] != nullptr)
 		{
-			if (dynamite[i] != nullptr)
+			for (int i = 0; i < DYNAMITE_MAXNUM; i++)
 			{
-				// ダイナマイト本体との当たり判定
-				if (dynamite[i]->GetDynamite() == false)
+				if (dynamite[i] != nullptr)
 				{
-					if (dynamite[i]->HitCheck(cage_door->GetWorldLocation(), cage_door->GetWidth(), cage_door->GetHeight()) == true)
+					// ダイナマイト本体との当たり判定
+					if (dynamite[i]->GetDynamite() == false)
 					{
-						dynamite[i]->SetDynamite(true);
-						cage_door->Damage(dynamite[i]->GetAttack());
+						if (dynamite[i]->HitCheck(cage_door[i]->GetWorldLocation(), cage_door[i]->GetWidth(), cage_door[i]->GetHeight()) == true)
+						{
+							dynamite[i]->SetDynamite(true);
+							cage_door[i]->Damage(dynamite[i]->GetAttack());
+						}
 					}
 				}
 			}
-		}
 
-		//つるはしを振るってる時だけ
-		if (player->GetAttacking() == true)
-		{
-			//ダメージを一回だけ与える
-			if (enemy_damage_once == false)
+			//つるはしを振るってる時だけ
+			if (player->GetAttacking() == true)
 			{
-				//つるはしとエネミーと当たってるかのチェック
-				if (ac->HitCheck(cage_door->GetWorldLocation(), cage_door->GetWidth(), cage_door->GetHeight()) == true)
+				//ダメージを一回だけ与える
+				if (enemy_damage_once == false)
 				{
-					cage_door->Damage(player->GetAttack());
-					enemy_damage_once = true;
+					//つるはしとエネミーと当たってるかのチェック
+					if (ac->HitCheck(cage_door[i]->GetWorldLocation(), cage_door[i]->GetWidth(), cage_door[i]->GetHeight()) == true)
+					{
+						cage_door[i]->Damage(player->GetAttack());
+						enemy_damage_once = true;
+					}
 				}
 			}
-		}
-		else
-		{
-			//プレイヤーがつるはし振ってなかったら
-			enemy_damage_once = false;
+			else
+			{
+				//プレイヤーがつるはし振ってなかったら
+				enemy_damage_once = false;
+			}
 		}
 	}
 }
@@ -2368,26 +2436,38 @@ void GameMainScene::AttackCageDoor()
 // マグマの更新処理
 void GameMainScene::MagmaUpdete()
 {
-	if (magma != nullptr)
+	for (int i = 0; i < MAGMA_MAXMUN; i++)
 	{
-		// カメラから見た座標の設定
-		magma->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+		if (magma[i] != nullptr)
+		{
+			// カメラから見た座標の設定
+			magma[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
-		// 更新処理
-		magma->Update();
+			magma[i]->Update();
+		}
 	}
 }
 
 // プレイヤーとマグマの当たり判定処理
 void GameMainScene::PlayerHitMagma()
 {
-	if (player != nullptr && magma != nullptr)
+	for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
 	{
-		// プレイヤーがマグマに当たっていたら
-		if (player->HitCheck(magma->GetWorldLocation(), magma->GetWidth(), magma->GetHeight()) == true)
+		for (int i = 0; i < MAGMA_MAXMUN; i++)
 		{
-			//プレイヤーに一回だけダメージを与える
-			PlayerDamage();
+			if (player != nullptr && magma[i] != nullptr && falling_floor[i] != nullptr)
+			{
+				// 落ちる床がマグマに当たっていなかったら
+				if (falling_floor[i]->HitCheck(magma[i]->GetWorldLocation(), magma[i]->GetWidth(), magma[i]->GetHeight()) == false)
+				{
+					// プレイヤーがマグマに当たっていたら
+					if (player->HitCheck(magma[i]->GetWorldLocation(), magma[i]->GetWidth(), magma[i]->GetHeight()) == true)
+					{
+						//プレイヤーに一回だけダメージを与える
+						PlayerDamage();
+					}
+				}
+			}
 		}
 	}
 }
@@ -2395,26 +2475,31 @@ void GameMainScene::PlayerHitMagma()
 // 落ちる床の更新処理
 void GameMainScene::FallingFloorUpdate()
 {
-	if (falling_floor != nullptr)
+	for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
 	{
-		// カメラから見た座標の設定
-		falling_floor->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+		if (falling_floor[i] != nullptr)
+		{
+			// カメラから見た座標の設定
+			falling_floor[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
-		// 更新処理
-		falling_floor->Update();
+			falling_floor[i]->Update();
+		}
 	}
 }
 
 // プレイヤーと落ちる床の当たり判定
 void GameMainScene::PlayerHitFallingFloor()
 {
-	if (player != nullptr && falling_floor != nullptr)
+	for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
 	{
-		// プレイヤーが落ちる床に当たったら
-		if (player->HitCheck(falling_floor->GetWorldLocation(), falling_floor->GetWidth(), falling_floor->GetHeight()) == true)
+		if (player != nullptr && falling_floor[i] != nullptr)
 		{
-			// プレイヤーの落下を止める
-			player->HitCheckB(falling_floor->GetVertex());
+			// プレイヤーが落ちる床に当たったら
+			if (player->HitCheck(falling_floor[i]->GetWorldLocation(), falling_floor[i]->GetWidth(), falling_floor[i]->GetHeight()) == true)
+			{
+				// プレイヤーの落下を止める
+				player->HitCheckB(falling_floor[i]->GetVertex());
+			}
 		}
 	}
 }
@@ -2422,26 +2507,29 @@ void GameMainScene::PlayerHitFallingFloor()
 // つるはしと落ちる床の当たり判定
 void GameMainScene::PickaxeHitFallingFloor()
 {
-	if (player != nullptr && falling_floor != nullptr)
+	for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
 	{
-		//つるはしを振るってる時だけ
-		if (player->GetAttacking() == true)
+		if (player != nullptr && falling_floor[i] != nullptr)
 		{
-			//ダメージを一回だけ与える
-			if (enemy_damage_once == false)
+			//つるはしを振るってる時だけ
+			if (player->GetAttacking() == true)
 			{
-				//つるはしと落ちる床が当たってるかのチェック
-				if (ac->HitCheck(falling_floor->GetWorldLocation(), falling_floor->GetWidth(), falling_floor->GetHeight()) == true)
+				//ダメージを一回だけ与える
+				if (enemy_damage_once == false)
 				{
-					falling_floor->Damage(player->GetAttack());
-					enemy_damage_once = true;
+					//つるはしと落ちる床が当たってるかのチェック
+					if (ac->HitCheck(falling_floor[i]->GetWorldLocation(), falling_floor[i]->GetWidth(), falling_floor[i]->GetHeight()) == true)
+					{
+						falling_floor[i]->Damage(player->GetAttack());
+						enemy_damage_once = true;
+					}
 				}
 			}
-		}
-		else
-		{
-			//プレイヤーがつるはし振ってなかったら
-			enemy_damage_once = false;
+			else
+			{
+				//プレイヤーがつるはし振ってなかったら
+				enemy_damage_once = false;
+			}
 		}
 	}
 }
@@ -2449,16 +2537,22 @@ void GameMainScene::PickaxeHitFallingFloor()
 // 落ちる床とマグマの当たり判定
 void GameMainScene::FallingFloorHitMagma()
 {
-	if (falling_floor != nullptr && magma != nullptr)
+	for (int i = 0; i < MAGMA_MAXMUN; i++)
 	{
-		// 落ちる床がマグマに当たっていたら
-		if (falling_floor->HitCheck(magma->GetWorldLocation(), magma->GetWidth(), magma->GetHeight()) == true)
+		for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
 		{
-			// 落ちる床の中心座標がマグマの中心座標以上になったら
-			if (falling_floor->GetWorldLocation().y >= magma->GetWorldLocation().y)
+			if (falling_floor[i] != nullptr && magma[i] != nullptr)
 			{
-				// 落ちる床の落下を止める
-				falling_floor->StopFalling();
+				// 落ちる床がマグマに当たっていたら
+				if (falling_floor[i]->HitCheck(magma[i]->GetWorldLocation(), magma[i]->GetWidth(), magma[i]->GetHeight()) == true)
+				{
+					// 落ちる床の中心座標がマグマの中心座標以上になったら
+					if (falling_floor[i]->GetWorldLocation().y >= magma[i]->GetWorldLocation().y)
+					{
+						// 落ちる床の落下を止める
+						falling_floor[i]->StopFalling();
+					}
+				}
 			}
 		}
 	}
@@ -2467,26 +2561,31 @@ void GameMainScene::FallingFloorHitMagma()
 // 間欠泉の更新処理
 void GameMainScene::GeyserUpdete()
 {
-	if (geyser != nullptr)
+	for (int i = 0; i < GEYSER_MAXNUM; i++)
 	{
-		// カメラから見た座標の設定
-		geyser->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+		if (geyser[i] != nullptr)
+		{
+			// カメラから見た座標の設定
+			geyser[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
-		// 更新処理
-		geyser->Update();
+			geyser[i]->Update();
+		}
 	}
 }
 
 // プレイヤーと間欠泉の当たり判定
 void GameMainScene::PlayerHitGeyser()
 {
-	if (player != nullptr && geyser != nullptr)
+	for (int i = 0; i < GEYSER_MAXNUM; i++)
 	{
-		// プレイヤーが落ちる床に当たったら
-		if (player->HitCheck(geyser->GetWorldLocation(), geyser->GetWidth(), geyser->GetHeight()) == true)
+		if (player != nullptr && geyser[i] != nullptr)
 		{
-			// プレイヤーの落下を止める
-			player->HitCheckB(geyser->GetVertex());
+			// プレイヤーが落ちる床に当たったら
+			if (player->HitCheck(geyser[i]->GetWorldLocation(), geyser[i]->GetWidth(), geyser[i]->GetHeight()) == true)
+			{
+				// プレイヤーの落下を止める
+				player->HitCheckB(geyser[i]->GetVertex());
+			}
 		}
 	}
 }
@@ -2494,31 +2593,34 @@ void GameMainScene::PlayerHitGeyser()
 // つるはしと間欠泉の当たり判定
 void GameMainScene::PickaxeHitGeyser()
 {
-	if (player != nullptr && geyser != nullptr)
+	for (int i = 0; i < GEYSER_MAXNUM; i++)
 	{
-		//つるはしを振るってる時だけ
-		if (player->GetAttacking() == true)
+		if (player != nullptr && geyser[i] != nullptr)
 		{
-			// 間欠泉から水が出ていなかったら
-			if (geyser->GetStopWaterFlg() == true)
+			//つるはしを振るってる時だけ
+			if (player->GetAttacking() == true)
 			{
-				//ダメージを一回だけ与える
-				if (enemy_damage_once == false)
+				// 間欠泉から水が出ていなかったら
+				if (geyser[i]->GetStopWaterFlg() == true)
 				{
-					//つるはしと間欠泉が当たってるかのチェック
-					if (ac->HitCheck(geyser->GetWorldLocation(), geyser->GetWidth(), geyser->GetHeight()) == true)
+					//ダメージを一回だけ与える
+					if (enemy_damage_once == false)
 					{
-						// 間欠泉から水が噴き出る
-						geyser->WaterComesOut();
-						enemy_damage_once = true;
+						//つるはしと間欠泉が当たってるかのチェック
+						if (ac->HitCheck(geyser[i]->GetWorldLocation(), geyser[i]->GetWidth(), geyser[i]->GetHeight()) == true)
+						{
+							// 間欠泉から水が噴き出る
+							geyser[i]->WaterComesOut();
+							enemy_damage_once = true;
+						}
 					}
 				}
 			}
-		}
-		else
-		{
-			//プレイヤーがつるはし振ってなかったら
-			enemy_damage_once = false;
+			else
+			{
+				//プレイヤーがつるはし振ってなかったら
+				enemy_damage_once = false;
+			}
 		}
 	}
 }
