@@ -12,6 +12,8 @@ private:
     Input input;
 
     bool attack_flg;
+    float shift_x;//プレイヤーからもらったx座標をずらす用
+    float shift_y;//プレイヤーからもらったy座標をずらす用
 
 public:
     AttackCheck();

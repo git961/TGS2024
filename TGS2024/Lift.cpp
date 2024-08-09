@@ -20,15 +20,17 @@ Lift::Lift(float set_x,float set_y)
 
 	canmove_flg = false;
 	down_flg = false;
+	anim_start_flg = false;
 }
 
 Lift::~Lift()
 {
 }
 
-void Lift::Update(AttackCheck* ac)
+void Lift::Update(AttackCheck* ac,Player* player)
 {
 	
+
 
 	//もし動ける状態で上に上がれたら
 	if (canmove_flg == true && down_flg == false)
@@ -47,10 +49,10 @@ void Lift::Update(AttackCheck* ac)
 			//上まで上がり切ったら動きを止めて下に下がれるようにする
 			down_flg = true;
 			canmove_flg = false;
+			switch_object->SetImgNum(0);
 		}
 
 	}
-
 	//もし動けて、下に下がれたら
 	if (canmove_flg == true && down_flg == true)
 	{
@@ -69,27 +71,37 @@ void Lift::Update(AttackCheck* ac)
 			//下まで下がり切ったら、動きを止めて下に下がれなくする
 			down_flg = false;
 			canmove_flg = false;
+			switch_object->SetImgNum(0);
 		}
 
 	}
+
+	
 
 	if (switch_object != nullptr)
 	{
 		switch_object->SetLocalPosition(screen_position_x, screen_position_y);
 		//つるはしとボタンが当たってるかのチェック
-		if (switch_object->HitCheck(ac->GetWorldLocation(), ac->GetWidth(), ac->GetHeight()) == true)
+		if (ac->GetAttackFlg()==true && switch_object->HitCheck(ac->GetWorldLocation(), ac->GetWidth(), ac->GetHeight()) == true)
 		{ 
-			canmove_flg = true;
+			//canmove_flg = true;
+			anim_start_flg = true;
 		}
 		switch_object->Update();
 	}
+
+
+	UpAnim();
+	DownAnim();
+
 }
 
 void Lift::Draw() const
 {
 	DrawRotaGraph((int)location.x, (int)location.y, 1,0, lift_img, TRUE);
 	DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + width / 2, (int)location.y + height / 2,0x00ffff,FALSE);
-	//DrawFormatString((int)location.x, (int)location.y, 0xFFFFFF, "y:%f", world.y);
+	//DrawFormatString((int)location.x, (int)location.y-60, 0xFFFFFF, "y:%f", world.y);
+	DrawFormatString((int)location.x, (int)location.y-60, 0xFFFFFF, "count:%d",anim_cnt);
 	DrawFormatString((int)location.x, (int)location.y, 0xFFFFFF, "Canmove:%d,down_flg:%d", canmove_flg,down_flg);
 
 	if (switch_object != nullptr)
@@ -97,3 +109,55 @@ void Lift::Draw() const
 		switch_object->Draw();
 	}
 }
+
+void Lift::UpAnim()
+{
+	//スイッチ上がるアニメーション
+	if (anim_start_flg == true && down_flg==false)
+	{
+		anim_cnt++;
+		switch (anim_cnt)
+		{
+		case 10:
+			switch_object->SetImgNum(1);
+			break;
+		case 20:
+			switch_object->SetImgNum(2);
+			break;
+		case 25:
+			canmove_flg = true;
+			anim_start_flg = false;
+			anim_cnt = 0;
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void Lift::DownAnim()
+{
+	//スイッチ下がるアニメーション
+	if (anim_start_flg == true && down_flg == true)
+	{
+		anim_cnt++;
+		switch (anim_cnt)
+		{
+		case 10:
+			switch_object->SetImgNum(3);
+			break;
+		case 20:
+			switch_object->SetImgNum(4);
+			break;
+		case 25:
+			canmove_flg = true;
+			anim_start_flg = false;
+			anim_cnt = 0;
+			break;
+		default:
+			break;
+		}
+	}
+
+}
+

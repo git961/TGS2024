@@ -13,6 +13,9 @@ static cameraposition screen_origin_position =
 
 GameMainScene::GameMainScene(bool set_flg)
 {
+	// 読み込みたいステージ
+	stage_num = stage2;
+
 	retry_flg = set_flg;
 	checkhit = false;
 	block_cnt = 0;
@@ -21,7 +24,7 @@ GameMainScene::GameMainScene(bool set_flg)
 
 	mapio = new MapIo;
 	fade = new BlackOut;
-	fragile_wall = new FragileWall(2500.0f, 200.0f);					// 脆い壁生成
+	fragile_wall = new FragileWall(3000.0f, 200.0f);					// 脆い壁生成
 	cage_door = new CageDoor(3000.0f, 550.0f);							// 檻のドア生成
 	cage = new Cage(cage_door->GetWorldLocation());						// 檻生成
 	magma = new Magma(2300.0f, 675.0f);									// マグマ生成
@@ -37,7 +40,12 @@ GameMainScene::GameMainScene(bool set_flg)
 	else
 	{
 		player = new Player(2200.0f);
-		p_notback_flg = true;
+		if (stage_num == stage1) {
+			p_notback_flg = true;
+		}
+		else {
+			p_notback_flg = false;
+		}
 	}
 
 	enemy = new Enemy * [ENEMYMAXNUM];
@@ -96,8 +104,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	//rock_count = 0;
 	rolling_enemy_cnt = 0;
 
-	// 読み込みたいステージ
-	stage_num = stage2;
+
 
 	mapio->LoadMapData(stage_num);
 	for (int i = 0; i < ENEMYMAXNUM; i++)
@@ -970,10 +977,10 @@ void GameMainScene::Draw() const
 		}
 		//プレイヤー攻撃描画
 		if (ac != nullptr) {
-			if (ac->GetAttackFlg() == true)
-			{
+			//if (ac->GetAttackFlg() == true)
+			//{
 				ac->Draw();
-			}
+			//}
 		}
 
 		for (int j = 0; j < block_count; j++)
@@ -1521,6 +1528,8 @@ void GameMainScene::Tutorial()
 	//プレイヤーの攻撃
 	if (ac != nullptr) {
 		ac->Update(this, player);
+		//ac->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
 	}
 
 	//ダイナマイト
@@ -2199,9 +2208,9 @@ void GameMainScene::LiftUpDate()
 	{
 		lift[0]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 		lift[0]->SetScreenPos(screen_origin_position.x, screen_origin_position.y);
-		if (ac != nullptr)
+		if (ac != nullptr && player != nullptr)
 		{
-			lift[0]->Update(ac);
+			lift[0]->Update(ac,player);
 		}
 	}
 

@@ -5,20 +5,6 @@
 Player::Player(float set_x)
 {
 	//画像読込
-	//player_img[0] = LoadGraph("images/Player/player.png");
-	//player_img[1] = LoadGraph("images/Player/damage.png");
-	//player_img[2] = LoadGraph("images/Player/bagopen.png");
-	//player_img[3] = LoadGraph("images/Player/bagopen2.png");
-	//player_img[4] = LoadGraph("images/Player/plookup.png");
-	//player_img[5] = LoadGraph("images/Player/wakeup.png");
-	//player_img[6] = LoadGraph("images/Player/player_tutoend1.png");
-	//player_img[7] = LoadGraph("images/Player/player_tutoend2.png");
-	//helmet_img= LoadGraph("images/Player/p_helmet.png");
-	//LoadDivGraph("images/Player/player_walk.png", 4, 4, 1, 170, 170, player_walk_img);
-	//LoadDivGraph("images/Player/player_ase.png", 4, 4, 1, 170, 170, player_ase_img);
-	//LoadDivGraph("images/Player/p_death.png", 4, 4, 1, 170, 170, player_death_img);
-	//LoadDivGraph("images/Player/p_attack.png", 4, 4, 1, 170, 170, player_attack_img);
-	//LoadDivGraph("images/Player/throw.png", 3, 3, 1, 170, 170, player_throw_img);
 	LoadDivGraph("images/Player/player_img.png",68, 4, 17, 170, 170, player_img);
 	LoadDivGraph("images/Player/pickaxe.png", 8, 4, 2, 170, 170, pickaxe_img);
 	LoadDivGraph("images/Player/soil_effect.png", 2, 2, 1, 170, 170, soil_effect);
@@ -426,67 +412,6 @@ void Player::Draw() const
 
 	}
 		
-	/*
-	switch (player_state)
-		{
-
-		case NOMAL:
-			DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, player_img[p_nomal_num], TRUE, direction);
-			//DrawFormatString(location.x, location.y - 80, 0x000000, "nomal");
-			break;
-		case ATTACK:
-			DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, player_attack_img[p_imgnum + p_atk_imgnum], TRUE, direction);
-			//DrawFormatString(location.x, location.y - 80, 0x000000, "attack");
-
-			if (is_hit_enemy == true)
-			{
-				if (p_imgnum > 2)
-				{
-					DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, pickaxe_img[2 + p_atk_imgnum], TRUE, direction);
-				}
-				else
-				{
-					DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, pickaxe_img[p_imgnum + p_atk_imgnum], TRUE, direction);
-				}
-			}
-			else {
-
-				DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, pickaxe_img[p_imgnum + p_atk_imgnum], TRUE, direction);
-				if (p_imgnum > 2)
-				{
-					//DrawRotaGraph(location.x, location.y - img_down, 1, 0, effect_img[effect_num], TRUE, direction);
-					DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, soil_effect[effect_num], TRUE, direction);
-				}
-			}
-
-			break;
-		case WALK:
-			DrawRotaGraph((int)location.x, (int)location.y-img_down, 1, 0, player_walk_img[walk_num], TRUE, direction);
-			//DrawFormatString(location.x, location.y - 80, 0x000000, "walk");
-
-			break;
-		case HITDAMAGE:
-			DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, player_img[1], TRUE, direction);
-			//DrawFormatString(location.x, location.y - 80, 0x000000, "hitdamage");
-			break;
-		case DYNAMITE:
-			DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, player_throw_img[dyna_throw_num], TRUE, direction);
-			break;
-		case DEATH:
-			DrawRotaGraph((int)location.x, (int)location.y-img_down, 1, 0, player_death_img[death_num], TRUE, direction);
-			//DrawFormatString(location.x, location.y - 80, 0x000000, "death");
-			break;
-		case PANIM:
-			DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, player_img[op_num], TRUE, direction);
-			break;
-		case ASE:
-			DrawRotaGraph((int)location.x, (int)location.y - img_down, 1, 0, player_ase_img[walk_num], TRUE, direction);
-			break;
-		default:
-			break;
-		}
-	*/
-
 
 	DrawRotaGraph((int)location.x, (int)location.y - (int)img_down, 1, 0, player_img[p_imgnum], TRUE, false);
 	if (player_state==ATTACK)
@@ -499,11 +424,7 @@ void Player::Draw() const
 		}
 	}
 
-/*	if (helmet_flg == true)
-	{
-		DrawRotaGraph((int)location.x, (int)location.y +helmet_down, 1, 0,helmet_img, TRUE, direction);
-	}
-	*/
+
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 #ifdef DEBUG
