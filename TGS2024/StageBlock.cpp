@@ -29,7 +29,7 @@ StageBlock::StageBlock(int set_block_num,float set_x, float set_y)
 		break;
 	case 4:
 		//block_img = LoadGraph("images/Stage/rock.png");
-		LoadDivGraph("images/Stage/rock1.png", 7, 7, 1, 64, 64, rock_img);
+		LoadDivGraph("images/Stage/rock.png", 7, 7, 1, 64, 64, rock_img);
 		hp = 30;
 		shake_cnt = 0;
 		shakex = 0;

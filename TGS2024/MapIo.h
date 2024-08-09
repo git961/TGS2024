@@ -69,7 +69,7 @@ public:
 
 	void LoadMapData(int set_stage_num);//マップデータ読込
 	void InputTest(GameMainScene* gamemain);//エディタテスト
-	void SaveMapData();//マップデータ保存
+	void SaveMapData(int set_stage_num);//マップデータ保存
 	void Draw() const;
 	int GetMapData(int j, int i) { return map_array[j][i]; }
 

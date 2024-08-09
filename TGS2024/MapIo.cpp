@@ -32,7 +32,7 @@ void MapIo::LoadMapData(int set_stage_num)
 	if (stage_num == stage1)
 	{
 		//ファイルを読込モードで開く
-		fopen_s(&fp, "stage/teststage.csv", "r");
+		fopen_s(&fp, "stage/stage1.csv", "r");
 	}
 	else if (stage_num == stage2)
 	{
@@ -111,8 +111,6 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		map_data_num = 6;
 	}
 
-
-
 	//ヘルメット:チュートリアル用
 	if (CheckHitKey(KEY_INPUT_7) == TRUE)
 	{
@@ -142,6 +140,37 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		map_data_num = 11;
 	}
 
+	//もろい壁
+	if (CheckHitKey(KEY_INPUT_U) == TRUE)
+	{
+		map_data_num = 12;
+	}
+
+	//マグマ
+	if (CheckHitKey(KEY_INPUT_I) == TRUE)
+	{
+		map_data_num = 13;
+	}
+
+	//落ちる床
+	if (CheckHitKey(KEY_INPUT_O) == TRUE)
+	{
+		map_data_num = 14;
+	}
+
+	//間欠泉
+	if (CheckHitKey(KEY_INPUT_A) == TRUE)
+	{
+		map_data_num = 15;
+	}
+
+	//檻
+	if (CheckHitKey(KEY_INPUT_S) == TRUE)
+	{
+		map_data_num = 16;
+	}
+
+
 	now_abs = fabsf(mouse_x - local_posx);
 
 	//マウスがプレイヤーの右に居たら
@@ -163,7 +192,7 @@ void MapIo::InputTest(GameMainScene* gamemain)
 
 	if (mouse_x < local_posx)
 	{
-		world_mouse_x =world_posx- now_abs;
+		world_mouse_x = world_posx - now_abs;
 	}
 
 
@@ -218,8 +247,10 @@ void MapIo::InputTest(GameMainScene* gamemain)
 
 }
 
-void MapIo::SaveMapData()
+void MapIo::SaveMapData(int set_stage_num)
 {
+	stage_num = set_stage_num;
+
 	if (stage_num == stage1)
 	{
 		//ファイルを書き込みモードで開く
@@ -255,6 +286,54 @@ void MapIo::Draw() const
 	{
 		for (int j = 0; j < map_blockmax_x; j++)
 		{
+			switch (map_array[i][j])
+			{
+			case 1:
+				DrawFormatString(40, 200, 0xffffff, "PUT_MAPChip");
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
+				break;
+			case 2:
+				DrawFormatString(40, 200, 0xffffff, "PUT_ENEMY");
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xfff000, FALSE);
+				break;
+			case 3:
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xffff00, FALSE);
+				DrawFormatString(40, 200, 0xffffff, "PUT_Goal");
+				break;
+			case 4:
+				DrawFormatString(40, 200, 0xffffff, "PUT_ROCK");
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x00fff0, FALSE);
+				break;
+			case 8:
+				DrawFormatString(40, 200, 0xffffff, "PUT_FALL_ENEMY");
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xff0000, FALSE);
+				break;
+			case 9:
+				DrawFormatString(40, 200, 0xffffff, "PUT_ROLLING_ENEMY");
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x008000, FALSE);
+				break;
+			case 12:
+				DrawFormatString(40, 200, 0xffffff, "PUT_FragileWall");
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x000800, FALSE);
+				break;
+			case 13:
+				DrawFormatString(40, 200, 0xffffff, "PUT_Magma");
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x000080, FALSE);
+				break;
+			case 14:
+				DrawFormatString(40, 200, 0xffffff, "PUT_FallingFloor");
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x000008, FALSE);
+				break;
+			case 15:
+				DrawFormatString(40, 200, 0xffffff, "PUT_Geyser");
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x080000, FALSE);
+				break;
+			case 16:
+				DrawFormatString(40, 200, 0xffffff, "PUT_CageDoor");
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x800000, FALSE);
+				break;
+			}
+			/*
 			if (map_array[i][j] == 1)
 			{
 				DrawBox(j * BLOCKSIZE- (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
@@ -279,6 +358,7 @@ void MapIo::Draw() const
 			{
 				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x008000, FALSE);
 			}
+			*/
 		}
 	}
 
@@ -293,14 +373,13 @@ void MapIo::Draw() const
 				if (i * BLOCKSIZE < mouse_y && i * BLOCKSIZE + BLOCKSIZE > mouse_y)
 				{
 					DrawBox(j * BLOCKSIZE, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
-
 				}
 			}
 		}
 	}
 
 	DrawFormatString(40, 40, 0xffffff, "add_x:%d", add_x);
-
+	/*
 	switch (map_data_num)
 	{
 	case 1:
@@ -322,6 +401,21 @@ void MapIo::Draw() const
 	case 9:
 		DrawFormatString(40, 200, 0xffffff, "PUT_ROLLING_ENEMY");
 		break;
+	case 12:
+		DrawFormatString(40, 200, 0xffffff, "PUT_FragileWall");
+		break;
+	case 13:
+		DrawFormatString(40, 200, 0xffffff, "PUT_Magma");
+		break;
+	case 14:
+		DrawFormatString(40, 200, 0xffffff, "PUT_FallingFloor");
+		break;
+	case 15:
+		DrawFormatString(40, 200, 0xffffff, "PUT_Geyser");
+		break;
+	case 16:
+		DrawFormatString(40, 200, 0xffffff, "PUT_CageDoor");
+		break;
 	}
-
+	*/
 }

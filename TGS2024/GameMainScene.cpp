@@ -14,19 +14,20 @@ static cameraposition screen_origin_position =
 GameMainScene::GameMainScene(bool set_flg)
 {
 	// 読み込みたいステージ
-	stage_num = stage2;
+	stage_num = stage1;
 
 	retry_flg = set_flg;
 	checkhit = false;
 	block_cnt = 0;
-	check_cnt=0;
+	check_cnt = 0;
 	//check_abs = 0;
 
 	mapio = new MapIo;
 	fade = new BlackOut;
-	fragile_wall = new FragileWall(3000.0f, 200.0f);					// 脆い壁生成
+
 	cage_door = new CageDoor(3000.0f, 550.0f);							// 檻のドア生成
 	cage = new Cage(cage_door->GetWorldLocation());						// 檻生成
+
 	magma = new Magma(2300.0f, 675.0f);									// マグマ生成
 	falling_floor = new FallingFloor(2300.0f, 400.0f);					// 落ちる床生成
 	geyser = new Geyser(2100.0f, 550.0f);								// 間欠泉生成
@@ -49,10 +50,10 @@ GameMainScene::GameMainScene(bool set_flg)
 	}
 
 	enemy = new Enemy * [ENEMYMAXNUM];
-	rolling_enemy = new RollingEnemy*[ROLLING_ENEMY_MAXNUM];
+	rolling_enemy = new RollingEnemy * [ROLLING_ENEMY_MAXNUM];
 	stage_block = new StageBlock * [map_blockmax_y * map_blockmax_x];
 
-	ui = new UI((int)player->GetHp(),player->GetDynaNum());
+	ui = new UI((int)player->GetHp(), player->GetDynaNum());
 	ac = new AttackCheck;
 
 	walk_gem = new Gem * [ENEMYMAXNUM];
@@ -74,8 +75,8 @@ GameMainScene::GameMainScene(bool set_flg)
 	//back_img[0] = LoadGraph("images/Backimg/backimg.png", TRUE);
 	//back_img[9] = LoadGraph("images/Backimg/backimgGoal.png", TRUE);
 	back_img[9] = LoadGraph("images/Backimg/backimgGoal01.png", TRUE);
-	goal_img= LoadGraph("images/Ending/ending8.png", TRUE);
-	death_img= LoadGraph("images/Backimg/death.png", TRUE);
+	goal_img = LoadGraph("images/Ending/ending8.png", TRUE);
+	death_img = LoadGraph("images/Backimg/death.png", TRUE);
 	pose_img = LoadGraph("images/UI/pose.png", TRUE);
 	//back_img = LoadGraph("images/background_test.png", TRUE);
 
@@ -179,7 +180,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	else
 	{
 		//リトライして来たら
-		game_state =PLAY;
+		game_state = PLAY;
 		ResetMap();
 	}
 	//game_state = PLAY;
@@ -204,11 +205,11 @@ GameMainScene::GameMainScene(bool set_flg)
 	goal_flg = false;
 
 
-	shake_cnt=0;
-	shake_x1=0;
-	shake_x2=0;
-	shake_flg=false;
-	
+	shake_cnt = 0;
+	shake_x1 = 0;
+	shake_x2 = 0;
+	shake_flg = false;
+
 	play_start_flg = false;
 
 	clear_alpha = 0;
@@ -279,6 +280,9 @@ GameMainScene::~GameMainScene()
 
 void GameMainScene::ResetMap()
 {
+
+	mapio->LoadMapData(stage_num);
+
 	score = nullptr;
 	for (int j = 0; j < block_count; j++)
 	{
@@ -334,6 +338,9 @@ void GameMainScene::ResetMap()
 				break;
 			case 11:
 				stage_block[block_count++] = new StageBlock(11, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				break;
+			case 12:
+				//fragile_wall = new FragileWall(3000.0f, 200.0f);					// 脆い壁生成
 				break;
 			}
 
@@ -462,7 +469,7 @@ void GameMainScene::Update()
 		if (input.CheckBtn(XINPUT_BUTTON_RIGHT_THUMB) == TRUE || CheckHitKey(KEY_INPUT_P) == TRUE)
 		{
 			//Inputを保存
-			mapio->SaveMapData();
+			mapio->SaveMapData(stage_num);
 			block_count = 0;
 			enemy_count = 0;
 			//rock_count = 0;
@@ -549,10 +556,21 @@ void GameMainScene::Update()
 
 
 	case GOAL:
-		if (clear_alpha++ > 300)
-		{
-			clear_flg = true;
+
+		if (stage_num == stage1) {
+			stage_num = stage2;
+			p_notback_flg = false;
+			ResetMap();
+			clear_alpha = 0;
+			game_state = PLAY;
 		}
+		else {
+			if (clear_alpha++ > 300)
+			{
+				clear_flg = true;
+			}
+		}
+
 		break;
 
 
@@ -588,9 +606,9 @@ void GameMainScene::Update()
 		}
 		else
 		{
-			if (fadein_snd_flg==true)
+			if (fadein_snd_flg == true)
 			{
-				fadein_snd_flg =false;
+				fadein_snd_flg = false;
 				PlaySoundMem(fadein_sound, DX_PLAYTYPE_BACK);
 			}
 
@@ -652,7 +670,11 @@ void GameMainScene::Update()
 			game_state = EDITOR;
 		}
 
-		if (retry_flg==true&&fade != nullptr)
+		if (CheckHitKey(KEY_INPUT_N) == TRUE) {
+			game_state = GOAL;
+		}
+
+		if (retry_flg == true && fade != nullptr)
 		{
 			if (fade->GetFadein() == false)
 			{
@@ -699,7 +721,7 @@ void GameMainScene::Update()
 
 		//エネミー同士の当たり判定
 		EnemyHitEnemy();
-			
+
 		//プレイヤーがエネミーに当たったときの被弾処理
 		PlayerHitEnemy();
 
@@ -797,6 +819,7 @@ void GameMainScene::Update()
 					{
 						if (stage_block[j]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
 						{
+
 							game_state = GOAL;
 						}
 					}
@@ -866,12 +889,12 @@ void GameMainScene::Update()
 				}
 			}
 		}
-			
+
 		for (int j = 0; j < block_count; j++)
 		{
 			if (stage_block[j] != nullptr)
 			{
-				if (stage_block[j]->GetBlockNum()==4 && stage_block[j]->GetDeleteFlg()==true)
+				if (stage_block[j]->GetBlockNum() == 4 && stage_block[j]->GetDeleteFlg() == true)
 				{
 					stage_block[j] = nullptr;
 				}
@@ -881,7 +904,7 @@ void GameMainScene::Update()
 		//エネミーと岩ブロックの当たり判定
 		for (int j = 0; j < block_count; j++)
 		{
-			if (stage_block[j] != nullptr&& stage_block[j]->GetBlockNum() == 4)
+			if (stage_block[j] != nullptr && stage_block[j]->GetBlockNum() == 4)
 			{
 				stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
@@ -935,11 +958,11 @@ void GameMainScene::Update()
 
 		PlayerHitBlock();
 
-			break;
+		break;
 	default:
 		break;
 
-		
+
 
 	}
 }
@@ -949,11 +972,11 @@ void GameMainScene::Draw() const
 	// 背景画像描画（仮）
 	for (int i = 0; i < 8; i++)
 	{
-		DrawGraph((int)location_x+1280*i, (int)location_y, back_img[1], FALSE);
+		DrawGraph((int)location_x + 1280 * i, (int)location_y, back_img[1], FALSE);
 	}
 
 	DrawGraph((int)location_x + 1280 * 8, (int)location_y, back_img[9], FALSE);
-	DrawGraph((int)location_x+1280, (int)location_y, back_img[0], FALSE);
+	DrawGraph((int)location_x + 1280, (int)location_y, back_img[0], FALSE);
 
 	for (int j = 0; j < block_count; j++)
 	{
@@ -967,7 +990,7 @@ void GameMainScene::Draw() const
 	{
 		lift[0]->Draw();
 	}
-	
+
 	if (game_state == TUTORIAL)
 	{
 		//プレイヤー描画
@@ -979,7 +1002,7 @@ void GameMainScene::Draw() const
 		if (ac != nullptr) {
 			//if (ac->GetAttackFlg() == true)
 			//{
-				ac->Draw();
+			ac->Draw();
 			//}
 		}
 
@@ -1014,13 +1037,13 @@ void GameMainScene::Draw() const
 		//プレイヤー描画
 		if (player != nullptr)
 		{
-			player->Draw();
+			//player->Draw();
 			if (checkhit == true)
 			{
 				DrawFormatString(player->GetLocation().x, player->GetLocation().y - 80, 0xffffff, "true");
 			}
 			DrawFormatString(player->GetLocation().x, player->GetLocation().y - 100, 0xffffff, "bcnt:%d", block_cnt);
-			DrawFormatString(player->GetLocation().x, player->GetLocation().y - 120, 0xffffff, "0:%d,1:%d,2:%d",checkhit_block[0],checkhit_block[1],checkhit_block[2]);
+			DrawFormatString(player->GetLocation().x, player->GetLocation().y - 120, 0xffffff, "0:%d,1:%d,2:%d", checkhit_block[0], checkhit_block[1], checkhit_block[2]);
 		}
 
 		//プレイヤー攻撃描画
@@ -1150,7 +1173,7 @@ void GameMainScene::Draw() const
 		}
 	}
 
-	if (fadein_flg==true)
+	if (fadein_flg == true)
 	{
 		//DrawGraph(location_x, location_y, death_img, FALSE);
 		if (player != nullptr)
@@ -1193,7 +1216,7 @@ void GameMainScene::Draw() const
 		DrawGraph(550, 350, pose_img, FALSE);
 	}
 
-	if (retry_flg==true && fade!=nullptr)
+	if (retry_flg == true && fade != nullptr)
 	{
 		if (fade->GetFadein() == false)
 		{
@@ -1201,6 +1224,11 @@ void GameMainScene::Draw() const
 		}
 	}
 
+	//プレイヤー描画
+	if (player != nullptr)
+	{
+		player->Draw();
+	}
 
 #ifdef DEBUG
 
@@ -1362,15 +1390,15 @@ void GameMainScene::Tutorial()
 	//プレイヤー
 	if (player != nullptr)
 	{
-			player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+		player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
-			player->TutorialAnimUpdate();
+		player->TutorialAnimUpdate();
 
-			if (player->GetStartFlg() == true)
-			{
-				game_state = PLAY;
-			}
-		
+		if (player->GetStartFlg() == true)
+		{
+			game_state = PLAY;
+		}
+
 		if (ui != nullptr)
 		{
 			ui->UpdateTutorial(player);
@@ -1389,12 +1417,12 @@ void GameMainScene::Tutorial()
 
 				if (stage_block[j]->GetBlockNum() == 6)
 				{
-					
+
 					if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
 					{
 						player->SetMoveStop(true);
 					}
-					
+
 				}
 
 				if (stage_block[j]->GetBlockNum() == 4)
@@ -1433,7 +1461,7 @@ void GameMainScene::Tutorial()
 						rock_damage_once = false;
 					}
 
-					if (stage_block[j]->GetHp() <= 0&& stage_block[j]->GetDeleteFlg() == true)
+					if (stage_block[j]->GetHp() <= 0 && stage_block[j]->GetDeleteFlg() == true)
 					{
 						stage_block[j] = nullptr;
 					}
@@ -1457,7 +1485,7 @@ void GameMainScene::Tutorial()
 						}
 
 						//ダイナマイトの爆発とエネミーの当たり判定
-						if (dynamite[i]->Getdamage_flg() == true&& stage_block[j]->GetHp() > 0)
+						if (dynamite[i]->Getdamage_flg() == true && stage_block[j]->GetHp() > 0)
 						{
 							if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
 							{
@@ -1558,7 +1586,7 @@ void GameMainScene::Tutorial()
 	}
 
 	//カメラとUIのアップデート
-	
+
 	if (player != nullptr) {
 		if (player->GetTutoAnimDynaFlg() == true)
 		{
@@ -1572,7 +1600,7 @@ void GameMainScene::Tutorial()
 		}
 
 		//元のプレイヤーの位置までカメラを戻す
-		if (camera_resetflg == true&& player->GetTutoAnimDynaFlg() == false)
+		if (camera_resetflg == true && player->GetTutoAnimDynaFlg() == false)
 		{
 			camera_resetx.x += -10;
 			UpdateCamera(camera_resetx);
@@ -1583,8 +1611,8 @@ void GameMainScene::Tutorial()
 				//game_state = PLAY;
 			}
 		}
-		
-		if(camera_resetflg==false && player->GetTutoAnimDynaFlg() == false) {
+
+		if (camera_resetflg == false && player->GetTutoAnimDynaFlg() == false) {
 			UpdateCamera(player->GetWorldLocation());
 			camera_old_x = player->GetWorldLocation().x;
 		}
@@ -1606,7 +1634,7 @@ void GameMainScene::Tutorial()
 
 }
 
-void GameMainScene::EnemyDamage(int enemynum,float damage)
+void GameMainScene::EnemyDamage(int enemynum, float damage)
 {
 	enemy[enemynum]->Damage(damage);
 	// 歩行エネミーのノックバック処理
@@ -1827,7 +1855,7 @@ void GameMainScene::PlayerUpDate()
 			}
 		}
 
-		
+
 		//ダイナマイト作成
 		if (player != nullptr && player->GetAtkDynamite() == true)
 		{
@@ -2210,7 +2238,7 @@ void GameMainScene::LiftUpDate()
 		lift[0]->SetScreenPos(screen_origin_position.x, screen_origin_position.y);
 		if (ac != nullptr && player != nullptr)
 		{
-			lift[0]->Update(ac,player);
+			lift[0]->Update(ac, player);
 		}
 	}
 

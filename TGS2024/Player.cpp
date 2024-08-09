@@ -45,7 +45,7 @@ Player::Player(float set_x)
 
 	//幅と座標
 	width = 50;
-	height = 90;
+	height = 86;
 
 	direction = 0;
 
