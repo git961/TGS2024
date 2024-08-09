@@ -12,13 +12,8 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
-
-
 #define WINDOW_HALFX SCREEN_WIDTH/2
 #define WINDOW_HALFY SCREEN_HEIGHT/2
-
-#define ENEMYMAXNUM 20
-#define ROLLING_ENEMY_MAXNUM 20
 
 #define DYNAMITE_MAXNUM 5
 
@@ -26,3 +21,14 @@
 
 //デグリーからラジアンに変換
 #define DEGREE_RADIAN(_deg) (M_PI*(_deg)/180.0)
+
+// 敵の最大数
+#define ENEMYMAXNUM 20
+#define ROLLING_ENEMY_MAXNUM 20
+
+// ギミックの最大数
+#define FRAGILE_WALL_MAXNUM		1
+#define CAGE_DOOR_MAXNUM		1
+#define MAGMA_MAXMUN			1
+#define FALLING_FLOOR_MAXNUM	1
+#define GEYSER_MAXNUM			1
