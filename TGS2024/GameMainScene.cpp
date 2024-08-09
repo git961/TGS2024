@@ -47,13 +47,14 @@ GameMainScene::GameMainScene(bool set_flg)
 	}
 	for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
 	{
-		magma[i] = nullptr;
+		falling_floor[i] = nullptr;
 	}
 	for (int i = 0; i < GEYSER_MAXNUM; i++)
 	{
 		geyser[i] = nullptr;
 	}
 
+	/*
 	// ギミックテスト生成
 	fragile_wall[0] = new FragileWall(3000.0f, 200.0f);
 	cage_door[0] = new CageDoor(3000.0f, 550.0f);
@@ -61,6 +62,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	magma[0] = new Magma(2300.0f, 675.0f);
 	falling_floor[0] = new FallingFloor(2300.0f, 400.0f);
 	geyser[0] = new Geyser(2100.0f, 550.0f);
+	*/
 
 	//プレイヤー生成
 	if (retry_flg == false)
@@ -202,6 +204,22 @@ GameMainScene::GameMainScene(bool set_flg)
 					case 11:
 						stage_block[block_count++] = new StageBlock(11, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
+					case 12:
+						fragile_wall[0] = new FragileWall((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+					case 13:
+						magma[0] = new Magma((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+					case 14:
+						falling_floor[0] = new FallingFloor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+					case 15:
+						geyser[0] = new Geyser((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+					case 16:
+						cage_door[0] = new CageDoor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						cage[0] = new Cage(cage_door[0]->GetWorldLocation());
+						break;
 					}
 				}
 			}
@@ -340,6 +358,29 @@ void GameMainScene::ResetMap()
 		dynamite[i] = nullptr;
 	}
 
+	//オブジェクトにnullを代入
+	for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
+	{
+		fragile_wall[i] = nullptr;
+	}
+	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
+	{
+		cage_door[i] = nullptr;
+		cage[i] = nullptr;
+	}
+	for (int i = 0; i < MAGMA_MAXMUN; i++)
+	{
+		magma[i] = nullptr;
+	}
+	for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
+	{
+		falling_floor[i] = nullptr;
+	}
+	for (int i = 0; i < GEYSER_MAXNUM; i++)
+	{
+		geyser[i] = nullptr;
+	}
+
 	block_count = 0;
 	enemy_count = 0;
 	rolling_enemy_cnt = 0;
@@ -370,7 +411,20 @@ void GameMainScene::ResetMap()
 				stage_block[block_count++] = new StageBlock(11, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 12:
-				//fragile_wall = new FragileWall(3000.0f, 200.0f);					// 脆い壁生成
+				fragile_wall[0] = new FragileWall((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				break;
+			case 13:
+				magma[0] = new Magma((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				break;
+			case 14:
+				falling_floor[0] = new FallingFloor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				break;
+			case 15:
+				geyser[0] = new Geyser((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				break;
+			case 16:
+				cage_door[0] = new CageDoor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				cage[0] = new Cage(cage_door[0]->GetWorldLocation());
 				break;
 			}
 
@@ -458,11 +512,11 @@ void GameMainScene::Update()
 		location_x = world_x - screen_origin_position.x;
 		location_y = world_y - screen_origin_position.y;
 
-		if (CheckHitKey(KEY_INPUT_D) == TRUE)
+		if (CheckHitKey(KEY_INPUT_RIGHT) == TRUE)
 		{
 			screen_origin_position.x += 5;
 		}
-		if (CheckHitKey(KEY_INPUT_A) == TRUE)
+		if (CheckHitKey(KEY_INPUT_LEFT) == TRUE)
 		{
 			screen_origin_position.x -= 5;
 		}
@@ -483,17 +537,17 @@ void GameMainScene::Update()
 		}
 
 		//エネミー削除
-		for (int i = 0; i < ENEMYMAXNUM; i++)
-		{
-			enemy[i] = nullptr;
-			walk_gem[i] = nullptr;
-		}
+		//for (int i = 0; i < ENEMYMAXNUM; i++)
+		//{
+		//	enemy[i] = nullptr;
+		//	walk_gem[i] = nullptr;
+		//}
 
-		for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
-		{
-			rolling_enemy[i] = nullptr;
-			roll_gem[i] = nullptr;
-		}
+		//for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
+		//{
+		//	rolling_enemy[i] = nullptr;
+		//	roll_gem[i] = nullptr;
+		//}
 
 		//右スティック押し込み
 		if (input.CheckBtn(XINPUT_BUTTON_RIGHT_THUMB) == TRUE || CheckHitKey(KEY_INPUT_P) == TRUE)
@@ -506,7 +560,7 @@ void GameMainScene::Update()
 			rolling_enemy_cnt = 0;
 
 			//マップチップに反映する
-			for (int i = 0; i < map_blockmax_y; i++)
+			/*for (int i = 0; i < map_blockmax_y; i++)
 			{
 				for (int j = 0; j < map_blockmax_x; j++)
 				{
@@ -560,6 +614,8 @@ void GameMainScene::Update()
 					}
 				}
 			}
+			*/
+			ResetMap();
 			game_state = PLAY;
 		}
 		break;

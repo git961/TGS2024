@@ -289,47 +289,36 @@ void MapIo::Draw() const
 			switch (map_array[i][j])
 			{
 			case 1:
-				DrawFormatString(40, 200, 0xffffff, "PUT_MAPChip");
 				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
 				break;
 			case 2:
-				DrawFormatString(40, 200, 0xffffff, "PUT_ENEMY");
 				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xfff000, FALSE);
 				break;
 			case 3:
 				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xffff00, FALSE);
-				DrawFormatString(40, 200, 0xffffff, "PUT_Goal");
 				break;
 			case 4:
-				DrawFormatString(40, 200, 0xffffff, "PUT_ROCK");
 				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x00fff0, FALSE);
 				break;
 			case 8:
-				DrawFormatString(40, 200, 0xffffff, "PUT_FALL_ENEMY");
 				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xff0000, FALSE);
 				break;
 			case 9:
-				DrawFormatString(40, 200, 0xffffff, "PUT_ROLLING_ENEMY");
 				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x008000, FALSE);
 				break;
 			case 12:
-				DrawFormatString(40, 200, 0xffffff, "PUT_FragileWall");
 				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x000800, FALSE);
 				break;
 			case 13:
-				DrawFormatString(40, 200, 0xffffff, "PUT_Magma");
 				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x000080, FALSE);
 				break;
 			case 14:
-				DrawFormatString(40, 200, 0xffffff, "PUT_FallingFloor");
 				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x000008, FALSE);
 				break;
 			case 15:
-				DrawFormatString(40, 200, 0xffffff, "PUT_Geyser");
 				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x080000, FALSE);
 				break;
 			case 16:
-				DrawFormatString(40, 200, 0xffffff, "PUT_CageDoor");
 				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x800000, FALSE);
 				break;
 			}
@@ -379,7 +368,7 @@ void MapIo::Draw() const
 	}
 
 	DrawFormatString(40, 40, 0xffffff, "add_x:%d", add_x);
-	/*
+	
 	switch (map_data_num)
 	{
 	case 1:
@@ -417,5 +406,5 @@ void MapIo::Draw() const
 		DrawFormatString(40, 200, 0xffffff, "PUT_CageDoor");
 		break;
 	}
-	*/
+	
 }
