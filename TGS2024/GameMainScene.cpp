@@ -14,7 +14,7 @@ static cameraposition screen_origin_position =
 GameMainScene::GameMainScene(bool set_flg)
 {
 	// 読み込みたいステージ
-	stage_num = stage1;
+	stage_num = stage2;
 
 	retry_flg = set_flg;
 	checkhit = false;
@@ -2625,6 +2625,21 @@ void GameMainScene::GeyserUpdete()
 			geyser[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
 			geyser[i]->Update();
+		}
+
+		if (geyser[i] != nullptr && player != nullptr)
+		{
+			if (player->HitCheck(geyser[0]->GetWorldLocation(), geyser[0]->GetWidth(), geyser[0]->GetHeight()) == true) {
+				player->SetFallFlg(false);
+				player->SetY(geyser[0]->GetWorldLocation().y);
+
+			}
+			else if (player->GetLimitY() > player->GetWorldLocation().y)
+			{
+				//当たってないかつプレイヤーがlimitの値より上に居たら
+				//プレイヤーが落ちる
+				player->SetFallFlg(true);
+			}
 		}
 	}
 }
