@@ -30,7 +30,7 @@ Lift::~Lift()
 void Lift::Update(AttackCheck* ac,Player* player)
 {
 	
-
+	
 
 	//もし動ける状態で上に上がれたら
 	if (canmove_flg == true && down_flg == false)
@@ -84,7 +84,6 @@ void Lift::Update(AttackCheck* ac,Player* player)
 		//つるはしとボタンが当たってるかのチェック
 		if (ac->GetAttackFlg()==true && switch_object->HitCheck(ac->GetWorldLocation(), ac->GetWidth(), ac->GetHeight()) == true)
 		{ 
-			//canmove_flg = true;
 			anim_start_flg = true;
 		}
 		switch_object->Update();
