@@ -71,11 +71,13 @@ GameMainScene::GameMainScene(bool set_flg)
 	}
 	else
 	{
-		player = new Player(2200.0f);
 		if (stage_num == stage1) {
+			player = new Player(2200.0f);
 			p_notback_flg = true;
 		}
 		else {
+			//プレイヤーのリスタート位置を入れる
+			player = new Player(2200.0f);
 			p_notback_flg = false;
 		}
 	}
@@ -231,6 +233,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	{
 		//リトライして来たら
 		game_state = PLAY;
+		
 		ResetMap();
 	}
 	//game_state = PLAY;
