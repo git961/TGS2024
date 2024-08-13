@@ -212,6 +212,7 @@ public:
     void PickaxeHitEnemy();
     void DynamiteHitEnemy();
     void LiftUpDate();
+    void PlayerHitLift();
     void PlayerHitBlock();
 
     void FragileWallUpdate();               // 脆い壁更新処理

@@ -63,21 +63,6 @@ void MapIo::InputTest(GameMainScene* gamemain)
 
 	GetMousePoint(&mouse_x, &mouse_y);
 
-	//小さいほう
-	if (input.CheckBtn(XINPUT_BUTTON_RIGHT_SHOULDER) == TRUE)
-	{
-		add_x += 1280;
-
-	}
-	//小さいほう
-	if (input.CheckBtn(XINPUT_BUTTON_LEFT_SHOULDER) == TRUE)
-	{
-		if (add_x > 0)
-		{
-			add_x -= 1280;
-		}
-	}
-	//1280
 
 	if (CheckHitKey(KEY_INPUT_1) == TRUE)
 	{
@@ -170,6 +155,11 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		map_data_num = 16;
 	}
 
+	//リフト
+	if (CheckHitKey(KEY_INPUT_D) == TRUE)
+	{
+		map_data_num = 17;
+	}
 
 	now_abs = fabsf(mouse_x - local_posx);
 
@@ -321,33 +311,10 @@ void MapIo::Draw() const
 			case 16:
 				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x800000, FALSE);
 				break;
+			case 17:
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x330000, FALSE);
+				break;
 			}
-			/*
-			if (map_array[i][j] == 1)
-			{
-				DrawBox(j * BLOCKSIZE- (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
-			}
-			else if (map_array[i][j] == 2)
-			{
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xfff000, FALSE);
-			}
-			else if (map_array[i][j] == 3)
-			{
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xffff00, FALSE);
-			}
-			else if (map_array[i][j] == 4)
-			{
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x00fff0, FALSE);
-			}
-			else if (map_array[i][j] == 8)
-			{
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xff0000, FALSE);
-			}
-			else if (map_array[i][j] == 9)
-			{
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x008000, FALSE);
-			}
-			*/
 		}
 	}
 
@@ -404,6 +371,9 @@ void MapIo::Draw() const
 		break;
 	case 16:
 		DrawFormatString(40, 200, 0xffffff, "PUT_CageDoor");
+		break;
+	case 17:
+		DrawFormatString(40, 200, 0xffffff, "PUT_LIFT");
 		break;
 	}
 	

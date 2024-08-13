@@ -31,6 +31,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	magma = new Magma * [MAGMA_MAXMUN];
 	falling_floor = new FallingFloor * [FALLING_FLOOR_MAXNUM];
 	geyser = new Geyser * [GEYSER_MAXNUM];
+	lift = new Lift * [LIFT_MAXNUM];
 
 	for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
 	{
@@ -53,16 +54,11 @@ GameMainScene::GameMainScene(bool set_flg)
 	{
 		geyser[i] = nullptr;
 	}
+	for(int i=0;i<LIFT_MAXNUM;i++)
+	{
+		lift[0] = nullptr;
+	}
 
-	/*
-	// ギミックテスト生成
-	fragile_wall[0] = new FragileWall(3000.0f, 200.0f);
-	cage_door[0] = new CageDoor(3000.0f, 550.0f);
-	cage[0] = new Cage(cage_door[0]->GetWorldLocation());
-	magma[0] = new Magma(2300.0f, 675.0f);
-	falling_floor[0] = new FallingFloor(2300.0f, 400.0f);
-	geyser[0] = new Geyser(2100.0f, 550.0f);
-	*/
 
 	//プレイヤー生成
 	if (retry_flg == false)
@@ -92,10 +88,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	roll_gem = new Gem * [ROLLING_ENEMY_MAXNUM];
 	score = new Score;
 
-	/*リフトテスト 後で消す*/
-	lift = new Lift * [1];
-	lift[0] = nullptr;
-	lift[0] = new Lift(2500, 600);
+
 
 	dynamite = new Dynamite * [DYNAMITE_MAXNUM];
 	enemy_damage_once = false;
@@ -219,6 +212,9 @@ GameMainScene::GameMainScene(bool set_flg)
 					case 16:
 						cage_door[0] = new CageDoor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						cage[0] = new Cage(cage_door[0]->GetWorldLocation());
+						break;
+					case 17:
+						lift[0] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					}
 				}
@@ -380,6 +376,10 @@ void GameMainScene::ResetMap()
 	{
 		geyser[i] = nullptr;
 	}
+	for (int i = 0; i < LIFT_MAXNUM; i++)
+	{
+		lift[i] = nullptr;
+	}
 
 	block_count = 0;
 	enemy_count = 0;
@@ -425,6 +425,9 @@ void GameMainScene::ResetMap()
 			case 16:
 				cage_door[0] = new CageDoor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				cage[0] = new Cage(cage_door[0]->GetWorldLocation());
+				break;
+			case 17:
+				lift[0] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			}
 
@@ -711,6 +714,7 @@ void GameMainScene::Update()
 
 		//リフトアップデート
 		LiftUpDate();
+		PlayerHitLift();
 
 		//押されたらポーズへ
 		if (input.CheckBtn(XINPUT_BUTTON_START) == TRUE)
@@ -2278,33 +2282,42 @@ void GameMainScene::PlayerHitRock()
 //リフトアップデート
 void GameMainScene::LiftUpDate()
 {
-	//リフトテスト後で消す
-	if (lift[0] != nullptr)
+	for (int i = 0; i < LIFT_MAXNUM; i++)
 	{
-		lift[0]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-		lift[0]->SetScreenPos(screen_origin_position.x, screen_origin_position.y);
-		if (ac != nullptr && player != nullptr)
+		//リフトテスト後で消す
+		if (lift[i] != nullptr)
 		{
-			lift[0]->Update(ac, player);
+			lift[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			lift[i]->SetScreenPos(screen_origin_position.x, screen_origin_position.y);
+			if (ac != nullptr && player != nullptr)
+			{
+				lift[i]->Update(ac, player);
+			}
 		}
 	}
+}
 
-	if (lift[0] != nullptr && player != nullptr)
+//プレイヤーとリフトの当たり判定
+void GameMainScene::PlayerHitLift()
+{
+	for (int i = 0; i < LIFT_MAXNUM; i++)
 	{
-
-		if (player->HitCheck(lift[0]->GetWorldLocation(), lift[0]->GetWidth(), lift[0]->GetHeight()) == true) {
-			//lift[0]->SetCanMove(true);
-			player->SetY(lift[0]->GetWorldLocation().y);
-
-		}
-		else if (player->GetLimitY() > player->GetWorldLocation().y)
+		if (lift[i] != nullptr && player != nullptr)
 		{
-			//当たってないかつプレイヤーがlimitの値より上に居たら
-			//プレイヤーが落ちる
-			player->SetFallFlg(true);
+
+			if (player->HitCheck(lift[i]->GetWorldLocation(), lift[i]->GetWidth(), lift[i]->GetHeight()) == true) {
+				//lift[0]->SetCanMove(true);
+				player->SetY(lift[i]->GetWorldLocation().y);
+
+			}
+			else if (player->GetLimitY() > player->GetWorldLocation().y)
+			{
+				//当たってないかつプレイヤーがlimitの値より上に居たら
+				//プレイヤーが落ちる
+				player->SetFallFlg(true);
+			}
 		}
 	}
-
 }
 
 // 檻の更新処理

@@ -27,6 +27,7 @@
 #define ROLLING_ENEMY_MAXNUM 20
 
 // ギミックの最大数
+#define LIFT_MAXNUM				1
 #define FRAGILE_WALL_MAXNUM		1
 #define CAGE_DOOR_MAXNUM		1
 #define MAGMA_MAXMUN			1
