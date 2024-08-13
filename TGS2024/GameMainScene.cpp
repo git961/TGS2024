@@ -22,6 +22,9 @@ GameMainScene::GameMainScene(bool set_flg)
 	check_cnt = 0;
 	//check_abs = 0;
 
+	respawn_x = 0.0f;
+	respawn_y = 0.0f;
+
 	mapio = new MapIo;
 	fade = new BlackOut;
 
@@ -215,6 +218,9 @@ GameMainScene::GameMainScene(bool set_flg)
 						break;
 					case 17:
 						lift[0] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+					case 18:
+						stage_block[block_count++] = new StageBlock(18, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					}
 				}
@@ -428,6 +434,9 @@ void GameMainScene::ResetMap()
 				break;
 			case 17:
 				lift[0] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				break;
+			case 18:
+				stage_block[block_count++] = new StageBlock(18, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			}
 
@@ -644,7 +653,7 @@ void GameMainScene::Update()
 
 				//gameover_flg = true;
 				black_flg = true;
-				player = new Player(2200.0f);
+				player = new Player(respawn_x);
 
 				UpdateCamera(player->GetWorldLocation());
 				screen_origin_position = { camera_pos.x - SCREEN_WIDTH / 2.0f,camera_pos.y - SCREEN_HEIGHT / 2.0f };
@@ -750,6 +759,9 @@ void GameMainScene::Update()
 
 		//プレイヤー更新処理
 		PlayerUpDate();
+
+		//リスポーン位置更新
+		PlayerHitRespawn();
 
 		if (stage_num == stage2)
 		{
@@ -2626,6 +2638,22 @@ void GameMainScene::PickaxeHitGeyser()
 			{
 				//プレイヤーがつるはし振ってなかったら
 				enemy_damage_once = false;
+			}
+		}
+	}
+}
+
+//プレイヤーとリスポーンブロックの当たり判定
+void GameMainScene::PlayerHitRespawn()
+{
+	for (int i = 0; i < block_count; i++)
+	{
+		if (player!=nullptr && stage_block[i] != nullptr && stage_block[i]->GetBlockNum() == 18)
+		{
+			if (player->HitCheck(stage_block[i]->GetWorldLocation(), stage_block[i]->GetWidth(), stage_block[i]->GetHeight()) == true)
+			{
+				respawn_x = stage_block[i]->GetWorldLocation().x;
+				respawn_y = stage_block[i]->GetWorldLocation().y;
 			}
 		}
 	}

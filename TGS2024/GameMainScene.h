@@ -171,6 +171,9 @@ private:
 
     int stage_num;                  // 今いるステージの番号
 
+    float respawn_x;    //復活位置ｘ
+    float respawn_y;    //復活位置ｙ
+
 public:
     GameMainScene(bool set_flg);
     ~GameMainScene();
@@ -237,6 +240,8 @@ public:
     void GeyserUpdete();                    // 間欠泉の更新処理
     void PlayerHitGeyser();                 // プレイヤーと間欠泉の当たり判定
     void PickaxeHitGeyser();                // つるはしと間欠泉の当たり判定
+
+    void PlayerHitRespawn();                //プレイヤーとリスポーンブロックの当たり判定
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };

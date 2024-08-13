@@ -37,8 +37,8 @@ Player::Player(float set_x)
 	old_worldx = world.x;
 
 	//体力
-	hp = 50;
-	//hp = 0;
+	//hp = 50;
+	hp = 10;
 
 	//攻撃力
 	attack = 10;
