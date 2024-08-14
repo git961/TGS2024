@@ -2575,7 +2575,7 @@ void GameMainScene::PlayerHitGeyser()
 		{
 			// プレイヤーの落下を止める
 			// player->HitCheckB(geyser[i]->GetVertex());
-			player->SetY(geyser[0]->GetWorldLocation().y - geyser[0]->GetHeight() / 2);
+			player->SetY(geyser[i]->GetWorldLocation().y - geyser[i]->GetHeight() / 2);
 		}
 	}
 }
