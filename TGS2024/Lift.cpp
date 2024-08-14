@@ -10,7 +10,7 @@ Lift::Lift(float set_x,float set_y)
 	location.y = set_y;
 	move_y = 5.0f;
 	
-	up_max_y = 200.0f;
+	up_max_y = 100.0f;
 	down_max_y = 600.0f;
 	screen_position_x = 0.0f;
 	screen_position_y = 0.0f;

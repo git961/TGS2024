@@ -22,7 +22,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	check_cnt = 0;
 	//check_abs = 0;
 
-	respawn_x = 0.0f;
+	respawn_x = 100.0f;
 	respawn_y = 0.0f;
 
 	mapio = new MapIo;
@@ -99,10 +99,11 @@ GameMainScene::GameMainScene(bool set_flg)
 	enemy_damage_once = false;
 	rock_damage_once = false;
 	player_damage_once = false;
-	//back.png
-	back_img[0] = LoadGraph("images/Backimg/backimg0.png", TRUE);
-	back_img[1] = LoadGraph("images/Backimg/backimg01.png", TRUE);
-	//back_img[0] = LoadGraph("images/Backimg/backimg.png", TRUE);
+	////back.png
+	//back_img[0] = LoadGraph("images/Backimg/backimg0.png", TRUE);
+	//back_img[1] = LoadGraph("images/Backimg/backimg01.png", TRUE);
+	back_img[0] = LoadGraph("images/Backimg/backimg.png", TRUE);
+	back_img[1] = LoadGraph("images/Backimg/backimg.png", TRUE);
 	//back_img[9] = LoadGraph("images/Backimg/backimgGoal.png", TRUE);
 	back_img[9] = LoadGraph("images/Backimg/backimgGoal01.png", TRUE);
 	goal_img = LoadGraph("images/Ending/ending8.png", TRUE);
