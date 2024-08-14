@@ -184,13 +184,13 @@ void StageBlock::Update()
 			case 3:
 				rock_num++;
 				break;
-			case 6:
-				rock_num++;
-				break;
 			case 9:
 				rock_num++;
 				break;
 			case 15:
+				rock_num++;
+				break;
+			case 18:
 				delete_flg = true;
 				break;
 			}
