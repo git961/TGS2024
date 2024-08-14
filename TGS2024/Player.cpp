@@ -45,7 +45,7 @@ Player::Player(float set_x)
 
 	//幅と座標
 	width = 50;
-	height = 86;
+	height = 80;
 
 	direction = 0;
 
@@ -163,7 +163,8 @@ void Player::Update(GameMainScene* gamemain)
 
 
 	input.InputUpdate();
-	
+	SetVertex();
+
 
 	switch (player_state)
 	{
@@ -216,6 +217,11 @@ void Player::Update(GameMainScene* gamemain)
 	case WALK:
 	case NOMAL:
 
+		if (world.y > 600.0f)
+		{
+			world.y = 600.0f;
+		}
+
 		if (player_state == NOMAL)
 		{
 			if (direction == false)
@@ -229,7 +235,6 @@ void Player::Update(GameMainScene* gamemain)
 
 		PlayerAttack();
 
-		SetVertex();
 
 		if (player_state != ATTACK)
 		{
@@ -701,7 +706,7 @@ void Player::PlayerFall()
 		{
 			//プレイヤーが着地座標に付いたら
 			//着地座標をワールド座標に入れる
-			world.y = limit_y-height / 2;
+			//world.y = limit_y-height / 2;
 			fall_flg = false;
 		}
 	}

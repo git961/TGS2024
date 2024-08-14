@@ -14,7 +14,7 @@ static cameraposition screen_origin_position =
 GameMainScene::GameMainScene(bool set_flg)
 {
 	// 読み込みたいステージ
-	stage_num = stage1;
+	stage_num = stage2;
 
 	retry_flg = set_flg;
 	checkhit = false;
@@ -536,18 +536,6 @@ void GameMainScene::Update()
 			}
 		}
 
-		//エネミー削除
-		//for (int i = 0; i < ENEMYMAXNUM; i++)
-		//{
-		//	enemy[i] = nullptr;
-		//	walk_gem[i] = nullptr;
-		//}
-
-		//for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
-		//{
-		//	rolling_enemy[i] = nullptr;
-		//	roll_gem[i] = nullptr;
-		//}
 
 		//右スティック押し込み
 		if (input.CheckBtn(XINPUT_BUTTON_RIGHT_THUMB) == TRUE || CheckHitKey(KEY_INPUT_P) == TRUE)
@@ -560,61 +548,6 @@ void GameMainScene::Update()
 			rolling_enemy_cnt = 0;
 
 			//マップチップに反映する
-			/*for (int i = 0; i < map_blockmax_y; i++)
-			{
-				for (int j = 0; j < map_blockmax_x; j++)
-				{
-					switch (mapio->GetMapData(i, j))
-					{
-					case 1:
-						stage_block[block_count++] = new StageBlock(1, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-						break;
-					case 3:
-						stage_block[block_count++] = new StageBlock(3, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-						break;
-					case 4:
-						stage_block[block_count++] = new StageBlock(4, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-						break;
-					case 5:
-						stage_block[block_count++] = new StageBlock(5, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-						break;
-					case 6:
-						stage_block[block_count++] = new StageBlock(6, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-						break;
-					case 7:
-						stage_block[block_count++] = new StageBlock(7, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-						break;
-					case 10:
-						stage_block[block_count++] = new StageBlock(10, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-						break;
-					case 11:
-						stage_block[block_count++] = new StageBlock(11, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-						break;
-					}
-
-					if (enemy_count < ENEMYMAXNUM)
-					{
-						if (mapio->GetMapData(i, j) == 2)
-						{
-							enemy[enemy_count++] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, false);
-						}
-
-						if (mapio->GetMapData(i, j) == 8)
-						{
-							enemy[enemy_count++] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, true);
-						}
-					}
-
-					if (rolling_enemy_cnt < ROLLING_ENEMY_MAXNUM)
-					{
-						if (mapio->GetMapData(i, j) == 9)
-						{
-							rolling_enemy[rolling_enemy_cnt++] = new RollingEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2);
-						}
-					}
-				}
-			}
-			*/
 			ResetMap();
 			game_state = PLAY;
 		}
@@ -2200,6 +2133,7 @@ void GameMainScene::DynamiteHitEnemy()
 
 }
 
+//プレイヤーと床ブロックの当たり判定
 void GameMainScene::PlayerHitBlock()
 {
 	//範囲内にいくつブロックが当たってるか数える
@@ -2214,6 +2148,7 @@ void GameMainScene::PlayerHitBlock()
 				block_num[block_cnt] = i;
 				block_cnt++;
 			}
+
 		}
 	}
 
@@ -2225,6 +2160,7 @@ void GameMainScene::PlayerHitBlock()
 			//もし範囲内のブロックと当たっていたら
 			if (stage_block[block_num[i]]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
 			{
+				player->HitCheckB(stage_block[block_num[i]]->GetVertex());
 				//落ちれない状態にする
 				player->SetFallFlg(false);
 				//当たったブロックの上部の座標をプレイヤーの着地座標にいれる（プレイヤーの画像分ずらしている）
@@ -2638,7 +2574,8 @@ void GameMainScene::PlayerHitGeyser()
 		if (player->HitCheck(geyser[i]->GetWorldLocation(), geyser[i]->GetWidth(), geyser[i]->GetHeight()) == true)
 		{
 			// プレイヤーの落下を止める
-			player->HitCheckB(geyser[i]->GetVertex());
+			// player->HitCheckB(geyser[i]->GetVertex());
+			player->SetY(geyser[0]->GetWorldLocation().y - geyser[0]->GetHeight() / 2);
 		}
 	}
 }
