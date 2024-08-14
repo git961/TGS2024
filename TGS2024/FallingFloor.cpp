@@ -11,10 +11,11 @@ FallingFloor::FallingFloor(float set_x, float set_y)
 
 	falling_floor_img = LoadGraph("images/Stage/Gimmick/FallingFloor.png");
 	
-	hp = 10.0f;
 	img_num = 0;
 	anim_cnt = 0;
-	touched_ground = false;			// 地面に触れていない
+	falling_speed = 3.0f;
+	touched_magma = false;			// 地面に触れていない
+	falling_flg = false;			// 落下しない
 }
 
 FallingFloor::~FallingFloor()
@@ -28,10 +29,10 @@ void FallingFloor::Update()
 	// 頂点の更新
 	SetVertex();
 
-	if (hp <= 0.0f && touched_ground == false)
+	if (falling_flg == true && touched_magma == false)
 	{
 		// 落下
-		world.y++;
+		world.y += falling_speed;
 	}
 }
 
@@ -44,15 +45,25 @@ void FallingFloor::Draw() const
 	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
 }
 
-// 被ダメージ処理
-void FallingFloor::Damage(float damage)
+bool FallingFloor::GetTouchedMagma() const
 {
-	hp -= damage;
+	return touched_magma;
 }
 
 // 床の落下を止める
 void FallingFloor::StopFalling()
 {
 	// 地面に触れた
-	touched_ground = true;
+	touched_magma = true;
+}
+
+bool FallingFloor::GetFallingFlg() const
+{
+	return falling_flg;
+}
+
+void FallingFloor::StartFalling()
+{
+	// 落下を開始する
+	falling_flg = true;
 }

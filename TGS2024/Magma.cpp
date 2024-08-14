@@ -13,6 +13,7 @@ Magma::Magma(float set_x, float set_y)
 
 	img_num = 0;
 	anim_cnt = 0;
+	is_any_damage = true;				// ダメージあり
 }
 
 Magma::~Magma()
@@ -36,4 +37,15 @@ void Magma::Draw() const
 
 	// 頂点の確認
 	DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
+}
+
+bool Magma::GetAnyDamageFlg() const
+{
+	return is_any_damage;
+}
+
+void Magma::NullificationDamage()
+{
+	// マグマのダメージ無し
+	is_any_damage = false;
 }
