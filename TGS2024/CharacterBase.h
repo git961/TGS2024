@@ -35,7 +35,6 @@ public:
 
 	void HitCheckB(Boxvertex set_box_vertex)
 	{
-
 		//キャラがブロックの上からぶつかった場合
 		if (box_vertex.lower_y <= set_box_vertex.upper_y)
 		{

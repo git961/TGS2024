@@ -160,6 +160,7 @@
     <ClCompile Include="Dynamite.cpp" />
     <ClCompile Include="EndScene.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="FallingFloor.cpp" />
     <ClCompile Include="FallingRock.cpp" />
     <ClCompile Include="fps.cpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="EndCreditsScene.cpp" />
     <ClCompile Include="Geyser.cpp" />
     <ClCompile Include="Lift.cpp" />
+    <ClCompile Include="LongLeggedEnemy.cpp" />
     <ClCompile Include="Magma.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapIo.cpp" />
@@ -204,6 +206,7 @@
     <ClInclude Include="EndCreditsScene.h" />
     <ClInclude Include="Geyser.h" />
     <ClInclude Include="Lift.h" />
+    <ClInclude Include="LongLeggedEnemy.h" />
     <ClInclude Include="Magma.h" />
     <ClInclude Include="ObjectBase.h" />
     <ClInclude Include="Camera.h" />

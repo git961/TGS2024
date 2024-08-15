@@ -46,7 +46,6 @@ RollingEnemy::RollingEnemy(float set_x)
 	ChangeVolumeSoundMem(255, roll_sound);
 	ChangeVolumeSoundMem(100, death_sount);
 
-
 }
 
 RollingEnemy::~RollingEnemy()
@@ -65,7 +64,6 @@ RollingEnemy::~RollingEnemy()
 	// サウンド削除
 	DeleteSoundMem(roll_sound);
 	DeleteSoundMem(death_sount);
-
 }
 
 void RollingEnemy::Update(GameMainScene* gamemain)

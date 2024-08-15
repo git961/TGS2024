@@ -76,6 +76,9 @@
     <Filter Include="ヘッダー ファイル\StageObjectFile\Cage">
       <UniqueIdentifier>{06725fcc-332d-4cc3-9bc2-79f7bc83bfd4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\EnemyFile\BaseFile">
+      <UniqueIdentifier>{07488b41-2df0-4205-8a72-e4c56b6c4a3b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -173,6 +176,12 @@
     </ClCompile>
     <ClCompile Include="Switch.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBase.cpp">
+      <Filter>ソース ファイル\EnemyFile\BaseFile</Filter>
+    </ClCompile>
+    <ClCompile Include="LongLeggedEnemy.cpp">
+      <Filter>ソース ファイル\EnemyFile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -289,6 +298,9 @@
     </ClInclude>
     <ClInclude Include="EnemyBase.h">
       <Filter>ヘッダー ファイル\BaseFile</Filter>
+    </ClInclude>
+    <ClInclude Include="LongLeggedEnemy.h">
+      <Filter>ヘッダー ファイル\EnemyFile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
