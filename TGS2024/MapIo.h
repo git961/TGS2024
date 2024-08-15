@@ -63,6 +63,7 @@ private:
 
 	int lift_num;//リフトの番号数える用
 	float lift_up_max[LIFT_MAXNUM]={0.0f};
+	bool put_liftupmax;//リフトマックスを置くか？
 
 public:
 	MapIo();

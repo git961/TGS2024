@@ -1,6 +1,6 @@
 #include "Lift.h"
 
-Lift::Lift(float set_x,float set_y)
+Lift::Lift(float up_max,float set_x,float set_y)
 {
 	switch_object = new Switch(set_x, set_y);
 	lift_img = LoadGraph("images/Stage/Gimmick/Lift.png");

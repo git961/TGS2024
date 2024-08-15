@@ -51,6 +51,16 @@ enum GameState {
     PLAY
 };
 
+struct ObjectNum {
+    int fragile_wall_cnt=0;
+    int cage_cnt=0;
+    int cage_door_cnt=0;
+    int magma_cnt;
+    int falling_floor_cnt;
+    int geyser_cnt;
+    int lift_cnt;
+};
+
 class GameMainScene :
     public AbstractScene
 {
@@ -82,6 +92,8 @@ private:
     Magma** magma;                       // マグマ
     FallingFloor** falling_floor;        // 落ちる床
     Geyser** geyser;                     // 間欠泉
+
+    ObjectNum object_num;
 
     cameraposition camera_pos;
 

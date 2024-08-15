@@ -29,7 +29,7 @@ private:
 
 
 public:
-    Lift(float set_x, float set_y);
+    Lift(float up_max,float set_x, float set_y);
     ~Lift();
 
     void Update(AttackCheck* ac,Player* player);
