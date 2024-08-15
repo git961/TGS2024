@@ -171,6 +171,9 @@
     <ClCompile Include="Geyser.cpp">
       <Filter>ソース ファイル\StageObjectFile</Filter>
     </ClCompile>
+    <ClCompile Include="Switch.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fps.h">
@@ -256,7 +259,7 @@
     </ClInclude>
     <ClInclude Include="BlackOut.h">
       <Filter>ヘッダー ファイル\AnimS</Filter>
-    </ClInclude> 
+    </ClInclude>
     <ClInclude Include="TestStageScene.h">
       <Filter>ヘッダー ファイル\StageFile</Filter>
     </ClInclude>
@@ -280,6 +283,12 @@
     </ClInclude>
     <ClInclude Include="Geyser.h">
       <Filter>ヘッダー ファイル\StageObjectFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Switch.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBase.h">
+      <Filter>ヘッダー ファイル\BaseFile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

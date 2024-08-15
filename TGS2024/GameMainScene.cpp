@@ -981,8 +981,6 @@ void GameMainScene::Update()
 	default:
 		break;
 
-
-
 	}
 }
 

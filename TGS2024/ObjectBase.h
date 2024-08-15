@@ -126,5 +126,4 @@ public:
 		box_vertex.lower_y = location.y + height / 2;
 	};
 
-
 };

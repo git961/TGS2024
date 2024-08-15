@@ -193,6 +193,7 @@
     <ClInclude Include="CageDoor.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="EndScene.h" />
+    <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="FallingFloor.h" />
     <ClInclude Include="FallingRock.h" />
     <ClInclude Include="FragileWall.h" />
