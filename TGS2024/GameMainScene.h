@@ -228,7 +228,10 @@ public:
     void DynamiteHitEnemy();
     void LiftUpDate();
     void PlayerHitLift();
+    void LiftHitStop();
     void PlayerHitBlock();
+
+    void SetObjectNull();//オブジェクトにNullを入れる
 
     void FragileWallUpdate();               // 脆い壁更新処理
     void DynamiteHitFragileWall();          // ダイナマイトと脆い壁の当たり判定処理
@@ -254,6 +257,7 @@ public:
     void PickaxeHitGeyser();                // つるはしと間欠泉の当たり判定
 
     void PlayerHitRespawn();                //プレイヤーとリスポーンブロックの当たり判定
+
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };

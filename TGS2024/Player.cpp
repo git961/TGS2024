@@ -145,6 +145,8 @@ Player::Player(float set_x)
 	walk_cnt_up_flg = true;
 
 	limit_y = 600;
+	fall_flg = false;
+
 }
 
 Player::~Player()

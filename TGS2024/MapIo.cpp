@@ -20,8 +20,6 @@ MapIo::MapIo()
 	posx = 0.0f;
 	stage_num = stage1;
 
-	lift_num = 0;
-	put_liftupmax = false;
 }
 
 MapIo::~MapIo()
@@ -164,10 +162,16 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		map_data_num = 17;
 	}
 
-	//リスポーン位置更新ブロック
+	//リフト上上限ブロック
 	if (CheckHitKey(KEY_INPUT_F) == TRUE)
 	{
 		map_data_num = 18;
+	}
+
+	//リスポーン位置更新ブロック
+	if (CheckHitKey(KEY_INPUT_G) == TRUE)
+	{
+		map_data_num = 19;
 	}
 
 	now_abs = fabsf(mouse_x - local_posx);
@@ -195,39 +199,31 @@ void MapIo::InputTest(GameMainScene* gamemain)
 	}
 
 
-	if (put_liftupmax == false) {
-		//ブロック追加
-		if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0) {
-			//押されてる
-			//i=ｙ座標
-			for (int i = 0; i < map_blockmax_y; i++)
+	//ブロック追加
+	if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0) {
+		//押されてる
+		//i=ｙ座標
+		for (int i = 0; i < map_blockmax_y; i++)
+		{
+			//j=ｘ座標
+			for (int j = 0; j < map_blockmax_x; j++)
 			{
-				//j=ｘ座標
-				for (int j = 0; j < map_blockmax_x; j++)
-				{
-					//もしこの範囲に居たら
-					//ワールド座標とマウスの座標を比べる
-					if (j * BLOCKSIZE < world_mouse_x && j * BLOCKSIZE + BLOCKSIZE >world_mouse_x) {
-						if (i * BLOCKSIZE < mouse_y && i * BLOCKSIZE + BLOCKSIZE > mouse_y)
-						{
-							map_array[i][j] = map_data_num;
-							if (map_data_num == 17) {
-								put_liftupmax = true;
-							}
-							//j*BLOCKSIZE=左上の座標＋幅/２すれば真ん中のY
-							//i*BLOCKSIZE=左上の座標＋幅/２すれば真ん中のY
-						}
+				//もしこの範囲に居たら
+				//ワールド座標とマウスの座標を比べる
+				if (j * BLOCKSIZE < world_mouse_x && j * BLOCKSIZE + BLOCKSIZE >world_mouse_x) {
+					if (i * BLOCKSIZE < mouse_y && i * BLOCKSIZE + BLOCKSIZE > mouse_y)
+					{
+						map_array[i][j] = map_data_num;
+
+						//j*BLOCKSIZE=左上の座標＋幅/２すれば真ん中のY
+						//i*BLOCKSIZE=左上の座標＋幅/２すれば真ん中のY
 					}
 				}
 			}
-
-
-
 		}
+
 	}
-	else {
-		SetLiftUpMax();
-	}
+
 
 	//ブロック消去
 	if ((GetMouseInput() & MOUSE_INPUT_RIGHT) != 0)
@@ -331,6 +327,9 @@ void MapIo::Draw() const
 				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xd2691e, FALSE);
 				break;
 			case 18:
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x1d86d1, FALSE);
+				break;
+			case 19:
 				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x008000, FALSE);
 				break;
 			}
@@ -352,8 +351,6 @@ void MapIo::Draw() const
 			}
 		}
 	}
-
-	DrawFormatString(300, 300, 0xffffff, "lift:%f", lift_up_max[0]);
 	
 	switch (map_data_num)
 	{
@@ -395,37 +392,11 @@ void MapIo::Draw() const
 		DrawFormatString(40, 200, 0xffffff, "PUT_LIFT");
 		break;
 	case 18:
+		DrawFormatString(40, 200, 0xffffff, "PUT_LIFTUPMAX");
+		break;
+	case 19:
 		DrawFormatString(40, 200, 0xffffff, "PUT_RespawnBlock");
 		break;
 	}
 	
-}
-
-void MapIo::SetLiftUpMax()
-{
-	//ブロック追加
-	if ((GetMouseInput() & MOUSE_INPUT_RIGHT) != 0) {
-		//押されてる
-		//i=ｙ座標
-		for (int i = 0; i < map_blockmax_y; i++)
-		{
-			//j=ｘ座標
-			for (int j = 0; j < map_blockmax_x; j++)
-			{
-				//もしこの範囲に居たら
-				//ワールド座標とマウスの座標を比べる
-				if (j * BLOCKSIZE < world_mouse_x && j * BLOCKSIZE + BLOCKSIZE >world_mouse_x) {
-					if (i * BLOCKSIZE < mouse_y && i * BLOCKSIZE + BLOCKSIZE > mouse_y)
-					{
-						lift_up_max[lift_num++]=i*BLOCKSIZE;
-						put_liftupmax = false;
-					}
-				}
-			}
-		}
-
-
-
-	}
-
 }

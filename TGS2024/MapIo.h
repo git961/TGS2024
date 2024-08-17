@@ -61,9 +61,6 @@ private:
 
 	int stage_num;				// 開きたいステージファイル判別用
 
-	int lift_num;//リフトの番号数える用
-	float lift_up_max[LIFT_MAXNUM]={0.0f};
-	bool put_liftupmax;//リフトマックスを置くか？
 
 public:
 	MapIo();
@@ -75,14 +72,13 @@ public:
 	void Draw() const;
 	int GetMapData(int j, int i) { return map_array[j][i]; }
 
-	void SetLiftUpMax();
-
 	void SetPlayerLocal(float set_localx) { p_localx = set_localx; }
 	void SetPlayerWorld(float set_worldx) { p_worldx = set_worldx; }
 
 	void SetOriginPosx(float set_origin_posx) { posx = set_origin_posx; }
 	void SetLocalPosx(float set_local_posx) { local_posx = set_local_posx; }
 	void SetWorldPosx(float set_world_posx) { world_posx = set_world_posx; }
+
 
 };
 

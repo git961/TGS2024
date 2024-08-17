@@ -36,32 +36,8 @@ GameMainScene::GameMainScene(bool set_flg)
 	geyser = new Geyser * [GEYSER_MAXNUM];
 	lift = new Lift * [LIFT_MAXNUM];
 
-	for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
-	{
-		fragile_wall[i] = nullptr;
-	}
-	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
-	{
-		cage_door[i] = nullptr;
-		cage[i] = nullptr;
-	}
-	for (int i = 0; i < MAGMA_MAXMUN; i++)
-	{
-		magma[i] = nullptr;
-	}
-	for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
-	{
-		falling_floor[i] = nullptr;
-	}
-	for (int i = 0; i < GEYSER_MAXNUM; i++)
-	{
-		geyser[i] = nullptr;
-	}
-	for(int i=0; i < LIFT_MAXNUM; i++)
-	{
-		lift[i] = nullptr;
-	}
-
+	//オブジェクトにNullを代入
+	SetObjectNull();
 	
 
 	//プレイヤー生成
@@ -226,6 +202,9 @@ GameMainScene::GameMainScene(bool set_flg)
 					case 18:
 						stage_block[block_count++] = new StageBlock(18, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
+					case 19:
+						stage_block[block_count++] = new StageBlock(19, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
 					}
 				}
 			}
@@ -338,6 +317,8 @@ void GameMainScene::ResetMap()
 
 	mapio->LoadMapData(stage_num);
 
+	SetObjectNull();
+
 	score = nullptr;
 	for (int j = 0; j < block_count; j++)
 	{
@@ -438,10 +419,13 @@ void GameMainScene::ResetMap()
 				cage[0] = new Cage(cage_door[0]->GetWorldLocation());
 				break;
 			case 17:
-				lift[0] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				lift[object_num.lift_cnt++] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 18:
 				stage_block[block_count++] = new StageBlock(18, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				break;
+			case 19:
+				stage_block[block_count++] = new StageBlock(19, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			}
 
@@ -728,7 +712,9 @@ void GameMainScene::Update()
 
 		//リフトアップデート
 		LiftUpDate();
+		LiftHitStop();
 		PlayerHitLift();
+		
 
 		//押されたらポーズへ
 		if (input.CheckBtn(XINPUT_BUTTON_START) == TRUE)
@@ -1026,9 +1012,13 @@ void GameMainScene::Draw() const
 		}
 	}
 
-	if (lift[0] != nullptr)
+	//リフト描画
+	for (int i = 0; i < LIFT_MAXNUM; i++)
 	{
-		lift[0]->Draw();
+		if (lift[i] != nullptr)
+		{
+			lift[i]->Draw();
+		}
 	}
 
 	if (game_state == TUTORIAL)
@@ -2213,6 +2203,45 @@ void GameMainScene::PlayerHitBlock()
 
 }
 
+//オブジェクトにNullを入れる
+void GameMainScene::SetObjectNull()
+{
+	object_num.cage_cnt = 0;
+	object_num.cage_door_cnt = 0;
+	object_num.falling_floor_cnt = 0;
+	object_num.fragile_wall_cnt = 0;
+	object_num.geyser_cnt = 0;
+	object_num.lift_cnt = 0;
+	object_num.magma_cnt = 0;
+
+	for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
+	{
+		fragile_wall[i] = nullptr;
+	}
+	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
+	{
+		cage_door[i] = nullptr;
+		cage[i] = nullptr;
+	}
+	for (int i = 0; i < MAGMA_MAXMUN; i++)
+	{
+		magma[i] = nullptr;
+	}
+	for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
+	{
+		falling_floor[i] = nullptr;
+	}
+	for (int i = 0; i < GEYSER_MAXNUM; i++)
+	{
+		geyser[i] = nullptr;
+	}
+	for (int i = 0; i < LIFT_MAXNUM; i++)
+	{
+		lift[i] = nullptr;
+	}
+
+}
+
 // 脆い壁更新処理
 void GameMainScene::FragileWallUpdate()
 {
@@ -2334,6 +2363,24 @@ void GameMainScene::PlayerHitLift()
 			}
 		}
 	}
+}
+
+void GameMainScene::LiftHitStop()
+{
+	for (int i = 0; i < LIFT_MAXNUM; i++)
+	{
+		for (int j = 0; j < block_cnt; j++)
+		{
+			if (lift[i] != nullptr && stage_block[j] != nullptr && stage_block[j]->GetBlockNum()==18)
+			{
+				if (lift[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()))
+				{
+					lift[i]->SetUpMaxY(stage_block[j]->GetWorldLocation().y);
+				}
+			}
+		}
+	}
+
 }
 
 // 檻の更新処理
