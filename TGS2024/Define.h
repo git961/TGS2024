@@ -33,3 +33,5 @@
 #define MAGMA_MAXMUN			10
 #define FALLING_FLOOR_MAXNUM	10
 #define GEYSER_MAXNUM			10
+
+#define ROCK_MAXNUM 100

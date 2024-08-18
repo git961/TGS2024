@@ -23,6 +23,7 @@
 #include "Magma.h"
 #include "FallingFloor.h"
 #include "Geyser.h"
+#include "Rock.h"
 
 class Player;
 class Enemy;
@@ -34,6 +35,7 @@ class UI;
 class Dynamite;
 class Gem;
 class Lift;
+class Rock;
 
 struct cameraposition
 {
@@ -59,6 +61,7 @@ struct ObjectNum {
     int falling_floor_cnt;
     int geyser_cnt;
     int lift_cnt;
+    int rock_cnt;
 };
 
 class GameMainScene :
@@ -92,6 +95,7 @@ private:
     Magma** magma;                       // マグマ
     FallingFloor** falling_floor;        // 落ちる床
     Geyser** geyser;                     // 間欠泉
+    Rock** rock;                        //岩
 
     ObjectNum object_num;
 
@@ -258,6 +262,10 @@ public:
 
     void PlayerHitRespawn();                //プレイヤーとリスポーンブロックの当たり判定
 
+    void EnemyHitRock();//エネミーと岩ブロックの当たり判定
+    void DynamiteHitRock();//ダイナマイトと岩の当たり判定
+    void PickaxeHitRock();//つるはしと岩ブロックの当たり判定
+    void RockUpdate();//岩のアップデート
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };
