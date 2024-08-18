@@ -714,7 +714,6 @@ void GameMainScene::Update()
 		LiftUpDate();
 		LiftHitStop();
 		PlayerHitLift();
-		
 
 		//押されたらポーズへ
 		if (input.CheckBtn(XINPUT_BUTTON_START) == TRUE)
@@ -723,6 +722,7 @@ void GameMainScene::Update()
 			PlaySoundMem(start_pause_se, DX_PLAYTYPE_BACK);
 			game_state = POSE;
 		}
+		
 
 		//エネミー更新
 		EnemyUpDate();
@@ -2365,11 +2365,12 @@ void GameMainScene::PlayerHitLift()
 	}
 }
 
+//リフトとリフトとめる奴の判定
 void GameMainScene::LiftHitStop()
 {
 	for (int i = 0; i < LIFT_MAXNUM; i++)
 	{
-		for (int j = 0; j < block_cnt; j++)
+		for (int j = 0; j < block_count; j++)
 		{
 			if (lift[i] != nullptr && stage_block[j] != nullptr && stage_block[j]->GetBlockNum()==18)
 			{
