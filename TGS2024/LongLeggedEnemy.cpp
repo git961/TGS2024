@@ -14,7 +14,7 @@ LongLeggedEnemy::LongLeggedEnemy(float set_x, float set_y)
 	move_y = 0.0f;
 	hp = 30.0f;
 	speed = 2.0f;
-	direction = true;
+	direction = false;
 
 	// 画像の読み込み
 	enemy_img = LoadGraph("images/Enemy/LongLegs.png");

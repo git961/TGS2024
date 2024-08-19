@@ -240,6 +240,7 @@ public:
     void PlayerHitGeyser();                 // プレイヤーと間欠泉の当たり判定
     void PickaxeHitGeyser();                // つるはしと間欠泉の当たり判定
 
+    void LongLegsEnemyUpdate();             // 脚が長い敵の更新処理
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };

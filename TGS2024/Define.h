@@ -25,6 +25,7 @@
 // 敵の最大数
 #define ENEMYMAXNUM 20
 #define ROLLING_ENEMY_MAXNUM 20
+#define LONG_LEGS_ENEMY_MAXNUM 1
 
 // ギミックの最大数
 #define FRAGILE_WALL_MAXNUM		1

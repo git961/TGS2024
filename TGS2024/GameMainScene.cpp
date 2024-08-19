@@ -31,6 +31,8 @@ GameMainScene::GameMainScene(bool set_flg)
 	magma = new Magma * [MAGMA_MAXMUN];
 	falling_floor = new FallingFloor * [FALLING_FLOOR_MAXNUM];
 	geyser = new Geyser * [GEYSER_MAXNUM];
+	
+	long_legs_enemy = new LongLeggedEnemy * [LONG_LEGS_ENEMY_MAXNUM];
 
 	for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
 	{
@@ -53,16 +55,13 @@ GameMainScene::GameMainScene(bool set_flg)
 	{
 		geyser[i] = nullptr;
 	}
+	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
+	{
+		long_legs_enemy[i] = nullptr;
+	}
 
-	/*
-	// ギミックテスト生成
-	fragile_wall[0] = new FragileWall(3000.0f, 200.0f);
-	cage_door[0] = new CageDoor(3000.0f, 550.0f);
-	cage[0] = new Cage(cage_door[0]->GetWorldLocation());
-	magma[0] = new Magma(2300.0f, 675.0f);
-	falling_floor[0] = new FallingFloor(2300.0f, 400.0f);
-	geyser[0] = new Geyser(2100.0f, 550.0f);
-	*/
+	// stege2敵テスト生成
+	long_legs_enemy[0] = new LongLeggedEnemy(3000.0f, 200.0f);
 
 	//プレイヤー生成
 	if (retry_flg == false)
@@ -307,13 +306,14 @@ GameMainScene::~GameMainScene()
 	delete ac;
 	delete[] rolling_enemy;
 	delete[] walk_gem;
-	delete roll_gem;
+	delete[]roll_gem;
 	delete score;
-	delete fragile_wall;
-	delete cage;
-	delete cage_door;
-	delete magma;
-	delete falling_floor;
+	delete[] fragile_wall;
+	delete[] cage;
+	delete[] cage_door;
+	delete[] magma;
+	delete[] falling_floor;
+	delete[] long_legs_enemy;
 
 	// 画像削除
 	DeleteGraph(back_img[0]);
@@ -802,6 +802,9 @@ void GameMainScene::Update()
 
 			// つるはしと間欠泉の当たり判定
 			PickaxeHitGeyser();
+
+			// 脚が長い敵の更新処理
+			LongLegsEnemyUpdate();
 		}
 
 		//カメラとUIのアップデート
@@ -1171,6 +1174,15 @@ void GameMainScene::Draw() const
 				if (geyser[i] != nullptr)
 				{
 					geyser[i]->Draw();
+				}
+			}
+
+			// 脚が長い敵の描画
+			for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
+			{
+				if (long_legs_enemy[i] != nullptr)
+				{
+					long_legs_enemy[i]->Draw();
 				}
 			}
 
@@ -2598,6 +2610,20 @@ void GameMainScene::PickaxeHitGeyser()
 			// 間欠泉から水が噴き出る
 			geyser[i]->WaterComesOut();
 		}
+	}
+}
+
+// 脚が長い敵の更新処理
+void GameMainScene::LongLegsEnemyUpdate()
+{
+	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
+	{
+		if (long_legs_enemy[i] == nullptr) continue;
+
+		// カメラから見た座標の設定
+		long_legs_enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+		long_legs_enemy[i]->Update();
 	}
 }
 
