@@ -19,7 +19,9 @@ class Rock :
 {
 private:
 	int rock_img[7];
+	int rock_effect_img[3];
 	int rock_num;
+	int rock_effect_num;
 
 	float hp;
 
@@ -37,6 +39,7 @@ private:
 	float angle;
 	bool is_up;
 	int delete_cnt;//消すまでのカウント
+
 
 	bool effect_flg;
 	block_effect2 fragment[4] = { 0 };

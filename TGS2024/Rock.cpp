@@ -4,6 +4,8 @@
 Rock::Rock(float set_x, float set_y)
 {
 	LoadDivGraph("images/Stage/rock.png", 7, 7, 1, 64, 64, rock_img);
+	LoadDivGraph("images/Stage/rockeffect.png", 3, 3, 1, 128, 64, rock_effect_img);
+	
 	world.x = set_x;
 	world.y = set_y;
 	location.x = world.x;
@@ -15,6 +17,7 @@ Rock::Rock(float set_x, float set_y)
 	shakex = 0;
 	shake_flg = false;
 	rock_num = 0;
+	rock_effect_num = 0;
 	delete_flg = false;
 	delete_cnt = 0;
 
@@ -109,12 +112,15 @@ void Rock::Update()
 			rock_num++;
 			break;
 		case 3:
+			rock_effect_num++;
 			rock_num++;
 			break;
 		case 9:
+			rock_effect_num++;
 			rock_num++;
 			break;
 		case 15:
+			rock_effect_num++;
 			rock_num++;
 			break;
 		case 18:
@@ -130,6 +136,10 @@ void Rock::Update()
 void Rock::Draw() const
 {
 	DrawRotaGraph((int)location.x, (int)location.y, 1, 0, rock_img[rock_num], TRUE, 0);
+	if (rock_num >= 3)
+	{
+		DrawRotaGraph((int)location.x, (int)location.y, 1, 0, rock_effect_img[rock_effect_num], TRUE, 0);
+	}
 	if (shake_flg == true)
 	{
 		for (int i = 0; i < 4; i++)

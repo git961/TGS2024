@@ -76,6 +76,12 @@
     <Filter Include="ヘッダー ファイル\StageObjectFile\Cage">
       <UniqueIdentifier>{06725fcc-332d-4cc3-9bc2-79f7bc83bfd4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\StageObjectFile\Lift">
+      <UniqueIdentifier>{6c5aad63-8c64-43ea-8032-9e7200760f7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\StageObjectFile\Lift">
+      <UniqueIdentifier>{71217a04-efe7-462a-9538-018c385313b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -150,9 +156,6 @@
     <ClCompile Include="TestStageScene.cpp">
       <Filter>ソース ファイル\StageFile</Filter>
     </ClCompile>
-    <ClCompile Include="Lift.cpp">
-      <Filter>ソース ファイル\StageObjectFile</Filter>
-    </ClCompile>
     <ClCompile Include="FragileWall.cpp">
       <Filter>ソース ファイル\StageObjectFile</Filter>
     </ClCompile>
@@ -171,11 +174,14 @@
     <ClCompile Include="Geyser.cpp">
       <Filter>ソース ファイル\StageObjectFile</Filter>
     </ClCompile>
-    <ClCompile Include="Switch.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Rock.cpp">
       <Filter>ソース ファイル\StageObjectFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Switch.cpp">
+      <Filter>ソース ファイル\StageObjectFile\Lift</Filter>
+    </ClCompile>
+    <ClCompile Include="Lift.cpp">
+      <Filter>ソース ファイル\StageObjectFile\Lift</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -266,9 +272,6 @@
     <ClInclude Include="TestStageScene.h">
       <Filter>ヘッダー ファイル\StageFile</Filter>
     </ClInclude>
-    <ClInclude Include="Lift.h">
-      <Filter>ヘッダー ファイル\StageObjectFile</Filter>
-    </ClInclude>
     <ClInclude Include="FragileWall.h">
       <Filter>ヘッダー ファイル\StageObjectFile</Filter>
     </ClInclude>
@@ -287,11 +290,14 @@
     <ClInclude Include="Geyser.h">
       <Filter>ヘッダー ファイル\StageObjectFile</Filter>
     </ClInclude>
-    <ClInclude Include="Switch.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Rock.h">
       <Filter>ヘッダー ファイル\StageObjectFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Switch.h">
+      <Filter>ヘッダー ファイル\StageObjectFile\Lift</Filter>
+    </ClInclude>
+    <ClInclude Include="Lift.h">
+      <Filter>ヘッダー ファイル\StageObjectFile\Lift</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
