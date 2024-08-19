@@ -53,7 +53,7 @@ GameMainScene::GameMainScene(bool set_flg)
 
 	falling_floor[0] = new FallingFloor(2300.0f, 400.0f);
 	geyser[0] = new Geyser(2100.0f, 550.0f);
-	*/
+
 
 	//プレイヤー生成
 	if (retry_flg == false)
