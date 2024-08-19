@@ -4,6 +4,12 @@
 Rock::Rock(float set_x, float set_y)
 {
 	LoadDivGraph("images/Stage/rock.png", 7, 7, 1, 64, 64, rock_img);
+	world.x = set_x;
+	world.y = set_y;
+	location.x = world.x;
+	location.y = world.y;
+	height = 64.0f;
+	width = 64.0f;
 	hp = 30;
 	shake_cnt = 0;
 	shakex = 0;

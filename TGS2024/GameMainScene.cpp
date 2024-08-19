@@ -966,6 +966,7 @@ void GameMainScene::Update()
 		}
 		*/
 
+		//岩アップデート
 		RockUpdate();
 		EnemyHitRock();
 		DynamiteHitRock();
@@ -1037,7 +1038,7 @@ void GameMainScene::Draw() const
 	}
 
 	//岩描画
-	for (int i = 0; i < ROCK_MAXNUM; i++)
+	for (int i = 0; i < object_num.rock_cnt; i++)
 	{
 		if (rock[i] != nullptr)
 		{
@@ -2394,7 +2395,7 @@ void GameMainScene::DynamiteHitRock()
 
 		for (int j = 0; j < object_num.rock_cnt; j++)
 		{
-			if (dynamite[i] != nullptr && rock[j] != nullptr && rock[i]->GetHp()>0 && dynamite[i]->GetDynamite() == false)
+			if (dynamite[i] != nullptr && dynamite[i]->GetDynamite() == false && rock[j] != nullptr && rock[j]->GetHp()>0)
 			{
 				//ダイナマイトと岩が当たったか？
 				if (dynamite[i]->HitCheck(rock[j]->GetWorldLocation(), rock[j]->GetWidth(),rock[j]->GetHeight()) == true)
@@ -2403,16 +2404,17 @@ void GameMainScene::DynamiteHitRock()
 
 				}
 				
-				//ダイナマイトの爆発と岩の当たり判定
-				if (dynamite[i]->Getdamage_flg() == true)
+			}
+
+			//ダイナマイトの爆発と岩の当たり判定
+			if (dynamite[i] != nullptr && dynamite[i]->Getdamage_flg() == true && rock[j] != nullptr)
+			{
+				if (dynamite[i]->HitCheck(rock[j]->GetWorldLocation(), rock[j]->GetWidth(), rock[j]->GetHeight()) == true)
 				{
-					if (dynamite[i]->HitCheck(rock[j]->GetWorldLocation(), rock[j]->GetWidth(), rock[j]->GetHeight()) == true)
-					{
-						dynamite[i]->SetEnemyX(rock[j]->GetWorldLocation().x);
-						dynamite[i]->DamageCalculation();
-						rock[j]->SetDamage(30);
-						rock[j]->SetShakeFlg(true);
-					}
+					dynamite[i]->SetEnemyX(rock[j]->GetWorldLocation().x);
+					dynamite[i]->DamageCalculation();
+					rock[j]->SetDamage(30);
+					rock[j]->SetShakeFlg(true);
 				}
 			}
 		}
@@ -2452,6 +2454,7 @@ void GameMainScene::PickaxeHitRock()
 	}
 }
 
+//岩アップデート
 void GameMainScene::RockUpdate()
 {
 
@@ -2466,7 +2469,7 @@ void GameMainScene::RockUpdate()
 
 		if (rock[i] != nullptr&& rock[i]->GetDeleteFlg() == true)
 		{
-			stage_block[i] = nullptr;
+			rock[i] = nullptr;
 		}
 	}
 }
