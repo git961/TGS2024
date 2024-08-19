@@ -19,6 +19,7 @@ MapIo::MapIo()
 	now_abs = 0.0f;
 	posx = 0.0f;
 	stage_num = stage1;
+
 }
 
 MapIo::~MapIo()
@@ -63,21 +64,6 @@ void MapIo::InputTest(GameMainScene* gamemain)
 
 	GetMousePoint(&mouse_x, &mouse_y);
 
-	//小さいほう
-	if (input.CheckBtn(XINPUT_BUTTON_RIGHT_SHOULDER) == TRUE)
-	{
-		add_x += 1280;
-
-	}
-	//小さいほう
-	if (input.CheckBtn(XINPUT_BUTTON_LEFT_SHOULDER) == TRUE)
-	{
-		if (add_x > 0)
-		{
-			add_x -= 1280;
-		}
-	}
-	//1280
 
 	if (CheckHitKey(KEY_INPUT_1) == TRUE)
 	{
@@ -170,6 +156,23 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		map_data_num = 16;
 	}
 
+	//リフト
+	if (CheckHitKey(KEY_INPUT_D) == TRUE)
+	{
+		map_data_num = 17;
+	}
+
+	//リフト上上限ブロック
+	if (CheckHitKey(KEY_INPUT_F) == TRUE)
+	{
+		map_data_num = 18;
+	}
+
+	//リスポーン位置更新ブロック
+	if (CheckHitKey(KEY_INPUT_G) == TRUE)
+	{
+		map_data_num = 19;
+	}
 
 	now_abs = fabsf(mouse_x - local_posx);
 
@@ -219,9 +222,8 @@ void MapIo::InputTest(GameMainScene* gamemain)
 			}
 		}
 
-
-
 	}
+
 
 	//ブロック消去
 	if ((GetMouseInput() & MOUSE_INPUT_RIGHT) != 0)
@@ -307,47 +309,30 @@ void MapIo::Draw() const
 				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x008000, FALSE);
 				break;
 			case 12:
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x000800, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xf5deb3, FALSE);
 				break;
 			case 13:
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x000080, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xdc143c, FALSE);
 				break;
 			case 14:
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x000008, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xb0c4de, FALSE);
 				break;
 			case 15:
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x080000, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x4169e1, FALSE);
 				break;
 			case 16:
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x800000, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xffd700, FALSE);
+				break;
+			case 17:
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xd2691e, FALSE);
+				break;
+			case 18:
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x1d86d1, FALSE);
+				break;
+			case 19:
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x008000, FALSE);
 				break;
 			}
-			/*
-			if (map_array[i][j] == 1)
-			{
-				DrawBox(j * BLOCKSIZE- (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
-			}
-			else if (map_array[i][j] == 2)
-			{
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xfff000, FALSE);
-			}
-			else if (map_array[i][j] == 3)
-			{
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xffff00, FALSE);
-			}
-			else if (map_array[i][j] == 4)
-			{
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x00fff0, FALSE);
-			}
-			else if (map_array[i][j] == 8)
-			{
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xff0000, FALSE);
-			}
-			else if (map_array[i][j] == 9)
-			{
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x008000, FALSE);
-			}
-			*/
 		}
 	}
 
@@ -366,8 +351,6 @@ void MapIo::Draw() const
 			}
 		}
 	}
-
-	DrawFormatString(40, 40, 0xffffff, "add_x:%d", add_x);
 	
 	switch (map_data_num)
 	{
@@ -404,6 +387,15 @@ void MapIo::Draw() const
 		break;
 	case 16:
 		DrawFormatString(40, 200, 0xffffff, "PUT_CageDoor");
+		break;
+	case 17:
+		DrawFormatString(40, 200, 0xffffff, "PUT_LIFT");
+		break;
+	case 18:
+		DrawFormatString(40, 200, 0xffffff, "PUT_LIFTUPMAX");
+		break;
+	case 19:
+		DrawFormatString(40, 200, 0xffffff, "PUT_RespawnBlock");
 		break;
 	}
 	

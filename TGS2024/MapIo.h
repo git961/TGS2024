@@ -42,8 +42,6 @@ private:
 	float p_localx;
 	float p_worldx;
 
-
-
 	float now_abs;
 
 	int add_x;
@@ -63,6 +61,7 @@ private:
 
 	int stage_num;				// 開きたいステージファイル判別用
 
+
 public:
 	MapIo();
 	~MapIo();
@@ -79,6 +78,7 @@ public:
 	void SetOriginPosx(float set_origin_posx) { posx = set_origin_posx; }
 	void SetLocalPosx(float set_local_posx) { local_posx = set_local_posx; }
 	void SetWorldPosx(float set_world_posx) { world_posx = set_world_posx; }
+
 
 };
 

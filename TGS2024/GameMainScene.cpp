@@ -22,6 +22,9 @@ GameMainScene::GameMainScene(bool set_flg)
 	check_cnt = 0;
 	//check_abs = 0;
 
+	respawn_x = 100.0f;
+	respawn_y = 0.0f;
+
 	mapio = new MapIo;
 	fade = new BlackOut;
 
@@ -31,30 +34,15 @@ GameMainScene::GameMainScene(bool set_flg)
 	magma = new Magma * [MAGMA_MAXMUN];
 	falling_floor = new FallingFloor * [FALLING_FLOOR_MAXNUM];
 	geyser = new Geyser * [GEYSER_MAXNUM];
+	lift = new Lift * [LIFT_MAXNUM];
+	rock = new Rock * [ROCK_MAXNUM];
+
 	
 	long_legs_enemy = new LongLeggedEnemy * [LONG_LEGS_ENEMY_MAXNUM];
 
-	for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
-	{
-		fragile_wall[i] = nullptr;
-	}
-	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
-	{
-		cage_door[i] = nullptr;
-		cage[i] = nullptr;
-	}
-	for (int i = 0; i < MAGMA_MAXMUN; i++)
-	{
-		magma[i] = nullptr;
-	}
-	for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
-	{
-		falling_floor[i] = nullptr;
-	}
-	for (int i = 0; i < GEYSER_MAXNUM; i++)
-	{
-		geyser[i] = nullptr;
-	}
+	//オブジェクトにNullを代入
+	SetObjectNull();
+	
 	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
 	{
 		long_legs_enemy[i] = nullptr;
@@ -62,6 +50,10 @@ GameMainScene::GameMainScene(bool set_flg)
 
 	// stege2敵テスト生成
 	long_legs_enemy[0] = new LongLeggedEnemy(3000.0f, 200.0f);
+
+	falling_floor[0] = new FallingFloor(2300.0f, 400.0f);
+	geyser[0] = new Geyser(2100.0f, 550.0f);
+	*/
 
 	//プレイヤー生成
 	if (retry_flg == false)
@@ -71,11 +63,13 @@ GameMainScene::GameMainScene(bool set_flg)
 	}
 	else
 	{
-		player = new Player(2200.0f);
 		if (stage_num == stage1) {
+			player = new Player(2200.0f);
 			p_notback_flg = true;
 		}
 		else {
+			//プレイヤーのリスタート位置を入れる
+			player = new Player(2200.0f);
 			p_notback_flg = false;
 		}
 	}
@@ -91,19 +85,17 @@ GameMainScene::GameMainScene(bool set_flg)
 	roll_gem = new Gem * [ROLLING_ENEMY_MAXNUM];
 	score = new Score;
 
-	/*リフトテスト 後で消す*/
-	lift = new Lift * [1];
-	lift[0] = nullptr;
-	lift[0] = new Lift(2500, 600);
+
 
 	dynamite = new Dynamite * [DYNAMITE_MAXNUM];
 	enemy_damage_once = false;
 	rock_damage_once = false;
 	player_damage_once = false;
-	//back.png
-	back_img[0] = LoadGraph("images/Backimg/backimg0.png", TRUE);
-	back_img[1] = LoadGraph("images/Backimg/backimg01.png", TRUE);
-	//back_img[0] = LoadGraph("images/Backimg/backimg.png", TRUE);
+	////back.png
+	//back_img[0] = LoadGraph("images/Backimg/backimg0.png", TRUE);
+	//back_img[1] = LoadGraph("images/Backimg/backimg01.png", TRUE);
+	back_img[0] = LoadGraph("images/Backimg/backimg.png", TRUE);
+	back_img[1] = LoadGraph("images/Backimg/backimg.png", TRUE);
 	//back_img[9] = LoadGraph("images/Backimg/backimgGoal.png", TRUE);
 	back_img[9] = LoadGraph("images/Backimg/backimgGoal01.png", TRUE);
 	goal_img = LoadGraph("images/Ending/ending8.png", TRUE);
@@ -180,7 +172,8 @@ GameMainScene::GameMainScene(bool set_flg)
 						stage_block[block_count++] = new StageBlock(3, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 4:
-						stage_block[block_count++] = new StageBlock(4, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						rock[object_num.rock_cnt++] = new Rock((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						//stage_block[block_count++] = new StageBlock(4, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 5:
 						stage_block[block_count++] = new StageBlock(5, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
@@ -204,20 +197,29 @@ GameMainScene::GameMainScene(bool set_flg)
 						stage_block[block_count++] = new StageBlock(11, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 12:
-						fragile_wall[0] = new FragileWall((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						fragile_wall[object_num.fragile_wall_cnt++] = new FragileWall((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 13:
-						magma[0] = new Magma((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						magma[object_num.magma_cnt++] = new Magma((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 14:
-						falling_floor[0] = new FallingFloor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						falling_floor[object_num.falling_floor_cnt++] = new FallingFloor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 15:
-						geyser[0] = new Geyser((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						geyser[object_num.geyser_cnt++] = new Geyser((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 16:
-						cage_door[0] = new CageDoor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-						cage[0] = new Cage(cage_door[0]->GetWorldLocation());
+						cage_door[object_num.cage_door_cnt] = new CageDoor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						cage[object_num.cage_cnt++] = new Cage(cage_door[object_num.cage_door_cnt++]->GetWorldLocation());
+						break;
+					case 17:
+						lift[object_num.lift_cnt++] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+					case 18:
+						stage_block[block_count++] = new StageBlock(18, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						break;
+					case 19:
+						stage_block[block_count++] = new StageBlock(19, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					}
 				}
@@ -228,6 +230,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	{
 		//リトライして来たら
 		game_state = PLAY;
+		
 		ResetMap();
 	}
 	//game_state = PLAY;
@@ -331,6 +334,8 @@ void GameMainScene::ResetMap()
 
 	mapio->LoadMapData(stage_num);
 
+	SetObjectNull();
+
 	score = nullptr;
 	for (int j = 0; j < block_count; j++)
 	{
@@ -380,6 +385,10 @@ void GameMainScene::ResetMap()
 	{
 		geyser[i] = nullptr;
 	}
+	for (int i = 0; i < LIFT_MAXNUM; i++)
+	{
+		lift[i] = nullptr;
+	}
 
 	block_count = 0;
 	enemy_count = 0;
@@ -399,7 +408,8 @@ void GameMainScene::ResetMap()
 				stage_block[block_count++] = new StageBlock(3, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 4:
-				stage_block[block_count++] = new StageBlock(4, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				rock[object_num.rock_cnt++] = new Rock((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				//stage_block[block_count++] = new StageBlock(4, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 6:
 				stage_block[block_count++] = new StageBlock(6, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
@@ -425,6 +435,15 @@ void GameMainScene::ResetMap()
 			case 16:
 				cage_door[0] = new CageDoor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				cage[0] = new Cage(cage_door[0]->GetWorldLocation());
+				break;
+			case 17:
+				lift[object_num.lift_cnt++] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				break;
+			case 18:
+				stage_block[block_count++] = new StageBlock(18, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				break;
+			case 19:
+				stage_block[block_count++] = new StageBlock(19, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			}
 
@@ -641,7 +660,7 @@ void GameMainScene::Update()
 
 				//gameover_flg = true;
 				black_flg = true;
-				player = new Player(2200.0f);
+				player = new Player(respawn_x);
 
 				UpdateCamera(player->GetWorldLocation());
 				screen_origin_position = { camera_pos.x - SCREEN_WIDTH / 2.0f,camera_pos.y - SCREEN_HEIGHT / 2.0f };
@@ -711,6 +730,8 @@ void GameMainScene::Update()
 
 		//リフトアップデート
 		LiftUpDate();
+		LiftHitStop();
+		PlayerHitLift();
 
 		//押されたらポーズへ
 		if (input.CheckBtn(XINPUT_BUTTON_START) == TRUE)
@@ -719,6 +740,7 @@ void GameMainScene::Update()
 			PlaySoundMem(start_pause_se, DX_PLAYTYPE_BACK);
 			game_state = POSE;
 		}
+		
 
 		//エネミー更新
 		EnemyUpDate();
@@ -746,6 +768,9 @@ void GameMainScene::Update()
 
 		//プレイヤー更新処理
 		PlayerUpDate();
+
+		//リスポーン位置更新
+		PlayerHitRespawn();
 
 		if (stage_num == stage2)
 		{
@@ -846,6 +871,7 @@ void GameMainScene::Update()
 						}
 					}
 
+					/*
 					if (stage_block[j]->GetBlockNum() == 4)
 					{
 
@@ -871,10 +897,12 @@ void GameMainScene::Update()
 							rock_damage_once = false;
 						}
 					}
+					*/
 				}
 			}
 		}
 
+		/*
 		//ダメージを一回だけ与える
 		for (int i = 0; i < DYNAMITE_MAXNUM; i++)
 		{
@@ -895,6 +923,7 @@ void GameMainScene::Update()
 
 								}
 							}
+							
 							//ダイナマイトの爆発とエネミーの当たり判定
 							if (dynamite[i]->Getdamage_flg() == true)
 							{
@@ -911,18 +940,19 @@ void GameMainScene::Update()
 				}
 			}
 		}
+		*/
+		//for (int j = 0; j < block_count; j++)
+		//{
+		//	if (stage_block[j] != nullptr)
+		//	{
+		//		if (stage_block[j]->GetBlockNum() == 4 && stage_block[j]->GetDeleteFlg() == true)
+		//		{
+		//			stage_block[j] = nullptr;
+		//		}
+		//	}
+		//}
 
-		for (int j = 0; j < block_count; j++)
-		{
-			if (stage_block[j] != nullptr)
-			{
-				if (stage_block[j]->GetBlockNum() == 4 && stage_block[j]->GetDeleteFlg() == true)
-				{
-					stage_block[j] = nullptr;
-				}
-			}
-		}
-
+		/*
 		//エネミーと岩ブロックの当たり判定
 		for (int j = 0; j < block_count; j++)
 		{
@@ -952,6 +982,14 @@ void GameMainScene::Update()
 				}
 			}
 		}
+		*/
+
+		//岩アップデート
+		RockUpdate();
+		EnemyHitRock();
+		DynamiteHitRock();
+		PickaxeHitRock();
+
 
 		if (player != nullptr && mapio != nullptr)
 		{
@@ -1006,9 +1044,22 @@ void GameMainScene::Draw() const
 		}
 	}
 
-	if (lift[0] != nullptr)
+	//リフト描画
+	for (int i = 0; i < LIFT_MAXNUM; i++)
 	{
-		lift[0]->Draw();
+		if (lift[i] != nullptr)
+		{
+			lift[i]->Draw();
+		}
+	}
+
+	//岩描画
+	for (int i = 0; i < object_num.rock_cnt; i++)
+	{
+		if (rock[i] != nullptr)
+		{
+			rock[i]->Draw();
+		}
 	}
 
 	if (game_state == TUTORIAL)
@@ -2202,6 +2253,49 @@ void GameMainScene::PlayerHitBlock()
 
 }
 
+//オブジェクトにNullを入れる
+void GameMainScene::SetObjectNull()
+{
+	object_num.cage_cnt = 0;
+	object_num.cage_door_cnt = 0;
+	object_num.falling_floor_cnt = 0;
+	object_num.fragile_wall_cnt = 0;
+	object_num.geyser_cnt = 0;
+	object_num.lift_cnt = 0;
+	object_num.magma_cnt = 0;
+	object_num.rock_cnt = 0;
+
+	for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
+	{
+		fragile_wall[i] = nullptr;
+	}
+	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
+	{
+		cage_door[i] = nullptr;
+		cage[i] = nullptr;
+	}
+	for (int i = 0; i < MAGMA_MAXMUN; i++)
+	{
+		magma[i] = nullptr;
+	}
+	for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
+	{
+		falling_floor[i] = nullptr;
+	}
+	for (int i = 0; i < GEYSER_MAXNUM; i++)
+	{
+		geyser[i] = nullptr;
+	}
+	for (int i = 0; i < LIFT_MAXNUM; i++)
+	{
+		lift[i] = nullptr;
+	}
+	for (int i = 0; i < ROCK_MAXNUM; i++)
+	{
+		rock[i] = nullptr;
+	}
+}
+
 // 脆い壁更新処理
 void GameMainScene::FragileWallUpdate()
 {
@@ -2270,16 +2364,137 @@ void GameMainScene::PlayerHitFragileWall()
 // プレイヤーと壊れる岩の当たり判定処理
 void GameMainScene::PlayerHitRock()
 {
-	for (int i = 0; i < block_count; i++)
+	for (int i = 0; i < object_num.rock_cnt; i++)
 	{
-		if (player != nullptr && stage_block[i] != nullptr && stage_block[i]->GetBlockNum() == 4)
+		if (player != nullptr && rock[i] != nullptr)
 		{
 			// プレイヤーと岩が当たっていたら
-			if (player->HitCheck(stage_block[i]->GetWorldLocation(), stage_block[i]->GetWidth(), stage_block[i]->GetHeight()) == true)
+			if (player->HitCheck(rock[i]->GetWorldLocation(), rock[i]->GetWidth(), rock[i]->GetHeight()) == true)
 			{
 				// プレイヤーの歩行を止める
-				player->HitCheckB(stage_block[i]->GetVertex());
+				player->HitCheckB(rock[i]->GetVertex());
 			}
+		}
+	}
+
+
+}
+
+//敵と岩の当たり判定
+void GameMainScene::EnemyHitRock()
+{
+
+	for (int i = 0; i < ENEMYMAXNUM; i++)
+	{
+		if (enemy[i] != nullptr && enemy[i]->GetHp() > 0)
+		{
+			for (int j = 0; j < object_num.rock_cnt; j++)
+			{
+				if (rock[j]!=nullptr && enemy[i]->HitCheck(rock[j]->GetWorldLocation(), rock[j]->GetWidth(), rock[j]->GetHeight()) == true)
+				{
+					if (enemy[i]->GetIsKnockBack() == true)
+					{
+						// ノックバックしている敵に当たったら自身もノックバックを開始する
+						enemy[i]->SetKnockBackStartFlg(true);
+					}
+					else
+					{
+						// 当たっていたら２体とも進行方向を反対に変更する
+						enemy[i]->SetHitEnemyX(rock[j]->GetWorldLocation().x);
+						enemy[i]->ChangeDirection();
+					}
+				}
+			}
+		}
+	}
+
+
+}
+
+void GameMainScene::DynamiteHitRock()
+{
+	//ダイナマイトが岩と当たってるかのチェック
+			//ダメージを一回だけ与える
+	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
+	{
+
+		for (int j = 0; j < object_num.rock_cnt; j++)
+		{
+			if (dynamite[i] != nullptr && dynamite[i]->GetDynamite() == false && rock[j] != nullptr && rock[j]->GetHp()>0)
+			{
+				//ダイナマイトと岩が当たったか？
+				if (dynamite[i]->HitCheck(rock[j]->GetWorldLocation(), rock[j]->GetWidth(),rock[j]->GetHeight()) == true)
+				{
+					dynamite[i]->SetDynamite(true);
+
+				}
+				
+			}
+
+			//ダイナマイトの爆発と岩の当たり判定
+			if (dynamite[i] != nullptr && dynamite[i]->Getdamage_flg() == true && rock[j] != nullptr)
+			{
+				if (dynamite[i]->HitCheck(rock[j]->GetWorldLocation(), rock[j]->GetWidth(), rock[j]->GetHeight()) == true)
+				{
+					dynamite[i]->SetEnemyX(rock[j]->GetWorldLocation().x);
+					dynamite[i]->DamageCalculation();
+					rock[j]->SetDamage(30);
+					rock[j]->SetShakeFlg(true);
+				}
+			}
+		}
+		
+	}
+
+
+}
+
+//つるはしと岩の当たり判定
+void GameMainScene::PickaxeHitRock()
+{
+	for (int i = 0; i < object_num.rock_cnt; i++)
+	{
+		if (rock[i] != nullptr && player != nullptr)
+		{
+			//つるはしを振るってる時だけ
+			if (player->GetAttacking() == true)
+			{
+				//ダメージを一回だけ与える
+				if (rock_damage_once == false)
+				{
+					//つるはしと岩と当たってるかのチェック
+					if (ac->HitCheck(rock[i]->GetWorldLocation(), rock[i]->GetWidth(), rock[i]->GetHeight()) == true) {
+						rock[i]->SetDamage(10);
+						rock[i]->SetShakeFlg(true);
+						rock_damage_once = true;
+					}
+				}
+			}
+			else
+			{
+				//プレイヤーがつるはし振ってなかったら
+				rock_damage_once = false;
+			}
+		}
+	}
+}
+
+//岩アップデート
+void GameMainScene::RockUpdate()
+{
+
+	//岩を消す処理
+	for (int i = 0; i < object_num.rock_cnt; i++)
+	{
+		if (rock[i] != nullptr)
+		{
+			rock[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			rock[i]->Update();
+		}
+
+		if (rock[i] != nullptr&& rock[i]->GetDeleteFlg() == true)
+		{
+			rock[i] = nullptr;
 		}
 	}
 }
@@ -2287,30 +2502,58 @@ void GameMainScene::PlayerHitRock()
 //リフトアップデート
 void GameMainScene::LiftUpDate()
 {
-	//リフトテスト後で消す
-	if (lift[0] != nullptr)
+	for (int i = 0; i < LIFT_MAXNUM; i++)
 	{
-		lift[0]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-		lift[0]->SetScreenPos(screen_origin_position.x, screen_origin_position.y);
-		if (ac != nullptr && player != nullptr)
+		//リフトテスト後で消す
+		if (lift[i] != nullptr)
 		{
-			lift[0]->Update(ac, player);
+			lift[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			lift[i]->SetScreenPos(screen_origin_position.x, screen_origin_position.y);
+			if (ac != nullptr && player != nullptr)
+			{
+				lift[i]->Update(ac, player);
+			}
 		}
 	}
+}
 
-	if (lift[0] != nullptr && player != nullptr)
+//プレイヤーとリフトの当たり判定
+void GameMainScene::PlayerHitLift()
+{
+	for (int i = 0; i < LIFT_MAXNUM; i++)
 	{
-
-		if (player->HitCheck(lift[0]->GetWorldLocation(), lift[0]->GetWidth(), lift[0]->GetHeight()) == true) {
-			//lift[0]->SetCanMove(true);
-			player->SetY(lift[0]->GetWorldLocation().y);
-
-		}
-		else if (player->GetLimitY() > player->GetWorldLocation().y)
+		if (lift[i] != nullptr && player != nullptr)
 		{
-			//当たってないかつプレイヤーがlimitの値より上に居たら
-			//プレイヤーが落ちる
-			player->SetFallFlg(true);
+
+			if (player->HitCheck(lift[i]->GetWorldLocation(), lift[i]->GetWidth(), lift[i]->GetHeight()) == true) {
+				//lift[0]->SetCanMove(true);
+				player->SetY(lift[i]->GetWorldLocation().y);
+
+			}
+			else if (player->GetLimitY() > player->GetWorldLocation().y)
+			{
+				//当たってないかつプレイヤーがlimitの値より上に居たら
+				//プレイヤーが落ちる
+				player->SetFallFlg(true);
+			}
+		}
+	}
+}
+
+//リフトとリフトとめる奴の判定
+void GameMainScene::LiftHitStop()
+{
+	for (int i = 0; i < LIFT_MAXNUM; i++)
+	{
+		for (int j = 0; j < block_count; j++)
+		{
+			if (lift[i] != nullptr && stage_block[j] != nullptr && stage_block[j]->GetBlockNum()==18)
+			{
+				if (lift[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()))
+				{
+					lift[i]->SetUpMaxY(stage_block[j]->GetWorldLocation().y);
+				}
+			}
 		}
 	}
 
@@ -2624,6 +2867,22 @@ void GameMainScene::LongLegsEnemyUpdate()
 		long_legs_enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
 		long_legs_enemy[i]->Update();
+	}
+}
+
+//プレイヤーとリスポーンブロックの当たり判定
+void GameMainScene::PlayerHitRespawn()
+{
+	for (int i = 0; i < block_count; i++)
+	{
+		if (player!=nullptr && stage_block[i] != nullptr && stage_block[i]->GetBlockNum() == 18)
+		{
+			if (player->HitCheck(stage_block[i]->GetWorldLocation(), stage_block[i]->GetWidth(), stage_block[i]->GetHeight()) == true)
+			{
+				respawn_x = stage_block[i]->GetWorldLocation().x;
+				respawn_y = stage_block[i]->GetWorldLocation().y;
+			}
+		}
 	}
 }
 

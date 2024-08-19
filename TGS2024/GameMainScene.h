@@ -23,6 +23,7 @@
 #include "Magma.h"
 #include "FallingFloor.h"
 #include "Geyser.h"
+#include "Rock.h"
 #include "LongLeggedEnemy.h"
 
 class Player;
@@ -35,6 +36,7 @@ class UI;
 class Dynamite;
 class Gem;
 class Lift;
+class Rock;
 
 struct cameraposition
 {
@@ -50,6 +52,17 @@ enum GameState {
     GOAL,
     RESPAWN,
     PLAY
+};
+
+struct ObjectNum {
+    int fragile_wall_cnt=0;
+    int cage_cnt=0;
+    int cage_door_cnt=0;
+    int magma_cnt;
+    int falling_floor_cnt;
+    int geyser_cnt;
+    int lift_cnt;
+    int rock_cnt;
 };
 
 class GameMainScene :
@@ -83,6 +96,9 @@ private:
     Magma** magma;                       // マグマ
     FallingFloor** falling_floor;        // 落ちる床
     Geyser** geyser;                     // 間欠泉
+    Rock** rock;                        //岩
+
+    ObjectNum object_num;
 
     LongLeggedEnemy** long_legs_enemy;  // 脚が長い敵
 
@@ -174,6 +190,9 @@ private:
 
     int stage_num;                  // 今いるステージの番号
 
+    float respawn_x;    //復活位置ｘ
+    float respawn_y;    //復活位置ｙ
+
 public:
     GameMainScene(bool set_flg);
     ~GameMainScene();
@@ -215,7 +234,11 @@ public:
     void PickaxeHitEnemy();
     void DynamiteHitEnemy();
     void LiftUpDate();
+    void PlayerHitLift();
+    void LiftHitStop();
     void PlayerHitBlock();
+
+    void SetObjectNull();//オブジェクトにNullを入れる
 
     void FragileWallUpdate();               // 脆い壁更新処理
     void DynamiteHitFragileWall();          // ダイナマイトと脆い壁の当たり判定処理
@@ -239,6 +262,13 @@ public:
     void GeyserUpdete();                    // 間欠泉の更新処理
     void PlayerHitGeyser();                 // プレイヤーと間欠泉の当たり判定
     void PickaxeHitGeyser();                // つるはしと間欠泉の当たり判定
+
+    void PlayerHitRespawn();                //プレイヤーとリスポーンブロックの当たり判定
+
+    void EnemyHitRock();//エネミーと岩ブロックの当たり判定
+    void DynamiteHitRock();//ダイナマイトと岩の当たり判定
+    void PickaxeHitRock();//つるはしと岩ブロックの当たり判定
+    void RockUpdate();//岩のアップデート
 
     void LongLegsEnemyUpdate();             // 脚が長い敵の更新処理
 

@@ -38,6 +38,7 @@ public:
     void UpAnim();
     void DownAnim();
 
+    void SetUpMaxY(float set_y) { up_max_y = set_y; }
     void SetCanMove(bool set_flg) { canmove_flg = set_flg; }
     void SetDownFlg(bool set_flg) { down_flg = set_flg; }
     void SetScreenPos(float set_x, float set_y) { screen_position_x = set_x; screen_position_y = set_y; }
