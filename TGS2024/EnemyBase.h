@@ -18,10 +18,10 @@ public:
 	EnemyBase();
 	~EnemyBase();
 
+protected:
 	virtual void Update() = 0;
 	virtual void Draw() const = 0;
 
-protected:
 	virtual void Move() = 0;
 	virtual void Death() = 0;
 	virtual void DeathAnimation() = 0;

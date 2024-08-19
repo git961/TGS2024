@@ -89,17 +89,13 @@ public:
 
 	}
 
-
-	float GetAttack() { return attack; }
-
-
 	Vec2 GetLocation() { return location; }
 	World GetWorldLocation() { return world; }
-
 	Boxvertex GetVertex() { return box_vertex; }
 
 	float GetWidth() { return width; }
 	float GetHeight() { return height; }
+	float GetAttack() { return attack; }
 
 
 	//キャラのlocationとスクリーンの原点を引いてスクリーン座標上の位置に変換

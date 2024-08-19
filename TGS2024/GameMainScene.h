@@ -23,6 +23,7 @@
 #include "Magma.h"
 #include "FallingFloor.h"
 #include "Geyser.h"
+#include "LongLeggedEnemy.h"
 
 class Player;
 class Enemy;
@@ -82,6 +83,8 @@ private:
     Magma** magma;                       // マグマ
     FallingFloor** falling_floor;        // 落ちる床
     Geyser** geyser;                     // 間欠泉
+
+    LongLeggedEnemy** long_legs_enemy;  // 脚が長い敵
 
     cameraposition camera_pos;
 
@@ -236,6 +239,7 @@ public:
     void GeyserUpdete();                    // 間欠泉の更新処理
     void PlayerHitGeyser();                 // プレイヤーと間欠泉の当たり判定
     void PickaxeHitGeyser();                // つるはしと間欠泉の当たり判定
+
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };
