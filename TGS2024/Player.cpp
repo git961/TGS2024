@@ -6,10 +6,11 @@ Player::Player(float set_x)
 {
 	//画像読込
 	LoadDivGraph("images/Player/player_img.png",68, 4, 17, 170, 170, player_img);
-	LoadDivGraph("images/Player/pickaxe.png", 8, 4, 2, 170, 170, pickaxe_img);
+	LoadDivGraph("images/Player/pickaxe2.png", 8, 4, 2, 170, 170, pickaxe_img);
+	LoadDivGraph("images/Player/pickeffect3.png", 4, 4, 1, 170, 170, pickaxe_effect);
 	LoadDivGraph("images/Player/soil_effect.png", 2, 2, 1, 170, 170, soil_effect);
 
-
+	pickaxe_add_x = 0.0f;
 
 	atk_sound = LoadSoundMem("sounds/se/player/Attack.mp3");
 	op_run_sound = LoadSoundMem("sounds/se/player/run.mp3");
@@ -37,8 +38,8 @@ Player::Player(float set_x)
 	old_worldx = world.x;
 
 	//体力
-	//hp = 50;
-	hp = 10;
+	hp = 50;
+	//hp = 10;
 
 	//攻撃力
 	attack = 10;
@@ -423,7 +424,8 @@ void Player::Draw() const
 	DrawRotaGraph((int)location.x, (int)location.y - (int)img_down, 1, 0, player_img[p_imgnum], TRUE, false);
 	if (player_state==ATTACK)
 	{
-		DrawRotaGraph((int)location.x, (int)location.y - (int)img_down, 1, 0, pickaxe_img[p_atk_imgnum], TRUE, direction);
+		DrawRotaGraph((int)location.x+(int)pickaxe_add_x, (int)location.y - (int)img_down, 1, 0, pickaxe_img[p_atk_imgnum], TRUE, direction);
+		DrawRotaGraph((int)location.x+(int)pickaxe_add_x, (int)location.y - (int)img_down, 1, 0, pickaxe_effect[p_atk_imgnum], TRUE, direction);
 		if (p_atk_imgnum > 2)
 		{
 			//DrawRotaGraph(location.x, location.y - img_down, 1, 0, effect_img[effect_num], TRUE, direction);
@@ -725,6 +727,7 @@ void Player::PlayerAttack()
 			switch (anim_cnt)
 			{
 			case 0:
+				pickaxe_add_x = 0.0f;
 				p_atk_imgnum = 0;
 				p_imgnum = 38;
 				break;
@@ -744,6 +747,7 @@ void Player::PlayerAttack()
 				p_imgnum = 40;
 				break;
 			case 13:
+				pickaxe_add_x = 15.0f;
 				p_atk_imgnum = 3;
 				effect_num = 1;
 				p_imgnum = 41;

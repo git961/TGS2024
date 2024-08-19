@@ -217,6 +217,11 @@ void AnimScene::Update()
 	//camera_pos.x - SCREEN_WIDTH / 2.0f,
 	//camera_pos.y - SCREEN_HEIGHT / 2.0f
 	//};
+
+	//仮スキップ
+	if (CheckHitKey(KEY_INPUT_SPACE) == 1) {
+		next_scene_flg = true;
+	}
 }
 
 void AnimScene::Draw() const

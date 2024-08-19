@@ -25,17 +25,13 @@
 #include "Geyser.h"
 #include "Rock.h"
 
-class Player;
-class Enemy;
 class RollingEnemy;
 class AttackCheck;
 class MapIo;
-class StageBlock;
 class UI;
 class Dynamite;
 class Gem;
 class Lift;
-class Rock;
 
 struct cameraposition
 {

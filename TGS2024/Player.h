@@ -35,10 +35,12 @@ private:
     //int player_throw_img[15];
     //int player_death_img[15];
     int pickaxe_img[15];
+    int pickaxe_effect[8];
     int soil_effect[10];
 
     //int player_ase_img[10];
 
+    
     
     float limit_y;//落下の上限用
     bool fall_flg;//落ちるか？
@@ -48,6 +50,7 @@ private:
     //int p_nomal_num;
 
     int p_atk_imgnum;//つるはし画像切り替え用
+    float pickaxe_add_x;//つるはしの画像ずらす用
 
     //int walk_num;//プレイヤ歩行画像切り替え用
     int walk_abs;//プレイヤ歩行画像切りかえ計算用

@@ -2,14 +2,14 @@
 
 AttackCheck::AttackCheck()
 {
-	width = 70;
+	width = 100;
 	height = 70;
 	location.x = 0;
 	location.y = 0;
 	world.x = 0;
 	world.y = 0;
 	attack_flg = false;
-	shift_x = 40.0f;
+	shift_x = 60.0f;
 	shift_y = 20.0f;
 
 }
@@ -73,6 +73,6 @@ void AttackCheck::Update(GameMainScene* gamemain,Player* player)
 
 void AttackCheck::Draw() const
 {
-		DrawBox(location.x - width / 2,location.y - height / 2,location.x + width / 2, location.y + height / 2, 0x00ffff, false);
+		//DrawBox(location.x - width / 2,location.y - height / 2,location.x + width / 2, location.y + height / 2, 0x00ffff, false);
 		DrawCircleAA(location.x, location.y, 2, 0xff00ff, true);
 }
