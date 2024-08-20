@@ -648,7 +648,6 @@ void GameMainScene::Update()
 				player = new Player(respawn_x);
 
 				UpdateCamera(player->GetWorldLocation());
-				screen_origin_position = { camera_pos.x - SCREEN_WIDTH / 2.0f,camera_pos.y - SCREEN_HEIGHT / 2.0f };
 				player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
 				//残機数を渡す
@@ -831,10 +830,7 @@ void GameMainScene::Update()
 			}
 		}
 
-		screen_origin_position = {
-			camera_pos.x - SCREEN_WIDTH / 2.0f,
-			camera_pos.y - SCREEN_HEIGHT / 2.0f
-		};
+
 
 		for (int j = 0; j < block_count; j++)
 		{
@@ -884,87 +880,6 @@ void GameMainScene::Update()
 			}
 		}
 
-		/*
-		//ダメージを一回だけ与える
-		for (int i = 0; i < DYNAMITE_MAXNUM; i++)
-		{
-			if (dynamite[i] != nullptr)
-			{
-				for (int j = 0; j < block_count; j++)
-				{
-					if (stage_block[j] != nullptr)
-					{
-						if (stage_block[j]->GetBlockNum() == 4)
-						{
-							//ダイナマイトが岩と当たってるかのチェック
-							if (dynamite[i]->GetDynamite() == false && stage_block[j] != nullptr)
-							{
-								if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-								{
-									dynamite[i]->SetDynamite(true);
-
-								}
-							}
-							
-							//ダイナマイトの爆発とエネミーの当たり判定
-							if (dynamite[i]->Getdamage_flg() == true)
-							{
-								if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-								{
-									dynamite[i]->SetEnemyX(stage_block[j]->GetWorldLocation().x);
-									dynamite[i]->DamageCalculation();
-									stage_block[j]->SetDamage(30);
-									stage_block[j]->SetShakeFlg(true);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		*/
-		//for (int j = 0; j < block_count; j++)
-		//{
-		//	if (stage_block[j] != nullptr)
-		//	{
-		//		if (stage_block[j]->GetBlockNum() == 4 && stage_block[j]->GetDeleteFlg() == true)
-		//		{
-		//			stage_block[j] = nullptr;
-		//		}
-		//	}
-		//}
-
-		/*
-		//エネミーと岩ブロックの当たり判定
-		for (int j = 0; j < block_count; j++)
-		{
-			if (stage_block[j] != nullptr && stage_block[j]->GetBlockNum() == 4)
-			{
-				stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-
-				for (int i = 0; i < ENEMYMAXNUM; i++)
-				{
-					if (enemy[i] != nullptr && enemy[i]->GetHp() > 0)
-					{
-						if (enemy[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-						{
-							if (enemy[i]->GetIsKnockBack() == true)
-							{
-								// ノックバックしている敵に当たったら自身もノックバックを開始する
-								enemy[i]->SetKnockBackStartFlg(true);
-							}
-							else
-							{
-								// 当たっていたら２体とも進行方向を反対に変更する
-								enemy[i]->SetHitEnemyX(stage_block[j]->GetWorldLocation().x);
-								enemy[i]->ChangeDirection();
-							}
-						}
-					}
-				}
-			}
-		}
-		*/
 
 		//岩アップデート
 		RockUpdate();
@@ -1373,6 +1288,9 @@ void GameMainScene::UpdateCamera(World world)
 		camera_pos.y = FIELD_HEIGHT - WINDOW_HALFY;
 	}
 
+	screen_origin_position = { camera_pos.x - SCREEN_WIDTH / 2.0f,camera_pos.y - SCREEN_HEIGHT / 2.0f };
+
+
 }
 
 void GameMainScene::ShakeCamera(bool set_true, int set_num)
@@ -1698,10 +1616,7 @@ void GameMainScene::Tutorial()
 	}
 
 
-	screen_origin_position = {
-	camera_pos.x - SCREEN_WIDTH / 2.0f,
-	camera_pos.y - SCREEN_HEIGHT / 2.0f
-	};
+
 
 }
 
