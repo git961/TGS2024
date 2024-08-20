@@ -1277,14 +1277,14 @@ void GameMainScene::UpdateCamera(World world)
 
 	//Y軸のステージの内外判定
 
-	//ワールドの底に到達したらカメラが移動しないように
+	//ワールドのてっぺんに到達したらカメラが移動しないように
 	if (camera_pos.y - WINDOW_HALFY <= 0.0f)
 	{
 		camera_pos.y = WINDOW_HALFY;
 	}
 	else if (camera_pos.y + WINDOW_HALFY >= FIELD_HEIGHT)
 	{
-		//ワールドのてっぺんに到達したらカメラが移動しないように
+		//ワールドの底に到達したらカメラが移動しないように
 		camera_pos.y = FIELD_HEIGHT - WINDOW_HALFY;
 	}
 
