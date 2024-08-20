@@ -510,7 +510,7 @@ void GameMainScene::Update()
 	case EDITOR:
 
 		mapio->InputTest(this);
-		mapio->SetOriginPosx(screen_origin_position.x);
+		mapio->SetOriginPos(screen_origin_position.x,screen_origin_position.y);
 
 		//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
 		location_x = world_x - screen_origin_position.x;
@@ -525,9 +525,18 @@ void GameMainScene::Update()
 			screen_origin_position.x -= 5;
 		}
 
+		if (CheckHitKey(KEY_INPUT_DOWN) == TRUE)
+		{
+			screen_origin_position.y+= 5;
+		}
+		if (CheckHitKey(KEY_INPUT_UP) == TRUE)
+		{
+			screen_origin_position.y -= 5;
+		}
+
 		if (mapio != nullptr)
 		{
-			mapio->SetOriginPosx(screen_origin_position.x);
+			mapio->SetOriginPos(screen_origin_position.x,screen_origin_position.y);
 			mapio->SetLocalPosx(location_x);
 			mapio->SetWorldPosx(world_x);
 		}
@@ -1218,9 +1227,8 @@ void GameMainScene::Draw() const
 
 #ifdef DEBUG
 
-	//DrawFormatString(300, 180, 0xffffff, "abs: %f", check_abs);
-	//DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
-	//DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
+	DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
+	DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
 	//DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
 	//DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
 	//DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);

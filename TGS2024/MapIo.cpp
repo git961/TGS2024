@@ -13,11 +13,14 @@ MapIo::MapIo()
 	world_mouse_x = 0.0f;
 	world_posx = 0.0f;
 	local_posx = 0.0f;
+	world_posy = 0.0f;
+	local_posy = 0.0f;
 	map_get = 0;
 	mouse_x = 0;
 	mouse_y = 0;
 	now_abs = 0.0f;
 	posx = 0.0f;
+	posy = 0.0f;
 	stage_num = stage1;
 
 }
@@ -291,46 +294,46 @@ void MapIo::Draw() const
 			switch (map_array[i][j])
 			{
 			case 1:
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xffffff, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE- (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE - (int)posy, 0xffffff, FALSE);
 				break;
 			case 2:
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xfff000, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE - (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE - (int)posy, 0xfff000, FALSE);
 				break;
 			case 3:
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xffff00, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE - (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE - (int)posy, 0xffff00, FALSE);
 				break;
 			case 4:
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x00fff0, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE - (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE- (int)posy, 0x00fff0, FALSE);
 				break;
 			case 8:
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xff0000, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE - (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE - (int)posy, 0xff0000, FALSE);
 				break;
 			case 9:
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x008000, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE - (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE - (int)posy, 0x008000, FALSE);
 				break;
 			case 12:
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xf5deb3, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE - (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE - (int)posy, 0xf5deb3, FALSE);
 				break;
 			case 13:
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xdc143c, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE - (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE - (int)posy, 0xdc143c, FALSE);
 				break;
 			case 14:
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xb0c4de, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE - (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE - (int)posy, 0xb0c4de, FALSE);
 				break;
 			case 15:
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x4169e1, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE - (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE - (int)posy, 0x4169e1, FALSE);
 				break;
 			case 16:
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xffd700, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE - (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE - (int)posy, 0xffd700, FALSE);
 				break;
 			case 17:
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0xd2691e, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE - (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE - (int)posy, 0xd2691e, FALSE);
 				break;
 			case 18:
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x1d86d1, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE - (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE - (int)posy, 0x1d86d1, FALSE);
 				break;
 			case 19:
-				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE, 0x008000, FALSE);
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE - (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE - (int)posy, 0x008000, FALSE);
 				break;
 			}
 		}

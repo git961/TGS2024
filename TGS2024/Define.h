@@ -4,7 +4,7 @@
 #define BLOCK_HALFSIZE BLOCKSIZE/2
 
 #define FIELD_WIDTH 11520 //ワールド全体の幅 1280*8
-#define FIELD_HEIGHT 720 //ワールド全体の高さ
+#define FIELD_HEIGHT 2160 //ワールド全体の高さ
 
 #define map_blockmax_x FIELD_WIDTH / BLOCKSIZE
 #define map_blockmax_y 12

@@ -49,8 +49,11 @@ private:
 	int map_data_num;//0:何もなし 1:マップチップ　2:エネミー 3:ゴール
 
 	float posx;
+	float posy;
 	float local_posx;
 	float world_posx;
+	float local_posy;
+	float world_posy;
 		//キャラのlocationとスクリーンの原点を引いてスクリーン座標上の位置に変換
 	//void SetLocalPosition(float set_origin_posx, float set_origin_posy)
 	//{
@@ -75,7 +78,7 @@ public:
 	void SetPlayerLocal(float set_localx) { p_localx = set_localx; }
 	void SetPlayerWorld(float set_worldx) { p_worldx = set_worldx; }
 
-	void SetOriginPosx(float set_origin_posx) { posx = set_origin_posx; }
+	void SetOriginPos(float set_origin_posx, float set_origin_posy) { posx = set_origin_posx; posy = set_origin_posy; }
 	void SetLocalPosx(float set_local_posx) { local_posx = set_local_posx; }
 	void SetWorldPosx(float set_world_posx) { world_posx = set_world_posx; }
 
