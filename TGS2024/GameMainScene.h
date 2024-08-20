@@ -65,8 +65,7 @@ struct ObjectNum {
     int rock_cnt;
 };
 
-class GameMainScene :
-    public AbstractScene
+class GameMainScene : public AbstractScene
 {
 private:
 
@@ -114,8 +113,6 @@ private:
     bool player_damage_once;
     bool enemy_damage_once;
     bool rock_damage_once;
-    //bool checkhit;
-    //bool enemyhit;      // 歩行エネミー同士の当たり判定チェック用、後に削除
 
     int back_img[10];//背景入れるよう
     int goal_img;//ゴールした後に表示する画像入れる用
@@ -214,14 +211,6 @@ public:
 
     void Tutorial();
 
-    /*
-    *	enemy[enemynum]->Damage(damage);
-	// 歩行エネミーのノックバック処理
-	enemy[enemynum]->SetKnockBackStartFlg(true);
-	enemy[enemynum]->SetStarDrawFlg(true);
-	enemy[enemynum]->SetPlayerWorldLocation(player->GetWorldLocation());
-	enemy_damage_once = true;
-    */
     void EnemyDamage(int enemynum,float damage);
     void PlayerDamage();
     void GemGenerate();
@@ -271,6 +260,8 @@ public:
     void RockUpdate();//岩のアップデート
 
     void LongLegsEnemyUpdate();             // 脚が長い敵の更新処理
+    void PlayerHitLongLegsEnemy();          // プレイヤーと脚が長い敵の当たり判定
+    void PickaxeHitLongLegsEnemy();         // つるはしと脚が長い敵の当たり判定
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };

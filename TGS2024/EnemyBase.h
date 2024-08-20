@@ -28,7 +28,7 @@ protected:
 
 	void PlayDeathSound();					// 死亡音を1回だけ再生する処理
 
-private:
+public:
 	void Damage(float damage);
 
 	float GetHp() const;

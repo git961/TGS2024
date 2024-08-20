@@ -49,11 +49,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	}
 
 	// stege2敵テスト生成
-	long_legs_enemy[0] = new LongLeggedEnemy(3000.0f, 200.0f);
-
-	falling_floor[0] = new FallingFloor(2300.0f, 400.0f);
-	geyser[0] = new Geyser(2100.0f, 550.0f);
-
+	long_legs_enemy[0] = new LongLeggedEnemy(3000.0f, 500.0f);
 
 	//プレイヤー生成
 	if (retry_flg == false)
@@ -104,7 +100,6 @@ GameMainScene::GameMainScene(bool set_flg)
 	//back_img = LoadGraph("images/background_test.png", TRUE);
 
 
-
 	//game_state = RESPAWN;
 
 	//enemyhit = false;		// 当たっていない
@@ -127,7 +122,6 @@ GameMainScene::GameMainScene(bool set_flg)
 	enemy_count = 0;
 	//rock_count = 0;
 	rolling_enemy_cnt = 0;
-
 
 
 	mapio->LoadMapData(stage_num);
@@ -296,7 +290,6 @@ GameMainScene::GameMainScene(bool set_flg)
 	unpause_se = LoadSoundMem("sounds/se/pause/unpause.mp3");
 	ChangeVolumeSoundMem(140, start_pause_se);
 	ChangeVolumeSoundMem(210, unpause_se);
-
 }
 
 
@@ -331,7 +324,6 @@ GameMainScene::~GameMainScene()
 
 void GameMainScene::ResetMap()
 {
-
 	mapio->LoadMapData(stage_num);
 
 	SetObjectNull();
@@ -361,33 +353,6 @@ void GameMainScene::ResetMap()
 	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
 	{
 		dynamite[i] = nullptr;
-	}
-
-	//オブジェクトにnullを代入
-	for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
-	{
-		fragile_wall[i] = nullptr;
-	}
-	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
-	{
-		cage_door[i] = nullptr;
-		cage[i] = nullptr;
-	}
-	for (int i = 0; i < MAGMA_MAXMUN; i++)
-	{
-		magma[i] = nullptr;
-	}
-	for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
-	{
-		falling_floor[i] = nullptr;
-	}
-	for (int i = 0; i < GEYSER_MAXNUM; i++)
-	{
-		geyser[i] = nullptr;
-	}
-	for (int i = 0; i < LIFT_MAXNUM; i++)
-	{
-		lift[i] = nullptr;
 	}
 
 	block_count = 0;
@@ -555,7 +520,6 @@ void GameMainScene::Update()
 			}
 		}
 
-
 		//右スティック押し込み
 		if (input.CheckBtn(XINPUT_BUTTON_RIGHT_THUMB) == TRUE || CheckHitKey(KEY_INPUT_P) == TRUE)
 		{
@@ -594,7 +558,6 @@ void GameMainScene::Update()
 
 
 	case GOAL:
-
 		if (stage_num == stage1) {
 			stage_num = stage2;
 			p_notback_flg = false;
@@ -830,6 +793,12 @@ void GameMainScene::Update()
 
 			// 脚が長い敵の更新処理
 			LongLegsEnemyUpdate();
+
+			// プレイヤーと脚が長い敵の当たり判定
+			PlayerHitLongLegsEnemy();
+
+			// つるはしと脚が長い敵の当たり判定
+			PickaxeHitLongLegsEnemy();
 		}
 
 		//カメラとUIのアップデート
@@ -866,130 +835,18 @@ void GameMainScene::Update()
 					{
 						if (stage_block[j]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
 						{
-
 							game_state = GOAL;
 						}
 					}
-
-					/*
-					if (stage_block[j]->GetBlockNum() == 4)
-					{
-
-						stage_block[j]->Update();
-
-						//つるはしを振るってる時だけ
-						if (player->GetAttacking() == true)
-						{
-							//ダメージを一回だけ与える
-							if (rock_damage_once == false)
-							{
-								//つるはしと岩と当たってるかのチェック
-								if (ac->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true) {
-									stage_block[j]->SetDamage(10);
-									stage_block[j]->SetShakeFlg(true);
-									rock_damage_once = true;
-								}
-							}
-						}
-						else
-						{
-							//プレイヤーがつるはし振ってなかったら
-							rock_damage_once = false;
-						}
-					}
-					*/
 				}
 			}
 		}
-
-		/*
-		//ダメージを一回だけ与える
-		for (int i = 0; i < DYNAMITE_MAXNUM; i++)
-		{
-			if (dynamite[i] != nullptr)
-			{
-				for (int j = 0; j < block_count; j++)
-				{
-					if (stage_block[j] != nullptr)
-					{
-						if (stage_block[j]->GetBlockNum() == 4)
-						{
-							//ダイナマイトが岩と当たってるかのチェック
-							if (dynamite[i]->GetDynamite() == false && stage_block[j] != nullptr)
-							{
-								if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-								{
-									dynamite[i]->SetDynamite(true);
-
-								}
-							}
-							
-							//ダイナマイトの爆発とエネミーの当たり判定
-							if (dynamite[i]->Getdamage_flg() == true)
-							{
-								if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-								{
-									dynamite[i]->SetEnemyX(stage_block[j]->GetWorldLocation().x);
-									dynamite[i]->DamageCalculation();
-									stage_block[j]->SetDamage(30);
-									stage_block[j]->SetShakeFlg(true);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		*/
-		//for (int j = 0; j < block_count; j++)
-		//{
-		//	if (stage_block[j] != nullptr)
-		//	{
-		//		if (stage_block[j]->GetBlockNum() == 4 && stage_block[j]->GetDeleteFlg() == true)
-		//		{
-		//			stage_block[j] = nullptr;
-		//		}
-		//	}
-		//}
-
-		/*
-		//エネミーと岩ブロックの当たり判定
-		for (int j = 0; j < block_count; j++)
-		{
-			if (stage_block[j] != nullptr && stage_block[j]->GetBlockNum() == 4)
-			{
-				stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-
-				for (int i = 0; i < ENEMYMAXNUM; i++)
-				{
-					if (enemy[i] != nullptr && enemy[i]->GetHp() > 0)
-					{
-						if (enemy[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-						{
-							if (enemy[i]->GetIsKnockBack() == true)
-							{
-								// ノックバックしている敵に当たったら自身もノックバックを開始する
-								enemy[i]->SetKnockBackStartFlg(true);
-							}
-							else
-							{
-								// 当たっていたら２体とも進行方向を反対に変更する
-								enemy[i]->SetHitEnemyX(stage_block[j]->GetWorldLocation().x);
-								enemy[i]->ChangeDirection();
-							}
-						}
-					}
-				}
-			}
-		}
-		*/
 
 		//岩アップデート
 		RockUpdate();
 		EnemyHitRock();
 		DynamiteHitRock();
 		PickaxeHitRock();
-
 
 		if (player != nullptr && mapio != nullptr)
 		{
@@ -1207,7 +1064,6 @@ void GameMainScene::Draw() const
 				{
 					falling_floor[i]->Draw();
 				}
-
 			}
 
 			// マグマの描画
@@ -1236,7 +1092,6 @@ void GameMainScene::Draw() const
 					long_legs_enemy[i]->Draw();
 				}
 			}
-
 		}
 
 		//ダイナマイト描画
@@ -1397,7 +1252,6 @@ void GameMainScene::UpdateCamera(World world)
 		//ワールドのてっぺんに到達したらカメラが移動しないように
 		camera_pos.y = FIELD_HEIGHT - WINDOW_HALFY;
 	}
-
 }
 
 void GameMainScene::ShakeCamera(bool set_true, int set_num)
@@ -1437,7 +1291,6 @@ void GameMainScene::ShakeCamera(bool set_true, int set_num)
 		{
 			shake_cnt = 0;
 		}
-
 	}
 	else
 	{
@@ -1509,8 +1362,6 @@ void GameMainScene::Tutorial()
 
 			if (player != nullptr)
 			{
-
-
 				if (stage_block[j]->GetBlockNum() == 6)
 				{
 
@@ -1518,12 +1369,10 @@ void GameMainScene::Tutorial()
 					{
 						player->SetMoveStop(true);
 					}
-
 				}
 
 				if (stage_block[j]->GetBlockNum() == 4)
 				{
-
 					stage_block[j]->Update();
 
 					//プレイヤが右向きだったら
@@ -1561,9 +1410,6 @@ void GameMainScene::Tutorial()
 					{
 						stage_block[j] = nullptr;
 					}
-
-
-
 				}
 
 				for (int i = 0; i < DYNAMITE_MAXNUM; i++)
@@ -1576,7 +1422,6 @@ void GameMainScene::Tutorial()
 							if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
 							{
 								dynamite[i]->SetDynamite(true);
-
 							}
 						}
 
@@ -1590,14 +1435,11 @@ void GameMainScene::Tutorial()
 								stage_block[j]->SetDamage(30);
 								stage_block[j]->SetShakeFlg(true);
 								rock_damage_once = true;
-
 							}
 						}
 					}
 				}
 			}
-
-
 		}
 
 		//わけないと４番目壊した時GetBlockNumでエラーが起きるため
@@ -1616,7 +1458,6 @@ void GameMainScene::Tutorial()
 					}
 				}
 			}
-
 		}
 
 		if (stage_block[j] != nullptr)
@@ -1627,14 +1468,11 @@ void GameMainScene::Tutorial()
 			{
 				stage_block[j]->Update();
 
-
 				if (stage_block[j]->GetBlockNum() == 7)
 				{
-
 					if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
 					{
 						stage_block[j]->SetUp(true);
-
 					}
 
 					if (stage_block[j]->GetDeleteFlg() == true)
@@ -1653,7 +1491,6 @@ void GameMainScene::Tutorial()
 	if (ac != nullptr) {
 		ac->Update(this, player);
 		//ac->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-
 	}
 
 	//ダイナマイト
@@ -1692,7 +1529,6 @@ void GameMainScene::Tutorial()
 				UpdateCamera(dynamite[0]->GetWorldLocation());
 				camera_resetx = dynamite[0]->GetWorldLocation();
 			}
-
 		}
 
 		//元のプレイヤーの位置までカメラを戻す
@@ -1727,7 +1563,6 @@ void GameMainScene::Tutorial()
 	camera_pos.x - SCREEN_WIDTH / 2.0f,
 	camera_pos.y - SCREEN_HEIGHT / 2.0f
 	};
-
 }
 
 void GameMainScene::EnemyDamage(int enemynum, float damage)
@@ -1737,8 +1572,6 @@ void GameMainScene::EnemyDamage(int enemynum, float damage)
 	enemy[enemynum]->SetKnockBackStartFlg(true);
 	enemy[enemynum]->SetStarDrawFlg(true);
 	enemy[enemynum]->SetPlayerWorldLocation(player->GetWorldLocation());
-
-
 }
 
 void GameMainScene::PlayerDamage()
@@ -1747,7 +1580,6 @@ void GameMainScene::PlayerDamage()
 		player_damage_once = true;
 		player->SetDamageFlg(player_damage_once);
 		player->SetDamage(10);
-
 
 		//HPeffect
 		if (ui != nullptr)
@@ -1759,7 +1591,6 @@ void GameMainScene::PlayerDamage()
 
 void GameMainScene::GemGenerate()
 {
-
 	// 歩行エネミーの宝石生成処理
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
@@ -1794,9 +1625,6 @@ void GameMainScene::GemGenerate()
 			}
 		}
 	}
-
-
-
 }
 
 void GameMainScene::GemUpDate()
@@ -1824,7 +1652,6 @@ void GameMainScene::GemUpDate()
 
 void GameMainScene::EnemyHitEnemy()
 {
-
 	// 歩行エネミー同士の当たり判定
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
@@ -1854,12 +1681,10 @@ void GameMainScene::EnemyHitEnemy()
 			}
 		}
 	}
-
 }
 
 void GameMainScene::EnemyUpDate()
 {
-
 	// エネミー更新処理
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
@@ -1923,7 +1748,6 @@ void GameMainScene::EnemyUpDate()
 
 void GameMainScene::PlayerUpDate()
 {
-
 	//プレイヤー
 	if (player != nullptr)
 	{
@@ -1962,12 +1786,10 @@ void GameMainScene::PlayerUpDate()
 			}
 		}
 	}
-
 }
 
 void GameMainScene::PlayerHitGem()
 {
-
 	// 歩行エネミーの宝石とプレイヤーの当たり判定
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
@@ -2012,7 +1834,6 @@ void GameMainScene::PlayerHitGem()
 			}
 		}
 	}
-
 }
 
 void GameMainScene::PlayerHitEnemy()
@@ -2048,14 +1869,12 @@ void GameMainScene::PlayerHitEnemy()
 					PlayerDamage();
 				}
 			}
-
 		}
 	}
 }
 
 void GameMainScene::PickaxeHitEnemy()
 {
-
 	// 歩行エネミーとつるはしの当たり判定
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
@@ -2081,7 +1900,6 @@ void GameMainScene::PickaxeHitEnemy()
 				//プレイヤーがつるはし振ってなかったら
 				enemy_damage_once = false;
 			}
-
 		}
 	}
 
@@ -2094,7 +1912,6 @@ void GameMainScene::PickaxeHitEnemy()
 			{
 				if (player != nullptr)
 				{
-
 					//つるはしを振るってる時だけ
 					if (player->GetAttacking() == true)
 					{
@@ -2118,7 +1935,6 @@ void GameMainScene::PickaxeHitEnemy()
 			}
 		}
 	}
-
 }
 
 void GameMainScene::DynamiteHitEnemy()
@@ -2130,7 +1946,6 @@ void GameMainScene::DynamiteHitEnemy()
 		{
 			for (int j = 0; j < ENEMYMAXNUM; j++)
 			{
-
 				if (enemy[j] != nullptr && enemy[j]->GetHp() > 0)
 				{
 					//ダイナマイトとエネミーと当たってるかのチェック
@@ -2139,7 +1954,6 @@ void GameMainScene::DynamiteHitEnemy()
 						if (dynamite[i]->HitCheck(enemy[j]->GetWorldLocation(), enemy[j]->GetWidth(), enemy[j]->GetHeight()) == true)
 						{
 							dynamite[i]->SetDynamite(true);
-
 						}
 					}
 					//ダイナマイトの爆発とエネミーの当たり判定
@@ -2191,7 +2005,6 @@ void GameMainScene::DynamiteHitEnemy()
 			}
 		}
 	}
-
 }
 
 //プレイヤーと床ブロックの当たり判定
@@ -2209,7 +2022,6 @@ void GameMainScene::PlayerHitBlock()
 				block_num[block_cnt] = i;
 				block_cnt++;
 			}
-
 		}
 	}
 
@@ -2250,7 +2062,6 @@ void GameMainScene::PlayerHitBlock()
 		block_num[i] = 0;
 	}
 	block_cnt = 0;
-
 }
 
 //オブジェクトにNullを入れる
@@ -2376,14 +2187,11 @@ void GameMainScene::PlayerHitRock()
 			}
 		}
 	}
-
-
 }
 
 //敵と岩の当たり判定
 void GameMainScene::EnemyHitRock()
 {
-
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
 		if (enemy[i] != nullptr && enemy[i]->GetHp() > 0)
@@ -2407,8 +2215,6 @@ void GameMainScene::EnemyHitRock()
 			}
 		}
 	}
-
-
 }
 
 void GameMainScene::DynamiteHitRock()
@@ -2417,7 +2223,6 @@ void GameMainScene::DynamiteHitRock()
 			//ダメージを一回だけ与える
 	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
 	{
-
 		for (int j = 0; j < object_num.rock_cnt; j++)
 		{
 			if (dynamite[i] != nullptr && dynamite[i]->GetDynamite() == false && rock[j] != nullptr && rock[j]->GetHp()>0)
@@ -2426,9 +2231,7 @@ void GameMainScene::DynamiteHitRock()
 				if (dynamite[i]->HitCheck(rock[j]->GetWorldLocation(), rock[j]->GetWidth(),rock[j]->GetHeight()) == true)
 				{
 					dynamite[i]->SetDynamite(true);
-
 				}
-				
 			}
 
 			//ダイナマイトの爆発と岩の当たり判定
@@ -2445,8 +2248,6 @@ void GameMainScene::DynamiteHitRock()
 		}
 		
 	}
-
-
 }
 
 //つるはしと岩の当たり判定
@@ -2867,6 +2668,60 @@ void GameMainScene::LongLegsEnemyUpdate()
 		long_legs_enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
 		long_legs_enemy[i]->Update();
+
+		long_legs_enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+	}
+}
+
+// プレイヤーと脚が長い敵の当たり判定
+void GameMainScene::PlayerHitLongLegsEnemy()
+{
+	if (player == nullptr)			return;
+
+	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
+	{
+		if (long_legs_enemy[i] == nullptr)				continue;
+		if (long_legs_enemy[i]->GetHp() <= 0.0f)		continue;
+
+		// プレイヤーが脚が長い敵に当たっていたら
+		if (player->HitCheck(long_legs_enemy[i]->GetWorldLocation(), long_legs_enemy[i]->GetWidth(), long_legs_enemy[i]->GetHeight()) == true)
+		{
+			//プレイヤーに一回だけダメージを与える
+			PlayerDamage();
+		}
+	}
+}
+
+// つるはしと脚が長い敵の当たり判定
+void GameMainScene::PickaxeHitLongLegsEnemy()
+{
+	if (player == nullptr)								return;
+	if (ac == nullptr)									return;
+
+	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
+	{
+		if (long_legs_enemy[i] == nullptr)				continue;
+		if (long_legs_enemy[i]->GetHp() <= 0.0f)		continue;
+
+		//つるはしを振るってる時だけ
+		if (player->GetAttacking() == true)
+		{
+			//ダメージを一回だけ与える
+			if (enemy_damage_once == false)
+			{
+				//つるはしとエネミーが当たってるかのチェック
+				if (ac->HitCheck(long_legs_enemy[i]->GetWorldLocation(), long_legs_enemy[i]->GetWidth(), long_legs_enemy[i]->GetHeight()) == true)
+				{
+					long_legs_enemy[i]->Damage(10.0f);
+					enemy_damage_once = true;
+				}
+			}
+		}
+		else
+		{
+			//プレイヤーがつるはし振ってなかったら
+			enemy_damage_once = false;
+		}
 	}
 }
 
