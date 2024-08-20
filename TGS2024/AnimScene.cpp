@@ -306,9 +306,11 @@ void AnimScene::ShakeCamera(bool set_true, int set_num)
 				break;
 			}
 			shake_cnt++;
+
 		}
 		else
 		{
+			screen_origin_position.x = 0;
 			shake_cnt = 0;
 		}
 
@@ -319,7 +321,7 @@ void AnimScene::ShakeCamera(bool set_true, int set_num)
 		{
 			shake_x1 = 20;
 			shake_x2 = 40;
-			//画面の揺れ
+			//岩落下画面の揺れ
 			switch (shake_cnt)
 			{
 			case 0:
