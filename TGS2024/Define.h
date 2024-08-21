@@ -4,7 +4,7 @@
 #define BLOCK_HALFSIZE BLOCKSIZE/2
 
 #define FIELD_WIDTH 11520 //ワールド全体の幅 1280*8
-#define FIELD_HEIGHT 2160 //ワールド全体の高さ
+#define FIELD_HEIGHT 3136 //ワールド全体の高さ (720+64)*4
 
 #define map_blockmax_x FIELD_WIDTH / BLOCKSIZE
 #define map_blockmax_y FIELD_HEIGHT / BLOCKSIZE
@@ -27,11 +27,11 @@
 #define ROLLING_ENEMY_MAXNUM 20
 
 // ギミックの最大数
-#define LIFT_MAXNUM				10
+#define LIFT_MAXNUM				20
 #define FRAGILE_WALL_MAXNUM		10
 #define CAGE_DOOR_MAXNUM		10
 #define MAGMA_MAXMUN			10
 #define FALLING_FLOOR_MAXNUM	10
-#define GEYSER_MAXNUM			10
+#define GEYSER_MAXNUM			20
 
-#define ROCK_MAXNUM 100
+#define ROCK_MAXNUM 200

@@ -14,7 +14,7 @@ static cameraposition screen_origin_position =
 GameMainScene::GameMainScene(bool set_flg)
 {
 	// 読み込みたいステージ
-	stage_num = stage2;
+	stage_num = StageNum::stage2;
 
 	retry_flg = set_flg;
 	checkhit = false;
@@ -49,7 +49,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	}
 	else
 	{
-		if (stage_num == stage1) {
+		if (stage_num == StageNum::stage1) {
 			player = new Player(2200.0f);
 			p_notback_flg = true;
 		}
@@ -214,12 +214,13 @@ GameMainScene::GameMainScene(bool set_flg)
 	}
 	else
 	{
+
+		ResetMap();
+
 		//リトライして来たら
 		game_state = PLAY;
 		
-		ResetMap();
 	}
-	//game_state = PLAY;
 
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
@@ -588,8 +589,8 @@ void GameMainScene::Update()
 
 	case GOAL:
 
-		if (stage_num == stage1) {
-			stage_num = stage2;
+		if (stage_num == StageNum::stage1) {
+			stage_num = StageNum::stage2;
 			p_notback_flg = false;
 			ResetMap();
 			clear_alpha = 0;
@@ -764,7 +765,7 @@ void GameMainScene::Update()
 		//リスポーン位置更新
 		PlayerHitRespawn();
 
-		if (stage_num == stage2)
+		if (stage_num == StageNum::stage2)
 		{
 			// 脆い壁更新処理
 			FragileWallUpdate();
@@ -1081,7 +1082,7 @@ void GameMainScene::Draw() const
 			}
 		}
 
-		if (stage_num == stage2)
+		if (stage_num == StageNum::stage2)
 		{
 			// 脆い壁描画
 			for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
@@ -1228,6 +1229,7 @@ void GameMainScene::Draw() const
 
 	DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
 	DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
+	DrawFormatString(300, 240, 0xffffff, "stagenum:%d", stage_num);
 	//DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
 	//DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
 	//DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);

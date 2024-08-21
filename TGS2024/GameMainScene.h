@@ -32,6 +32,7 @@ class UI;
 class Dynamite;
 class Gem;
 class Lift;
+enum class StageNum;
 
 struct cameraposition
 {
@@ -66,6 +67,7 @@ class GameMainScene :
 private:
 
     GameState game_state;
+    StageNum stage_num;
 
     Player* player;
     Enemy** enemy;
@@ -181,7 +183,6 @@ private:
     bool checkhit_block[3] = { false };
     int block_num[3] = { 0 };
 
-    int stage_num;                  // 今いるステージの番号
 
     float respawn_x;    //復活位置ｘ
     float respawn_y;    //復活位置ｙ
