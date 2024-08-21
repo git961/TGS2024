@@ -6,16 +6,11 @@
 class CharacterBase : public ObjectBase
 {
 protected:
-
 	float move_x;
 	float move_y;
-
-	float hp;//体力
-
+	float hp;
 	float speed;
-	bool direction;//向き　0:右 1:左
-
-	bool stop_walk_snd;//音を止めるか？
+	bool direction;				//向き　0:右 1:左
 
 public:
 	//コンストラクタとデストラクタ
@@ -29,7 +24,6 @@ public:
 		speed = 0.0f;
 	};
 	~CharacterBase() {};
-
 
 	bool GetDirection() { return direction; }//キャラの向きを返す　0:右 1:左
 

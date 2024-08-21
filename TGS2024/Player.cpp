@@ -117,6 +117,8 @@ Player::Player(float set_x)
 	helmet_flg = false;
 	helmet_down = -1000;
 
+	// stop_walk_snd = false;
+
 	// エンド画面用変数
 	LoadDivGraph("images/Player/player_end1.png", 3, 3, 1, 170, 170, player_end_img);
 	end_img_num = 0;
@@ -146,7 +148,6 @@ Player::Player(float set_x)
 
 	limit_y = 600;
 	fall_flg = false;
-
 }
 
 Player::~Player()
@@ -360,17 +361,20 @@ void Player::Update(GameMainScene* gamemain)
 			}
 		}
 
-		if (stop_walk_snd == true)
-		{
-			StopSoundMem(op_run_sound);
-		}
+		//if (stop_walk_snd == true)
+		//{
+			//StopSoundMem(op_run_sound);
+		//}
 
 		if (player_state != WALK)
 		{
-			if (stop_walk_snd == true)
-			{
-				stop_walk_snd = false;
-			}
+			// 上のif文から処理を持ってきました。
+			StopSoundMem(op_run_sound);
+
+			//if (stop_walk_snd == true)
+			//{
+			//	stop_walk_snd = false;
+			//}
 		}
 
 		break;
@@ -485,10 +489,10 @@ void Player::PlayerMove()
 	//左移動
 	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_LEFT) == TRUE||input.GetPadThumbLX() <= -32000) {
 
-		if (stop_walk_snd == true)
-		{
-			stop_walk_snd = false;
-		}
+		//if (stop_walk_snd == true)
+		//{
+		//	stop_walk_snd = false;
+		//}
 
 		if (move_x >= -4)
 		{
@@ -689,14 +693,11 @@ void Player::ThrowAnim()
 	dyna_anmcnt++;
 }
 
-
-
 void Player::PlayerFall()
 {
 	//落ちても良かったら
 	if (fall_flg == true)
 	{
-
 		limit_y = 600.0f + height / 2;
 		//着地座標がプレイヤーのワールド座標よりも大きかったら
 		if (limit_y > world.y+height / 2)
@@ -716,10 +717,8 @@ void Player::PlayerFall()
 
 void Player::PlayerAttack()
 {
-
 	if (attacking == true)
 	{
-
 		if (direction == false)
 		{
 			switch (anim_cnt)
@@ -735,7 +734,6 @@ void Player::PlayerAttack()
 				{
 					PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
 				}
-
 				break;
 			case 10:
 				p_atk_imgnum = 2;
@@ -780,9 +778,6 @@ void Player::PlayerAttack()
 			}
 
 		}
-		
-
-
 	}
 
 	//何秒か経ったら攻撃中フラグを戻す？
@@ -802,7 +797,6 @@ void Player::PlayerAttack()
 				StopSoundMem(atk_sound);
 			}
 
-
 			if (next_attackflg == false || attack_cnt >= 2)
 			{
 				p_atk_imgnum = 0;
@@ -818,13 +812,10 @@ void Player::PlayerAttack()
 			}
 		}
 	}
-	
-
 }
 
 void Player::PlayerTutoAttack()
 {
-
 	if (attacking == true)
 	{
 		if (direction == false)
@@ -886,10 +877,7 @@ void Player::PlayerTutoAttack()
 			}
 		}
 
-
-
 	}
-
 
 
 	//何秒か経ったら攻撃中フラグを戻す？
@@ -905,23 +893,19 @@ void Player::PlayerTutoAttack()
 				StopSoundMem(atk_sound);
 			}
 
-				attack_cnt = 0;
-				anim_cnt = 0;
-				atk_cnt_timer = 0;
-				is_atk_putout = false;
-				attacking = false;
-				wait_flg = true;
-				player_state = NOMAL;
+			attack_cnt = 0;
+			anim_cnt = 0;
+			atk_cnt_timer = 0;
+			is_atk_putout = false;
+			attacking = false;
+			wait_flg = true;
+			player_state = NOMAL;
 		}
 	}
-
-
-
 }
 
 void Player::TutoWalkAnim()
 {
-
 	if (player_state == WALK)
 	{
 		//if (abs((int)world.x - (int)old_worldx) > 59)
@@ -1100,15 +1084,10 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 			{
 				PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
 			}
-
-
 		}
 
 		break;
 	}
-	
-
-
 }
 
 void Player::TutorialAnimUpdate()
