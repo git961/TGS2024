@@ -7,7 +7,7 @@ LongLeggedEnemy::LongLeggedEnemy(float set_x, float set_y)
 	world.y = set_y;
 	location.x = set_x;
 	location.y = set_y;
-	width = 45.0f;
+	width = 64.0f;
 	height = 64.0f;
 
 	move_x = -1.0f;			// 移動量

@@ -186,12 +186,14 @@
     <ClCompile Include="LongLeggedEnemy.cpp">
       <Filter>ソース ファイル\EnemyFile</Filter>
     </ClCompile>
-
     <ClCompile Include="Switch.cpp">
       <Filter>ソース ファイル\StageObjectFile\Lift</Filter>
     </ClCompile>
     <ClCompile Include="Lift.cpp">
       <Filter>ソース ファイル\StageObjectFile\Lift</Filter>
+    </ClCompile>
+    <ClCompile Include="HardEnemy.cpp">
+      <Filter>ソース ファイル\EnemyFile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -300,9 +302,6 @@
     <ClInclude Include="Geyser.h">
       <Filter>ヘッダー ファイル\StageObjectFile</Filter>
     </ClInclude>
-    <ClInclude Include="Switch.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyBase.h">
       <Filter>ヘッダー ファイル\BaseFile</Filter>
     </ClInclude>
@@ -316,6 +315,12 @@
       <Filter>ヘッダー ファイル\StageObjectFile\Lift</Filter>
     </ClInclude>
     <ClInclude Include="Lift.h">
+      <Filter>ヘッダー ファイル\StageObjectFile\Lift</Filter>
+    </ClInclude>
+    <ClInclude Include="HardEnemy.h">
+      <Filter>ヘッダー ファイル\EnemyFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Switch.h">
       <Filter>ヘッダー ファイル\StageObjectFile\Lift</Filter>
     </ClInclude>
   </ItemGroup>

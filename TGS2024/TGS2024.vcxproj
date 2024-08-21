@@ -171,6 +171,7 @@
     <ClCompile Include="Gem.cpp" />
     <ClCompile Include="EndCreditsScene.cpp" />
     <ClCompile Include="Geyser.cpp" />
+    <ClCompile Include="HardEnemy.cpp" />
     <ClCompile Include="Lift.cpp" />
     <ClCompile Include="LongLeggedEnemy.cpp" />
     <ClCompile Include="Magma.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="Dynamite.h" />
     <ClInclude Include="EndCreditsScene.h" />
     <ClInclude Include="Geyser.h" />
+    <ClInclude Include="HardEnemy.h" />
     <ClInclude Include="Lift.h" />
     <ClInclude Include="LongLeggedEnemy.h" />
     <ClInclude Include="Magma.h" />

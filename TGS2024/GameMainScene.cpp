@@ -50,6 +50,7 @@ GameMainScene::GameMainScene(bool set_flg)
 
 	// stege2敵テスト生成
 	long_legs_enemy[0] = new LongLeggedEnemy(3000.0f, 500.0f);
+	hard_enemy[0] = new HardEnemy(3000.0f, 550.0f);
 
 	//プレイヤー生成
 	if (retry_flg == false)
@@ -310,6 +311,10 @@ GameMainScene::~GameMainScene()
 	delete[] magma;
 	delete[] falling_floor;
 	delete[] long_legs_enemy;
+	for (int i = 0; i < HARD_ENEMY_MAXNUM; i++)
+	{
+		delete hard_enemy[i];
+	}
 
 	// 画像削除
 	DeleteGraph(back_img[0]);
@@ -737,6 +742,7 @@ void GameMainScene::Update()
 
 		if (stage_num == stage2)
 		{
+			/** ギミック */
 			// 脆い壁更新処理
 			FragileWallUpdate();
 
@@ -791,6 +797,8 @@ void GameMainScene::Update()
 			// つるはしと間欠泉の当たり判定
 			PickaxeHitGeyser();
 
+
+			/** 敵 */
 			// 脚が長い敵の更新処理
 			LongLegsEnemyUpdate();
 
@@ -799,6 +807,15 @@ void GameMainScene::Update()
 
 			// つるはしと脚が長い敵の当たり判定
 			PickaxeHitLongLegsEnemy();
+
+			//ダイナマイトでしか倒せない敵の更新処理
+			HardEnemyUpdate();
+
+			// プレイヤーとダイナマイトでしか倒せない敵の当たり判定
+			PlayerHitHardEnemy();
+
+			// ダイナマイトとダイナマイトでしか倒せない敵の当たり判定
+			DynamiteHitHardEnemy();
 		}
 
 		//カメラとUIのアップデート
@@ -1090,6 +1107,15 @@ void GameMainScene::Draw() const
 				if (long_legs_enemy[i] != nullptr)
 				{
 					long_legs_enemy[i]->Draw();
+				}
+			}
+
+			// ダイナマイトでしか倒せない敵の描画
+			for (int i = 0; i < HARD_ENEMY_MAXNUM; i++)
+			{
+				if (hard_enemy[i] != nullptr)
+				{
+					hard_enemy[i]->Draw();
 				}
 			}
 		}
@@ -2728,6 +2754,72 @@ void GameMainScene::PickaxeHitLongLegsEnemy()
 		{
 			//プレイヤーがつるはし振ってなかったら
 			enemy_damage_once = false;
+		}
+	}
+}
+
+// ダイナマイトでしか倒せない敵の更新処理
+void GameMainScene::HardEnemyUpdate()
+{
+	for (int i = 0; i < HARD_ENEMY_MAXNUM; i++)
+	{
+		if (hard_enemy[i] == nullptr) continue;
+
+		// カメラから見た座標の設定
+		hard_enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+		hard_enemy[i]->Update();
+
+		if (hard_enemy[i]->GetDeleteFlg() == true)
+		{
+			// 脚が長い敵の削除
+			delete hard_enemy[i];
+			hard_enemy[i] = nullptr;
+		}
+	}
+}
+
+// プレイヤーとダイナマイトでしか倒せない敵の当たり判定
+void GameMainScene::PlayerHitHardEnemy()
+{
+	if (player == nullptr)			return;
+
+	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
+	{
+		if (hard_enemy[i] == nullptr)			continue;
+		if (hard_enemy[i]->GetHp() <= 0.0f)		continue;
+
+		// プレイヤーがダイナマイトでしか倒せない敵に当たっていたら
+		if (player->HitCheck(hard_enemy[i]->GetWorldLocation(), hard_enemy[i]->GetWidth(), hard_enemy[i]->GetHeight()) == true)
+		{
+			//プレイヤーに一回だけダメージを与える
+			PlayerDamage();
+		}
+	}
+}
+
+// ダイナマイトとダイナマイトでしか倒せない敵の当たり判定
+void GameMainScene::DynamiteHitHardEnemy()
+{
+	if (player == nullptr)						return;
+
+	for (int i = 0; i < HARD_ENEMY_MAXNUM; i++)
+	{
+		if (hard_enemy[i] == nullptr)			continue;
+
+		for (int i = 0; i < DYNAMITE_MAXNUM; i++)
+		{
+			if (dynamite[i] == nullptr)			continue;
+
+			// ダイナマイト本体との当たり判定
+			if (dynamite[i]->GetDynamite() == false)
+			{
+				if (dynamite[i]->HitCheck(hard_enemy[i]->GetWorldLocation(), hard_enemy[i]->GetWidth(), hard_enemy[i]->GetHeight()) == true)
+				{
+					dynamite[i]->SetDynamite(true);
+					hard_enemy[i]->Damage(dynamite[i]->GetAttack());
+				}
+			}
 		}
 	}
 }

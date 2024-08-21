@@ -25,6 +25,7 @@
 #include "Geyser.h"
 #include "Rock.h"
 #include "LongLeggedEnemy.h"
+#include "HardEnemy.h"
 
 class Player;
 class Enemy;
@@ -100,6 +101,7 @@ private:
     ObjectNum object_num;
 
     LongLeggedEnemy** long_legs_enemy;  // 脚が長い敵
+    HardEnemy* hard_enemy[HARD_ENEMY_MAXNUM];             // ダイナマイトでしか倒せない敵
 
     cameraposition camera_pos;
 
@@ -262,6 +264,10 @@ public:
     void LongLegsEnemyUpdate();             // 脚が長い敵の更新処理
     void PlayerHitLongLegsEnemy();          // プレイヤーと脚が長い敵の当たり判定
     void PickaxeHitLongLegsEnemy();         // つるはしと脚が長い敵の当たり判定
+
+    void HardEnemyUpdate();                 // ダイナマイトでしか倒せない敵の更新処理
+    void PlayerHitHardEnemy();              // プレイヤーとダイナマイトでしか倒せない敵の当たり判定
+    void DynamiteHitHardEnemy();            // つるはしとダイナマイトでしか倒せない敵の当たり判定
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };
