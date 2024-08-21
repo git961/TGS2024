@@ -26,7 +26,6 @@ private:
 	float player_world_y;
 
 	bool attack_flg;					// true:攻撃中
-	bool original_height_flg;			// 元の高さに戻るか？
 
 public:
 	LongLeggedEnemy(float set_x, float set_y);

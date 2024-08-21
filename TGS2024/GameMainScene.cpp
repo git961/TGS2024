@@ -2670,6 +2670,13 @@ void GameMainScene::LongLegsEnemyUpdate()
 		long_legs_enemy[i]->Update();
 
 		long_legs_enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+
+		if (long_legs_enemy[i]->GetDeleteFlg() == true)
+		{
+			// 脚が長い敵の削除
+			delete long_legs_enemy[i];
+			long_legs_enemy[i] = nullptr;
+		}
 	}
 }
 

@@ -30,7 +30,6 @@ LongLeggedEnemy::LongLeggedEnemy(float set_x, float set_y)
 	player_world_y = 0.0f;
 
 	attack_flg = false;				// 攻撃中ではない
-	original_height_flg = false;
 }
 
 LongLeggedEnemy::~LongLeggedEnemy()
@@ -70,6 +69,7 @@ void LongLeggedEnemy::Update()
 			break;
 
 		case EnemyState::DEATH:
+			Death();
 			DeathAnimation();
 			break;
 
@@ -82,6 +82,8 @@ void LongLeggedEnemy::Draw() const
 {
 	// 脚が長い敵の画像
 	DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img, TRUE, direction);
+
+	DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", hp);
 }
 
 void LongLeggedEnemy::Move()
@@ -99,7 +101,15 @@ void LongLeggedEnemy::Move()
 
 void LongLeggedEnemy::Death()
 {
-
+	if (anim_cnt <= 30)
+	{
+		anim_cnt++;
+	}
+	else
+	{
+		// 削除
+		is_delete = true;
+	}
 }
 
 void LongLeggedEnemy::DeathAnimation()
@@ -109,7 +119,8 @@ void LongLeggedEnemy::DeathAnimation()
 
 void LongLeggedEnemy::Attack()
 {
-	if (original_height_flg == true)
+	// 下まで来たら
+	if (world.y >= attack_max_y)
 	{
 		if (rising_interval >= 0)
 		{
@@ -120,19 +131,12 @@ void LongLeggedEnemy::Attack()
 		move_y = -1.0f;					// 上に上がる
 	}
 
-	// 下まで来たら
-	if (world.y >= attack_max_y)
-	{
-		original_height_flg = true;
-	}
-
 	// 縦移動
 	world.y += speed * move_y;
 
 	// 元の高さに戻ったら
 	if (world.y <= first_world_y)
 	{
-		original_height_flg = false;
 		attack_flg = false;					// 攻撃終了
 		move_y = 1.0f;
 		rising_interval = 30;
