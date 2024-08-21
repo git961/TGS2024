@@ -195,6 +195,9 @@
     <ClCompile Include="HardEnemy.cpp">
       <Filter>ソース ファイル\EnemyFile</Filter>
     </ClCompile>
+    <ClCompile Include="ReboundEnemy.cpp">
+      <Filter>ソース ファイル\EnemyFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fps.h">
@@ -322,6 +325,9 @@
     </ClInclude>
     <ClInclude Include="Switch.h">
       <Filter>ヘッダー ファイル\StageObjectFile\Lift</Filter>
+    </ClInclude>
+    <ClInclude Include="ReboundEnemy.h">
+      <Filter>ヘッダー ファイル\EnemyFile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

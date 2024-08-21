@@ -178,6 +178,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapIo.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="ReboundEnemy.cpp" />
     <ClCompile Include="Rock.cpp" />
     <ClCompile Include="RollingEnemy.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="MapIo.h" />
     <ClInclude Include="padinput.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="ReboundEnemy.h" />
     <ClInclude Include="Rock.h" />
     <ClInclude Include="RollingEnemy.h" />
     <ClInclude Include="SceneManager.h" />
