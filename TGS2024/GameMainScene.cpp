@@ -26,6 +26,9 @@ GameMainScene::GameMainScene(bool set_flg)
 	respawn_y = 0.0f;
 
 	mapio = new MapIo;
+	if (mapio != nullptr) {
+		mapio->SetStageNum((int)stage_num);
+	}
 	fade = new BlackOut;
 
 	fragile_wall = new FragileWall * [FRAGILE_WALL_MAXNUM];
@@ -116,7 +119,7 @@ GameMainScene::GameMainScene(bool set_flg)
 
 
 
-	mapio->LoadMapData(stage_num);
+	mapio->LoadMapData();
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
 		enemy[i] = nullptr;
@@ -289,20 +292,66 @@ GameMainScene::GameMainScene(bool set_flg)
 
 GameMainScene::~GameMainScene()
 {
-	delete[] enemy;
-	delete stage_block;
+	for (int i = 0; i < block_count; i++)
+	{
+		delete stage_block[i];
+	}
+	delete[] stage_block;
 	delete player;
 	delete mapio;
 	delete ac;
+	for (int i = 0; i < ENEMYMAXNUM; i++) {
+		delete enemy[i];
+		delete walk_gem[i];
+	}
+	for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
+	{
+		delete rolling_enemy[i];
+		delete roll_gem[i];
+	}
+	delete[] enemy;
 	delete[] rolling_enemy;
 	delete[] walk_gem;
-	delete roll_gem;
+	delete[] roll_gem;
 	delete score;
-	delete fragile_wall;
-	delete cage;
-	delete cage_door;
-	delete magma;
-	delete falling_floor;
+
+	for (int i = 0; i < object_num.fragile_wall_cnt; i++)
+	{
+		delete fragile_wall[i];
+	}
+	for (int i = 0; i < object_num.cage_cnt; i++)
+	{
+		delete cage[i];
+		delete cage_door[i];
+	}
+	for (int i = 0; i < object_num.magma_cnt; i++)
+	{
+		delete magma[i];
+	}
+	for (int i = 0; i < object_num.falling_floor_cnt; i++)
+	{
+		delete falling_floor[i];
+	}
+	for (int i = 0; i < object_num.geyser_cnt; i++)
+	{
+		delete geyser[i];
+	}
+	for (int i = 0; i < object_num.lift_cnt; i++)
+	{
+		delete lift[i];
+	}
+	for (int i = 0; i < object_num.rock_cnt; i++)
+	{
+		delete rock[i];
+	}
+	delete[] fragile_wall;
+	delete[] cage;
+	delete[] cage_door;
+	delete[] magma;
+	delete[] falling_floor;
+	delete[] geyser;
+	delete[] lift;
+	delete[] rock;
 
 	// 画像削除
 	DeleteGraph(back_img[0]);
@@ -318,7 +367,7 @@ GameMainScene::~GameMainScene()
 void GameMainScene::ResetMap()
 {
 
-	mapio->LoadMapData(stage_num);
+	mapio->LoadMapData();
 
 	SetObjectNull();
 
@@ -407,20 +456,20 @@ void GameMainScene::ResetMap()
 				stage_block[block_count++] = new StageBlock(11, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 12:
-				fragile_wall[0] = new FragileWall((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				fragile_wall[object_num.fragile_wall_cnt++] = new FragileWall((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 13:
-				magma[0] = new Magma((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				magma[object_num.magma_cnt++] = new Magma((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 14:
-				falling_floor[0] = new FallingFloor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				falling_floor[object_num.falling_floor_cnt++] = new FallingFloor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 15:
-				geyser[0] = new Geyser((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				geyser[object_num.geyser_cnt++] = new Geyser((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 16:
-				cage_door[0] = new CageDoor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-				cage[0] = new Cage(cage_door[0]->GetWorldLocation());
+				cage_door[object_num.cage_door_cnt++] = new CageDoor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				cage[object_num.cage_cnt++] = new Cage(cage_door[0]->GetWorldLocation());
 				break;
 			case 17:
 				lift[object_num.lift_cnt++] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
@@ -554,7 +603,7 @@ void GameMainScene::Update()
 		if (input.CheckBtn(XINPUT_BUTTON_RIGHT_THUMB) == TRUE || CheckHitKey(KEY_INPUT_P) == TRUE)
 		{
 			//Inputを保存
-			mapio->SaveMapData(stage_num);
+			mapio->SaveMapData();
 			block_count = 0;
 			enemy_count = 0;
 			//rock_count = 0;
@@ -1227,9 +1276,23 @@ void GameMainScene::Draw() const
 
 #ifdef DEBUG
 
-	DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
-	DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
-	DrawFormatString(300, 240, 0xffffff, "stagenum:%d", stage_num);
+	//DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
+	//DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
+	//DrawFormatString(300, 240, 0xffffff, "stagenum:%d", stage_num);
+	DrawFormatString(300, 240, 0xffffff, "lift:%d",object_num.lift_cnt);
+	DrawFormatString(300, 260, 0xffffff, "enemy:%d", enemy_count);
+	DrawFormatString(300, 280, 0xffffff, "rock:%d", object_num.rock_cnt);
+	DrawFormatString(300, 300, 0xffffff, "geyser:%d", object_num.geyser_cnt);
+	/*
+	*     int fragile_wall_cnt=0;
+    int cage_cnt=0;
+    int cage_door_cnt=0;
+    int magma_cnt;
+    int falling_floor_cnt;
+    int geyser_cnt;
+    int lift_cnt;
+    int rock_cnt;
+	*/
 	//DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
 	//DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
 	//DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);

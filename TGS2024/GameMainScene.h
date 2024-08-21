@@ -50,6 +50,13 @@ enum GameState {
     PLAY
 };
 
+
+enum class StageNum
+{
+    stage1,
+    stage2
+};
+
 struct ObjectNum {
     int fragile_wall_cnt=0;
     int cage_cnt=0;

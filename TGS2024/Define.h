@@ -23,15 +23,15 @@
 #define DEGREE_RADIAN(_deg) (M_PI*(_deg)/180.0)
 
 // 敵の最大数
-#define ENEMYMAXNUM 20
-#define ROLLING_ENEMY_MAXNUM 20
+#define ENEMYMAXNUM 100
+#define ROLLING_ENEMY_MAXNUM 40
 
 // ギミックの最大数
-#define LIFT_MAXNUM				20
-#define FRAGILE_WALL_MAXNUM		10
-#define CAGE_DOOR_MAXNUM		10
-#define MAGMA_MAXMUN			10
-#define FALLING_FLOOR_MAXNUM	10
+#define LIFT_MAXNUM				30
+#define FRAGILE_WALL_MAXNUM		30
+#define CAGE_DOOR_MAXNUM		20
+#define MAGMA_MAXMUN			20
+#define FALLING_FLOOR_MAXNUM	20
 #define GEYSER_MAXNUM			20
 
 #define ROCK_MAXNUM 200

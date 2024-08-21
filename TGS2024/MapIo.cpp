@@ -31,16 +31,15 @@ MapIo::~MapIo()
 {
 }
 
-void MapIo::LoadMapData(StageNum set_stage_num)
+void MapIo::LoadMapData()
 {
-	stage_num = set_stage_num;
 
-	if (stage_num == StageNum::stage1)
+	if (stage_num==0)
 	{
 		//ファイルを読込モードで開く
 		fopen_s(&fp, "stage/stage1.csv", "r");
 	}
-	else if (stage_num == StageNum::stage2)
+	else if (stage_num==1)
 	{
 		//ファイルを読込モードで開く
 		fopen_s(&fp, "stage/stage2.csv", "r");
@@ -265,16 +264,16 @@ void MapIo::InputTest(GameMainScene* gamemain)
 
 }
 
-void MapIo::SaveMapData(StageNum set_stage_num)
+void MapIo::SaveMapData()
 {
-	stage_num = set_stage_num;
 
-	if (stage_num == StageNum::stage1)
+
+	if (stage_num==0)
 	{
 		//ファイルを書き込みモードで開く
 		fopen_s(&fp, "stage/teststage.csv", "w");
 	}
-	else if (stage_num == StageNum::stage2)
+	else if (stage_num==1)
 	{
 		//ファイルを書き込みモードで開く
 		fopen_s(&fp, "stage/stage2.csv", "w");

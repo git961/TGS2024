@@ -9,11 +9,6 @@
 
 class GameMainScene;
 
-enum class StageNum
-{
-	stage1,
-	stage2
-};
 
 class MapIo
 {
@@ -57,17 +52,16 @@ private:
 	float local_posy;
 	float world_posy;
 
-
-	StageNum stage_num;			// 開きたいステージファイル判別用
+	int stage_num;
 
 
 public:
 	MapIo();
 	~MapIo();
 
-	void LoadMapData(StageNum set_stage_num);//マップデータ読込
+	void LoadMapData();//マップデータ読込
 	void InputTest(GameMainScene* gamemain);//エディタテスト
-	void SaveMapData(StageNum set_stage_num);//マップデータ保存
+	void SaveMapData();//マップデータ保存
 	void Draw() const;
 	int GetMapData(int j, int i) { return map_array[j][i]; }
 
@@ -78,6 +72,6 @@ public:
 	void SetLocalPos(float set_local_posx, float set_local_posy) { local_posx = set_local_posx; local_posy = set_local_posy; }
 	void SetWorldPos(float set_world_posx, float set_world_posy) { world_posx = set_world_posx; world_posy = set_world_posy; }
 
-
+	void SetStageNum(int set_stage_num) { stage_num = set_stage_num; }
 };
 
