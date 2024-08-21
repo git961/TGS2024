@@ -7,7 +7,7 @@
 #define FIELD_HEIGHT 2160 //ワールド全体の高さ
 
 #define map_blockmax_x FIELD_WIDTH / BLOCKSIZE
-#define map_blockmax_y 12
+#define map_blockmax_y FIELD_HEIGHT / BLOCKSIZE
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720

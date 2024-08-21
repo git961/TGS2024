@@ -11,6 +11,7 @@ MapIo::MapIo()
 	p_localx = 0.0f;
 	p_worldx = 0.0f;
 	world_mouse_x = 0.0f;
+	world_mouse_y = 0.0f;
 	world_posx = 0.0f;
 	local_posx = 0.0f;
 	world_posy = 0.0f;
@@ -18,7 +19,8 @@ MapIo::MapIo()
 	map_get = 0;
 	mouse_x = 0;
 	mouse_y = 0;
-	now_abs = 0.0f;
+	now_abs_x = 0.0f;
+	now_abs_y = 0.0f;
 	posx = 0.0f;
 	posy = 0.0f;
 	stage_num = stage1;
@@ -177,7 +179,9 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		map_data_num = 19;
 	}
 
-	now_abs = fabsf(mouse_x - local_posx);
+	now_abs_x = fabsf(mouse_x - local_posx);
+	now_abs_y = fabsf(mouse_y - local_posy);
+
 
 	//マウスがプレイヤーの右に居たら
 	/*if (mouse_x > p_localx)
@@ -193,14 +197,23 @@ void MapIo::InputTest(GameMainScene* gamemain)
 
 	if (mouse_x > local_posx)
 	{
-		world_mouse_x = world_posx + now_abs;
+		world_mouse_x = world_posx + now_abs_x;
 	}
 
 	if (mouse_x < local_posx)
 	{
-		world_mouse_x = world_posx - now_abs;
+		world_mouse_x = world_posx - now_abs_x;
 	}
 
+	if (mouse_y > local_posy)
+	{
+		world_mouse_y = world_posy + now_abs_y;
+	}
+
+	if (mouse_y < local_posy)
+	{
+		world_mouse_y = world_posy - now_abs_y;
+	}
 
 	//ブロック追加
 	if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0) {
@@ -214,7 +227,7 @@ void MapIo::InputTest(GameMainScene* gamemain)
 				//もしこの範囲に居たら
 				//ワールド座標とマウスの座標を比べる
 				if (j * BLOCKSIZE < world_mouse_x && j * BLOCKSIZE + BLOCKSIZE >world_mouse_x) {
-					if (i * BLOCKSIZE < mouse_y && i * BLOCKSIZE + BLOCKSIZE > mouse_y)
+					if (i * BLOCKSIZE < world_mouse_y && i * BLOCKSIZE + BLOCKSIZE > world_mouse_y)
 					{
 						map_array[i][j] = map_data_num;
 
@@ -239,7 +252,7 @@ void MapIo::InputTest(GameMainScene* gamemain)
 				//もしこの範囲に居たら
 				//ワールド座標とマウスの座標を比べる
 				if (j * BLOCKSIZE < world_mouse_x && j * BLOCKSIZE + BLOCKSIZE >world_mouse_x) {
-					if (i * BLOCKSIZE < mouse_y && i * BLOCKSIZE + BLOCKSIZE > mouse_y)
+					if (i * BLOCKSIZE <world_mouse_y && i * BLOCKSIZE + BLOCKSIZE > world_mouse_y)
 					{
 						map_array[i][j] = 0;
 					}
@@ -286,6 +299,9 @@ void MapIo::SaveMapData(int set_stage_num)
 
 void MapIo::Draw() const
 {
+	DrawFormatString(mouse_x, mouse_y, 0xffffff, "x: %f", world_mouse_x);
+	DrawFormatString(mouse_x,mouse_y +20, 0xffffff, "y: %f", world_mouse_y);
+
 
 	for (int i = 0; i < map_blockmax_y; i++)
 	{

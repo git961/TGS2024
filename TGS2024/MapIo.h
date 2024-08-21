@@ -38,11 +38,13 @@ private:
 	int mouse_y;
 
 	float world_mouse_x;
+	float world_mouse_y;
 
 	float p_localx;
 	float p_worldx;
 
-	float now_abs;
+	float now_abs_x;
+	float now_abs_y;
 
 	int add_x;
 
@@ -54,13 +56,7 @@ private:
 	float world_posx;
 	float local_posy;
 	float world_posy;
-		//キャラのlocationとスクリーンの原点を引いてスクリーン座標上の位置に変換
-	//void SetLocalPosition(float set_origin_posx, float set_origin_posy)
-	//{
-	//	//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
-	//	location.x= world.x - set_origin_posx;
-	//	location.y = world.y - set_origin_posy;
-	//};
+
 
 	int stage_num;				// 開きたいステージファイル判別用
 
@@ -79,8 +75,8 @@ public:
 	void SetPlayerWorld(float set_worldx) { p_worldx = set_worldx; }
 
 	void SetOriginPos(float set_origin_posx, float set_origin_posy) { posx = set_origin_posx; posy = set_origin_posy; }
-	void SetLocalPosx(float set_local_posx) { local_posx = set_local_posx; }
-	void SetWorldPosx(float set_world_posx) { world_posx = set_world_posx; }
+	void SetLocalPos(float set_local_posx, float set_local_posy) { local_posx = set_local_posx; local_posy = set_local_posy; }
+	void SetWorldPos(float set_world_posx, float set_world_posy) { world_posx = set_world_posx; world_posy = set_world_posy; }
 
 
 };

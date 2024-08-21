@@ -510,7 +510,6 @@ void GameMainScene::Update()
 	case EDITOR:
 
 		mapio->InputTest(this);
-		mapio->SetOriginPos(screen_origin_position.x,screen_origin_position.y);
 
 		//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
 		location_x = world_x - screen_origin_position.x;
@@ -537,8 +536,8 @@ void GameMainScene::Update()
 		if (mapio != nullptr)
 		{
 			mapio->SetOriginPos(screen_origin_position.x,screen_origin_position.y);
-			mapio->SetLocalPosx(location_x);
-			mapio->SetWorldPosx(world_x);
+			mapio->SetLocalPos(location_x,location_y);
+			mapio->SetWorldPos(world_x,world_y);
 		}
 
 		for (int j = 0; j < block_count; j++)
