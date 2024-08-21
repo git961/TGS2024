@@ -11,21 +11,23 @@ protected:
 	float hp;
 	float speed;
 	bool direction;				//向き　0:右 1:左
+	float attack;				//攻撃力
 
 public:
 	//コンストラクタとデストラクタ
 	CharacterBase()
 	{
-		attack = 0.0f;
 		direction = false;
 		hp = 0.0f;
 		move_x = 0.0f;
 		move_y = 0.0f;
 		speed = 0.0f;
+		attack = 0.0f;
 	};
 	~CharacterBase() {};
 
 	bool GetDirection() { return direction; }//キャラの向きを返す　0:右 1:左
+	float GetAttack() { return attack; }
 
 	void HitCheckB(Boxvertex set_box_vertex)
 	{

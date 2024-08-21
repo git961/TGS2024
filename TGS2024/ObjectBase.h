@@ -34,8 +34,6 @@ protected:
 	float width;//幅
 	float height;//高さ
 
-	float attack;//攻撃力
-
 	float distance_x;//x同士の距離の計算用
 	float distance_y;//y同士の距離の計算用
 
@@ -95,8 +93,6 @@ public:
 
 	float GetWidth() { return width; }
 	float GetHeight() { return height; }
-	float GetAttack() { return attack; }
-
 
 	//キャラのlocationとスクリーンの原点を引いてスクリーン座標上の位置に変換
 	void SetLocalPosition(float set_origin_posx, float set_origin_posy)

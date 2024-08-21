@@ -22,6 +22,7 @@ private:
     int explosion_num;
     int explosion_cnt;
 
+    float attack;
     float enemy_x;          // 当たった敵の座標
     float tmp_abs;
 
@@ -40,5 +41,6 @@ public:
     bool Getdamage_flg() { return damage_flg; }
     bool Getdeath_flg() { return dynamite_death; }
     float GetTmpAbs()const { return tmp_abs; }
+    float GetAttack() { return attack; }
 };
 
