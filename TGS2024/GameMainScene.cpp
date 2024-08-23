@@ -2414,7 +2414,6 @@ void GameMainScene::LiftHitStop()
 			}
 		}
 	}
-
 }
 
 // 檻の更新処理
