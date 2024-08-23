@@ -118,10 +118,13 @@ Player::Player(float set_x)
 	helmet_flg = false;
 	helmet_down = -1000;
 
+
+
 	// エンド画面用変数
 	LoadDivGraph("images/Player/player_end1.png", 3, 3, 1, 170, 170, player_end_img);
 	end_img_num = 0;
 	end_anim_cnt = 0;
+
 
 	// エンドクレジット画面用変数
 	LoadDivGraph("images/Player/dance.png", 8, 4, 2, 170, 170, player_credits_img);
@@ -158,6 +161,44 @@ Player::~Player()
 	DeleteSoundMem(damage_sound);
 	DeleteSoundMem(throw_dynamite_sound);
 	DeleteSoundMem(death_sound);
+
+	for (int i = 0; i < 68; i++)
+	{
+		DeleteGraph(player_img[i]);
+	}
+	for (int i = 0; i < 8; i++)
+	{
+		DeleteGraph(pickaxe_img[i]);
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		DeleteGraph(pickaxe_effect[i]);
+	}
+	for (int i = 0; i < 2; i++)
+	{
+		DeleteGraph(soil_effect[i]);
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		DeleteGraph(player_end_img[i]);
+	}
+	for (int i = 0; i < 8; i++)
+	{
+		DeleteGraph(player_credits_img[i]);
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		DeleteGraph(applause_img[i]);
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		DeleteGraph(cracker_img[i]);
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		DeleteGraph(ribbon_img[i]);
+	}
+
 }
 
 void Player::Update(GameMainScene* gamemain)

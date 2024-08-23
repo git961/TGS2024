@@ -1,6 +1,5 @@
 ﻿#include "GameMainScene.h"
 
-
 //画面の中央を座標に入れる
 static cameraposition camera_pos{ SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f };
 
@@ -13,6 +12,8 @@ static cameraposition screen_origin_position =
 
 GameMainScene::GameMainScene(bool set_flg)
 {
+
+
 	// 読み込みたいステージ
 	stage_num = StageNum::stage2;
 
@@ -30,15 +31,6 @@ GameMainScene::GameMainScene(bool set_flg)
 		mapio->SetStageNum((int)stage_num);
 	}
 	fade = new BlackOut;
-
-	fragile_wall = new FragileWall * [FRAGILE_WALL_MAXNUM];
-	cage_door = new CageDoor * [CAGE_DOOR_MAXNUM];
-	cage = new Cage * [CAGE_DOOR_MAXNUM];
-	magma = new Magma * [MAGMA_MAXMUN];
-	falling_floor = new FallingFloor * [FALLING_FLOOR_MAXNUM];
-	geyser = new Geyser * [GEYSER_MAXNUM];
-	lift = new Lift * [LIFT_MAXNUM];
-	rock = new Rock * [ROCK_MAXNUM];
 
 	//オブジェクトにNullを代入
 	SetObjectNull();
@@ -63,20 +55,9 @@ GameMainScene::GameMainScene(bool set_flg)
 		}
 	}
 
-	enemy = new Enemy * [ENEMYMAXNUM];
-	rolling_enemy = new RollingEnemy * [ROLLING_ENEMY_MAXNUM];
-	stage_block = new StageBlock * [map_blockmax_y * map_blockmax_x];
-
 	ui = new UI((int)player->GetHp(), player->GetDynaNum());
 	ac = new AttackCheck;
 
-	walk_gem = new Gem * [ENEMYMAXNUM];
-	roll_gem = new Gem * [ROLLING_ENEMY_MAXNUM];
-	score = new Score;
-
-
-
-	dynamite = new Dynamite * [DYNAMITE_MAXNUM];
 	enemy_damage_once = false;
 	rock_damage_once = false;
 	player_damage_once = false;
@@ -120,24 +101,27 @@ GameMainScene::GameMainScene(bool set_flg)
 
 
 	mapio->LoadMapData();
-	for (int i = 0; i < ENEMYMAXNUM; i++)
-	{
-		enemy[i] = nullptr;
-		walk_gem[i] = nullptr;
-	}
 
-	//ローリングエネミーとジェム
-	for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
-	{
-		rolling_enemy[i] = nullptr;
-		roll_gem[i] = nullptr;
-	}
 
 
 	if (retry_flg == false)
 	{
+		score = new Score;
 		//リトライじゃなかったら
 		game_state = TUTORIAL;
+
+		for (int i = 0; i < ENEMYMAXNUM; i++)
+		{
+			enemy[i] = nullptr;
+			walk_gem[i] = nullptr;
+		}
+
+		//ローリングエネミーとジェム
+		for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
+		{
+			rolling_enemy[i] = nullptr;
+			roll_gem[i] = nullptr;
+		}
 
 		if (mapio != nullptr)
 		{
@@ -292,14 +276,22 @@ GameMainScene::GameMainScene(bool set_flg)
 
 GameMainScene::~GameMainScene()
 {
-	for (int i = 0; i < block_count; i++)
-	{
-		delete stage_block[i];
-	}
-	delete[] stage_block;
-	delete player;
 	delete mapio;
+	//for (int i = 0; i < MAP_BLOCKMAX; i++)
+	//{
+	//	delete stage_block[i];
+	//}
+	//delete[] stage_block;
+
+	//プレイヤーと攻撃、ダイナマイトdelete
+	delete player;
 	delete ac;
+	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
+	{
+		delete dynamite[i];
+	}
+
+	//エネミーと宝石delete
 	for (int i = 0; i < ENEMYMAXNUM; i++) {
 		delete enemy[i];
 		delete walk_gem[i];
@@ -309,49 +301,44 @@ GameMainScene::~GameMainScene()
 		delete rolling_enemy[i];
 		delete roll_gem[i];
 	}
-	delete[] enemy;
-	delete[] rolling_enemy;
-	delete[] walk_gem;
-	delete[] roll_gem;
-	delete score;
 
-	for (int i = 0; i < object_num.fragile_wall_cnt; i++)
+
+	//ステージオブジェクトdelete
+	for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
 	{
 		delete fragile_wall[i];
 	}
-	for (int i = 0; i < object_num.cage_cnt; i++)
+	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
 	{
 		delete cage[i];
 		delete cage_door[i];
 	}
-	for (int i = 0; i < object_num.magma_cnt; i++)
+	for (int i = 0; i < MAGMA_MAXMUN; i++)
 	{
 		delete magma[i];
 	}
-	for (int i = 0; i < object_num.falling_floor_cnt; i++)
+	for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
 	{
 		delete falling_floor[i];
 	}
-	for (int i = 0; i < object_num.geyser_cnt; i++)
+	for (int i = 0; i < GEYSER_MAXNUM; i++)
 	{
 		delete geyser[i];
 	}
-	for (int i = 0; i < object_num.lift_cnt; i++)
+	for (int i = 0; i < LIFT_MAXNUM; i++)
 	{
 		delete lift[i];
 	}
-	for (int i = 0; i < object_num.rock_cnt; i++)
+	for (int i = 0; i < ROCK_MAXNUM; i++)
 	{
 		delete rock[i];
 	}
-	delete[] fragile_wall;
-	delete[] cage;
-	delete[] cage_door;
-	delete[] magma;
-	delete[] falling_floor;
-	delete[] geyser;
-	delete[] lift;
-	delete[] rock;
+
+	//スコアとui消去
+	delete score;
+	delete ui;
+	delete fade;
+
 
 	// 画像削除
 	DeleteGraph(back_img[0]);
@@ -364,6 +351,7 @@ GameMainScene::~GameMainScene()
 	DeleteSoundMem(unpause_se);
 }
 
+
 void GameMainScene::ResetMap()
 {
 
@@ -371,13 +359,11 @@ void GameMainScene::ResetMap()
 
 	SetObjectNull();
 
-	score = nullptr;
-	for (int j = 0; j < block_count; j++)
+
+	//ステージブロックにNullを入れる
+	for (int i = 0; i < MAP_BLOCKMAX; i++)
 	{
-		if (stage_block[j] != nullptr)
-		{
-			stage_block[j] = nullptr;
-		}
+		stage_block[i] = nullptr;
 	}
 
 	//エネミー削除
@@ -396,33 +382,6 @@ void GameMainScene::ResetMap()
 	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
 	{
 		dynamite[i] = nullptr;
-	}
-
-	//オブジェクトにnullを代入
-	for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
-	{
-		fragile_wall[i] = nullptr;
-	}
-	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
-	{
-		cage_door[i] = nullptr;
-		cage[i] = nullptr;
-	}
-	for (int i = 0; i < MAGMA_MAXMUN; i++)
-	{
-		magma[i] = nullptr;
-	}
-	for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
-	{
-		falling_floor[i] = nullptr;
-	}
-	for (int i = 0; i < GEYSER_MAXNUM; i++)
-	{
-		geyser[i] = nullptr;
-	}
-	for (int i = 0; i < LIFT_MAXNUM; i++)
-	{
-		lift[i] = nullptr;
 	}
 
 	block_count = 0;
@@ -515,6 +474,7 @@ void GameMainScene::ResetMap()
 			stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 		}
 	}
+
 	score = new Score;
 }
 
@@ -604,10 +564,6 @@ void GameMainScene::Update()
 		{
 			//Inputを保存
 			mapio->SaveMapData();
-			block_count = 0;
-			enemy_count = 0;
-			//rock_count = 0;
-			rolling_enemy_cnt = 0;
 
 			//マップチップに反映する
 			ResetMap();
@@ -713,6 +669,8 @@ void GameMainScene::Update()
 				{
 					ui->SetLifeNum(p_life_num);
 				}
+				score = nullptr;
+
 				ResetMap();
 			}
 			else
@@ -2861,4 +2819,13 @@ AbstractScene* GameMainScene::Change()
 	}
 
 	return this;
+}
+
+void GameMainScene::Finalize()
+{
+	for (int i = 0; i < MAP_BLOCKMAX; i++)
+	{
+		stage_block[i]->Finalize();
+		delete stage_block[i];
+	}
 }

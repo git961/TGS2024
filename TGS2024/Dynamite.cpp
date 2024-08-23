@@ -41,9 +41,15 @@ Dynamite::Dynamite(World set_xy,int set_direction)
 
 Dynamite::~Dynamite()
 {	
+	//画像削除
+	DeleteGraph(dynamite_img);
+	for (int i = 0; i < 3; i++)
+	{
+		DeleteGraph(explosion_img[i]);
+	}
+
 	// サウンド削除
 	DeleteSoundMem(bomb_sound);
-
 }
 
 void Dynamite::Update()

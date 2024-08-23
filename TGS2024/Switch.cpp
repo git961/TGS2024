@@ -20,6 +20,9 @@ Switch::Switch(float set_x, float set_y)
 
 Switch::~Switch()
 {
+	for (int i = 0; i < 5; i++) {
+		DeleteGraph(switch_img[i]);
+	}
 }
 
 void Switch::Update()

@@ -11,9 +11,11 @@ public:
 	SceneManager(AbstractScene* scene);
 	~SceneManager();
 
+	void Finalize();
+
 	void Update() override;
 	void Draw() const override;
 	AbstractScene* Change() override;
-
+	void DeleteScene();
 };
 

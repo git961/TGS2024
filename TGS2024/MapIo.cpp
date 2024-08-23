@@ -25,6 +25,7 @@ MapIo::MapIo()
 	posy = 0.0f;
 	//stage_num = StageNum::stage1;
 
+
 }
 
 MapIo::~MapIo()
@@ -271,7 +272,7 @@ void MapIo::SaveMapData()
 	if (stage_num==0)
 	{
 		//ファイルを書き込みモードで開く
-		fopen_s(&fp, "stage/teststage.csv", "w");
+		fopen_s(&fp, "stage/stage1.csv", "w");
 	}
 	else if (stage_num==1)
 	{

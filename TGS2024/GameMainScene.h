@@ -24,6 +24,9 @@
 #include "FallingFloor.h"
 #include "Geyser.h"
 #include "Rock.h"
+#include <crtdbg.h>
+#include <stdlib.h>
+
 
 class RollingEnemy;
 class AttackCheck;
@@ -77,30 +80,30 @@ private:
     StageNum stage_num;
 
     Player* player;
-    Enemy** enemy;
-    RollingEnemy** rolling_enemy;
+    Enemy* enemy[ENEMYMAXNUM];
+    RollingEnemy* rolling_enemy[ROLLING_ENEMY_MAXNUM];
     AttackCheck* ac;
-    Dynamite** dynamite;
+    Dynamite* dynamite[DYNAMITE_MAXNUM];
     fps fp;
 
     MapIo *mapio;
-    StageBlock **stage_block;
-    Gem** walk_gem;             // 配列
-    Gem** roll_gem;
+    StageBlock* stage_block[MAP_BLOCKMAX];
+    Gem* walk_gem[ENEMYMAXNUM];             // 配列
+    Gem* roll_gem[ROLLING_ENEMY_MAXNUM];
     Score* score;
 
-    Lift** lift;
+    Lift* lift[LIFT_MAXNUM];
 
     UI* ui;
     BlackOut* fade;
 
-    FragileWall** fragile_wall;          // 脆い壁
-    Cage** cage;                         // 檻
-    CageDoor** cage_door;                // 檻のドア
-    Magma** magma;                       // マグマ
-    FallingFloor** falling_floor;        // 落ちる床
-    Geyser** geyser;                     // 間欠泉
-    Rock** rock;                        //岩
+    FragileWall* fragile_wall[FRAGILE_WALL_MAXNUM];          // 脆い壁
+    Cage* cage[CAGE_DOOR_MAXNUM];                         // 檻
+    CageDoor* cage_door[CAGE_DOOR_MAXNUM];                // 檻のドア
+    Magma* magma[MAGMA_MAXMUN];                       // マグマ
+    FallingFloor* falling_floor[FALLING_FLOOR_MAXNUM];        // 落ちる床
+    Geyser* geyser[GEYSER_MAXNUM];                     // 間欠泉
+    Rock* rock[ROCK_MAXNUM];                        //岩
 
     ObjectNum object_num;
 
@@ -196,13 +199,15 @@ private:
 
 public:
     GameMainScene(bool set_flg);
-    ~GameMainScene();
+    virtual~GameMainScene();
 
     void ResetMap();
 
     void Update() override;
     void Draw() const override;
     AbstractScene* Change() override;
+
+    virtual void Finalize() override;
 
     void UpdateCamera(World world);
 
@@ -214,6 +219,7 @@ public:
     bool GetPlayerNotBack() { return p_notback_flg; }
 
     void Tutorial();
+
 
     /*
     *	enemy[enemynum]->Damage(damage);

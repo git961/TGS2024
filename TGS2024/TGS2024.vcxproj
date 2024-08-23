@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AbstractScene.cpp" />
     <ClCompile Include="AnimScene.cpp" />
     <ClCompile Include="AttackCheck.cpp" />
     <ClCompile Include="BlackOut.cpp" />

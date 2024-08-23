@@ -9,6 +9,8 @@
 #define map_blockmax_x FIELD_WIDTH / BLOCKSIZE
 #define map_blockmax_y FIELD_HEIGHT / BLOCKSIZE
 
+#define MAP_BLOCKMAX map_blockmax_x*map_blockmax_y
+
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 

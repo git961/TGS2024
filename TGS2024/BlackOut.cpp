@@ -11,6 +11,7 @@ BlackOut::BlackOut()
 
 BlackOut::~BlackOut()
 {
+	DeleteGraph(black_img);
 }
 
 void BlackOut::Update()

@@ -7,11 +7,25 @@
 #include "AnimScene.h"
 #include "TitleScene.h"
 #include "GameOverScene.h"
+#include <crtdbg.h>
+#include <stdlib.h>
+#include <crtdbg.h>
+#include <memory.h>
+
+#ifdef _DEBUG
+#define DBG_NEW new(_NORMAL_BLOCK,_FILE_,_LINE_)
+#endif
 
 // プログラムは WinMain から始まります
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int
 	nCmdShow)
 {
+
+
+	//デバッグメモリ管理を有効化
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	//_CrtSetBreakAlloc(70);
+
 	//タイトルをverminに変更
 	SetMainWindowText("GanGanCrush");
 	ChangeWindowMode(TRUE);
@@ -48,8 +62,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	}
 
+	SceneManager.Finalize();
 
 	DxLib_End(); // DXライブラリ使用の終了処理
+	
+
 	return 0; // ソフトの終了
 
 }

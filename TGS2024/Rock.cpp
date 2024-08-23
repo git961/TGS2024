@@ -63,6 +63,18 @@ Rock::Rock(float set_x, float set_y)
 
 Rock::~Rock()
 {
+	for (int i = 0; i < 7; i++)
+	{
+		DeleteGraph(rock_img[i]);
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		DeleteGraph(rock_effect_img[i]);
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		DeleteGraph(fragment_img[i]);
+	}
 }
 
 void Rock::Update()

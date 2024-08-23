@@ -27,6 +27,8 @@ Lift::Lift(float set_x,float set_y)
 
 Lift::~Lift()
 {
+	delete switch_object;
+	DeleteGraph(lift_img);
 }
 
 void Lift::Update(AttackCheck* ac,Player* player)

@@ -17,8 +17,17 @@ SceneManager::SceneManager(AbstractScene* scene)
 
 SceneManager::~SceneManager()
 {
-
 }
+
+void SceneManager::Finalize()
+{
+	if (now_scene != nullptr)
+	{
+		delete now_scene;
+		now_scene = nullptr;
+	}
+}
+
 
 void SceneManager::Update()
 {
@@ -53,4 +62,9 @@ AbstractScene* SceneManager::Change()
 
 	//遷移先を返却する
 	return next_scene;
+}
+
+void SceneManager::DeleteScene()
+{
+	delete now_scene;
 }
