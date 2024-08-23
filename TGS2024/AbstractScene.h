@@ -3,7 +3,7 @@
 class AbstractScene
 {
 public:
-	~AbstractScene();
+	virtual ~AbstractScene(){};
 	Input input;
 	int change;
 	virtual void Finalize(){}

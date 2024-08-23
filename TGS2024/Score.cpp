@@ -51,3 +51,12 @@ void Score::Draw() const
 		DrawRotaGraph(score_x - shifting_value * i, score_y, 1.0, 0.0, num_img[num[i]], TRUE, FALSE);
 	}
 }
+
+void Score::Finalize()
+{
+	// 画像の削除
+	for (int i = 0; i < 10; i++)
+	{
+		DeleteGraph(num_img[i]);
+	}
+}

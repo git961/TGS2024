@@ -199,7 +199,7 @@ private:
 
 public:
     GameMainScene(bool set_flg);
-    virtual~GameMainScene();
+    virtual~GameMainScene() override;
 
     void ResetMap();
 

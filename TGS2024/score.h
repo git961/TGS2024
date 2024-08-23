@@ -18,6 +18,7 @@ public:
 
 	void Update();
 	void Draw() const;
+	void Finalize();
 
 	void SetScore(int set_score) { score += set_score; }
 	void ResetScore(int set_score) { score = set_score; }

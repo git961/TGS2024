@@ -276,20 +276,24 @@ GameMainScene::GameMainScene(bool set_flg)
 
 GameMainScene::~GameMainScene()
 {
-	delete mapio;
-	//for (int i = 0; i < MAP_BLOCKMAX; i++)
-	//{
-	//	delete stage_block[i];
-	//}
-	//delete[] stage_block;
+	delete fade;
+
 
 	//プレイヤーと攻撃、ダイナマイトdelete
-	delete player;
 	delete ac;
 	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
 	{
 		delete dynamite[i];
 	}
+	delete player;
+
+
+	delete mapio;
+	for (int i = 0; i < MAP_BLOCKMAX; i++)
+	{
+		delete stage_block[i];
+	}
+
 
 	//エネミーと宝石delete
 	for (int i = 0; i < ENEMYMAXNUM; i++) {
@@ -335,9 +339,10 @@ GameMainScene::~GameMainScene()
 	}
 
 	//スコアとui消去
+
+	score->Finalize();
 	delete score;
 	delete ui;
-	delete fade;
 
 
 	// 画像削除
@@ -358,7 +363,7 @@ void GameMainScene::ResetMap()
 	mapio->LoadMapData();
 
 	SetObjectNull();
-
+	score = nullptr;
 
 	//ステージブロックにNullを入れる
 	for (int i = 0; i < MAP_BLOCKMAX; i++)
@@ -475,7 +480,7 @@ void GameMainScene::ResetMap()
 		}
 	}
 
-	score = new Score;
+	score = new Score();
 }
 
 void GameMainScene::Update()
@@ -2823,9 +2828,15 @@ AbstractScene* GameMainScene::Change()
 
 void GameMainScene::Finalize()
 {
-	for (int i = 0; i < MAP_BLOCKMAX; i++)
-	{
-		stage_block[i]->Finalize();
-		delete stage_block[i];
-	}
+	//for (int i = 0; i < MAP_BLOCKMAX; i++)
+	//{
+	//	stage_block[i]->Finalize();
+	//	delete stage_block[i];
+	//}
+
+	//score->Finalize();
+	//delete score;
+	//
+
+
 }
