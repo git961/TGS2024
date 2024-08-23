@@ -27,6 +27,7 @@
 #define ROLLING_ENEMY_MAXNUM	20
 #define LONG_LEGS_ENEMY_MAXNUM	1
 #define HARD_ENEMY_MAXNUM		1
+#define REBOUND_ENEMY_MAXNUM	1
 
 // ギミックの最大数
 #define LIFT_MAXNUM				10

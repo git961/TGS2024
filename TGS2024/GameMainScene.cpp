@@ -47,10 +47,19 @@ GameMainScene::GameMainScene(bool set_flg)
 	{
 		long_legs_enemy[i] = nullptr;
 	}
+	for (int i = 0; i < HARD_ENEMY_MAXNUM; i++)
+	{
+		hard_enemy[i] = nullptr;
+	}
+	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
+	{
+		rebound_enemy[i] = nullptr;
+	}
 
 	// stege2敵テスト生成
 	long_legs_enemy[0] = new LongLeggedEnemy(3000.0f, 500.0f);
 	hard_enemy[0] = new HardEnemy(3000.0f, 550.0f);
+	rebound_enemy[0] = new ReboundEnemy(2700.0f, 600.0f);
 
 	//プレイヤー生成
 	if (retry_flg == false)
@@ -314,6 +323,10 @@ GameMainScene::~GameMainScene()
 	for (int i = 0; i < HARD_ENEMY_MAXNUM; i++)
 	{
 		delete hard_enemy[i];
+	}
+	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
+	{
+		delete rebound_enemy[i];
 	}
 
 	// 画像削除
@@ -816,6 +829,15 @@ void GameMainScene::Update()
 
 			// ダイナマイトとダイナマイトでしか倒せない敵の当たり判定
 			DynamiteHitHardEnemy();
+
+			// つるはしで転がる敵の更新処理
+			ReboundEnemyUpdate();
+
+			// プレイヤーとつるはしで転がる敵の当たり判定
+			PlayerHitReboundEnemy();
+
+			// つるはしとつるはしで転がる敵の当たり判定
+			PickaxeHitReboundEnemy();
 		}
 
 		//カメラとUIのアップデート
@@ -1116,6 +1138,15 @@ void GameMainScene::Draw() const
 				if (hard_enemy[i] != nullptr)
 				{
 					hard_enemy[i]->Draw();
+				}
+			}
+
+			// つるはしで転がる敵の描画
+			for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
+			{
+				if (rebound_enemy[i] != nullptr)
+				{
+					rebound_enemy[i]->Draw();
 				}
 			}
 		}
@@ -2820,6 +2851,85 @@ void GameMainScene::DynamiteHitHardEnemy()
 					hard_enemy[i]->Damage(dynamite[i]->GetAttack());
 				}
 			}
+		}
+	}
+}
+
+// つるはしで転がる敵の更新処理
+void GameMainScene::ReboundEnemyUpdate()
+{
+	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
+	{
+		if (rebound_enemy[i] == nullptr) continue;
+
+		// カメラから見た座標の設定
+		rebound_enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+		rebound_enemy[i]->Update();
+
+		rebound_enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+
+		if (rebound_enemy[i]->GetDeleteFlg() == true)
+		{
+			// つるはしで転がる敵の削除
+			delete rebound_enemy[i];
+			rebound_enemy[i] = nullptr;
+		}
+	}
+}
+
+// プレイヤーとつるはしで転がる敵の当たり判定
+void GameMainScene::PlayerHitReboundEnemy()
+{
+	if (player == nullptr)			return;
+
+	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
+	{
+		if (rebound_enemy[i] == nullptr)				continue;
+		if (rebound_enemy[i]->GetHp() <= 0.0f)			continue;
+
+		// プレイヤーがつるはしで転がる敵に当たっていたら
+		if (player->HitCheck(rebound_enemy[i]->GetWorldLocation(), rebound_enemy[i]->GetWidth(), rebound_enemy[i]->GetHeight()) == true)
+		{
+			//プレイヤーに一回だけダメージを与える
+			PlayerDamage();
+		}
+	}
+}
+
+// つるはしとつるはしで転がる敵の当たり判定
+void GameMainScene::PickaxeHitReboundEnemy()
+{
+	if (player == nullptr)								return;
+	if (ac == nullptr)									return;
+
+	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
+	{
+		if (rebound_enemy[i] == nullptr)				continue;
+		if (rebound_enemy[i]->GetHp() <= 0.0f)			continue;
+
+		//つるはしを振るってる時だけ
+		if (player->GetAttacking() == true)
+		{
+			//ダメージを一回だけ与える
+			if (enemy_damage_once == false)
+			{
+				//つるはしとエネミーが当たってるかのチェック
+				if (ac->HitCheck(rebound_enemy[i]->GetWorldLocation(), rebound_enemy[i]->GetWidth(), rebound_enemy[i]->GetHeight()) == true)
+				{
+					rebound_enemy[i]->Damage(10.0f);
+					if (rebound_enemy[i]->GetRollFlg() == false)
+					{
+						rebound_enemy[i]->SetHitPickaxeFlg();
+					}
+					enemy_damage_once = true;
+				}
+			}
+		}
+		else
+		{
+			//プレイヤーがつるはし振ってなかったら
+			enemy_damage_once = false;
 		}
 	}
 }

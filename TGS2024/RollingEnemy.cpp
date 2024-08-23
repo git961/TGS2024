@@ -9,7 +9,6 @@ RollingEnemy::RollingEnemy(float set_x)
 	world.x = set_x;
 	world.y = 608.0f;
 
-
 	width = 60.0f;
 	height = 60.0f;
 
@@ -76,38 +75,37 @@ void RollingEnemy::Update(GameMainScene* gamemain)
 			PlaySoundMem(roll_sound, DX_PLAYTYPE_BACK);
 		}
 
-			if (direction == true)
+		if (direction == true)
+		{
+			// 右回り
+			if (degree < 360.0)
 			{
-				// 右回り
-				if (degree < 360.0)
-				{
-					degree += (double)speed;
-				}
-				else
-				{
-					degree = 0.0;
-				}
+				degree += (double)speed;
 			}
 			else
 			{
-				// 左回り
-				if (degree > 0.0)
-				{
-					degree -= (double)speed;
-				}
-				else
-				{
-					degree = 360.0;
-				}
+				degree = 0.0;
 			}
+		}
+		else
+		{
+			// 左回り
+			if (degree > 0.0)
+			{
+				degree -= (double)speed;
+			}
+			else
+			{
+				degree = 360.0;
+			}
+		}
 
-			// 画像の角度
-			angle = DEGREE_RADIAN(degree);
+		// 画像の角度
+		angle = DEGREE_RADIAN(degree);
 
-			// 移動処理
-			world.x += speed * move_x;
+		// 移動処理
+		world.x += speed * move_x;
 		
-	
 	}
 	else
 	{
@@ -176,39 +174,11 @@ void RollingEnemy::Update(GameMainScene* gamemain)
 
 		angle = 0.0;
 	}
-
-	/*
-	// 端に来たら跳ね返る
-	if (world.x + width / 2 > FIELD_WIDTH || world.x - width / 2 < 0)
-	{
-		//　画像の回転方向を変える
-		if (direction == true)
-		{
-			// 左回転に変更
-			direction = false;
-		}
-		else
-		{
-			// 右回転に変更
-			direction = true;
-		}
-
-		// -1を掛けて移動量反転
-		move_x *= -1;
-	}
-	*/
 }
 
 void RollingEnemy::Draw() const
 {
-#ifdef DEBUG
-	//DrawFormatString(0, 50, 0xffffff, "hp : %f", hp);
-	//DrawFormatString(location.x - 100, 530, 0xffffff, "enemy_image_num : %d", enemy_image_num);
-	//DrawBoxAA(location.x - width / 2, location.y - width / 2, location.x + width / 2, location.y + height / 2, 0x3c3c3c, true);			// 当たり判定のボックス
-#endif // DEBUG
-
-
-	// エネミー画像の描画（回転させる、右回転、左回転がある）
+	// エネミー画像の描画
 	DrawRotaGraph((int)location.x, (int)location.y, 1.0, angle, enemy_roll_img[enemy_image_num], TRUE, FALSE);
 
 	if (enemy_image_num == 4)
@@ -216,10 +186,6 @@ void RollingEnemy::Draw() const
 		// エフェクト画像の描画
 		DrawRotaGraph((int)location.x, (int)location.y, 1.0, angle, enemy_effect_img[effect_image_num], TRUE, FALSE);
 	}
-
-#ifdef DEBUG
-	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);				// 中心座標
-#endif // DEBUG
 }
 
 // 被ダメージ処理

@@ -26,6 +26,7 @@
 #include "Rock.h"
 #include "LongLeggedEnemy.h"
 #include "HardEnemy.h"
+#include "ReboundEnemy.h"
 
 class Player;
 class Enemy;
@@ -102,6 +103,7 @@ private:
 
     LongLeggedEnemy** long_legs_enemy;  // 脚が長い敵
     HardEnemy* hard_enemy[HARD_ENEMY_MAXNUM];             // ダイナマイトでしか倒せない敵
+    ReboundEnemy* rebound_enemy[REBOUND_ENEMY_MAXNUM];      // つるはし攻撃で転がる敵
 
     cameraposition camera_pos;
 
@@ -268,6 +270,10 @@ public:
     void HardEnemyUpdate();                 // ダイナマイトでしか倒せない敵の更新処理
     void PlayerHitHardEnemy();              // プレイヤーとダイナマイトでしか倒せない敵の当たり判定
     void DynamiteHitHardEnemy();            // つるはしとダイナマイトでしか倒せない敵の当たり判定
+
+    void ReboundEnemyUpdate();             // つるはしで転がる敵の更新処理
+    void PlayerHitReboundEnemy();          // プレイヤーとつるはしで転がる敵の当たり判定
+    void PickaxeHitReboundEnemy();         // つるはしとつるはしで転がる敵の当たり判定
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };
