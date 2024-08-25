@@ -1,12 +1,10 @@
 #pragma once
 #include "AbstractScene.h"
 #include "TitleScene.h"
-#include "BlackOut.h"
 
 class GameOverScene : public AbstractScene
 {
 private:
-	BlackOut *black_out;
 
 	int change_cnt;		// シーン切り替えできるようになるまでのカウント
 	int volume;
@@ -62,6 +60,10 @@ private:
 	int push_b_img;
 
 	int gameover_bgm;				// ゲームオーバーbgm
+
+	int fade_alpha;//画面暗転用
+	bool fadeout_flg;//画面が暗くなったか？
+	int black_img;//暗転用画像
 
 public:
 	GameOverScene();

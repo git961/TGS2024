@@ -2,7 +2,6 @@
 
 GameOverScene::GameOverScene()
 {
-	black_out = new BlackOut;
 	change_cnt = 60;
 	volume = 150;
 	play_sound_flg = true;
@@ -63,11 +62,14 @@ GameOverScene::GameOverScene()
 	ChangeVolumeSoundMem(130, gameover_bgm);
 
 	cursor_anim_cnt = 0;
+
+	fade_alpha = 0;
+	fadeout_flg = false;
+	black_img= LoadGraph("images/Backimg/death.png");
 }
 
 GameOverScene::~GameOverScene()
 {
-	delete black_out;
 
 	// 画像の削除
 	DeleteGraph(ring_img);
@@ -312,9 +314,14 @@ void GameOverScene::Update()
 		}
 	}
 
-	if (black_out != nullptr&&change_flg==true)
+	if (change_flg==true)
 	{
-		black_out->Update();
+		//画面暗くする
+		if (fade_alpha < 255)
+		{
+			fadeout_flg = true;
+		}
+		fade_alpha += 5;
 	}
 }
 
@@ -374,15 +381,18 @@ void GameOverScene::Draw() const
 		DrawRotaGraph(640, 700, 0.5, 0.0, push_b_img, TRUE, FALSE);
 	}
 
-
-	if (black_out != nullptr) {
-		black_out->Draw();
+	if (change_flg == true)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, fade_alpha);
+		DrawGraph(0, 0, black_img,TRUE);
 	}
+
 }
 
 AbstractScene* GameOverScene::Change()
 {
-	if (black_out!=nullptr&&black_out->GetFadeout() == true)
+	//画面が暗くなったら画面切り替えをする
+	if (fadeout_flg==true)
 	{
 		// ゲームオーバーbgm停止
 		if (CheckSoundMem(gameover_bgm) == TRUE)

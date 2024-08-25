@@ -30,7 +30,6 @@ GameMainScene::GameMainScene(bool set_flg)
 	if (mapio != nullptr) {
 		mapio->SetStageNum((int)stage_num);
 	}
-	fade = new BlackOut;
 
 	//オブジェクトにNullを代入
 	SetObjectNull();
@@ -44,6 +43,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	}
 	else
 	{
+		retry_fadein_once = true;
 		if (stage_num == StageNum::stage1) {
 			player = new Player(2200.0f);
 			p_notback_flg = true;
@@ -109,6 +109,7 @@ GameMainScene::GameMainScene(bool set_flg)
 		score = new Score;
 		//リトライじゃなかったら
 		game_state = TUTORIAL;
+		retry_fadein_once = false;
 
 		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
@@ -276,9 +277,6 @@ GameMainScene::GameMainScene(bool set_flg)
 
 GameMainScene::~GameMainScene()
 {
-	delete fade;
-
-
 	//プレイヤーと攻撃、ダイナマイトdelete
 	delete ac;
 	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
@@ -717,15 +715,16 @@ void GameMainScene::Update()
 			game_state = GOAL;
 		}
 
-		if (retry_flg == true && fade != nullptr)
+		if (retry_flg == true&&retry_fadein_once==true)
 		{
-			if (fade->GetFadein() == false)
+			black_flg = true;
+			//フェード明るくする
+			alpha -=5;
+			if (alpha < 0)
 			{
-				fade->Fadein();
-			}
-			else
-			{
-				fade = nullptr;
+				retry_fadein_once = false;
+				black_flg = false;
+				alpha = 255;
 			}
 		}
 
@@ -1223,12 +1222,10 @@ void GameMainScene::Draw() const
 		DrawGraph(550, 350, pose_img, FALSE);
 	}
 
-	if (retry_flg == true && fade != nullptr)
+	if (retry_flg == true)
 	{
-		if (fade->GetFadein() == false)
-		{
-			fade->Draw_Fadein();
-		}
+		//リトライしてきたら、画面を黒から明るくする
+
 	}
 
 	//プレイヤー描画
@@ -2828,15 +2825,5 @@ AbstractScene* GameMainScene::Change()
 
 void GameMainScene::Finalize()
 {
-	//for (int i = 0; i < MAP_BLOCKMAX; i++)
-	//{
-	//	stage_block[i]->Finalize();
-	//	delete stage_block[i];
-	//}
-
-	//score->Finalize();
-	//delete score;
-	//
-
 
 }

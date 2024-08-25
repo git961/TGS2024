@@ -15,7 +15,6 @@
 #include <math.h>
 #include "GameClearScene.h"
 #include "GameOverScene.h"
-#include "BlackOut.h"
 #include "FragileWall.h"
 #include "Cage.h"
 #include "CageDoor.h"
@@ -95,7 +94,6 @@ private:
     Lift* lift[LIFT_MAXNUM];
 
     UI* ui;
-    BlackOut* fade;
 
     FragileWall* fragile_wall[FRAGILE_WALL_MAXNUM];          // 脆い壁
     Cage* cage[CAGE_DOOR_MAXNUM];                         // 檻
@@ -180,6 +178,7 @@ private:
     bool fadein_flg;//フェードイン開始フラグ
     float alpha;
     bool black_flg;
+    bool retry_fadein_once;//リトライしてきたときに一度だけ画面を明るくするフラグ
     int fadein_sound;//
     bool fadein_snd_flg;//フェードインサウンドをならせるか？
 
@@ -188,7 +187,7 @@ private:
 
 
     bool checkhit;//当たり判定当たっているかチェック用：後で消す
-    int block_cnt = 0;
+    int block_cnt = 0;//blockが何個作られたか
     int check_cnt = 0;
     bool checkhit_block[3] = { false };
     int block_num[3] = { 0 };

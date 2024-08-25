@@ -154,7 +154,6 @@
     <ClCompile Include="AbstractScene.cpp" />
     <ClCompile Include="AnimScene.cpp" />
     <ClCompile Include="AttackCheck.cpp" />
-    <ClCompile Include="BlackOut.cpp" />
     <ClCompile Include="Cage.cpp" />
     <ClCompile Include="CageDoor.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -190,7 +189,6 @@
     <ClInclude Include="AbstractScene.h" />
     <ClInclude Include="AnimScene.h" />
     <ClInclude Include="AttackCheck.h" />
-    <ClInclude Include="BlackOut.h" />
     <ClInclude Include="Cage.h" />
     <ClInclude Include="CageDoor.h" />
     <ClInclude Include="Define.h" />

@@ -150,9 +150,6 @@
     <ClCompile Include="Score.cpp">
       <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
-    <ClCompile Include="BlackOut.cpp">
-      <Filter>ソース ファイル\AnimS</Filter>
-    </ClCompile>
     <ClCompile Include="TestStageScene.cpp">
       <Filter>ソース ファイル\StageFile</Filter>
     </ClCompile>
@@ -268,9 +265,6 @@
     </ClInclude>
     <ClInclude Include="Score.h">
       <Filter>ヘッダー ファイル\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="BlackOut.h">
-      <Filter>ヘッダー ファイル\AnimS</Filter>
     </ClInclude>
     <ClInclude Include="TestStageScene.h">
       <Filter>ヘッダー ファイル\StageFile</Filter>
