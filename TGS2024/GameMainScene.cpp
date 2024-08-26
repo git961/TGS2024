@@ -31,15 +31,6 @@ GameMainScene::GameMainScene(bool set_flg)
 		mapio->SetStageNum((int)stage_num);
 	}
 
-	fragile_wall = new FragileWall * [FRAGILE_WALL_MAXNUM];
-	cage_door = new CageDoor * [CAGE_DOOR_MAXNUM];
-	cage = new Cage * [CAGE_DOOR_MAXNUM];
-	magma = new Magma * [MAGMA_MAXMUN];
-	falling_floor = new FallingFloor * [FALLING_FLOOR_MAXNUM];
-	geyser = new Geyser * [GEYSER_MAXNUM];
-	lift = new Lift * [LIFT_MAXNUM];
-	rock = new Rock * [ROCK_MAXNUM];
-
 	
 	long_legs_enemy = new LongLeggedEnemy * [LONG_LEGS_ENEMY_MAXNUM];
 
@@ -601,7 +592,7 @@ void GameMainScene::Update()
 		if (input.CheckBtn(XINPUT_BUTTON_RIGHT_THUMB) == TRUE || CheckHitKey(KEY_INPUT_P) == TRUE)
 		{
 			//Inputを保存
-			mapio->SaveMapData();
+			mapio->SaveMapData(stage_num);
 
 			//マップチップに反映する
 			ResetMap();
@@ -631,8 +622,8 @@ void GameMainScene::Update()
 
 
 	case GOAL:
-		if (stage_num == stage1) {
-			stage_num = stage2;
+		if (stage_num == StageNum::stage1) {
+			stage_num = StageNum::stage2;
 			p_notback_flg = false;
 			ResetMap();
 			clear_alpha = 0;
@@ -1376,7 +1367,7 @@ void GameMainScene::UpdateCamera(World world)
 		camera_pos.y = FIELD_HEIGHT - WINDOW_HALFY;
 	}
 
-	//screen_origin_position = { camera_pos.x - SCREEN_WIDTH / 2.0f,camera_pos.y - SCREEN_HEIGHT / 2.0f };
+	screen_origin_position = { camera_pos.x - SCREEN_WIDTH / 2.0f,camera_pos.y - SCREEN_HEIGHT / 2.0f };
 
 
 }
