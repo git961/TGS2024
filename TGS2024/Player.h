@@ -125,6 +125,8 @@ private:
     float helmet_down;
     int helmet_img;//
 
+    // bool stop_walk_snd;             // 足音を止めるか？
+
     // エンド画面用
     int player_end_img[3];          // エンド画面でのプレイヤー画像
     int end_img_num;                // プレイヤーエンド画像の画像番号

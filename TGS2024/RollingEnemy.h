@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stdlib.h>         // スポーン位置決定用
-#include <time.h>           // スポーン位置決定用
 #include "CharacterBase.h"
 #include "GameMainScene.h"
 

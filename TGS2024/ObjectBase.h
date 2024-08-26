@@ -34,8 +34,6 @@ protected:
 	float width;//幅
 	float height;//高さ
 
-	float attack;//攻撃力
-
 	float distance_x;//x同士の距離の計算用
 	float distance_y;//y同士の距離の計算用
 
@@ -89,18 +87,12 @@ public:
 
 	}
 
-
-	float GetAttack() { return attack; }
-
-
 	Vec2 GetLocation() { return location; }
 	World GetWorldLocation() { return world; }
-
 	Boxvertex GetVertex() { return box_vertex; }
 
 	float GetWidth() { return width; }
 	float GetHeight() { return height; }
-
 
 	//キャラのlocationとスクリーンの原点を引いてスクリーン座標上の位置に変換
 	void SetLocalPosition(float set_origin_posx, float set_origin_posy)
@@ -125,6 +117,5 @@ public:
 		//下の座標をセット
 		box_vertex.lower_y = location.y + height / 2;
 	};
-
 
 };

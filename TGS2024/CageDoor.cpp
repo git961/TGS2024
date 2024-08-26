@@ -10,7 +10,7 @@ CageDoor::CageDoor(float set_x, float set_y)
 	height = 128.0f;
 
 	// 画像の読み込み
-	cage_door_img = LoadGraph("images/Stage/Cage_Door.png");
+	cage_door_img = LoadGraph("images/Stage/Gimmick/Cage_Door.png");
 
 	hp = 40.0f;
 	img_num = 0;
@@ -44,7 +44,7 @@ void CageDoor::Draw() const
 	DrawFormatString((int)location.x, (int)location.y, 0xff0000, "anim_cnt; %d", anim_cnt);
 
 	// 頂点の確認
-	DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
+	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
 }
 
 // ドアが開くアニメーション
@@ -59,7 +59,6 @@ void CageDoor::DoorOpenAnimation()
 		// ドアが開いた
 		open_flg = true;
 	}
-
 }
 
 bool CageDoor::GetOpenFlg() const

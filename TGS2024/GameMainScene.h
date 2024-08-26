@@ -23,6 +23,9 @@
 #include "FallingFloor.h"
 #include "Geyser.h"
 #include "Rock.h"
+#include "LongLeggedEnemy.h"
+#include "HardEnemy.h"
+#include "ReboundEnemy.h"
 #include <crtdbg.h>
 #include <stdlib.h>
 
@@ -70,8 +73,7 @@ struct ObjectNum {
     int rock_cnt;
 };
 
-class GameMainScene :
-    public AbstractScene
+class GameMainScene : public AbstractScene
 {
 private:
 
@@ -105,6 +107,10 @@ private:
 
     ObjectNum object_num;
 
+    LongLeggedEnemy** long_legs_enemy;  // 脚が長い敵
+    HardEnemy* hard_enemy[HARD_ENEMY_MAXNUM];             // ダイナマイトでしか倒せない敵
+    ReboundEnemy* rebound_enemy[REBOUND_ENEMY_MAXNUM];      // つるはし攻撃で転がる敵
+
     cameraposition camera_pos;
 
     cameraposition screen_origin_position;
@@ -117,8 +123,6 @@ private:
     bool player_damage_once;
     bool enemy_damage_once;
     bool rock_damage_once;
-    //bool checkhit;
-    //bool enemyhit;      // 歩行エネミー同士の当たり判定チェック用、後に削除
 
     int back_img[10];//背景入れるよう
     int goal_img;//ゴールした後に表示する画像入れる用
@@ -219,15 +223,6 @@ public:
 
     void Tutorial();
 
-
-    /*
-    *	enemy[enemynum]->Damage(damage);
-	// 歩行エネミーのノックバック処理
-	enemy[enemynum]->SetKnockBackStartFlg(true);
-	enemy[enemynum]->SetStarDrawFlg(true);
-	enemy[enemynum]->SetPlayerWorldLocation(player->GetWorldLocation());
-	enemy_damage_once = true;
-    */
     void EnemyDamage(int enemynum,float damage);
     void PlayerDamage();
     void GemGenerate();
@@ -275,6 +270,18 @@ public:
     void DynamiteHitRock();//ダイナマイトと岩の当たり判定
     void PickaxeHitRock();//つるはしと岩ブロックの当たり判定
     void RockUpdate();//岩のアップデート
+
+    void LongLegsEnemyUpdate();             // 脚が長い敵の更新処理
+    void PlayerHitLongLegsEnemy();          // プレイヤーと脚が長い敵の当たり判定
+    void PickaxeHitLongLegsEnemy();         // つるはしと脚が長い敵の当たり判定
+
+    void HardEnemyUpdate();                 // ダイナマイトでしか倒せない敵の更新処理
+    void PlayerHitHardEnemy();              // プレイヤーとダイナマイトでしか倒せない敵の当たり判定
+    void DynamiteHitHardEnemy();            // つるはしとダイナマイトでしか倒せない敵の当たり判定
+
+    void ReboundEnemyUpdate();             // つるはしで転がる敵の更新処理
+    void PlayerHitReboundEnemy();          // プレイヤーとつるはしで転がる敵の当たり判定
+    void PickaxeHitReboundEnemy();         // つるはしとつるはしで転がる敵の当たり判定
 
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };

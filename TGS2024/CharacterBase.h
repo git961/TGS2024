@@ -3,58 +3,33 @@
 #include "DxLib.h"
 #include "ObjectBase.h"
 
-
-//#define CHARAIMAGENUM 10;//キャラクタ画像入れる配列の大きさ
-
-//
-//struct Vector
-//{
-//	//キャラの動いてる方向を入れる
-//	float x;
-//	float y;
-//};
-
-
-
-class CharacterBase
-	:public ObjectBase
+class CharacterBase : public ObjectBase
 {
 protected:
-
 	float move_x;
 	float move_y;
-
-	float hp;//体力
-
-
+	float hp;
 	float speed;
-	bool direction;//向き　0:右 1:左
-
-	bool stop_walk_snd;//音を止めるか？
+	bool direction;				//向き　0:右 1:左
+	float attack;				//攻撃力
 
 public:
 	//コンストラクタとデストラクタ
 	CharacterBase()
 	{
-		attack = 0.0f;
 		direction = false;
 		hp = 0.0f;
 		move_x = 0.0f;
 		move_y = 0.0f;
 		speed = 0.0f;
-
-
+		attack = 0.0f;
 	};
 
-
 	bool GetDirection() { return direction; }//キャラの向きを返す　0:右 1:左
-	//bool GetGroundFlg() { return ground_flg; }
-
-
+	float GetAttack() { return attack; }
 
 	void HitCheckB(Boxvertex set_box_vertex)
 	{
-
 		//キャラがブロックの上からぶつかった場合
 		if (box_vertex.lower_y <= set_box_vertex.upper_y)
 		{
@@ -74,9 +49,6 @@ public:
 				world.x = world.x - move_x;
 			}
 		}
-
-
 	};
-
 };
 

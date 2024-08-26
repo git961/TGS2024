@@ -4,7 +4,7 @@
 class Cage : public ObjectBase
 {
 private:
-	int cage_img;						// 檻の画像
+	int cage_img;						// 檻（箱）の画像
 	int cage_grate_img;					// 檻の格子の画像
 
 	bool inside_flg;					// プレイヤーが檻の中にいるか？
@@ -19,4 +19,3 @@ public:
 	void SetInsideFlg(bool set_flg);
 
 };
-

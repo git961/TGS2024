@@ -13,7 +13,7 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 	height = 64.0f;
 
 	move_x = 1.0f;			// 移動量
-	move_y = 0.0f;			// 未使用
+	move_y = 0.0f;
 	hp = 30.0f;
 	attack = 10.0f;
 	speed = 2.0f;
@@ -228,7 +228,6 @@ void Enemy::Update(GameMainScene* gamemain)
 			{
 				PlaySoundMem(footsteps_sound, DX_PLAYTYPE_BACK);
 			}
-
 		}
 
 		// 星を描画するのであれば
@@ -329,8 +328,7 @@ void Enemy::Draw() const
 // 移動処理
 void Enemy::Move()
 {
-
-	// 端に来たら跳ね返る
+	// ステージの端に来たら跳ね返る
 	if (world.x + width / 2 > FIELD_WIDTH || world.x - width / 2 < 0)
 	{
 		// 移動量の反転
@@ -357,10 +355,8 @@ void Enemy::Move()
 		//speed = 2.0f;
 	}
 
-
 	//移動処理
 	world.x -= speed * move_x;
-
 }
 
 // 進行方向の変更
