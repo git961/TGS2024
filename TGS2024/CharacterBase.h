@@ -45,7 +45,6 @@ public:
 
 
 	};
-	~CharacterBase() {};
 
 
 	bool GetDirection() { return direction; }//キャラの向きを返す　0:右 1:左

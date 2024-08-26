@@ -85,7 +85,7 @@ private:
     Dynamite* dynamite[DYNAMITE_MAXNUM];
     fps fp;
 
-    MapIo *mapio;
+    MapIo* mapio;
     StageBlock* stage_block[MAP_BLOCKMAX];
     Gem* walk_gem[ENEMYMAXNUM];             // 配列
     Gem* roll_gem[ROLLING_ENEMY_MAXNUM];

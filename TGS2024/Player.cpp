@@ -1,6 +1,9 @@
 ﻿#include "Player.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
+Player::Player()
+{
+}
 
 Player::Player(float set_x)
 {
@@ -30,10 +33,10 @@ Player::Player(float set_x)
 	anim_cnt = 0;
 
 	world.x = set_x;
-	world.y = 600.0f;
+	world.y = 500.0f;
 
 	location.x = 0;
-	location.y = 600.0f;
+	location.y = 500.0f;
 
 	old_worldx = world.x;
 
@@ -261,10 +264,10 @@ void Player::Update(GameMainScene* gamemain)
 	case WALK:
 	case NOMAL:
 
-		if (world.y > 600.0f)
-		{
-			world.y = 600.0f;
-		}
+		//if (world.y > 600.0f)
+		//{
+		//	world.y = 600.0f;
+		//}
 
 		if (player_state == NOMAL)
 		{
@@ -739,7 +742,9 @@ void Player::PlayerFall()
 	//落ちても良かったら
 	if (fall_flg == true)
 	{
-
+		//ワールド座標に動く分のY座標をプラスする
+		world.y += move_y;
+		/*
 		limit_y = 600.0f + height / 2;
 		//着地座標がプレイヤーのワールド座標よりも大きかったら
 		if (limit_y > world.y+height / 2)
@@ -754,6 +759,7 @@ void Player::PlayerFall()
 			//world.y = limit_y-height / 2;
 			fall_flg = false;
 		}
+		*/
 	}
 }
 

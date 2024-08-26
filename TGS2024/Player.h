@@ -28,15 +28,14 @@ class Player :
 private:
     Input input;
     PlayerState player_state;
-
-    int player_img[80];
+    int player_img[68];
     //int player_walk_img[10];
     //int player_attack_img[15];
     //int player_throw_img[15];
     //int player_death_img[15];
-    int pickaxe_img[15];
-    int pickaxe_effect[8];
-    int soil_effect[10];
+    int pickaxe_img[8];
+    int pickaxe_effect[4];
+    int soil_effect[2];
 
     //int player_ase_img[10];
 
@@ -154,6 +153,7 @@ private:
     bool walk_cnt_up_flg;               // 歩行アニメーションのカウントを増やすか？
 
 public:
+    Player();
     Player(float set_x);
     ~Player();
 

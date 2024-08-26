@@ -25,7 +25,7 @@ GameMainScene::GameMainScene(bool set_flg)
 
 	respawn_x = 100.0f;
 	respawn_y = 0.0f;
-
+	mapio = nullptr;
 	mapio = new MapIo;
 	if (mapio != nullptr) {
 		mapio->SetStageNum((int)stage_num);
@@ -100,12 +100,12 @@ GameMainScene::GameMainScene(bool set_flg)
 
 
 
-	mapio->LoadMapData();
 
 
 
 	if (retry_flg == false)
 	{
+		mapio->LoadMapData();
 		score = new Score;
 		//リトライじゃなかったら
 		game_state = TUTORIAL;
@@ -283,8 +283,8 @@ GameMainScene::~GameMainScene()
 	{
 		delete dynamite[i];
 	}
-	delete player;
 
+	delete player;
 
 	delete mapio;
 	for (int i = 0; i < MAP_BLOCKMAX; i++)
@@ -2128,8 +2128,10 @@ void GameMainScene::PlayerHitBlock()
 			if (stage_block[i]->HitCheck(player->GetWorldLocation(), player->GetWidth() + 78.0f, 128.0f) == true)
 			{
 				//何番目のブロックが範囲内にあるのか格納する
-				block_num[block_cnt] = i;
-				block_cnt++;
+				if (block_cnt < 3) {
+					block_num[block_cnt] = i;
+					block_cnt++;
+				}
 			}
 
 		}
@@ -2143,11 +2145,11 @@ void GameMainScene::PlayerHitBlock()
 			//もし範囲内のブロックと当たっていたら
 			if (stage_block[block_num[i]]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
 			{
-				player->HitCheckB(stage_block[block_num[i]]->GetVertex());
+				//player->HitCheckB(stage_block[block_num[i]]->GetVertex());
 				//落ちれない状態にする
 				player->SetFallFlg(false);
 				//当たったブロックの上部の座標をプレイヤーの着地座標にいれる（プレイヤーの画像分ずらしている）
-				player->SetLimitY(stage_block[block_num[i]]->GetLocation().y - (stage_block[block_num[i]]->GetHeight() / 2 + 5) - player->GetHeight() / 2);
+				//player->SetLimitY(stage_block[block_num[i]]->GetLocation().y - (stage_block[block_num[i]]->GetHeight() / 2 + 5) - player->GetHeight() / 2);
 				checkhit_block[i] = true;
 			}
 			else

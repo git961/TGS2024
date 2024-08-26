@@ -4,6 +4,15 @@ MapIo::MapIo()
 {
 	//map_array[map_blockmax_x][map_blockmax_y]={0};
 
+	for (int i = 0; i < map_blockmax_y; i++)
+	{
+		for (int j = 0; j < map_blockmax_x; j++)
+		{
+			map_array[i][j] = 0;
+		}
+	}
+
+
 	fp = NULL;
 	count = 0;
 	add_x = 0;
@@ -30,6 +39,7 @@ MapIo::MapIo()
 
 MapIo::~MapIo()
 {
+	fp = NULL;
 }
 
 void MapIo::LoadMapData()
@@ -61,6 +71,8 @@ void MapIo::LoadMapData()
 
 		fclose(fp);
 	}
+
+
 }
 
 void MapIo::InputTest(GameMainScene* gamemain)
