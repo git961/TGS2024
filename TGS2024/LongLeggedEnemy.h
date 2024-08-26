@@ -13,7 +13,7 @@ private:
 
 	EnemyState enemy_state;
 
-	int enemy_img;						// 脚が長い敵の画像
+	int enemy_img[5];						// 脚が長い敵の画像
 
 	// int footsteps_sound;            // 足音se
 
