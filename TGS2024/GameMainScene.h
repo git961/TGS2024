@@ -240,6 +240,7 @@ public:
     void PlayerHitBlock();
 
     void SetObjectNull();//オブジェクトにNullを入れる
+    
 
     void FragileWallUpdate();               // 脆い壁更新処理
     void DynamiteHitFragileWall();          // ダイナマイトと脆い壁の当たり判定処理
@@ -283,6 +284,10 @@ public:
     void PlayerHitReboundEnemy();          // プレイヤーとつるはしで転がる敵の当たり判定
     void PickaxeHitReboundEnemy();         // つるはしとつるはしで転がる敵の当たり判定
 
+    bool CollisionCheck(float set_x,float set_y);
+    bool CollisionCharaRight(World set_xy);
+    bool CollisionCharaBottom(World set_xy);
+    void PlayerHitCollision();
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };
 };

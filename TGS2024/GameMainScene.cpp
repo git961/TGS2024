@@ -31,7 +31,6 @@ GameMainScene::GameMainScene(bool set_flg)
 		mapio->SetStageNum((int)stage_num);
 	}
 
-	
 	long_legs_enemy = new LongLeggedEnemy * [LONG_LEGS_ENEMY_MAXNUM];
 
 	//オブジェクトにNullを代入
@@ -731,6 +730,7 @@ void GameMainScene::Update()
 
 	case PLAY:
 
+
 		if (CheckHitKey(KEY_INPUT_SPACE) == 1)
 		{
 			game_state = EDITOR;
@@ -1223,6 +1223,7 @@ void GameMainScene::Draw() const
 		if (player != nullptr)
 		{
 			player->Draw();
+
 		}
 	}
 
@@ -1279,6 +1280,7 @@ void GameMainScene::Draw() const
 	if (player != nullptr)
 	{
 		player->Draw();
+
 	}
 
 #ifdef DEBUG
@@ -2128,6 +2130,7 @@ void GameMainScene::DynamiteHitEnemy()
 //プレイヤーと床ブロックの当たり判定
 void GameMainScene::PlayerHitBlock()
 {
+	/*
 	//範囲内にいくつブロックが当たってるか数える
 	for (int i = 0; i < block_count; i++)
 	{
@@ -2146,7 +2149,6 @@ void GameMainScene::PlayerHitBlock()
 		}
 	}
 
-
 	for (int i = 0; i < block_cnt; i++)
 	{
 		if (player != nullptr && stage_block[block_num[i]] != nullptr && stage_block[block_num[i]]->GetBlockNum() == 1)
@@ -2154,9 +2156,9 @@ void GameMainScene::PlayerHitBlock()
 			//もし範囲内のブロックと当たっていたら
 			if (stage_block[block_num[i]]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
 			{
-				//player->HitCheckB(stage_block[block_num[i]]->GetVertex());
 				//落ちれない状態にする
 				player->SetFallFlg(false);
+				player->HitCheckB(stage_block[block_num[i]]->GetVertex());
 				//当たったブロックの上部の座標をプレイヤーの着地座標にいれる（プレイヤーの画像分ずらしている）
 				//player->SetLimitY(stage_block[block_num[i]]->GetLocation().y - (stage_block[block_num[i]]->GetHeight() / 2 + 5) - player->GetHeight() / 2);
 				checkhit_block[i] = true;
@@ -2183,6 +2185,14 @@ void GameMainScene::PlayerHitBlock()
 		block_num[i] = 0;
 	}
 	block_cnt = 0;
+	*/
+	for (int i = 0; i < block_count; i++)
+	{
+		if (player != nullptr && stage_block[i] != nullptr && stage_block[i]->GetBlockNum() == 1)
+		{
+
+		}
+	}
 }
 
 //オブジェクトにNullを入れる
@@ -2993,6 +3003,58 @@ void GameMainScene::PickaxeHitReboundEnemy()
 		{
 			//プレイヤーがつるはし振ってなかったら
 			enemy_damage_once = false;
+		}
+	}
+}
+
+//koko
+bool GameMainScene::CollisionCheck(float set_x, float set_y)
+{
+	//受け取ったワールド座標からマップデータの列colと行rowに各当する所を求める
+	int col = (int)set_x / BLOCKSIZE;
+	int row = (int)set_y / BLOCKSIZE;
+
+	if((col<0)||(col>=map_blockmax_x)||(row<0)||(row>=map_blockmax_y))
+	{
+		return false;
+	}
+
+	//求めた列colと行rowの場所にマップチップがあれば、当たっている
+	if (mapio->GetMapData(col, row) == '1') {
+		return true;
+	}
+
+	return false;
+}
+
+bool GameMainScene::CollisionCharaRight(World set_xy)
+{
+	//プレイヤーの左上の座標を入れる
+	bool right_top = CollisionCheck(set_xy.x + player->GetHalfWidth()-1.0f, set_xy.y);
+	bool right_bottom = CollisionCheck(set_xy.x + player->GetHalfWidth() - 1.0f, set_xy.y + player->GetHalfHeight() - 1);
+	return right_top || right_bottom;
+}
+
+bool GameMainScene::CollisionCharaBottom(World set_xy)
+{
+	//マップチップとキャラの下が接しているか
+	bool bottom_left = CollisionCheck(set_xy.x - player->GetHalfWidth(), set_xy.y + player->GetHalfWidth());
+	bool bottom_right = CollisionCheck(set_xy.x + player->GetHalfWidth() - 1, set_xy.y + player->GetHalfHeight());
+	return bottom_left||bottom_right;
+}
+
+void GameMainScene::PlayerHitCollision()
+{
+	if (player != nullptr)
+	{
+		//プレイヤーが右を向いていたら
+		if (player->GetDirection() == 0)
+		{
+			if (CollisionCharaRight(player->GetWorldLocation()))
+			{
+				//プレイヤーを移動前の元の位置に戻す
+			}
+
 		}
 	}
 }

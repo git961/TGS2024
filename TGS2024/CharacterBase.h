@@ -27,6 +27,8 @@ public:
 
 	bool GetDirection() { return direction; }//キャラの向きを返す　0:右 1:左
 	float GetAttack() { return attack; }
+	float GetHalfWidth() { return width / 2.0f; }
+	float GetHalfHeight() { return height / 2.0f; }
 
 	void HitCheckB(Boxvertex set_box_vertex)
 	{

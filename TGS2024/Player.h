@@ -38,7 +38,8 @@ private:
     int soil_effect[2];
 
     //int player_ase_img[10];
-
+    
+    float curent_x;//元居たｘ
     
     
     float limit_y;//落下の上限用
@@ -248,4 +249,12 @@ public:
     bool GetChangeToTitleFlg() const { return change_to_title_flg; }
 
     void CheckEdgeCage(float cage_x);       // 檻の端にプレイヤーがいるのか調べる
+
+    void MoveBack();//床ブロックと当たっていたらプレイヤーの移動を戻す
+
+    void HitPlayerRight(Boxvertex set_box_vertex);
+    void HitPlayerLeft(Boxvertex set_box_vertex);
+    void HitPlayerUp(Boxvertex set_box_vertex);
+    void HitPlayerDown(Boxvertex set_box_vertex);
+
 };

@@ -6,6 +6,8 @@ void StageBlock::Finalize()
 	DeleteGraph(block_img);
 }
 
+
+
 StageBlock::StageBlock(int set_block_num,float set_x, float set_y)
 {
 	height = BLOCKSIZE;
@@ -60,30 +62,6 @@ StageBlock::StageBlock(int set_block_num,float set_x, float set_y)
 		break;
 	}
 
-	/*
-	for (int i = 0; i < map_blockmax_y; i++)
-	{
-		for (int j = 0; j < map_blockmax_x; j++)
-		{
-
-			//stage_blockdata[i][j] = mapio->GetMapData(i, j);
-			//if (stage_blockdata[i][j] != 0)
-			//{
-			//	block_world.x[j]= j * BLOCKSIZE+BLOCKSIZE/2;
-			//	block_world.y[i]=i * BLOCKSIZE+BLOCKSIZE / 2;
-
-			//	////右下のx座標＝中心ｘ＋ボックスの半分X
-				//block_vertex.lower_rightx[j] = block_world.x[j] + BLOCKSIZE / 2;
-				//block_vertex.lower_righty[i] = block_world.y[i] + BLOCKSIZE / 2;
-				//////左上の座標をセット
-				//block_vertex.upper_leftx[j] = block_world.x[j] - BLOCKSIZE / 2;
-				//block_vertex.upper_lefty[i] = block_world.y[i] - BLOCKSIZE / 2;
-
-			//}
-			//stage_blockdata[j][i] = stagearraydata[j][i];
-
-		}
-	}*/
 	SetVertex();
 }
 
@@ -152,7 +130,7 @@ void StageBlock::Draw() const
 	if (block_num == 1)
 	{
 		//DrawFormatString(location.x, location.y - 60, 0xffffff, "%.0f", location.y - height / 2);
-		//DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + width / 2, (int)location.y + height / 2, 0x00ffff, FALSE);
+	DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + width / 2, (int)location.y + height / 2, 0x00ffff, FALSE);
 	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);			// 中心座標
 	
 	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);

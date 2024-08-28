@@ -94,6 +94,7 @@ public:
 	float GetWidth() { return width; }
 	float GetHeight() { return height; }
 
+
 	//キャラのlocationとスクリーンの原点を引いてスクリーン座標上の位置に変換
 	void SetLocalPosition(float set_origin_posx, float set_origin_posy)
 	{
