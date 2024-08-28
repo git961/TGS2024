@@ -40,6 +40,7 @@ private:
     //int player_ase_img[10];
     
     float curent_x;//元居たｘ
+    float curent_y;//元居たy
     
     
     float limit_y;//落下の上限用

@@ -3020,7 +3020,7 @@ bool GameMainScene::CollisionCheck(float set_x, float set_y)
 	}
 
 	//求めた列colと行rowの場所にマップチップがあれば、当たっている
-	if (mapio->GetMapData(col, row) == '1') {
+	if (mapio->GetMapData(row, col) == 1) {
 		return true;
 	}
 
@@ -3035,11 +3035,11 @@ bool GameMainScene::CollisionCharaRight(World set_xy)
 	return right_top || right_bottom;
 }
 
-bool GameMainScene::CollisionCharaBottom(World set_xy)
+bool GameMainScene::CollisionCharaBottom(float set_x, float set_y)
 {
 	//マップチップとキャラの下が接しているか
-	bool bottom_left = CollisionCheck(set_xy.x - player->GetHalfWidth(), set_xy.y + player->GetHalfWidth());
-	bool bottom_right = CollisionCheck(set_xy.x + player->GetHalfWidth() - 1, set_xy.y + player->GetHalfHeight());
+	bool bottom_left = CollisionCheck(set_x - player->GetHalfWidth(), set_y + player->GetHalfWidth());
+	bool bottom_right = CollisionCheck(set_x + player->GetHalfWidth() - 1, set_y + player->GetHalfHeight());
 	return bottom_left||bottom_right;
 }
 

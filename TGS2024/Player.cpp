@@ -54,8 +54,8 @@ Player::Player(float set_x)
 	direction = 0;
 
 	walk_velocity_x = 0;
-	speed = 1;
-	curent_x = 0.0f;
+	curent_x = world.x;
+	curent_y = world.y;
 
 	move_x = 0;
 	move_y = 1;
@@ -155,6 +155,7 @@ Player::Player(float set_x)
 	limit_y = 600;
 	fall_flg = false;
 	speed = 2.0f;
+
 }
 
 Player::~Player()
@@ -213,10 +214,7 @@ void Player::Update(GameMainScene* gamemain)
 	input.InputUpdate();
 	SetVertex();
 
-	if (gamemain->CollisionCharaBottom(world))
-	{
-		world.y = world.y / BLOCKSIZE * BLOCKSIZE;
-	}
+
 
 	switch (player_state)
 	{
@@ -301,6 +299,16 @@ void Player::Update(GameMainScene* gamemain)
 		WalkAnim();
 
 		PlayerFall();
+
+		//移動前のｘ座標を渡す
+		if (gamemain->CollisionCharaBottom(curent_x, world.y))
+		{
+			speed = 0.0f;
+		}
+		else {
+			speed = 2.0f;
+		}
+
 
 		if (gamemain->GetPlayerNotBack() ==false)
 		{
@@ -519,6 +527,7 @@ void Player::PlayerMove()
 {
 
 	curent_x = world.x;
+	curent_y = world.y;
 
 	//攻撃中じゃなかったらプレイヤー移動
 	//右移動

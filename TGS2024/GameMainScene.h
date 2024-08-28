@@ -286,7 +286,7 @@ public:
 
     bool CollisionCheck(float set_x,float set_y);
     bool CollisionCharaRight(World set_xy);
-    bool CollisionCharaBottom(World set_xy);
+    bool CollisionCharaBottom(float set_x,float set_y);
     void PlayerHitCollision();
     //float GetCameraX() { return camera_x; };
     //float GetCameraY() { return camera_y; };
