@@ -3,6 +3,7 @@
 #include "DxLib.h"
 #include "Define.h"
 
+
 struct Vec2
 {
 	float x;
@@ -30,6 +31,7 @@ protected:
 	Vec2 location;
 	World world;
 	Boxvertex box_vertex;
+
 
 	float width;//幅
 	float height;//高さ
@@ -118,5 +120,6 @@ public:
 		//下の座標をセット
 		box_vertex.lower_y = location.y + height / 2;
 	};
+
 
 };
