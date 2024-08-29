@@ -85,6 +85,9 @@
     <Filter Include="ヘッダー ファイル\StageObjectFile\Lift">
       <UniqueIdentifier>{71217a04-efe7-462a-9538-018c385313b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\BaseFile">
+      <UniqueIdentifier>{216c5428-38d3-4952-8a4e-95fd7c35ecee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -203,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="RiverLog.cpp">
       <Filter>ソース ファイル\StageObjectFile</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectBase.cpp">
+      <Filter>ソース ファイル\BaseFile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -337,6 +343,9 @@
     </ClInclude>
     <ClInclude Include="RiverLog.h">
       <Filter>ヘッダー ファイル\StageObjectFile</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectBase.h">
+      <Filter>ヘッダー ファイル\BaseFile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
