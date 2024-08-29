@@ -18,15 +18,11 @@ protected:
 
 public:
 	//コンストラクタとデストラクタ
-	CharacterBase()
-	{
-		direction = false;
-		hp = 0.0f;
-		move_x = 0.0f;
-		move_y = 0.0f;
-		speed = 0.0f;
-		attack = 0.0f;
-	};
+	CharacterBase(class GameMainScene* set_game_main);
+
+	virtual void Move() = 0;
+	virtual void Death() = 0;
+	virtual void DeathAnimation() = 0;
 
 	bool GetDirection() { return direction; }//キャラの向きを返す　0:右 1:左
 	float GetAttack() { return attack; }

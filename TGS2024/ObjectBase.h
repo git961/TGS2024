@@ -2,7 +2,7 @@
 #include <math.h>
 #include "DxLib.h"
 #include "Define.h"
-
+#include "GameObjectBase.h"
 
 struct Vec2
 {
@@ -24,7 +24,7 @@ struct Boxvertex
 	float lower_y = 0.0f;
 };
 
-class ObjectBase
+class ObjectBase : GameObjectBase
 {
 protected:
 
@@ -46,20 +46,15 @@ protected:
 
 public:
 	//コンストラクタとデストラクタ
-	ObjectBase()
-	{
-		width = 0.0f;
-		height = 0.0f;
-		distance_x = 0.0f;
-		distance_y = 0.0f;
-		two_widths = 0.0f;
-		two_heights = 0.0f;
-		world.x = 0.0f;
-		world.y = 0.0f;
-		location = { 0 };
-		box_vertex = { 0 };
-	};
+	ObjectBase(class GameMainScene* set_game_main);
 	~ObjectBase() {};
+
+	virtual void Initialize()=0;
+	virtual void Update() = 0;
+	virtual void Draw()const = 0;
+	virtual void Finalize() = 0;
+
+
 
 	//当たり判定:何かに当たったかどうかだけ返す
 	bool HitCheck(World opponent, float opponent_width, float opponent_height)

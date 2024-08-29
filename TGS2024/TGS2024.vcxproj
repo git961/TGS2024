@@ -185,6 +185,7 @@
     <ClCompile Include="Magma.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapIo.cpp" />
+    <ClCompile Include="ObjectBase.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ReboundEnemy.cpp" />
     <ClCompile Include="RiverLog.cpp" />

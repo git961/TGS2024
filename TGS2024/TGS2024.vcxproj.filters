@@ -210,6 +210,9 @@
     <ClCompile Include="GameObjectBase.cpp">
       <Filter>ソース ファイル\BaseFile</Filter>
     </ClCompile>
+    <ClCompile Include="ObjectBase.cpp">
+      <Filter>ソース ファイル\BaseFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fps.h">
