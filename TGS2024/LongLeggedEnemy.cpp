@@ -20,6 +20,10 @@ LongLeggedEnemy::LongLeggedEnemy(float set_x, float set_y)
 
 	// 画像の読み込み
 	LoadDivGraph("images/Enemy/LongLegs.png", 5, 5, 1, 64, 64, enemy_img);
+	LoadDivGraph("images/Enemy/Leg.png", 5, 5, 1, 128, 128, enemy_leg_img);
+
+	enemy_leg_img_num = 0;
+	leg_location_y = location.y;
 
 	first_world_y = world.y;
 	attack_max_y = first_world_y + 100.0f;
@@ -48,42 +52,49 @@ void LongLeggedEnemy::Update()
 
 	switch (enemy_state)
 	{
-		case EnemyState::WALK:
-			Move();
-			CheckDistanceToPlayer();
+	case EnemyState::WALK:
+		Move();
+		WalkAnimation();
+		CheckDistanceToPlayer();
 
-			if (attack_flg == true)
-			{
-				enemy_state = EnemyState::ATTACK;		// 攻撃状態に遷移
-			}
+		if (attack_flg == true)
+		{
+			enemy_state = EnemyState::ATTACK;		// 攻撃状態に遷移
+		}
 
-			CheckDeathCondition();
-			break;
+		CheckDeathCondition();
+		break;
 
-		case EnemyState::ATTACK:
-			Attack();
+	case EnemyState::ATTACK:
+		Attack();
 
-			if (attack_flg == false)
-			{
-				enemy_state = EnemyState::WALK;			// 歩行状態に遷移
-			}
+		if (attack_flg == false)
+		{
+			enemy_state = EnemyState::WALK;			// 歩行状態に遷移
+		}
 
-			CheckDeathCondition();
-			break;
+		CheckDeathCondition();
+		break;
 
-		case EnemyState::DEATH:
-			Death();
-			DeathAnimation();
-			break;
+	case EnemyState::DEATH:
+		Death();
+		DeathAnimation();
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 }
 
 void LongLeggedEnemy::Draw() const
 {
-	// 脚が長い敵の画像
+	if (hp > 0.0f)
+	{
+		// 脚の画像
+		DrawRotaGraph((int)location.x, (int)leg_location_y, 1.0, 0.0, enemy_leg_img[enemy_leg_img_num], TRUE, direction);
+	}
+
+	// 敵の顔の画像
 	DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img[enemy_img_num], TRUE, direction);
 
 	DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", hp);
@@ -100,6 +111,9 @@ void LongLeggedEnemy::Move()
 
 	// 横移動
 	world.x += speed * move_x;
+
+	// 脚の画像のY座標更新
+	leg_location_y = location.y + 30.0f;
 }
 
 void LongLeggedEnemy::Death()
@@ -172,8 +186,31 @@ void LongLeggedEnemy::CheckDeathCondition()
 {
 	if (hp <= 0.0f)
 	{
+		anim_cnt = 0;								// 死亡アニメーション用にカウントを0にする
 		enemy_state = EnemyState::DEATH;			// 死亡状態に遷移
 	}
+}
+
+void LongLeggedEnemy::WalkAnimation()
+{
+	if (anim_cnt < 39)
+	{
+		// アニメーション用カウント増加
+		anim_cnt++;
+	}
+	else
+	{
+		anim_cnt = 0;
+	}
+
+	// 画像切り替え
+	if (anim_cnt != 0)
+	{
+		// 歩行
+		// 10カウントごとに変わる
+		enemy_leg_img_num = anim_cnt / 8;
+	}
+
 }
 
 void LongLeggedEnemy::SetPlayerWorldLocation(World set_world)
