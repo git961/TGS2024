@@ -213,6 +213,9 @@
     <ClCompile Include="ObjectBase.cpp">
       <Filter>ソース ファイル\BaseFile</Filter>
     </ClCompile>
+    <ClCompile Include="CharacterManager.cpp">
+      <Filter>ソース ファイル\BaseFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fps.h">
@@ -348,6 +351,9 @@
       <Filter>ヘッダー ファイル\StageObjectFile</Filter>
     </ClInclude>
     <ClInclude Include="GameObjectBase.h">
+      <Filter>ヘッダー ファイル\BaseFile</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterManager.h">
       <Filter>ヘッダー ファイル\BaseFile</Filter>
     </ClInclude>
   </ItemGroup>
