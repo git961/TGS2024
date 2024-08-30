@@ -3007,7 +3007,7 @@ void GameMainScene::PickaxeHitReboundEnemy()
 	}
 }
 
-/*
+
 //koko
 bool GameMainScene::CollisionCheck(float set_x, float set_y)
 {
@@ -3043,7 +3043,7 @@ bool GameMainScene::CollisionCharaBottom(float set_x, float set_y)
 	bool bottom_right = CollisionCheck(set_x + player->GetHalfWidth() - 1, set_y + player->GetHalfHeight());
 	return bottom_left||bottom_right;
 }
-*/
+
 
 void GameMainScene::PlayerHitCollision()
 {
