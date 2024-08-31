@@ -31,7 +31,9 @@ GameMainScene::GameMainScene(bool set_flg)
 		mapio->SetStageNum((int)stage_num);
 	}
 
-
+	//キャラクターマネージャー
+	character_manager = new CharacterManager(this);
+	character_manager->Initialize();
 
 	//long_legs_enemy = new LongLeggedEnemy * [LONG_LEGS_ENEMY_MAXNUM];
 
@@ -79,7 +81,8 @@ GameMainScene::GameMainScene(bool set_flg)
 		}
 	}
 
-	ui = new UI((int)player->GetHp(), player->GetDynaNum());
+	
+	//ui = new UI((int)player->GetHp(), player->GetDynaNum());
 	//ac = new AttackCheck;
 
 	enemy_damage_once = false;
@@ -390,7 +393,7 @@ GameMainScene::~GameMainScene()
 	DeleteSoundMem(unpause_se);
 }
 
-
+/*
 void GameMainScene::ResetMap()
 {
 	mapio->LoadMapData(stage_num);
@@ -407,7 +410,7 @@ void GameMainScene::ResetMap()
 	//エネミー削除
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
-		enemy[i] = nullptr;
+		//enemy[i] = nullptr;
 		walk_gem[i] = nullptr;
 	}
 
@@ -515,7 +518,7 @@ void GameMainScene::ResetMap()
 
 	score = new Score();
 }
-
+*/
 void GameMainScene::Update()
 {
 	input.InputUpdate();
@@ -651,7 +654,7 @@ void GameMainScene::Update()
 		//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
 		location_x = world_x - screen_origin_position.x;
 		location_y = world_y - screen_origin_position.y;
-
+		/*
 		if (p_life_num < 0)
 		{
 			if (fadein_snd_flg == true)
@@ -735,7 +738,7 @@ void GameMainScene::Update()
 			}
 		}
 		break;
-
+		*/
 
 	case PLAY:
 
@@ -899,10 +902,14 @@ void GameMainScene::Update()
 
 		*/
 
+		if (character_manager != nullptr) {
+			character_manager->Update();
+		}
+
 		//カメラとUIのアップデート
-		if (player != nullptr)
-		{
-			UpdateCamera(player->GetWorldLocation());
+		//if (player != nullptr)
+		//{
+			UpdateCamera();
 
 			//UIアップデート
 			if (ui != nullptr)
@@ -914,7 +921,7 @@ void GameMainScene::Update()
 				//	ui->Update(0, 0);
 				//}
 			}
-		}
+		//}
 
 
 		/*
@@ -988,6 +995,7 @@ void GameMainScene::Draw() const
 	DrawGraph((int)location_x + 1280 * 8, (int)location_y, back_img[9], FALSE);
 	DrawGraph((int)location_x + 1280, (int)location_y, back_img[0], FALSE);
 
+	/*
 	for (int j = 0; j < block_count; j++)
 	{
 		if (stage_block[j] != nullptr)
@@ -1238,22 +1246,23 @@ void GameMainScene::Draw() const
 		}
 	}
 
+	*/
 	if (fadein_flg == true)
 	{
 		//DrawGraph(location_x, location_y, death_img, FALSE);
-		if (player != nullptr)
-		{
-			//DrawRotaGraph(player->GetLocation().x, 700, img_extrate, 0, death_img, TRUE, 0);
+		//if (player != nullptr)
+		//{
+		//	//DrawRotaGraph(player->GetLocation().x, 700, img_extrate, 0, death_img, TRUE, 0);
 
-			SetDrawScreen(ScreenHandle);
-			DrawBox(0, 0, 1280, 720, GetColor(0, 0, 0), TRUE);
-			if (CircleSize >= 1)
-			{
-				SetDrawBlendMode(DX_BLENDMODE_SRCCOLOR, 0);
-				DrawCircle((int)player->GetLocation().x, (int)player->GetLocation().y + 40, CircleSize, GetColor(0, 0, 0), TRUE);
-				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
-			}
-		}
+		//	SetDrawScreen(ScreenHandle);
+		//	DrawBox(0, 0, 1280, 720, GetColor(0, 0, 0), TRUE);
+		//	if (CircleSize >= 1)
+		//	{
+		//		SetDrawBlendMode(DX_BLENDMODE_SRCCOLOR, 0);
+		//		DrawCircle((int)player->GetLocation().x, (int)player->GetLocation().y + 40, CircleSize, GetColor(0, 0, 0), TRUE);
+		//		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+		//	}
+		//}
 
 		SetDrawScreen(DX_SCREEN_BACK);
 		DrawGraph(0, 0, ScreenHandle, TRUE);
@@ -1287,12 +1296,17 @@ void GameMainScene::Draw() const
 
 	}
 
-	//プレイヤー描画
-	if (player != nullptr)
+	if (character_manager != nullptr)
 	{
-		player->Draw();
-
+		character_manager->Draw();
 	}
+
+	//プレイヤー描画
+	//if (player != nullptr)
+	//{
+	//	player->Draw();
+
+	//}
 
 #ifdef DEBUG
 
@@ -1346,11 +1360,13 @@ void GameMainScene::Draw() const
 #endif // DEBUG
 }
 
-void GameMainScene::UpdateCamera(World world)
+void GameMainScene::UpdateCamera()
 {
 	//追従する相手のワールド座標をもらう
-	camera_pos.x = world.x;
-	camera_pos.y = world.y;
+	//camera_pos.x = world.x;
+	//camera_pos.y = world.y;
+	camera_pos.x = 2000.f;
+	camera_pos.y = 600.0f;
 
 
 	//X軸のステージの内外判定
@@ -1461,6 +1477,7 @@ void GameMainScene::ShakeCamera(bool set_true, int set_num)
 	}
 }
 
+/*
 void GameMainScene::Tutorial()
 {
 	//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
@@ -2141,7 +2158,7 @@ void GameMainScene::DynamiteHitEnemy()
 //プレイヤーと床ブロックの当たり判定
 void GameMainScene::PlayerHitBlock()
 {
-	/*
+	
 	//範囲内にいくつブロックが当たってるか数える
 	for (int i = 0; i < block_count; i++)
 	{
@@ -2196,8 +2213,8 @@ void GameMainScene::PlayerHitBlock()
 		block_num[i] = 0;
 	}
 	block_cnt = 0;
-	*/
-	for (int i = 0; i < block_count; i++)
+
+ for (int i = 0; i < block_count; i++)
 	{
 		if (player != nullptr && stage_block[i] != nullptr && stage_block[i]->GetBlockNum() == 1)
 		{
@@ -3054,7 +3071,7 @@ bool GameMainScene::CollisionCharaBottom(float set_x, float set_y)
 	bool bottom_right = CollisionCheck(set_x + player->GetHalfWidth() - 1, set_y + player->GetHalfHeight());
 	return bottom_left||bottom_right;
 }
-*/
+
 
 void GameMainScene::PlayerHitCollision()
 {
@@ -3087,6 +3104,9 @@ void GameMainScene::PlayerHitRespawn()
 		}
 	}
 }
+
+*/
+
 
 AbstractScene* GameMainScene::Change()
 {

@@ -215,7 +215,7 @@ public:
 
     virtual void Finalize() override;
 
-    void UpdateCamera(World world);
+    void UpdateCamera();
 
     void SetPlayerDamageOnce(bool set_flg) { player_damage_once = set_flg; }
 
