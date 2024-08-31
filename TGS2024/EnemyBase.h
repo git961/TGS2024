@@ -19,12 +19,12 @@ public:
 	~EnemyBase();
 
 protected:
-	virtual void Update() = 0;
-	virtual void Draw() const = 0;
+	//virtual void Update() = 0;
+	//virtual void Draw() const = 0;
 
-	virtual void Move() = 0;
-	virtual void Death() = 0;
-	virtual void DeathAnimation() = 0;
+	//virtual void Move() = 0;
+	//virtual void Death() = 0;
+	//virtual void DeathAnimation() = 0;
 
 	void PlayDeathSound();					// 死亡音を1回だけ再生する処理
 

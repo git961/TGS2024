@@ -20,25 +20,32 @@ void CharacterManager::Initialize()
 	//
 
 	Objects[0] = new Player(GetGameMainScene());
+	Objects[1] = new Enemy(GetGameMainScene());
+
+	for (int i = 0; i < total_object_num; i++)
+	{
+		Objects[i]->Initialize(2000.0f,600.0f+50*i);
+	}
+
 
 		//マップチップに反映する
-	for (int i = 0; i < map_blockmax_y; i++)
-	{
-		for (int j = 0; j < map_blockmax_x; j++)
-		{
-			switch (GetGameMainScene()->GetMapio()->GetMapData(i, j))
-			{
-			case 2:
-			
-				//enemy[total_object_num] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, false);
-				break;
+	//for (int i = 0; i < map_blockmax_y; i++)
+	//{
+	//	for (int j = 0; j < map_blockmax_x; j++)
+	//	{
+	//		switch (GetGameMainScene()->GetMapio()->GetMapData(i, j))
+	//		{
+	//		case 2:
+	//		
+	//			//enemy[total_object_num] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, false);
+	//			break;
 
-			}
+	//		}
 
 
 
-		}
-	}
+	//	}
+	//}
 
 
 }

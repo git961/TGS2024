@@ -163,12 +163,12 @@ public:
 
     void Initialize(float set_x,float set_y) override;
 
-    void Update() override;
-    void Draw() const override;
-    void Move() override;
-    void DeathAnimation() override;
-    void Finalize() override;
-    void Death() override;
+    void Update();
+    void Draw() const;
+    void Move();
+    void DeathAnimation();
+    void Finalize();
+    void Death();
 
     //void Update(GameMainScene* gamemain);
 
