@@ -161,7 +161,7 @@ public:
    //Player(float set_x);
     ~Player();
 
-    void Initialize(float set_x,float set_y) override;
+    void Initialize(float set_x,float set_y);
 
     void Update();
     void Draw() const;

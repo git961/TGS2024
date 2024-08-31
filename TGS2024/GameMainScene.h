@@ -28,7 +28,7 @@
 #include "ReboundEnemy.h"
 #include <crtdbg.h>
 #include <stdlib.h>
-
+#include "CharacterManager.h"
 
 class RollingEnemy;
 class AttackCheck;
@@ -79,14 +79,16 @@ private:
     GameState game_state;
     StageNum stage_num;
 
-    Player* player;
-    Enemy* enemy[ENEMYMAXNUM];
+    //Player* player;
+    //Enemy* enemy[ENEMYMAXNUM];
     RollingEnemy* rolling_enemy[ROLLING_ENEMY_MAXNUM];
     AttackCheck* ac;
     Dynamite* dynamite[DYNAMITE_MAXNUM];
     fps fp;
 
     class MapIo* mapio = nullptr;
+    class CharacterManager* character_manager = nullptr;
+
 
     StageBlock* stage_block[MAP_BLOCKMAX];
     Gem* walk_gem[ENEMYMAXNUM];             // 配列

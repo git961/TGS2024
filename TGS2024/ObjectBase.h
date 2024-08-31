@@ -55,8 +55,6 @@ public:
 	virtual void Draw()const = 0;
 	virtual void Finalize() = 0;
 
-
-
 	//当たり判定:何かに当たったかどうかだけ返す
 	bool HitCheck(World opponent, float opponent_width, float opponent_height)
 	{

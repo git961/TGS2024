@@ -1,5 +1,5 @@
 ﻿#include "Enemy.h"
-
+/*
 Enemy::Enemy(float set_x, float set_y,bool set_direction)
 {
 	// 中心座標
@@ -132,7 +132,7 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 	fall_flg = false;
 
 }
-
+*/
 Enemy::~Enemy()
 {
 	// 画像の削除
@@ -166,7 +166,7 @@ Enemy::~Enemy()
 	DeleteSoundMem(death_sount);
 }
 
-void Enemy::Update(GameMainScene* gamemain)
+void Enemy::Update()
 {
 	if (hp > 0)
 	{
@@ -323,6 +323,139 @@ void Enemy::Draw() const
 #ifdef DEBUG
 	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);			// 中心座標
 #endif // DEBUG
+}
+
+void Enemy::Initialize(float set_x, float set_y)
+{
+	// 中心座標
+	location.x = set_x;
+	location.y = set_y;
+
+	world.x = set_x;
+	world.y = set_y;
+
+	width = 45.0f;
+	height = 64.0f;
+
+	move_x = 1.0f;			// 移動量
+	move_y = 0.0f;
+	hp = 30.0f;
+	attack = 10.0f;
+	speed = 2.0f;
+
+	//画像読込
+	LoadDivGraph("images/Enemy/WalkTest.png", 5, 5, 1, 64, 64, enemy_walk_img);
+	LoadDivGraph("images/Enemy/WalkDeathTest.png", 4, 4, 1, 64, 64, enemy_death_img);
+	knock_back_img = LoadGraph("images/Enemy/KnockBack.png");
+	LoadDivGraph("images/Enemy/crack.png", 2, 2, 1, 64, 64, crack_img);
+	star_img = LoadGraph("images/Enemy/star.png");
+	LoadDivGraph("images/Enemy/fragment.png", 4, 4, 1, 64, 64, fragment_img);
+
+	// サウンド読込
+	footsteps_sound = LoadSoundMem("sounds/se/enemy/walk.mp3");
+	knock_back_sount = LoadSoundMem("sounds/se/enemy/knockback.mp3");
+	death_sount = LoadSoundMem("sounds/se/enemy/death.mp3");
+	play_sound = true;
+
+	anim_cnt = 0;
+	anim_max_cnt = 19;
+
+	// 現在の画像
+	image_num = 0;
+	crack_image_num = -1;
+
+	death_cnt = 0;
+	is_delete = false;
+
+	direction = false;
+	//direction = false;			// 画像は右向き
+
+	is_knock_back = false;		// ノックバック中ではない
+	is_knock_back_start = false;
+
+	player_x = 0.0f;
+	player_y = 0.0f;
+
+	//srand((unsigned int)time(NULL));			// 現在時刻の情報で初期化
+	//num = rand() % 10 + 1;
+	//if (num >= 5)
+	//{
+	//	direction = true;
+	//}
+	//else
+	//{
+	//	direction = false;
+	//}
+	// 進行方法が左ならx座標と移動方向が変わる
+	if (direction == true)
+	{
+		move_x *= -1;
+		world.y = -60;
+	}
+
+	star.x = 0.0f;
+	star.y = 0.0f;
+	star.degree = 0.0;						// 画像の角度
+	star.radian = 0.0;						// 画像の角度
+	star.timer = 0;
+	star.count = 0;
+	star.is_draw = false;				// 星の描画なし
+	tmp_direction = direction;
+
+	for (int i = 0; i < 4; i++)
+	{
+		fragment[i].x = 0.0f;
+		fragment[i].y = 0.0f;
+		fragment[i].timer = 0;
+		fragment[i].count = 0;
+		fragment[i].is_draw = false;
+
+		// 初速度の設定
+		//v0[i] = rand() % 5 + 1;
+		v0[i] = 0.0f;
+
+		// 発射角度の設定
+		//fragment[i].degree = rand() % 90;
+		fragment[i].degree = 0.0;
+
+		if (i < 2)
+		{
+			fragment[i].degree += 270;
+		}
+
+		fragment[i].radian = (double)DEGREE_RADIAN(fragment[i].degree);
+
+		mvx[i] = 0.0f;
+		mvy[i] = 0.0f;
+	}
+
+	gravity = 980.0f;
+	start_x = 0.0f;
+	start_y = 0.0f;
+	sum_t = 0.0167f;
+	t = 0.0167f;
+
+	gem_drop = false;
+	draw_death_img = true;
+
+	hit_enemy_x = 0.0f;
+	SetVertex();
+
+	// サウンドの音量設定
+	ChangeVolumeSoundMem(80, footsteps_sound);
+	ChangeVolumeSoundMem(150, knock_back_sount);
+	ChangeVolumeSoundMem(255, death_sount);
+
+	if (direction == true)
+	{
+		fall_end_flg = false;
+	}
+	else {
+
+		fall_end_flg = true;
+	}
+	fall_flg = false;
+
 }
 
 // 移動処理

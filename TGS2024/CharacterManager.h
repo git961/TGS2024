@@ -15,6 +15,7 @@ public:
     void Initialize();
     void Update();
     void Draw() const;
-
+    void CollisionCheckObjects();
+    void CollisionCheckMapChip();
 };
 

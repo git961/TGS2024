@@ -52,6 +52,7 @@ public:
 		}
 	};
 
+	/*
 	//床ブロックとキャラが当たっているかのチェック
 	bool CollisionCheck(float set_x, float set_y)
 	{
@@ -89,5 +90,6 @@ public:
 		bool bottom_right = CollisionCheck(world.x + GetHalfWidth() - 1, world.y+GetHalfHeight());
 		return bottom_left || bottom_right;
 	};
+	*/
 };
 

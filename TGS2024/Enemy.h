@@ -71,11 +71,19 @@ private:
     bool fall_end_flg;//敵が地面に付いたらtrue
 
 public:
-    Enemy(float set_x, float set_y,bool set_direction);
+    Enemy(class GameMainScene* set_gamemain) :CharacterBase(set_gamemain){}
     ~Enemy();
 
     void Update(GameMainScene* gamemain);
     void Draw() const;
+
+    void Initialize(float set_x, float set_y);
+    void Update();
+    void Draw() const;
+    void Move();
+    void DeathAnimation();
+    void Finalize();
+    void Death();
 
     void Move();                                // 移動処理
     void ChangeDirection();                     // 進行方向の変更

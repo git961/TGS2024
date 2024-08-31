@@ -31,11 +31,15 @@ GameMainScene::GameMainScene(bool set_flg)
 		mapio->SetStageNum((int)stage_num);
 	}
 
-	long_legs_enemy = new LongLeggedEnemy * [LONG_LEGS_ENEMY_MAXNUM];
+
+
+	//long_legs_enemy = new LongLeggedEnemy * [LONG_LEGS_ENEMY_MAXNUM];
 
 	//オブジェクトにNullを代入
 	SetObjectNull();
 	
+	/*
+	//エネミー仮生成
 	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
 	{
 		long_legs_enemy[i] = nullptr;
@@ -54,28 +58,29 @@ GameMainScene::GameMainScene(bool set_flg)
 	hard_enemy[0] = new HardEnemy(3000.0f, 550.0f);
 	rebound_enemy[0] = new ReboundEnemy(2700.0f, 600.0f);
 
+	*/
 	//プレイヤー生成
 	if (retry_flg == false)
 	{
-		player = new Player(0.0f);
+		//player = new Player(0.0f);
 		p_notback_flg = false;
 	}
 	else
 	{
 		retry_fadein_once = true;
 		if (stage_num == StageNum::stage1) {
-			player = new Player(2200.0f);
+			//player = new Player(2200.0f);
 			p_notback_flg = true;
 		}
 		else {
 			//プレイヤーのリスタート位置を入れる
-			player = new Player(2200.0f);
+			//player = new Player(2200.0f);
 			p_notback_flg = false;
 		}
 	}
 
 	ui = new UI((int)player->GetHp(), player->GetDynaNum());
-	ac = new AttackCheck;
+	//ac = new AttackCheck;
 
 	enemy_damage_once = false;
 	rock_damage_once = false;
@@ -129,6 +134,7 @@ GameMainScene::GameMainScene(bool set_flg)
 		game_state = TUTORIAL;
 		retry_fadein_once = false;
 
+		/*
 		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
 			enemy[i] = nullptr;
@@ -217,17 +223,20 @@ GameMainScene::GameMainScene(bool set_flg)
 				}
 			}
 		}
+
+		*/
 	}
 	else
 	{
 
-		ResetMap();
+		//ResetMap();
 
 		//リトライして来たら
 		game_state = PLAY;
 		
 	}
 
+	/*
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
 		walk_gem[i] = nullptr;
@@ -237,7 +246,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	{
 		dynamite[i] = nullptr;
 	}
-
+	*/
 
 	check_num = 0;
 
@@ -295,77 +304,77 @@ GameMainScene::GameMainScene(bool set_flg)
 GameMainScene::~GameMainScene()
 {
 	//プレイヤーと攻撃、ダイナマイトdelete
-	delete ac;
-	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
-	{
-		delete dynamite[i];
-	}
+	//delete ac;
+	//for (int i = 0; i < DYNAMITE_MAXNUM; i++)
+	//{
+	//	delete dynamite[i];
+	//}
 
-	delete player;
+	//delete player;
 
 	delete mapio;
-	for (int i = 0; i < MAP_BLOCKMAX; i++)
-	{
-		delete stage_block[i];
-	}
+	//for (int i = 0; i < MAP_BLOCKMAX; i++)
+	//{
+	//	delete stage_block[i];
+	//}
 
 
-	//エネミーと宝石delete
-	for (int i = 0; i < ENEMYMAXNUM; i++) {
-		delete enemy[i];
-		delete walk_gem[i];
-	}
-	for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
-	{
-		delete rolling_enemy[i];
-		delete roll_gem[i];
-	}
+	////エネミーと宝石delete
+	//for (int i = 0; i < ENEMYMAXNUM; i++) {
+	//	delete enemy[i];
+	//	delete walk_gem[i];
+	//}
+	//for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
+	//{
+	//	delete rolling_enemy[i];
+	//	delete roll_gem[i];
+	//}
 
 
-	//ステージオブジェクトdelete
-	for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
-	{
-		delete fragile_wall[i];
-	}
-	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
-	{
-		delete cage[i];
-		delete cage_door[i];
-	}
-	for (int i = 0; i < MAGMA_MAXMUN; i++)
-	{
-		delete magma[i];
-	}
-	for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
-	{
-		delete falling_floor[i];
-	}
-	for (int i = 0; i < GEYSER_MAXNUM; i++)
-	{
-		delete geyser[i];
-	}
-	for (int i = 0; i < LIFT_MAXNUM; i++)
-	{
-		delete lift[i];
-	}
-	for (int i = 0; i < ROCK_MAXNUM; i++)
-	{
-		delete rock[i];
-	}
+	////ステージオブジェクトdelete
+	//for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
+	//{
+	//	delete fragile_wall[i];
+	//}
+	//for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
+	//{
+	//	delete cage[i];
+	//	delete cage_door[i];
+	//}
+	//for (int i = 0; i < MAGMA_MAXMUN; i++)
+	//{
+	//	delete magma[i];
+	//}
+	//for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
+	//{
+	//	delete falling_floor[i];
+	//}
+	//for (int i = 0; i < GEYSER_MAXNUM; i++)
+	//{
+	//	delete geyser[i];
+	//}
+	//for (int i = 0; i < LIFT_MAXNUM; i++)
+	//{
+	//	delete lift[i];
+	//}
+	//for (int i = 0; i < ROCK_MAXNUM; i++)
+	//{
+	//	delete rock[i];
+	//}
 
 	//スコアとui消去
 
 	score->Finalize();
 	delete score;
 	
-	for (int i = 0; i < HARD_ENEMY_MAXNUM; i++)
-	{
-		delete hard_enemy[i];
-	}
-	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
-	{
-		delete rebound_enemy[i];
-	}
+	//for (int i = 0; i < HARD_ENEMY_MAXNUM; i++)
+	//{
+	//	delete hard_enemy[i];
+	//}
+	//for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
+	//{
+	//	delete rebound_enemy[i];
+	//}
 	
 	delete ui;
 
@@ -757,10 +766,10 @@ void GameMainScene::Update()
 		location_x = world_x - screen_origin_position.x;
 		location_y = world_y - screen_origin_position.y;
 
-		//リフトアップデート
-		LiftUpDate();
-		LiftHitStop();
-		PlayerHitLift();
+		////リフトアップデート
+		//LiftUpDate();
+		//LiftHitStop();
+		//PlayerHitLift();
 
 		//押されたらポーズへ
 		if (input.CheckBtn(XINPUT_BUTTON_START) == TRUE)
@@ -770,7 +779,7 @@ void GameMainScene::Update()
 			game_state = POSE;
 		}
 		
-
+		/*
 		//エネミー更新
 		EnemyUpDate();
 
@@ -803,7 +812,7 @@ void GameMainScene::Update()
 
 		if (stage_num == StageNum::stage2)
 		{
-			/** ギミック */
+			// ギミック 
 			// 脆い壁更新処理
 			FragileWallUpdate();
 
@@ -859,7 +868,7 @@ void GameMainScene::Update()
 			PickaxeHitGeyser();
 
 
-			/** 敵 */
+			// 敵 /
 			// 脚が長い敵の更新処理
 			LongLegsEnemyUpdate();
 
@@ -888,6 +897,8 @@ void GameMainScene::Update()
 			PickaxeHitReboundEnemy();
 		}
 
+		*/
+
 		//カメラとUIのアップデート
 		if (player != nullptr)
 		{
@@ -896,17 +907,17 @@ void GameMainScene::Update()
 			//UIアップデート
 			if (ui != nullptr)
 			{
-				ui->SetLifeNum(p_life_num);
-				ui->Update((int)player->GetHp(), player->GetDynaNum());
-				if (player->GetHp() <= 0)
-				{
-					ui->Update(0, 0);
-				}
+				//ui->SetLifeNum(p_life_num);
+				//ui->Update((int)player->GetHp(), player->GetDynaNum());
+				//if (player->GetHp() <= 0)
+				//{
+				//	ui->Update(0, 0);
+				//}
 			}
 		}
 
 
-
+		/*
 		for (int j = 0; j < block_count; j++)
 		{
 			if (stage_block[j] != nullptr)
@@ -958,7 +969,7 @@ void GameMainScene::Update()
 		}
 
 		PlayerHitBlock();
-
+		*/
 		break;
 	default:
 		break;
