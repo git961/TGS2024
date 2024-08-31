@@ -157,12 +157,20 @@ private:
     bool walk_cnt_up_flg;               // 歩行アニメーションのカウントを増やすか？
 
 public:
-    Player();
-    Player(float set_x);
+    Player(class GameMainScene* set_gamemain):CharacterBase(set_gamemain){};
+   //Player(float set_x);
     ~Player();
 
-    void Update(GameMainScene* gamemain);
-    void Draw() const;
+    void Initialize(float set_x,float set_y) override;
+
+    void Update() override;
+    void Draw() const override;
+    void Move() override;
+    void DeathAnimation() override;
+    void Finalize() override;
+    void Death() override;
+
+    //void Update(GameMainScene* gamemain);
 
     //プレイヤー移動用
     void PlayerMove();

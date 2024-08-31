@@ -24,7 +24,8 @@ struct Boxvertex
 	float lower_y = 0.0f;
 };
 
-class ObjectBase : GameObjectBase
+class ObjectBase :
+	public GameObjectBase
 {
 protected:
 
@@ -49,7 +50,7 @@ public:
 	ObjectBase(class GameMainScene* set_game_main);
 	~ObjectBase() {};
 
-	virtual void Initialize()=0;
+	virtual void Initialize(float set_x,float set_y)=0;
 	virtual void Update() = 0;
 	virtual void Draw()const = 0;
 	virtual void Finalize() = 0;

@@ -32,7 +32,6 @@
 
 class RollingEnemy;
 class AttackCheck;
-class MapIo;
 class UI;
 class Dynamite;
 class Gem;
@@ -87,7 +86,8 @@ private:
     Dynamite* dynamite[DYNAMITE_MAXNUM];
     fps fp;
 
-    MapIo* mapio;
+    class MapIo* mapio = nullptr;
+
     StageBlock* stage_block[MAP_BLOCKMAX];
     Gem* walk_gem[ENEMYMAXNUM];             // 配列
     Gem* roll_gem[ROLLING_ENEMY_MAXNUM];
@@ -203,7 +203,8 @@ private:
 public:
     GameMainScene(bool set_flg);
     virtual~GameMainScene() override;
-
+    
+    class MapIo* GetMapio() { return mapio; }//mapioを返す
     void ResetMap();
 
     void Update() override;

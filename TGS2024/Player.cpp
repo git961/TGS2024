@@ -1,14 +1,169 @@
 ﻿#include "Player.h"
+
 #define _USE_MATH_DEFINES
 #include <math.h>
-Player::Player()
+
+/*
+ Player::Player()
 {
 }
-
 Player::Player(float set_x)
 {
+	////画像読込
+	//LoadDivGraph("images/Player/player_img.png",68, 4, 17, 170, 170, player_img);
+	//LoadDivGraph("images/Player/pickaxe2.png", 8, 4, 2, 170, 170, pickaxe_img);
+	//LoadDivGraph("images/Player/pickeffect3.png", 4, 4, 1, 170, 170, pickaxe_effect);
+	//LoadDivGraph("images/Player/soil_effect.png", 2, 2, 1, 170, 170, soil_effect);
+
+	//pickaxe_add_x = 0.0f;
+
+	//atk_sound = LoadSoundMem("sounds/se/player/Attack.mp3");
+	//op_run_sound = LoadSoundMem("sounds/se/player/run.mp3");
+	//damage_sound = LoadSoundMem("sounds/se/player/damage.mp3");
+	//throw_dynamite_sound = LoadSoundMem("sounds/se/player/Throw.mp3");
+	//death_sound = LoadSoundMem("sounds/se/player/death.mp3");
+
+	//
+	//img_down = 45;
+
+	//reset_timer = 0;
+	//p_imgnum = 0;
+	////p_atk_imgnum = 0;
+	//effect_num = 0;
+	////walk_num = 0;
+
+	//anim_cnt = 0;
+
+	//world.x = set_x;
+	//world.y = 500.0f;
+
+	//location.x = 0;
+	//location.y = 500.0f;
+
+	//old_worldx = world.x;
+
+	////体力
+	//hp = 50;
+	////hp = 10;
+
+	////攻撃力
+	//attack = 10;
+
+	////幅と座標
+	//width = 50;
+	//height = 80;
+
+	//direction = 0;
+
+	//walk_velocity_x = 0;
+	//curent_x = world.x;
+	//curent_y = world.y;
+
+	//move_x = 0;
+	//move_y = 1;
+
+	//walk_abs = 0;
+
+	////攻撃に使用変数
+	//attacking = false;
+	//atk_cnt_timer = 0;
+	//next_attackflg = false;
+	//attack_cnt = 0;
+	//wait_atk_cnt = 0;
+	//wait_flg = false;
+
+	////ダイナマイトに使用
+	//atk_dynamite = false;
+	////dyna_throw_num = 0;
+	//dyna_anmcnt = 0;
+
+	//dyna_stock_num = 5;
+	//dyna_stock_cnt = 0;
+
+
+	//is_atk_putout = false;
+
+	//player_state = NOMAL;
+	//is_hit_enemy = false;
+
+	////被弾点滅
+	//hit_damage = false;
+	//flash_start = false;
+	//flash_flg = false;
+	//flash_cnt = 0;
+
+	//death_anim_cnt = 0;
+	////death_num = 0;
+	//death_flg = false;
+
+	////op_num = 2;
+	//op_cnt = 0;
+	//tuto_anim_flg=false;
+	//tuto_atk_flg = false;
+	//tuto_num = 0;
+	//tuto_cnt=0;
+	//tuto_ui_num = 0;
+	//rock_break_flg = false;
+	//rock_cnt = 0;
+
+	//p_atk_imgnum = 0;
+	////p_nomal_num = 0;
+
+	//// サウンドの音量設定
+	//ChangeVolumeSoundMem(200, atk_sound);
+	//ChangeVolumeSoundMem(180, op_run_sound);
+	//ChangeVolumeSoundMem(180, damage_sound);
+	//ChangeVolumeSoundMem(180, throw_dynamite_sound);
+	//ChangeVolumeSoundMem(210, death_sound);
+
+	//dyna_anm_start = false;
+	//walk_stop_flg = false;
+	//tuto_anim_dynaflg = false;
+	//start_flg = false;
+
+	//helmet_flg = false;
+	//helmet_down = -1000;
+
+	//// stop_walk_snd = false;
+
+	//// エンド画面用変数
+	//LoadDivGraph("images/Player/player_end1.png", 3, 3, 1, 170, 170, player_end_img);
+	//end_img_num = 0;
+	//end_anim_cnt = 0;
+
+
+	//// エンドクレジット画面用変数
+	//LoadDivGraph("images/Player/dance.png", 8, 4, 2, 170, 170, player_credits_img);
+	//LoadDivGraph("images/Player/applause.png", 4, 4, 1, 170, 170, applause_img);
+	//LoadDivGraph("images/Player/cracker.png", 5, 5, 1, 170, 170, cracker_img);
+	//LoadDivGraph("images/Player/ribbon.png", 5, 5, 1, 150, 220, ribbon_img);
+	//credits_img_num = 0;
+	//ribbon_img_num = 0;
+	//credits_anim_cnt = 0;
+	//cracker_anim_cnt = 0;
+	//ribbon_anim_cnt = 0;
+	//credits_timer = 0;
+	//facing_left_flg = false;
+	//push_b_flg = false;
+	//dash_anim_cnt = 0;
+	//change_to_title_flg = false;
+	//ribbon_x = 0;
+	//ribbon_y = 0;
+	//set_ribbon_pos_flg = false;
+	//change_scene_cnt = 0;
+	//credits_walk_cnt = 0;
+	//walk_cnt_up_flg = true;
+
+	//limit_y = 600;
+	//fall_flg = false;
+	//speed = 2.0f;
+
+}
+*/
+void Player::Initialize(float set_x, float set_y)
+{
 	//画像読込
-	LoadDivGraph("images/Player/player_img.png",68, 4, 17, 170, 170, player_img);
+	LoadDivGraph("images/Player/player_img.png", 68, 4, 17, 170, 170, player_img);
 	LoadDivGraph("images/Player/pickaxe2.png", 8, 4, 2, 170, 170, pickaxe_img);
 	LoadDivGraph("images/Player/pickeffect3.png", 4, 4, 1, 170, 170, pickaxe_effect);
 	LoadDivGraph("images/Player/soil_effect.png", 2, 2, 1, 170, 170, soil_effect);
@@ -21,7 +176,7 @@ Player::Player(float set_x)
 	throw_dynamite_sound = LoadSoundMem("sounds/se/player/Throw.mp3");
 	death_sound = LoadSoundMem("sounds/se/player/death.mp3");
 
-	
+
 	img_down = 45;
 
 	reset_timer = 0;
@@ -96,10 +251,10 @@ Player::Player(float set_x)
 
 	//op_num = 2;
 	op_cnt = 0;
-	tuto_anim_flg=false;
+	tuto_anim_flg = false;
 	tuto_atk_flg = false;
 	tuto_num = 0;
-	tuto_cnt=0;
+	tuto_cnt = 0;
 	tuto_ui_num = 0;
 	rock_break_flg = false;
 	rock_cnt = 0;
@@ -206,10 +361,8 @@ Player::~Player()
 
 }
 
-void Player::Update(GameMainScene* gamemain)
+void Player::Update()
 {
-	
-
 
 	input.InputUpdate();
 	SetVertex();
@@ -301,16 +454,16 @@ void Player::Update(GameMainScene* gamemain)
 		PlayerFall();
 
 		//移動前のｘ座標を渡す
-		if (gamemain->CollisionCharaBottom(curent_x, world.y))
-		{
-			speed = 0.0f;
-		}
-		else {
-			speed = 2.0f;
-		}
-
-
-		if (gamemain->GetPlayerNotBack() ==false)
+		//if (gamemain->CollisionCharaBottom(curent_x, world.y))
+		//{
+		//	speed = 0.0f;
+		//}
+		//else {
+		//	speed = 2.0f;
+		//}
+		
+		//行動範囲制限
+		if (GetGameMainScene()->GetPlayerNotBack() == false)
 		{
 			// 端に来たら跳ね返る
 			if (world.x + width / 2 > FIELD_WIDTH)
@@ -341,7 +494,6 @@ void Player::Update(GameMainScene* gamemain)
 
 			}
 		}
-
 
 
 		//敵からダメージを食らったら
@@ -380,7 +532,7 @@ void Player::Update(GameMainScene* gamemain)
 			{
 				flash_flg = false;
 				flash_start = false;
-				gamemain->SetPlayerDamageOnce(false);
+				GetGameMainScene()->SetPlayerDamageOnce(false);
 			}
 
 
