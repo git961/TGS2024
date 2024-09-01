@@ -163,6 +163,7 @@
     <ClCompile Include="Cage.cpp" />
     <ClCompile Include="CageDoor.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CharacterBase.cpp" />
     <ClCompile Include="CharacterManager.cpp" />
     <ClCompile Include="Dynamite.cpp" />
     <ClCompile Include="EndScene.cpp" />

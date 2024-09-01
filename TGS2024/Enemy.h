@@ -1,13 +1,8 @@
 ﻿#pragma once
 #define DEBUG		        // デバッグ用、消すと#ifdef DEBUGの処理がされなくなる
 
-#include <stdlib.h>         // スポーン位置決定用
-#include <time.h>           // スポーン位置決定用
-#include <math.h>
-#include "CharacterBase.h"
-#include "GameMainScene.h"
 
-class GameMainScene;
+#include "CharacterBase.h"
 
 struct effect
 {
@@ -20,7 +15,10 @@ struct effect
     bool is_draw;       // 描画するか？
 };
 
-class Enemy : public CharacterBase
+class CharacterBase;
+
+class Enemy
+    : public CharacterBase
 {
 private:
     int enemy_walk_img[5];          // エネミー歩行画像
@@ -71,17 +69,14 @@ private:
     bool fall_end_flg;//敵が地面に付いたらtrue
 
 public:
-    Enemy(class GameMainScene* set_gamemain) :CharacterBase(set_gamemain){}
+    Enemy(class GameMainScene* set_gamemain) :CharacterBase(set_gamemain) {}
     ~Enemy();
 
-    void Update(GameMainScene* gamemain);
+    //void Update(GameMainScene* gamemain);
     void Draw() const;
 
     void Initialize(float set_x, float set_y);
     void Update();
-    void Draw() const;
-    void Move();
-    void DeathAnimation();
     void Finalize();
     void Death();
 

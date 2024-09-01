@@ -1,4 +1,8 @@
 ﻿#include "Enemy.h"
+#include <stdlib.h>         // スポーン位置決定用
+#include <time.h>           // スポーン位置決定用
+#include <math.h>
+#include "GameMainScene.h"
 /*
 Enemy::Enemy(float set_x, float set_y,bool set_direction)
 {

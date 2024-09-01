@@ -9,8 +9,12 @@ private:
     int img_num;
 
 public:
-    Switch(float set_x,float set_y);
+    Switch(class GameMainScene* set_gamemain) :ObjectBase(set_gamemain) {};
     ~Switch();
+
+    void Initialize(float set_x, float set_y);
+    void Finalize();
+
     void Update();
     void Draw()const;
     void SetY(float set_y) { world.y = set_y; }

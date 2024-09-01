@@ -16,11 +16,17 @@ private:
     float shift_y;//プレイヤーからもらったy座標をずらす用
 
 public:
-    AttackCheck();
+    AttackCheck(class GameMainScene* set_gamemain) :CharacterBase(set_gamemain) {};
+    //AttackCheck();
     ~AttackCheck();
 
-    void Update(GameMainScene* gamemain,Player* player);
+    void Update();
     void Draw() const;
+    void Initialize(float set_x, float set_y);
+    void DeathAnimation();
+    void Finalize();
+    void Death();
+    void Move();                                // 移動処理
 
     bool GetAttackFlg() { return attack_flg; };
 

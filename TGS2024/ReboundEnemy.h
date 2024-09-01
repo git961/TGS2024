@@ -1,8 +1,8 @@
 #pragma once
-#include "EnemyBase.h"
+#include "CharacterBase.h"
 #include <math.h>
 
-class ReboundEnemy : public EnemyBase
+class ReboundEnemy : public CharacterBase
 {
 private:
 	enum class EnemyState
@@ -26,15 +26,19 @@ private:
 	bool roll_flg;						// 転がっているか？
 
 public:
-	ReboundEnemy(float set_x, float set_y);
+	ReboundEnemy(class GameMainScene* set_gamemain) :CharacterBase(set_gamemain) {};
+
+	//ReboundEnemy(float set_x, float set_y);
 	~ReboundEnemy();
-	void Update() override;
-	void Draw() const override;
+	void Update();
+	void Draw() const;
 
 private:
-	void Move() override;
-	void Death() override;
-	void DeathAnimation() override;
+	void Move();
+	void Death();
+	void DeathAnimation();
+
+	void Initialize(float set_x, float set_y);
 
 	// 転がるときの画像角度変更
 	void ChangeAngle();

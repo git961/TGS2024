@@ -1,5 +1,5 @@
 #include "FallingRock.h"
-
+/*
 FallingRock::FallingRock()
 {
 	rock_img = LoadGraph("images/Animscene/Bigrock.png");
@@ -28,12 +28,42 @@ FallingRock::FallingRock()
 	ChangeVolumeSoundMem(190, roll_sound);
 
 }
+*/
 
 FallingRock::~FallingRock()
 {
 	// サウンド削除
 	DeleteSoundMem(rocks_fall_sound);
 	DeleteSoundMem(roll_sound);
+
+}
+
+void FallingRock::Initialize(float set_x,float set_y)
+{
+	rock_img = LoadGraph("images/Animscene/Bigrock.png");
+	LoadDivGraph("images/Animscene/rockeffect.png", 4, 4, 1, 1024, 512, rock_effect_img);
+
+	rock_state = 0;
+
+	anim_cnt = 0;
+	rock_img_num = 0;
+	world.x = 350;
+	world.y = -500;
+	location.x = 350;
+	location.y = -500;
+	speed = 5;
+	angle = 0;
+	degree = 0;
+	landing_flg = false;
+	black_out_flg = false;
+
+	shake_x1 = 5;
+	shake_x2 = 10;
+	rocks_fall_sound = LoadSoundMem("sounds/se/op/rocks_fall.mp3");
+	roll_sound = LoadSoundMem("sounds/se/op/roll.mp3");
+	// サウンドの音量設定
+	ChangeVolumeSoundMem(190, rocks_fall_sound);
+	ChangeVolumeSoundMem(190, roll_sound);
 
 }
 

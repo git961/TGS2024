@@ -1,5 +1,5 @@
 #include "Switch.h"
-
+/*
 Switch::Switch(float set_x, float set_y)
 {
 	//switch_img = LoadGraph("images/Stage/Gimmick/liftswitch.png");
@@ -16,13 +16,35 @@ Switch::Switch(float set_x, float set_y)
 
 
 	img_num = 0;
-}
+}*/
 
 Switch::~Switch()
 {
 	for (int i = 0; i < 5; i++) {
 		DeleteGraph(switch_img[i]);
 	}
+}
+
+void Switch::Initialize(float set_x, float set_y)
+{
+	//switch_img = LoadGraph("images/Stage/Gimmick/liftswitch.png");
+//LoadDivGraph("images/Player/pickaxe.png", 8, 4, 2, 170, 170, pickaxe_img);
+	LoadDivGraph("images/Stage/Gimmick/liftswitch.png", 5, 5, 1, 32, 32, switch_img);
+
+	height = 64.0f;
+	width = 64.0f;
+
+	world.x = set_x;
+	world.y = set_y;
+	location.x = set_x;
+	location.y = set_y;
+
+
+	img_num = 0;
+}
+
+void Switch::Finalize()
+{
 }
 
 void Switch::Update()

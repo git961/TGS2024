@@ -1,10 +1,58 @@
 #include "RollingEnemy.h"
-
+/*
 RollingEnemy::RollingEnemy(float set_x)
 {
 	// 中心座標
 	//location.x = 200;
 	//	location.y = 608.0f;
+
+	world.x = set_x;
+	world.y = 608.0f;
+
+	width = 60.0f;
+	height = 60.0f;
+
+	move_x = -1.0f;			// 移動量
+	move_y = 0.0f;			// 未使用
+	hp = 10.0f;
+	attack = 10.0f;
+	speed = 8.0f;
+	direction = false;	// 左向き
+
+	//画像読込
+	LoadDivGraph("images/Enemy/RollingTest.png", 5, 5, 1, 64, 64, enemy_roll_img);
+	LoadDivGraph("images/Enemy/EffectTest.png", 4, 4, 1, 64, 64, enemy_effect_img);
+
+	// サウンド読込
+	roll_sound = LoadSoundMem("sounds/se/enemy/roll.mp3");
+	death_sount = LoadSoundMem("sounds/se/enemy/death.mp3");
+	sound_play = true;
+
+	anim_cnt = 0;       // アニメーション用カウント
+	decrease = false;      // アニメーション用カウント減少フラグ
+	enemy_image_num = 0;       // 表示する画像番号
+	effect_image_num = 0;
+
+	angle = 0.0;
+	degree = 0.0;
+
+	is_delete = false;
+
+	just_death = false;
+	gem_drop = false;
+
+	// サウンドの音量設定
+	ChangeVolumeSoundMem(255, roll_sound);
+	ChangeVolumeSoundMem(100, death_sount);
+
+}
+*/
+
+void RollingEnemy::Initialize(float set_x, float set_y)
+{
+	// 中心座標
+//location.x = 200;
+//	location.y = 608.0f;
 
 	world.x = set_x;
 	world.y = 608.0f;
@@ -65,7 +113,7 @@ RollingEnemy::~RollingEnemy()
 	DeleteSoundMem(death_sount);
 }
 
-void RollingEnemy::Update(GameMainScene* gamemain)
+void RollingEnemy::Update()
 {
 	if (hp > 0)
 	{

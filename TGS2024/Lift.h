@@ -29,14 +29,18 @@ private:
 
 
 public:
+    Lift(class GameMainScene* set_gamemain) :ObjectBase(set_gamemain) {};
     Lift(float set_x, float set_y);
     ~Lift();
 
     void Update(AttackCheck* ac,Player* player);
     void Draw() const;
+    void Initialize(float set_x, float set_y);
+    void  Finalize();
 
     void UpAnim();
     void DownAnim();
+
 
     void SetUpMaxY(float set_y) { up_max_y = set_y; }
     void SetCanMove(bool set_flg) { canmove_flg = set_flg; }

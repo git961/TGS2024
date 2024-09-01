@@ -18,7 +18,7 @@ protected:
 
 public:
 	//コンストラクタとデストラクタ
-	CharacterBase(class GameMainScene* set_game_main);
+	CharacterBase(class GameMainScene* set_game_main):ObjectBase(set_game_main){}
 
 	virtual void Move() = 0;
 	virtual void Death() = 0;

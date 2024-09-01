@@ -27,10 +27,13 @@ private:
     int roll_sound;//転がる音
 
 public:
-    FallingRock();
+
+    FallingRock(class GameMainScene* set_gamemain) :ObjectBase(set_gamemain) {}
     ~FallingRock();
     void Update();
     void Draw() const;
+    void Initialize(float set_x, float set_y);
+    void Finalize();
 
     bool GetLanding() { return landing_flg; }
     bool GetBlackOut() { return black_out_flg; }

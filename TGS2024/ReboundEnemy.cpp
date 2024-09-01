@@ -1,5 +1,5 @@
 #include "ReboundEnemy.h"
-
+/*
 ReboundEnemy::ReboundEnemy(float set_x, float set_y)
 {
 	// 中心座標
@@ -31,7 +31,7 @@ ReboundEnemy::ReboundEnemy(float set_x, float set_y)
 	roll_left_flg = true;							// 左に転がる
 	roll_flg = false;								// 転がっていない
 }
-
+*/
 ReboundEnemy::~ReboundEnemy()
 {
 	// 画像の削除
@@ -97,19 +97,52 @@ void ReboundEnemy::Move()
 
 void ReboundEnemy::Death()
 {
-	if (anim_cnt <= 30)
-	{
-		anim_cnt++;
-	}
-	else
-	{
-		// 削除
-		is_delete = true;
-	}
+	//if (anim_cnt <= 30)
+	//{
+	//	anim_cnt++;
+	//}
+	//else
+	//{
+	//	// 削除
+	//	is_delete = true;
+	//}
 }
 
 void ReboundEnemy::DeathAnimation()
 {
+
+}
+
+void ReboundEnemy::Initialize(float set_x, float set_y)
+{
+	// 中心座標
+	world.x = set_x;
+	world.y = set_y;
+	location.x = set_x;
+	location.y = set_y;
+	width = 64.0f;
+	height = 64.0f;
+
+	move_x = -1.0f;			// 移動量
+	move_y = 1.0f;
+	hp = 30.0f;
+	speed = 2.0f;
+	direction = false;
+
+	enemy_state = EnemyState::WALK;
+
+	// 画像の読み込み
+	enemy_img = LoadGraph("images/Enemy/Rebound.png");
+
+	angle = 0.0;
+	degree = 0.0;
+
+	player_world_x = 0.0f;
+	player_world_y = 0.0f;
+
+	hit_pickaxe_flg = false;						// つるはしに当たっていない
+	roll_left_flg = true;							// 左に転がる
+	roll_flg = false;								// 転がっていない
 
 }
 

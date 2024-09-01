@@ -109,9 +109,9 @@ private:
 
     ObjectNum object_num;
 
-    LongLeggedEnemy** long_legs_enemy;  // 脚が長い敵
-    HardEnemy* hard_enemy[HARD_ENEMY_MAXNUM];             // ダイナマイトでしか倒せない敵
-    ReboundEnemy* rebound_enemy[REBOUND_ENEMY_MAXNUM];      // つるはし攻撃で転がる敵
+    //LongLeggedEnemy** long_legs_enemy;  // 脚が長い敵
+    //HardEnemy* hard_enemy[HARD_ENEMY_MAXNUM];             // ダイナマイトでしか倒せない敵
+    //ReboundEnemy* rebound_enemy[REBOUND_ENEMY_MAXNUM];      // つるはし攻撃で転がる敵
 
     cameraposition camera_pos;
 

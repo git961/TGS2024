@@ -216,6 +216,9 @@
     <ClCompile Include="CharacterManager.cpp">
       <Filter>ソース ファイル\BaseFile</Filter>
     </ClCompile>
+    <ClCompile Include="CharacterBase.cpp">
+      <Filter>ソース ファイル\BaseFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fps.h">

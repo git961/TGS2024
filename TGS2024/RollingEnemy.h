@@ -3,8 +3,6 @@
 #include "CharacterBase.h"
 #include "GameMainScene.h"
 
-class GameMainScene;
-
 // 転がる敵
 class RollingEnemy : public CharacterBase
 {
@@ -32,13 +30,21 @@ private:
 
 public:
 
-    RollingEnemy(float set_x);
+
+    //RollingEnemy(float set_x);
+    RollingEnemy(class GameMainScene* set_gamemain) :CharacterBase(set_gamemain) {};
     ~RollingEnemy();
 
-    void Update(GameMainScene* gamemain);
-    void Draw() const;
-
+    //void Update(GameMainScene* gamemain);
     void Damage(int damage);                // 被ダメージ処理
+
+    void Initialize(float set_x, float set_y);
+    void Update();
+    void Draw() const;
+    void Move();
+    void DeathAnimation();
+    void Finalize();
+    void Death();
 
     float GetHp() const { return hp; }            // hp取得
     float GetAttack() const { return attack; }// 攻撃力取得
