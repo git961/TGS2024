@@ -4,7 +4,7 @@
 class CageDoor : public ObjectBase
 {
 private:
-	int cage_door_img;					// 檻のドアの画像
+	int cage_door_img[2];					// 檻のドアの画像
 
 	float hp;							// 体力
 	int img_num;						// 画像番号

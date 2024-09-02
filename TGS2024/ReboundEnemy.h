@@ -18,8 +18,7 @@ private:
 	double angle;						// 画像の角度
 	double degree;						// 角度計算用
 
-	float player_world_x;
-	float player_world_y;
+	bool player_direction;				// プレイヤーの向き
 
 	bool hit_pickaxe_flg;				// つるはしに当たったか？
 	bool roll_left_flg;					// 左に転がるか？
@@ -46,7 +45,7 @@ private:
 	void CheckDeathCondition();
 
 public:
-	void SetPlayerWorldLocation(World set_world);
+	void SetPlayerDirection(bool set_direction);
 
 	bool GetRollFlg() const;
 

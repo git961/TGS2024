@@ -24,8 +24,7 @@ ReboundEnemy::ReboundEnemy(float set_x, float set_y)
 	angle = 0.0;
 	degree = 0.0;
 
-	player_world_x = 0.0f;
-	player_world_y = 0.0f;
+	player_direction = true;
 
 	hit_pickaxe_flg = false;						// つるはしに当たっていない
 	roll_left_flg = true;							// 左に転がる
@@ -84,11 +83,10 @@ void ReboundEnemy::Draw() const
 
 void ReboundEnemy::Move()
 {
-	// ステージの端に来たら跳ね返る
+	// ステージの端に来たら死亡
 	if (world.x + width / 2 > FIELD_WIDTH || world.x - width / 2 < 0)
 	{
-		// 移動量の反転
-		move_x *= -1;
+		hp = 0.0f;
 	}
 
 	// 横移動
@@ -146,7 +144,7 @@ void ReboundEnemy::ChangeAngle()
 
 void ReboundEnemy::CheckDirectionRolling()
 {
-	if (world.x >= player_world_x)
+	if (player_direction == false)
 	{
 		// 右に転がる
 		roll_left_flg = false;
@@ -166,10 +164,9 @@ void ReboundEnemy::CheckDeathCondition()
 	}
 }
 
-void ReboundEnemy::SetPlayerWorldLocation(World set_world)
+void ReboundEnemy::SetPlayerDirection(bool set_direction)
 {
-	player_world_x = set_world.x;
-	player_world_y = set_world.y;
+	player_direction = set_direction;
 }
 
 bool ReboundEnemy::GetRollFlg() const

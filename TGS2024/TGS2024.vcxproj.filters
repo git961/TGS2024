@@ -43,9 +43,6 @@
     <Filter Include="ソース ファイル\StageFile">
       <UniqueIdentifier>{9bb80dd1-8eb0-4dc4-a1e0-4025818cb88c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\StageFile">
-      <UniqueIdentifier>{12e94412-d881-465b-9799-0a039c7757e5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\UI">
       <UniqueIdentifier>{97f5c3f5-5d09-4dd9-8e46-7f467ea66bf7}</UniqueIdentifier>
     </Filter>
@@ -84,6 +81,9 @@
     </Filter>
     <Filter Include="ヘッダー ファイル\StageObjectFile\Lift">
       <UniqueIdentifier>{71217a04-efe7-462a-9538-018c385313b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\StageFile">
+      <UniqueIdentifier>{12e94412-d881-465b-9799-0a039c7757e5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
