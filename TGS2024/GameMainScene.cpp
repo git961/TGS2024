@@ -2930,7 +2930,7 @@ void GameMainScene::ReboundEnemyUpdate()
 
 		rebound_enemy[i]->Update();
 
-		rebound_enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+		rebound_enemy[i]->SetPlayerDirection(player->GetDirection());
 
 		if (rebound_enemy[i]->GetDeleteFlg() == true)
 		{

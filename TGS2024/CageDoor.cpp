@@ -32,11 +32,13 @@ void CageDoor::Update()
 {
 	// 頂点の設定
 	SetVertex();
-
-	if (hp <= 0.0f)
+	if (open_flg == false)
 	{
-		// ドアが開くアニメーション
-		DoorOpenAnimation();
+		if (hp <= 0.0f)
+		{
+			// ドアが開くアニメーション
+			DoorOpenAnimation();
+		}
 	}
 }
 
