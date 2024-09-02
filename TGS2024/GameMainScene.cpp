@@ -1288,10 +1288,6 @@ void GameMainScene::Draw() const
 	//DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
 	//DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
 	//DrawFormatString(300, 240, 0xffffff, "stagenum:%d", stage_num);
-	DrawFormatString(300, 240, 0xffffff, "lift:%d",object_num.lift_cnt);
-	DrawFormatString(300, 260, 0xffffff, "enemy:%d", enemy_count);
-	DrawFormatString(300, 280, 0xffffff, "rock:%d", object_num.rock_cnt);
-	DrawFormatString(300, 300, 0xffffff, "geyser:%d", object_num.geyser_cnt);
 	/*
 	*     int fragile_wall_cnt=0;
     int cage_cnt=0;

@@ -32,8 +32,8 @@ Player::Player(float set_x)
 
 	anim_cnt = 0;
 
-	world.x = set_x;
-	world.y = 500.0f;
+	world.x = 200.0f;
+	world.y = 1700.0f;
 
 	location.x = 0;
 	location.y = 500.0f;
@@ -302,32 +302,6 @@ void Player::Update(GameMainScene* gamemain)
 
 		PlayerFall();
 
-		//マップチップとの当たり判定
-		if (direction==0&&gamemain->CollisionCharaRight(half_width,half_height,world))
-		{
-			//食い込んだので元の位置に戻す
-			world.x = curent_x;
-		}
-		else if (direction == 1&&gamemain->CollisionCharaLeft(half_width, half_height,world))
-		{
-			world.x = curent_x;
-		}
-
-		if (gamemain->CollisionCharaTop(half_width, half_height, world))
-		{
-			speed = 2.0f;
-		}
-
-		//移動前のｘ座標を渡す
-		if (gamemain->CollisionCharaBottom(half_width, half_height, curent_x, world.y))
-		{
-			speed = 0.0f;
-			world.y = world.y / BLOCKSIZE * BLOCKSIZE;
-		}
-		else {
-			speed = 2.0f;
-		}
-
 
 		if (gamemain->GetPlayerNotBack() ==false)
 		{
@@ -437,21 +411,40 @@ void Player::Update(GameMainScene* gamemain)
 			}
 		}
 
-		//if (stop_walk_snd == true)
-		//{
-			//StopSoundMem(op_run_sound);
-		//}
 
 		if (player_state != WALK)
 		{
 			// 上のif文から処理を持ってきました。
 			StopSoundMem(op_run_sound);
-
-			//if (stop_walk_snd == true)
-			//{
-			//	stop_walk_snd = false;
-			//}
 		}
+
+		//マップチップとの当たり判定
+		if (direction == 0 && gamemain->CollisionCharaRight(half_width, half_height, world))
+		{
+			//食い込んだので元の位置に戻す
+			world.x = curent_x;
+		}
+		else if (direction == 1 && gamemain->CollisionCharaLeft(half_width, half_height, world))
+		{
+			world.x = curent_x;
+		}
+
+		if (gamemain->CollisionCharaTop(half_width, half_height, world))
+		{
+			speed = 2.0f;
+		}
+
+		//移動前のｘ座標を渡す
+		if (gamemain->CollisionCharaBottom(half_width, half_height, curent_x, world.y))
+		{
+			speed = 0.0f;
+			world.y = world.y / BLOCKSIZE * BLOCKSIZE;
+		}
+		else {
+			speed = 2.0f;
+		}
+
+
 
 		break;
 	default:
@@ -535,8 +528,8 @@ void Player::Draw() const
 
 	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
 	//DrawFormatString(700, 500, 0xff0000, "move_x : %f", move_x);
-	DrawFormatString(location.x, location.y - 80, 0xff0000, "fall_flg : %d",fall_flg);
-	DrawFormatString(location.x, location.y -100, 0xff0000, "speed : %f",speed);
+	//DrawFormatString(location.x, location.y - 80, 0xff0000, "fall_flg : %d",fall_flg);
+	//DrawFormatString(location.x, location.y -100, 0xff0000, "speed : %f",speed);
 
 
 #endif // DEBUG
