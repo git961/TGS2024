@@ -6,7 +6,6 @@
 #include "padinput.h"
 #include "Enemy.h"
 
-class GameMainScene;
 class StageBlock;
 class AnimScene;
 class Enemy;
@@ -160,6 +159,7 @@ public:
     Player();
     Player(float set_x);
     ~Player();
+
 
     void Update(GameMainScene* gamemain);
     void Draw() const;

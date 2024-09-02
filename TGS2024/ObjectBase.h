@@ -3,7 +3,6 @@
 #include "DxLib.h"
 #include "Define.h"
 
-
 struct Vec2
 {
 	float x;
@@ -32,9 +31,10 @@ protected:
 	World world;
 	Boxvertex box_vertex;
 
-
 	float width;//幅
 	float height;//高さ
+	float half_width;//半分の幅
+	float half_height;//半分の高さ
 
 	float distance_x;//x同士の距離の計算用
 	float distance_y;//y同士の距離の計算用
@@ -43,6 +43,7 @@ protected:
 	float two_heights;//2つの高さを合わせる用
 
 	//opponent:意味→相手
+
 
 public:
 	//コンストラクタとデストラクタ
@@ -96,7 +97,6 @@ public:
 	float GetWidth() { return width; }
 	float GetHeight() { return height; }
 
-
 	//キャラのlocationとスクリーンの原点を引いてスクリーン座標上の位置に変換
 	void SetLocalPosition(float set_origin_posx, float set_origin_posy)
 	{
@@ -120,6 +120,7 @@ public:
 		//下の座標をセット
 		box_vertex.lower_y = location.y + height / 2;
 	};
+
 
 
 };

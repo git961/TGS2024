@@ -50,6 +50,8 @@ Player::Player(float set_x)
 	//幅と座標
 	width = 50;
 	height = 80;
+	half_width = width / 2.0f;
+	half_height = height / 2.0f;
 
 	direction = 0;
 
@@ -300,10 +302,27 @@ void Player::Update(GameMainScene* gamemain)
 
 		PlayerFall();
 
+		//マップチップとの当たり判定
+		if (direction==0&&gamemain->CollisionCharaRight(half_width,half_height,world))
+		{
+			//食い込んだので元の位置に戻す
+			world.x = curent_x;
+		}
+		else if (direction == 1&&gamemain->CollisionCharaLeft(half_width, half_height,world))
+		{
+			world.x = curent_x;
+		}
+
+		if (gamemain->CollisionCharaTop(half_width, half_height, world))
+		{
+			speed = 2.0f;
+		}
+
 		//移動前のｘ座標を渡す
-		if (gamemain->CollisionCharaBottom(curent_x, world.y))
+		if (gamemain->CollisionCharaBottom(half_width, half_height, curent_x, world.y))
 		{
 			speed = 0.0f;
+			world.y = world.y / BLOCKSIZE * BLOCKSIZE;
 		}
 		else {
 			speed = 2.0f;

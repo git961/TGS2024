@@ -221,6 +221,8 @@ public:
     int GetPlayerLife() { return p_life_num; }
     bool GetPlayerNotBack() { return p_notback_flg; }
 
+    MapIo* GetMapIo() { return mapio; }
+
     void Tutorial();
 
     void EnemyDamage(int enemynum,float damage);
@@ -285,10 +287,9 @@ public:
     void PickaxeHitReboundEnemy();         // つるはしとつるはしで転がる敵の当たり判定
 
     bool CollisionCheck(float set_x,float set_y);
-    bool CollisionCharaRight(World set_xy);
-    bool CollisionCharaBottom(float set_x,float set_y);
-    void PlayerHitCollision();
-    //float GetCameraX() { return camera_x; };
-    //float GetCameraY() { return camera_y; };
+    bool CollisionCharaRight(float set_half_width,float set_half_height,World set_xy);
+    bool CollisionCharaLeft(float set_half_width, float set_half_height, World set_xy);
+    bool CollisionCharaTop(float set_half_width, float set_half_height, World set_xy);
+    bool CollisionCharaBottom(float set_half_width, float set_half_height, float set_x,float set_y);
 };
 

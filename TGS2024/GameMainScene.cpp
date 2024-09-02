@@ -3008,7 +3008,7 @@ void GameMainScene::PickaxeHitReboundEnemy()
 }
 
 
-//koko
+//当たり判定
 bool GameMainScene::CollisionCheck(float set_x, float set_y)
 {
 	//受け取ったワールド座標からマップデータの列colと行rowに各当する所を求める
@@ -3028,38 +3028,43 @@ bool GameMainScene::CollisionCheck(float set_x, float set_y)
 	return false;
 }
 
-bool GameMainScene::CollisionCharaRight(World set_xy)
+//マップチップとキャラの右辺が重なっているか
+bool GameMainScene::CollisionCharaRight(float set_half_width, float set_half_height, World set_xy)
+{
+	//プレイヤーの右上の座標を入れる
+	bool right_top = CollisionCheck(set_xy.x + set_half_width -1.0f, set_xy.y - set_half_height);
+	bool right_center = CollisionCheck(set_xy.x + set_half_width -1.0f, set_xy.y);
+	bool right_bottom = CollisionCheck(set_xy.x + set_half_width - 1.0f, set_xy.y + set_half_height - 2.0f);
+	return right_top ||right_center|| right_bottom;
+}
+
+//マップチップとキャラの左辺が重なっているか
+bool GameMainScene::CollisionCharaLeft(float set_half_width, float set_half_height, World set_xy)
 {
 	//プレイヤーの左上の座標を入れる
-	bool right_top = CollisionCheck(set_xy.x + player->GetHalfWidth()-1.0f, set_xy.y);
-	bool right_bottom = CollisionCheck(set_xy.x + player->GetHalfWidth() - 1.0f, set_xy.y + player->GetHalfHeight() - 1);
-	return right_top || right_bottom;
+	bool left_top = CollisionCheck(set_xy.x - set_half_width, set_xy.y - set_half_height);
+	bool left_center = CollisionCheck(set_xy.x - set_half_width, set_xy.y);
+	bool left_bottom = CollisionCheck(set_xy.x - set_half_width, set_xy.y + set_half_height - 2.0f);
+	return left_top ||left_center|| left_bottom;
 }
 
-bool GameMainScene::CollisionCharaBottom(float set_x, float set_y)
+//マップチップとキャラの上辺が重なっているか
+bool GameMainScene::CollisionCharaTop(float set_half_width, float set_half_height, World set_xy)
+{
+	bool top_left = CollisionCheck(set_xy.x - set_half_width, set_xy.y - set_half_height);
+	bool top_right = CollisionCheck(set_xy.x + set_half_width-1.0f, set_xy.y - set_half_height);
+	return top_left || top_right;
+}
+
+bool GameMainScene::CollisionCharaBottom(float set_half_width, float set_half_height, float set_x, float set_y)
 {
 	//マップチップとキャラの下が接しているか
-	bool bottom_left = CollisionCheck(set_x - player->GetHalfWidth(), set_y + player->GetHalfWidth());
-	bool bottom_right = CollisionCheck(set_x + player->GetHalfWidth() - 1, set_y + player->GetHalfHeight());
-	return bottom_left||bottom_right;
+	bool bottom_left = CollisionCheck(set_x - set_half_width, set_y + set_half_height);
+	bool bottom_center = CollisionCheck(set_x, set_y + set_half_height);
+	bool bottom_right = CollisionCheck(set_x + set_half_width - 1.0f, set_y +set_half_height);
+	return bottom_left||bottom_center||bottom_right;
 }
 
-
-void GameMainScene::PlayerHitCollision()
-{
-	if (player != nullptr)
-	{
-		//プレイヤーが右を向いていたら
-		if (player->GetDirection() == 0)
-		{
-			if (CollisionCharaRight(player->GetWorldLocation()))
-			{
-				//プレイヤーを移動前の元の位置に戻す
-			}
-
-		}
-	}
-}
 
 //プレイヤーとリスポーンブロックの当たり判定
 void GameMainScene::PlayerHitRespawn()
