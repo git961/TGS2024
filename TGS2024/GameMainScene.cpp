@@ -971,7 +971,9 @@ void GameMainScene::Draw() const
 	// 背景画像描画（仮）
 	for (int i = 0; i < 8; i++)
 	{
-		DrawGraph((int)location_x + 1280 * i, (int)location_y, back_img[1], FALSE);
+		for (int j = 0; j < 4; j++) {
+			DrawGraph((int)location_x + 1280 * i, (int)location_y+720*j, back_img[1], FALSE);
+		}
 	}
 
 	DrawGraph((int)location_x + 1280 * 8, (int)location_y, back_img[9], FALSE);
@@ -1298,8 +1300,10 @@ void GameMainScene::Draw() const
     int lift_cnt;
     int rock_cnt;
 	*/
-	//DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
-	//DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
+	DrawFormatString(300, 220, 0xffffff, "camera.x: %f", camera_pos.x);
+	DrawFormatString(300, 240, 0xffffff, "camera.y: %f", camera_pos.y);
+	//DrawCircleAA(camera_pos.x - screen_origin_position.x, camera_pos.y - screen_origin_position.y, 3, 1, 0x556b2f, TRUE);
+	DrawCircle(camera_pos.x - screen_origin_position.x, camera_pos.y - screen_origin_position.y, 3, 0x556b2f, TRUE);
 	//DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
 	//DrawFormatString(30, 300, 0xffffff, "m_mode: %d", map_mode);
 	//DrawFormatString(30, 300, 0xffffff, "e_cnt: %d", enemy_count);
@@ -1335,7 +1339,7 @@ void GameMainScene::UpdateCamera(World world)
 {
 	//追従する相手のワールド座標をもらう
 	camera_pos.x = world.x;
-	camera_pos.y = world.y;
+	//camera_pos.y = world.y-256.0f;
 
 
 	//X軸のステージの内外判定
@@ -1352,9 +1356,31 @@ void GameMainScene::UpdateCamera(World world)
 	}
 
 
-	//Y軸のステージの内外判定
 
-	//ワールドのてっぺんに到達したらカメラが移動しないように
+	//ｙ：960よりも上に居たら
+	if (world.y < 960) {
+		//上部に居る
+	}else if (world.y < 1920) {
+		//中部に居る
+		//プレイヤーのstateが中部ではなかったら、カメラをゆっくり上に追従させる動きをしてから固定する
+	}
+	else {
+		//下部に居る
+	}
+
+	//中部のｙ1280よりも下にいたら、カメラを動かさない
+	if (world.y<1920&&world.y > 1280)
+	{
+		camera_pos.y = 1920- WINDOW_HALFY;
+	}
+	else {
+		if (world.y < camera_pos.y) {
+			camera_pos.y-=7;
+		}
+	}
+
+	//Y軸のステージの内外判定
+	////ワールドのてっぺんに到達したらカメラが移動しないように
 	if (camera_pos.y - WINDOW_HALFY <= 0.0f)
 	{
 		camera_pos.y = WINDOW_HALFY;

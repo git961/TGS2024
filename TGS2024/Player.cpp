@@ -523,7 +523,7 @@ void Player::Draw() const
 	DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + width / 2, (int)location.y + height / 2, 0x00ffff, FALSE);
 	//DrawBox((int)location.x - 128 / 2, (int)location.y - 128 / 2, (int)location.x + 128 / 2, (int)location.y + 128 / 2, 0x00ffff, FALSE);
 
-	//DrawFormatString(location.x, location.y-60, 0xffffff, "world.y: %f,limit_y:%f",world.y,limit_y);
+	DrawFormatString(location.x, location.y-60, 0xffffff, "world.y: %f",world.y);
 	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 
 	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
