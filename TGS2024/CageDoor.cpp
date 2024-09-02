@@ -10,7 +10,8 @@ CageDoor::CageDoor(float set_x, float set_y)
 	height = 128.0f;
 
 	// 画像の読み込み
-	cage_door_img = LoadGraph("images/Stage/Gimmick/Cage_Door.png");
+	LoadDivGraph("images/Stage/Gimmick/Cage_Door.png", 2, 2, 1, 128, 128, cage_door_img);
+	img_num = 0;
 
 	hp = 40.0f;
 	img_num = 0;
@@ -21,7 +22,10 @@ CageDoor::CageDoor(float set_x, float set_y)
 CageDoor::~CageDoor()
 {
 	// 画像の削除
-	DeleteGraph(cage_door_img);
+	for (int i = 0; i < 2; i++)
+	{
+		DeleteGraph(cage_door_img[i]);
+	}
 }
 
 void CageDoor::Update()
@@ -39,7 +43,7 @@ void CageDoor::Update()
 void CageDoor::Draw() const
 {
 	// ドアの画像
-	DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, cage_door_img, TRUE);
+	DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, cage_door_img[img_num], TRUE);
 
 	DrawFormatString((int)location.x, (int)location.y, 0xff0000, "anim_cnt; %d", anim_cnt);
 
@@ -56,6 +60,7 @@ void CageDoor::DoorOpenAnimation()
 	}
 	else
 	{
+		img_num = 1;
 		// ドアが開いた
 		open_flg = true;
 	}

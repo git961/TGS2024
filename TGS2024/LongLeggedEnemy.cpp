@@ -88,11 +88,11 @@ void LongLeggedEnemy::Update()
 
 void LongLeggedEnemy::Draw() const
 {
-	if (hp > 0.0f)
-	{
-		// 脚の画像
-		DrawRotaGraph((int)location.x, (int)leg_location_y, 1.0, 0.0, enemy_leg_img[enemy_leg_img_num], TRUE, direction);
-	}
+	//if (hp > 0.0f)
+	//{
+	//	// 脚の画像
+	//	DrawRotaGraph((int)location.x, (int)leg_location_y, 1.0, 0.0, enemy_leg_img[enemy_leg_img_num], TRUE, direction);
+	//}
 
 	// 敵の顔の画像
 	DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img[enemy_img_num], TRUE, direction);
