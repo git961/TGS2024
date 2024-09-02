@@ -62,6 +62,13 @@ enum class StageNum
     stage2
 };
 
+enum class CurrentLocation
+{
+    upper,//上部
+    middle,//中部
+    lower//下部
+};
+
 struct ObjectNum {
     int fragile_wall_cnt=0;
     int cage_cnt=0;
@@ -79,6 +86,7 @@ private:
 
     GameState game_state;
     StageNum stage_num;
+    CurrentLocation current_location;
 
     Player* player;
     Enemy* enemy[ENEMYMAXNUM];

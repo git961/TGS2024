@@ -16,6 +16,7 @@ GameMainScene::GameMainScene(bool set_flg)
 
 	// 読み込みたいステージ
 	stage_num = StageNum::stage2;
+	current_location = CurrentLocation::middle;
 
 	retry_flg = set_flg;
 	checkhit = false;
@@ -1355,29 +1356,46 @@ void GameMainScene::UpdateCamera(World world)
 		camera_pos.x = FIELD_WIDTH - WINDOW_HALFX;
 	}
 
-
+	
 
 	//ｙ：960よりも上に居たら
 	if (world.y < 960) {
 		//上部に居る
+		current_location = CurrentLocation::upper;
+
 	}else if (world.y < 1920) {
 		//中部に居る
 		//プレイヤーのstateが中部ではなかったら、カメラをゆっくり上に追従させる動きをしてから固定する
+		if (current_location != CurrentLocation::middle) {
+			current_location = CurrentLocation::middle;
+			
+			//どっちもいいぐらいでとめる
+			//上から来たらカメラを下に下げていく
+			if (current_location == CurrentLocation::upper) {
+
+			}
+			else {
+				//下から来たらカメラを上に上げる
+
+			}
+		}
+
 	}
 	else {
 		//下部に居る
+		current_location = CurrentLocation::lower;
 	}
 
-	//中部のｙ1280よりも下にいたら、カメラを動かさない
-	if (world.y<1920&&world.y > 1280)
-	{
-		camera_pos.y = 1920- WINDOW_HALFY;
-	}
-	else {
-		if (world.y < camera_pos.y) {
-			camera_pos.y-=7;
-		}
-	}
+	////中部のｙ1280よりも下にいたら、カメラを動かさない
+	//if (world.y<1920&&world.y > 1280)
+	//{
+	//	camera_pos.y = 1920- WINDOW_HALFY;
+	//}
+	//else {
+	//	if (world.y < camera_pos.y) {
+	//		camera_pos.y-=7;
+	//	}
+	//}
 
 	//Y軸のステージの内外判定
 	////ワールドのてっぺんに到達したらカメラが移動しないように
