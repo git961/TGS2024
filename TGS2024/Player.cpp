@@ -860,6 +860,7 @@ void Player::PlayerAttack()
 				p_imgnum = 44;
 				break;
 			case 13:
+				pickaxe_add_x = -15.0f;
 				p_atk_imgnum = 3;
 				effect_num = 1;
 				p_imgnum = 45;
