@@ -231,6 +231,8 @@ public:
 
     MapIo* GetMapIo() { return mapio; }
 
+ //   StageBlock* GetStageBlock(int num_y,int num_x){return stage_block[num_y][num_x] }
+
     void Tutorial();
 
     void EnemyDamage(int enemynum,float damage);
@@ -299,5 +301,7 @@ public:
     bool CollisionCharaLeft(float set_half_width, float set_half_height, World set_xy);
     bool CollisionCharaTop(float set_half_width, float set_half_height, World set_xy);
     bool CollisionCharaBottom(float set_half_width, float set_half_height, float set_x,float set_y);
+    
+
 };
 

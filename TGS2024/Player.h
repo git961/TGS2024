@@ -41,6 +41,7 @@ private:
     float curent_x;//元居たｘ
     float curent_y;//元居たy
     
+    float set_speed;
     
     float limit_y;//落下の上限用
     bool fall_flg;//落ちるか？
@@ -257,5 +258,8 @@ public:
     void HitPlayerLeft(Boxvertex set_box_vertex);
     void HitPlayerUp(Boxvertex set_box_vertex);
     void HitPlayerDown(Boxvertex set_box_vertex);
+
+    //下がめり込んでいるか
+    void SinkCheck(GameMainScene* gamemain,float set_x, float set_y);
 
 };

@@ -12,7 +12,7 @@ StageBlock::StageBlock(int set_block_num,float set_x, float set_y)
 {
 	height = BLOCKSIZE;
 	width= BLOCKSIZE;
-
+	
 	world.x = set_x;
 	world.y = set_y;
 	location.x = set_x;

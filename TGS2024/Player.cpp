@@ -156,7 +156,8 @@ Player::Player(float set_x)
 
 	limit_y = 600;
 	fall_flg = false;
-	speed = 2.0f;
+	set_speed = 4.0f;
+	speed = set_speed;
 
 }
 
@@ -431,17 +432,21 @@ void Player::Update(GameMainScene* gamemain)
 
 		if (gamemain->CollisionCharaTop(half_width, half_height, world))
 		{
-			speed = 2.0f;
+			speed = set_speed;
 		}
 
 		//移動前のｘ座標を渡す
 		if (gamemain->CollisionCharaBottom(half_width, half_height, curent_x, world.y))
 		{
 			speed = 0.0f;
-			world.y = world.y / BLOCKSIZE * BLOCKSIZE;
+			//float overlap_y = (height / 2 + BLOCKSIZE / 2) - fabs(world.y - BLOCKSIZE / 2);
+			//world.y -= overlap_y;//上に押し出す？
+			//world.y = world.y / (float)BLOCKSIZE * (float)BLOCKSIZE;
+			SinkCheck(gamemain, curent_x-half_width, world.y+half_height-1.0f);
+
 		}
 		else {
-			speed = 2.0f;
+			speed = set_speed;
 		}
 
 
@@ -520,7 +525,7 @@ void Player::Draw() const
 	//}
 	////DrawFormatString(100, 100, 0xffffff, "Right:%d", a);
 	//DrawFormatString(100, 120, 0xffffff, "btnnum: % d", input.Btnnum);
-	DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + width / 2, (int)location.y + height / 2, 0x00ffff, FALSE);
+	DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + (int)width / 2, (int)location.y + (int)height / 2, 0x00ffff, FALSE);
 	//DrawBox((int)location.x - 128 / 2, (int)location.y - 128 / 2, (int)location.x + 128 / 2, (int)location.y + 128 / 2, 0x00ffff, FALSE);
 
 	DrawFormatString(location.x, location.y-60, 0xffffff, "world.y: %f",world.y);
@@ -2015,6 +2020,29 @@ void Player::HitPlayerRight(Boxvertex set_box_vertex)
 void Player::HitPlayerDown(Boxvertex set_box_vertex)
 {
 
+
+
+}
+
+void Player::SinkCheck(GameMainScene* gamemain,float set_x, float set_y)
+{
+	int col = (int)set_x / BLOCKSIZE;
+	int row = (int)set_y / BLOCKSIZE;
+
+	if (gamemain->GetMapIo()->GetMapData(row, col) == 1) {
+		float block_x = (float)col* BLOCKSIZE;
+		float block_y = (float)row * BLOCKSIZE;
+
+		//上の座標を取る
+		block_x = block_x - (float)BLOCKSIZE;
+		//block_y = block_y - (float)BLOCKSIZE;
+
+		float sink_y = set_y - block_y;
+		
+		if (sink_y > 0) {
+			world.y = world.y - sink_y;
+		}
+	}
 
 
 }

@@ -3137,7 +3137,10 @@ bool GameMainScene::CollisionCharaBottom(float set_half_width, float set_half_he
 	bool bottom_center = CollisionCheck(set_x, set_y + set_half_height);
 	bool bottom_right = CollisionCheck(set_x + set_half_width - 1.0f, set_y +set_half_height);
 	return bottom_left||bottom_center||bottom_right;
+
 }
+
+
 
 
 //プレイヤーとリスポーンブロックの当たり判定
