@@ -1301,37 +1301,21 @@ void GameMainScene::Draw() const
     int lift_cnt;
     int rock_cnt;
 	*/
+
+	if (game_state==EDITOR&&mapio != nullptr) {
+		DrawFormatString(400, 100, 0xffffff, "EDITOR_NOW");
+		mapio->Draw();
+	}
+
 	DrawFormatString(300, 220, 0xffffff, "camera.x: %f", camera_pos.x);
-	DrawFormatString(300, 240, 0xffffff, "camera.y: %f", camera_pos.y);
+	DrawFormatString(300, 240, 0xffffff, "camera.y: %f > y: %d", camera_pos.y, 960 - WINDOW_HALFY);
+	DrawFormatString(300, 260, 0xffffff, "CurrentLoction: %d", current_location);
 	//DrawCircleAA(camera_pos.x - screen_origin_position.x, camera_pos.y - screen_origin_position.y, 3, 1, 0x556b2f, TRUE);
 	DrawCircle(camera_pos.x - screen_origin_position.x, camera_pos.y - screen_origin_position.y, 3, 0x556b2f, TRUE);
 	//DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
 	//DrawFormatString(30, 300, 0xffffff, "m_mode: %d", map_mode);
 	//DrawFormatString(30, 300, 0xffffff, "e_cnt: %d", enemy_count);
 	//DrawFormatString(30, 300, 0xffffff, "p_life_num:%d",p_life_num );
-
-
-	switch (game_state)
-	{
-	case EDITOR:
-		DrawFormatString(400, 100, 0xffffff, "EDITOR_NOW");
-		mapio->Draw();
-		break;
-	case TUTORIAL:
-		//DrawFormatString(400, 100, 0xffffff, "TUTORIAL_NOW");
-		break;
-	case POSE:
-		//DrawFormatString(400, 100, 0xffffff, "POSE_NOW");
-		break;
-	case GOAL:
-		//DrawFormatString(400, 100, 0xffffff, "GOAL!!");
-		break;
-	case PLAY:
-		//DrawFormatString(400, 100, 0xffffff, "PLAY_NOW");
-		break;
-	default:
-		break;
-	}
 
 #endif // DEBUG
 }
@@ -1340,7 +1324,7 @@ void GameMainScene::UpdateCamera(World world)
 {
 	//追従する相手のワールド座標をもらう
 	camera_pos.x = world.x;
-	//camera_pos.y = world.y-256.0f;
+	//camera_pos.y = world.y;
 
 
 	//X軸のステージの内外判定
@@ -1358,32 +1342,75 @@ void GameMainScene::UpdateCamera(World world)
 
 	
 
-	//ｙ：960よりも上に居たら
-	if (world.y < 960) {
-		//上部に居る
-		current_location = CurrentLocation::upper;
+	//ｙ：960よりも上に居たら上部に居る
+	if (world.y < 1280) {
+		
+		//今は言っている値がupperじゃなかったら
+		if (current_location != CurrentLocation::upper)
+		{
+			//プレイヤーのｙを追いかける
+			if (world.y < camera_pos.y) {
+				camera_pos.y -= 7;
+			}
+			else {
+				//プレイヤーのｙに追い付いたら上部に居るってことにする
+				current_location = CurrentLocation::upper;
+			}
+		}
+		else {
+			//カメラがプレイヤーのｙを追いかける
+			camera_pos.y = world.y;
+
+		}
+
+
 
 	}else if (world.y < 1920) {
 		//中部に居る
 		//プレイヤーのstateが中部ではなかったら、カメラをゆっくり上に追従させる動きをしてから固定する
-		if (current_location != CurrentLocation::middle) {
-			current_location = CurrentLocation::middle;
-			
-			//どっちもいいぐらいでとめる
-			//上から来たらカメラを下に下げていく
-			if (current_location == CurrentLocation::upper) {
+		if (current_location != CurrentLocation::middle)
+		{
+			//前に居たところが上部だったら
+			if (current_location == CurrentLocation::upper)
+			{
+				//プレイヤーのｙを追いかける
+				if (1920 - WINDOW_HALFY > camera_pos.y) {
+					camera_pos.y += 5;
+				}
+				else {
+					//プレイヤーのｙに追い付いたら中部に居るってことにする
+					current_location = CurrentLocation::middle;
+				}
+			}
+			else
+			{
+				//前に居たところが下部だったら
 
 			}
-			else {
-				//下から来たらカメラを上に上げる
 
-			}
 		}
+		else {
+			//プレイヤーが元々中部にいたら
+			camera_pos.y = 1920 - WINDOW_HALFY;
+		}
+
+
 
 	}
 	else {
 		//下部に居る
-		current_location = CurrentLocation::lower;
+		if (current_location != CurrentLocation::lower)
+		{
+			//プレイヤーのｙを追いかける
+			if (world.y > camera_pos.y) {
+				camera_pos.y += 7;
+			}
+			else {
+				//プレイヤーのｙに追い付いたら下部に居るってことにする
+				current_location = CurrentLocation::lower;
+			}
+
+		}
 	}
 
 	////中部のｙ1280よりも下にいたら、カメラを動かさない
@@ -1398,7 +1425,7 @@ void GameMainScene::UpdateCamera(World world)
 	//}
 
 	//Y軸のステージの内外判定
-	////ワールドのてっぺんに到達したらカメラが移動しないように
+	//ワールドのてっぺんに到達したらカメラが移動しないように
 	if (camera_pos.y - WINDOW_HALFY <= 0.0f)
 	{
 		camera_pos.y = WINDOW_HALFY;
