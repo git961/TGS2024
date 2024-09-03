@@ -191,6 +191,25 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		map_data_num = 19;
 	}
 
+	//あしなが岩
+	if (CheckHitKey(KEY_INPUT_H) == TRUE)
+	{
+		map_data_num = 20;
+	}
+
+	//Hard岩（ダイナマイトじゃないと壊れない岩
+	if (CheckHitKey(KEY_INPUT_J) == TRUE)
+	{
+		map_data_num = 21;
+	}
+
+	//つるはし攻撃で転がる岩
+	if (CheckHitKey(KEY_INPUT_K) == TRUE)
+	{
+		map_data_num = 22;
+	}
+
+
 	now_abs_x = fabsf(mouse_x - local_posx);
 	now_abs_y = fabsf(mouse_y - local_posy);
 
@@ -363,6 +382,15 @@ void MapIo::Draw() const
 			case 19:
 				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE - (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE - (int)posy, 0x008000, FALSE);
 				break;
+			case 20:
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE - (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE - (int)posy, 0xff1493, FALSE);
+				break;
+			case 21:
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE - (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE - (int)posy, 0xb22222, FALSE);
+				break;
+			case 22:
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE - (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE - (int)posy, 0x778899, FALSE);
+				break;
 			}
 		}
 	}
@@ -427,6 +455,15 @@ void MapIo::Draw() const
 		break;
 	case 19:
 		DrawFormatString(40, 200, 0xffffff, "PUT_RespawnBlock");
+		break;
+	case 20:
+		DrawFormatString(40, 200, 0xffffff, "PUT_LongLegsEnemy");
+		break;
+	case 21:
+		DrawFormatString(40, 200, 0xffffff, "PUT_HardEnemy");
+		break;
+	case 22:
+		DrawFormatString(40, 200, 0xffffff, "PUT_ReboundEnemy");
 		break;
 	}
 	

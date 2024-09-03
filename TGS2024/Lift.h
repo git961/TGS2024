@@ -20,6 +20,9 @@ private:
     float screen_position_x;
     float screen_position_y;
 
+    float shift_y;//リフトの座標ずらす用
+    float shift_img_y;//画像の座標ずらす用
+
     float move_y;//y座標の増加量
     float up_max_y;//y座標の移動の限界座標入れるよう
     float down_max_y;//y座標の移動の限界座標入れるよう

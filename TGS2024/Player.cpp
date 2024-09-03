@@ -2045,3 +2045,11 @@ void Player::SinkCheck(GameMainScene* gamemain,float set_x, float set_y)
 
 
 }
+
+void Player::SinkCheckObject(float set_y)
+{
+	float sink_y = (world.y + half_height) - set_y;
+	if (sink_y > 0) {
+		world.y = world.y - sink_y;
+	}
+}

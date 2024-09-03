@@ -4,25 +4,27 @@ Lift::Lift(float set_x,float set_y)
 {
 	switch_object = new Switch(set_x, set_y);
 	lift_img = LoadGraph("images/Stage/Gimmick/Lift.png");
+	shift_y = 25.0f;
 	world.x = set_x;
-	world.y = set_y;
+	world.y = set_y+shift_y;
 	location.x = set_x;
 	location.y = set_y;
 	move_y = 5.0f;
 	
 	up_max_y = 200;
-	down_max_y =world.y;
+	down_max_y = world.y;
 	screen_position_x = 0.0f;
 	screen_position_y = 0.0f;
 
-	width = 192;
-	height = 40;
+	width = 192.0f;
+	height = 11.0f;
 
 	canmove_flg = false;
 	down_flg = false;
 	anim_start_flg = false;
 	anim_cnt = 0;
 	img_num = 0;
+	shift_img_y = 12.0f;
 }
 
 Lift::~Lift()
@@ -33,19 +35,18 @@ Lift::~Lift()
 
 void Lift::Update(AttackCheck* ac,Player* player)
 {
-	
-	
 
 	//もし動ける状態で上に上がれたら
 	if (canmove_flg == true && down_flg == false)
 	{
+
 		//上のMaxYまで上がる
 		if (world.y >= up_max_y)
 		{
 			world.y = world.y - move_y;
 			if (switch_object != nullptr)
 			{
-				switch_object->SetY(world.y);
+				switch_object->SetY(world.y-shift_y);
 			}
 		}
 		else
@@ -60,14 +61,14 @@ void Lift::Update(AttackCheck* ac,Player* player)
 	//もし動けて、下に下がれたら
 	if (canmove_flg == true && down_flg == true)
 	{
-
+		shift_img_y = 5.0f;
 		//下まで下がる
 		if (world.y < down_max_y)
 		{
 			world.y = world.y + move_y;
 			if (switch_object != nullptr)
 			{
-				switch_object->SetY(world.y);
+				switch_object->SetY(world.y-shift_y);
 			}
 		}
 		else
@@ -79,7 +80,10 @@ void Lift::Update(AttackCheck* ac,Player* player)
 		}
 
 	}
+	else {
+		shift_img_y = 12.0f;
 
+	}
 	
 
 	if (switch_object != nullptr)
@@ -101,16 +105,17 @@ void Lift::Update(AttackCheck* ac,Player* player)
 
 void Lift::Draw() const
 {
-	DrawRotaGraph((int)location.x, (int)location.y, 1,0, lift_img, TRUE);
-	DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + width / 2, (int)location.y + height / 2,0x00ffff,FALSE);
-	//DrawFormatString((int)location.x, (int)location.y-60, 0xFFFFFF, "y:%f", world.y);
-	DrawFormatString((int)location.x, (int)location.y-60, 0xFFFFFF, "count:%d",anim_cnt);
-	DrawFormatString((int)location.x, (int)location.y, 0xFFFFFF, "Canmove:%d,down_flg:%d", canmove_flg,down_flg);
 
+	DrawRotaGraph((int)location.x, (int)location.y-shift_img_y, 1,0, lift_img, TRUE);
+	//DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + width / 2, (int)location.y + height / 2,0x00ffff,FALSE);
+	//DrawFormatString((int)location.x, (int)location.y-60, 0xFFFFFF, "y:%f", world.y);
+	//DrawFormatString((int)location.x, (int)location.y-60, 0xFFFFFF, "count:%d",anim_cnt);
+	//DrawFormatString((int)location.x, (int)location.y, 0xFFFFFF, "Canmove:%d,down_flg:%d", canmove_flg,down_flg);
 	if (switch_object != nullptr)
 	{
 		switch_object->Draw();
 	}
+
 }
 
 void Lift::UpAnim()

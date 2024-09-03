@@ -36,7 +36,7 @@ GameMainScene::GameMainScene(bool set_flg)
 
 	//オブジェクトにNullを代入
 	SetObjectNull();
-	
+	/*
 	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
 	{
 		long_legs_enemy[i] = nullptr;
@@ -54,6 +54,8 @@ GameMainScene::GameMainScene(bool set_flg)
 	long_legs_enemy[0] = new LongLeggedEnemy(3000.0f, 500.0f);
 	hard_enemy[0] = new HardEnemy(3000.0f, 550.0f);
 	rebound_enemy[0] = new ReboundEnemy(2700.0f, 600.0f);
+
+	*/
 
 	//プレイヤー生成
 	if (retry_flg == false)
@@ -116,10 +118,9 @@ GameMainScene::GameMainScene(bool set_flg)
 	enemy_count = 0;
 	//rock_count = 0;
 	rolling_enemy_cnt = 0;
-
-
-
-
+	long_legs_enemy_cnt = 0;
+	hard_enemy_cnt = 0;
+	rebound_enemy_cnt = 0;
 
 
 	if (retry_flg == false)
@@ -409,6 +410,22 @@ void GameMainScene::ResetMap()
 		roll_gem[i] = nullptr;
 	}
 
+	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
+	{
+		long_legs_enemy[i] = nullptr;
+	}
+	for (int i = 0; i < HARD_ENEMY_MAXNUM; i++)
+	{
+		hard_enemy[i] = nullptr;
+	}
+	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
+	{
+		rebound_enemy[i] = nullptr;
+	}
+
+
+
+
 	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
 	{
 		dynamite[i] = nullptr;
@@ -417,6 +434,10 @@ void GameMainScene::ResetMap()
 	block_count = 0;
 	enemy_count = 0;
 	rolling_enemy_cnt = 0;
+	long_legs_enemy_cnt = 0;
+	hard_enemy_cnt = 0;
+	rebound_enemy_cnt = 0;
+
 
 	//マップチップに反映する
 	for (int i = 0; i < map_blockmax_y; i++)
@@ -494,6 +515,36 @@ void GameMainScene::ResetMap()
 					rolling_enemy[rolling_enemy_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				}
 			}
+
+
+			if (long_legs_enemy_cnt < LONG_LEGS_ENEMY_MAXNUM)
+			{
+				if (mapio->GetMapData(i, j) == 20)
+				{
+					long_legs_enemy[long_legs_enemy_cnt] = new LongLeggedEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+					long_legs_enemy[long_legs_enemy_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				}
+			}
+
+			if (hard_enemy_cnt < HARD_ENEMY_MAXNUM)
+			{
+				if (mapio->GetMapData(i, j) == 21)
+				{
+					hard_enemy[hard_enemy_cnt] = new HardEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+					hard_enemy[hard_enemy_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				}
+			}
+
+			if (rebound_enemy_cnt < REBOUND_ENEMY_MAXNUM)
+			{
+				if (mapio->GetMapData(i, j) == 22)
+				{
+					rebound_enemy[rebound_enemy_cnt] = new ReboundEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+					rebound_enemy[rebound_enemy_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				}
+			}
+
+
 		}
 	}
 
@@ -2533,21 +2584,20 @@ void GameMainScene::LiftUpDate()
 //プレイヤーとリフトの当たり判定
 void GameMainScene::PlayerHitLift()
 {
+	
 	for (int i = 0; i < LIFT_MAXNUM; i++)
 	{
 		if (lift[i] != nullptr && player != nullptr)
 		{
 
 			if (player->HitCheck(lift[i]->GetWorldLocation(), lift[i]->GetWidth(), lift[i]->GetHeight()) == true) {
-				//lift[0]->SetCanMove(true);
-				player->SetY(lift[i]->GetWorldLocation().y);
-
+				
+				//player->SetY(lift[i]->GetWorldLocation().y);
+				player->SinkCheckObject(lift[i]->GetWorldLocation().y - lift[i]->GetHeight() / 2.0f);
 			}
-			else if (player->GetLimitY() > player->GetWorldLocation().y)
-			{
-				//当たってないかつプレイヤーがlimitの値より上に居たら
-				//プレイヤーが落ちる
-				player->SetFallFlg(true);
+			else {
+				//リフトの上に居て、リフトが下がっているときに、
+				//離れたらその離れた分player_yに足す？
 			}
 		}
 	}

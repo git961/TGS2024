@@ -261,5 +261,6 @@ public:
 
     //下がめり込んでいるか
     void SinkCheck(GameMainScene* gamemain,float set_x, float set_y);
+    void SinkCheckObject(float set_y);
 
 };
