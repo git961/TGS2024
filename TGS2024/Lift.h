@@ -17,6 +17,8 @@ private:
     bool canmove_flg;//動いて良いか？
     bool down_flg;//下にさがってもいいか
 
+    float check_inside_x;//プレイヤーが近くに居るかのチェック用
+
     float screen_position_x;
     float screen_position_y;
 

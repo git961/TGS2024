@@ -19,6 +19,8 @@ Lift::Lift(float set_x,float set_y)
 	width = 192.0f;
 	height = 11.0f;
 
+	check_inside_x = width;
+
 	canmove_flg = false;
 	down_flg = false;
 	anim_start_flg = false;
@@ -35,6 +37,15 @@ Lift::~Lift()
 
 void Lift::Update(AttackCheck* ac,Player* player)
 {
+
+	if (world.x - (width - 50.0f) <= player->GetWorldLocation().x && world.x + (width + 50.0f) >= player->GetWorldLocation().x)
+	{
+		if (player->GetWorldLocation().y >= world.y + 100.0f&& player->GetWorldLocation().y<=down_max_y)
+		{
+			down_flg = true;
+			canmove_flg = true;
+		}
+	}
 
 	//もし動ける状態で上に上がれたら
 	if (canmove_flg == true && down_flg == false)
