@@ -1374,7 +1374,7 @@ void GameMainScene::UpdateCamera(World world)
 			if (current_location == CurrentLocation::upper)
 			{
 				//プレイヤーのｙを追いかける
-				if (1920 - WINDOW_HALFY > camera_pos.y) {
+				if (world.y> camera_pos.y) {
 					camera_pos.y += 5;
 				}
 				else {
@@ -1397,19 +1397,26 @@ void GameMainScene::UpdateCamera(World world)
 
 
 	}
-	else {
+	else
+	{
 		//下部に居る
 		if (current_location != CurrentLocation::lower)
 		{
-			//プレイヤーのｙを追いかける
+			//
 			if (world.y > camera_pos.y) {
 				camera_pos.y += 7;
 			}
-			else {
+			else
+			{
 				//プレイヤーのｙに追い付いたら下部に居るってことにする
 				current_location = CurrentLocation::lower;
 			}
 
+		}
+		else {
+			//カメラがプレイヤーのｙを追いかける
+			
+			camera_pos.y = world.y;
 		}
 	}
 
@@ -1430,10 +1437,10 @@ void GameMainScene::UpdateCamera(World world)
 	{
 		camera_pos.y = WINDOW_HALFY;
 	}
-	else if (camera_pos.y + WINDOW_HALFY >= FIELD_HEIGHT)
+	else if (camera_pos.y + WINDOW_HALFY >= 2944)
 	{
 		//ワールドの底に到達したらカメラが移動しないように
-		camera_pos.y = FIELD_HEIGHT - WINDOW_HALFY;
+		camera_pos.y = 2944 - WINDOW_HALFY;
 	}
 
 	screen_origin_position = { camera_pos.x - SCREEN_WIDTH / 2.0f,camera_pos.y - SCREEN_HEIGHT / 2.0f };
