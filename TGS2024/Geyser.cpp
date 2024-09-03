@@ -9,7 +9,11 @@ Geyser::Geyser(float set_x, float set_y)
 	width = 64.0f;
 	height = 64.0f;
 
-	gerser_img = LoadGraph("images/Stage/Gimmick/Geyser.png");
+	geyser_img = LoadGraph("images/Stage/Gimmick/Geyser.png");
+	geyser_hill_img = LoadGraph("images/Stage/Gimmick/Geyser_Hill.png");
+
+	hill_y = location.y;
+	now_water_height = 0.0f;
 
 	img_num = 0;
 	anim_cnt = 0;
@@ -22,7 +26,8 @@ Geyser::Geyser(float set_x, float set_y)
 Geyser::~Geyser()
 {
 	// 画像の削除
-	DeleteGraph(gerser_img);
+	DeleteGraph(geyser_img);
+	DeleteGraph(geyser_hill_img);
 }
 
 // 更新処理
@@ -30,6 +35,9 @@ void Geyser::Update()
 {
 	// 頂点の更新
 	SetVertex();
+
+	// 丘の描画座標の更新
+	hill_y = location.y;
 
 	// 水が出ているなら
 	if (stop_water_flg == false)
@@ -41,6 +49,9 @@ void Geyser::Update()
 			{
 				// 上に移動
 				world.y--;
+
+				// 水の高さ
+				now_water_height++;
 			}
 			water_supply_time--;
 
@@ -61,6 +72,7 @@ void Geyser::Update()
 			{
 				// 元の高さに戻る
 				world.y++;
+				now_water_height--;
 				stop_water_time--;
 			}
 			else
@@ -70,8 +82,13 @@ void Geyser::Update()
 
 				// 供給後から水が止まるまでの時間の再設定（3秒）
 				stop_water_time = 180;
+
+				now_water_height = 0.0f;
 			}
 		}
+
+		// 丘のY座標の計算
+		hill_y += now_water_height;
 	}
 }
 
@@ -79,7 +96,10 @@ void Geyser::Update()
 void Geyser::Draw() const
 {
 	// 間欠泉画像の描画
-	DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, gerser_img, TRUE);
+	DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, geyser_img, TRUE);
+
+	// 丘画像の描画
+	DrawRotaGraph((int)location.x, (int)hill_y, 1.0, 0.0, geyser_hill_img, TRUE);
 
 	// 頂点の確認
 	DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
