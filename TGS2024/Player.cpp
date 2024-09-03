@@ -439,9 +439,7 @@ void Player::Update(GameMainScene* gamemain)
 		if (gamemain->CollisionCharaBottom(half_width, half_height, curent_x, world.y))
 		{
 			speed = 0.0f;
-			//float overlap_y = (height / 2 + BLOCKSIZE / 2) - fabs(world.y - BLOCKSIZE / 2);
-			//world.y -= overlap_y;//上に押し出す？
-			//world.y = world.y / (float)BLOCKSIZE * (float)BLOCKSIZE;
+			//くい込んでたら上に押し出す
 			SinkCheck(gamemain, curent_x-half_width, world.y+half_height-1.0f);
 
 		}

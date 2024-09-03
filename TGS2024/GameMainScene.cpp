@@ -1374,8 +1374,8 @@ void GameMainScene::UpdateCamera(World world)
 			if (current_location == CurrentLocation::upper)
 			{
 				//プレイヤーのｙを追いかける
-				if (world.y> camera_pos.y) {
-					camera_pos.y += 5;
+				if (1920 - WINDOW_HALFY > camera_pos.y) {
+					camera_pos.y += 7;
 				}
 				else {
 					//プレイヤーのｙに追い付いたら中部に居るってことにする
@@ -1385,7 +1385,14 @@ void GameMainScene::UpdateCamera(World world)
 			else
 			{
 				//前に居たところが下部だったら
-
+								//プレイヤーのｙを追いかける
+				if (1920-WINDOW_HALFY < camera_pos.y) {
+					camera_pos.y -= 7;
+				}
+				else {
+					//プレイヤーのｙに追い付いたら中部に居るってことにする
+					current_location = CurrentLocation::middle;
+				}
 			}
 
 		}
@@ -1404,7 +1411,7 @@ void GameMainScene::UpdateCamera(World world)
 		{
 			//
 			if (world.y > camera_pos.y) {
-				camera_pos.y += 7;
+				camera_pos.y += 6;
 			}
 			else
 			{
