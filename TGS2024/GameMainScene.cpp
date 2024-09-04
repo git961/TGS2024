@@ -1,5 +1,7 @@
 ﻿#include "GameMainScene.h"
 
+static bool get_key_array[KEY_MAXNUM]={false,false};
+
 //画面の中央を座標に入れる
 static cameraposition camera_pos{ SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f };
 
@@ -36,26 +38,6 @@ GameMainScene::GameMainScene(bool set_flg)
 
 	//オブジェクトにNullを代入
 	SetObjectNull();
-	/*
-	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
-	{
-		long_legs_enemy[i] = nullptr;
-	}
-	for (int i = 0; i < HARD_ENEMY_MAXNUM; i++)
-	{
-		hard_enemy[i] = nullptr;
-	}
-	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
-	{
-		rebound_enemy[i] = nullptr;
-	}
-
-	// stege2敵テスト生成
-	long_legs_enemy[0] = new LongLeggedEnemy(3000.0f, 500.0f);
-	hard_enemy[0] = new HardEnemy(3000.0f, 550.0f);
-	rebound_enemy[0] = new ReboundEnemy(2700.0f, 600.0f);
-
-	*/
 
 	//プレイヤー生成
 	if (retry_flg == false)
@@ -858,6 +840,8 @@ void GameMainScene::Update()
 
 		//カギ宝石更新処理
 		KeyGemUpdate();
+		//カギ宝石とプレイヤーの当たり判定
+		PlayerHitKeyGem();
 
 		//プレイヤーと宝石の当たり判定
 		PlayerHitGem();
@@ -3239,6 +3223,24 @@ void GameMainScene::KeyGemUpdate()
 		{
 			key_gem[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 			key_gem[i]->Update();
+		}
+	}
+}
+
+//プレイヤーとカギ宝石の当たり判定
+void GameMainScene::PlayerHitKeyGem()
+{
+	for (int i = 0; i < KEY_MAXNUM; i++)
+	{
+		if (player!=nullptr&&key_gem[i] != nullptr)
+		{
+			if (player->HitCheck(key_gem[i]->GetWorldLocation(), key_gem[i]->GetWidth(), key_gem[i]->GetHeight()))
+			{
+				//カギget
+				get_key_array[i] = true;
+				//カギ消去
+				key_gem[i] = nullptr;
+			}
 		}
 	}
 }

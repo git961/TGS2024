@@ -389,7 +389,6 @@ void Player::Update(GameMainScene* gamemain)
 		//つるはし攻撃
 		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 		{
-
 			attacking = true;
 			player_state = ATTACK;
 			wait_flg = false;
@@ -438,8 +437,6 @@ void Player::Update(GameMainScene* gamemain)
 		else {
 			speed = set_speed;
 		}
-
-
 
 		break;
 	default:

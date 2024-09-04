@@ -89,6 +89,8 @@ private:
     StageNum stage_num;
     CurrentLocation current_location;
 
+    bool get_key_array[KEY_MAXNUM];//手に入れたカギ入る番号 青：0 赤：1
+
     Player* player;
     Enemy* enemy[ENEMYMAXNUM];
     RollingEnemy* rolling_enemy[ROLLING_ENEMY_MAXNUM];
@@ -305,6 +307,7 @@ public:
     void PickaxeHitReboundEnemy();         // つるはしとつるはしで転がる敵の当たり判定
 
     void KeyGemUpdate();//カギ宝石のアップデート
+    void PlayerHitKeyGem();//プレイヤーとカギ宝石の当たり判定
 
     bool CollisionCheck(float set_x,float set_y);
     bool CollisionCharaRight(float set_half_width,float set_half_height,World set_xy);

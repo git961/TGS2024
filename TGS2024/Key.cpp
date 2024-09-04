@@ -16,6 +16,9 @@ Key::Key(int set_type, float set_x, float set_y)
 	location.x = set_x;
 	location.y = set_y;
 	size = 2.0f;
+
+	width = 64.0f;
+	height = 64.0f;
 }
 
 Key::~Key()
