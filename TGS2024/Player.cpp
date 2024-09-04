@@ -390,14 +390,6 @@ void Player::Update(GameMainScene* gamemain)
 		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
 		{
 
-			//右向きだったら
-			if (direction == 0)
-			{
-				world.x += 3;
-			}
-			else {
-				world.x -= 3;
-			}
 			attacking = true;
 			player_state = ATTACK;
 			wait_flg = false;

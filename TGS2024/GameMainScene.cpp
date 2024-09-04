@@ -121,6 +121,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	long_legs_enemy_cnt = 0;
 	hard_enemy_cnt = 0;
 	rebound_enemy_cnt = 0;
+	put_key_cnt = 0;
 
 
 	if (retry_flg == false)
@@ -354,6 +355,11 @@ GameMainScene::~GameMainScene()
 	{
 		delete rock[i];
 	}
+	
+	for (int i = 0; i < KEY_MAXNUM; i++)
+	{
+		delete key_gem[i];
+	}
 
 	//スコアとui消去
 
@@ -424,6 +430,10 @@ void GameMainScene::ResetMap()
 	}
 
 
+	for (int i = 0; i < KEY_MAXNUM; i++)
+	{
+		key_gem[i] = nullptr;
+	}
 
 
 	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
@@ -543,6 +553,17 @@ void GameMainScene::ResetMap()
 					rebound_enemy[rebound_enemy_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				}
 			}
+
+			if (put_key_cnt<KEY_MAXNUM)
+			{
+				if (mapio->GetMapData(i, j) == 23)
+				{
+					key_gem[put_key_cnt]=new Key(put_key_cnt,(float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+					key_gem[put_key_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				}
+
+			}
+
 
 
 		}
@@ -834,6 +855,9 @@ void GameMainScene::Update()
 
 		//宝石更新処理
 		GemUpDate();
+
+		//カギ宝石更新処理
+		KeyGemUpdate();
 
 		//プレイヤーと宝石の当たり判定
 		PlayerHitGem();
@@ -1269,6 +1293,9 @@ void GameMainScene::Draw() const
 		{
 			score->Draw();
 		}
+
+
+
 	}
 
 	if (p_life_num < 0)
@@ -1334,7 +1361,14 @@ void GameMainScene::Draw() const
 	if (player != nullptr)
 	{
 		player->Draw();
+	}
 
+	for (int i = 0; i < KEY_MAXNUM; i++)
+	{
+		if (key_gem[i] != nullptr)
+		{
+			key_gem[i]->Draw();
+		}
 	}
 
 #ifdef DEBUG
@@ -3195,6 +3229,18 @@ bool GameMainScene::CollisionCharaBottom(float set_half_width, float set_half_he
 	bool bottom_right = CollisionCheck(set_x + set_half_width - 1.0f, set_y +set_half_height);
 	return bottom_left||bottom_center||bottom_right;
 
+}
+
+void GameMainScene::KeyGemUpdate()
+{
+	for (int i = 0; i < KEY_MAXNUM; i++)
+	{
+		if (key_gem[i] != nullptr)
+		{
+			key_gem[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			key_gem[i]->Update();
+		}
+	}
 }
 
 

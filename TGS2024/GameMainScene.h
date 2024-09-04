@@ -26,6 +26,7 @@
 #include "LongLeggedEnemy.h"
 #include "HardEnemy.h"
 #include "ReboundEnemy.h"
+#include "Key.h"
 #include <crtdbg.h>
 #include <stdlib.h>
 
@@ -113,6 +114,8 @@ private:
     Geyser* geyser[GEYSER_MAXNUM];                     // 間欠泉
     Rock* rock[ROCK_MAXNUM];                        //岩
 
+    Key* key_gem[KEY_MAXNUM];
+
     ObjectNum object_num;
 
     LongLeggedEnemy** long_legs_enemy;  // 脚が長い敵
@@ -156,6 +159,7 @@ private:
     int long_legs_enemy_cnt;//配置したあしなが岩の数
     int hard_enemy_cnt;//配置したhard岩の数
     int rebound_enemy_cnt;//配置したつるはし攻撃で跳ね返り岩の数
+    int put_key_cnt;//配置した鍵の数
 
     int map_old_array[map_blockmax_y][map_blockmax_x] = { 0 };//配置したエネミーを消したかチェック用
 
@@ -299,6 +303,8 @@ public:
     void ReboundEnemyUpdate();             // つるはしで転がる敵の更新処理
     void PlayerHitReboundEnemy();          // プレイヤーとつるはしで転がる敵の当たり判定
     void PickaxeHitReboundEnemy();         // つるはしとつるはしで転がる敵の当たり判定
+
+    void KeyGemUpdate();//カギ宝石のアップデート
 
     bool CollisionCheck(float set_x,float set_y);
     bool CollisionCharaRight(float set_half_width,float set_half_height,World set_xy);

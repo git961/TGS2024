@@ -209,6 +209,11 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		map_data_num = 22;
 	}
 
+	//カギ宝石
+	if (CheckHitKey(KEY_INPUT_L) == TRUE)
+	{
+		map_data_num = 23;
+	}
 
 	now_abs_x = fabsf(mouse_x - local_posx);
 	now_abs_y = fabsf(mouse_y - local_posy);
@@ -391,6 +396,9 @@ void MapIo::Draw() const
 			case 22:
 				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE - (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE - (int)posy, 0x778899, FALSE);
 				break;
+			case 23:
+				DrawBox(j * BLOCKSIZE - (int)posx, i * BLOCKSIZE - (int)posy, j * BLOCKSIZE + BLOCKSIZE - (int)posx, i * BLOCKSIZE + BLOCKSIZE - (int)posy, 0xfff0f5, FALSE);
+				break;
 			}
 		}
 	}
@@ -464,6 +472,9 @@ void MapIo::Draw() const
 		break;
 	case 22:
 		DrawFormatString(40, 200, 0xffffff, "PUT_ReboundEnemy");
+		break;
+	case 23:
+		DrawFormatString(40, 200, 0xffffff, "PUT_Key");
 		break;
 	}
 	

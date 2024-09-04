@@ -39,4 +39,6 @@
 #define FALLING_FLOOR_MAXNUM	20
 #define GEYSER_MAXNUM			20
 
+#define KEY_MAXNUM 2
+
 #define ROCK_MAXNUM 200

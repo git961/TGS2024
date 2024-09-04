@@ -85,6 +85,12 @@
     <Filter Include="ヘッダー ファイル\StageFile">
       <UniqueIdentifier>{12e94412-d881-465b-9799-0a039c7757e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\GemFile\KeyFile">
+      <UniqueIdentifier>{e2f0a647-e345-48d7-b83b-405ff296537e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GemFile\KeyFile">
+      <UniqueIdentifier>{ea4ee9d3-e783-4e2d-804f-40408a72c9ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -203,6 +209,9 @@
     </ClCompile>
     <ClCompile Include="RiverLog.cpp">
       <Filter>ソース ファイル\StageObjectFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Key.cpp">
+      <Filter>ソース ファイル\GemFile\KeyFile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -337,6 +346,9 @@
     </ClInclude>
     <ClInclude Include="RiverLog.h">
       <Filter>ヘッダー ファイル\StageObjectFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Key.h">
+      <Filter>ヘッダー ファイル\GemFile\KeyFile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
