@@ -681,7 +681,10 @@ void GameMainScene::Update()
 	case GOAL:
 		if (stage_num == StageNum::stage1) {
 			stage_num = StageNum::stage2;
+			player = nullptr;
+			player = new Player(200.0f, 1700.0f);
 			p_notback_flg = false;
+			current_location = CurrentLocation::middle;
 			ResetMap();
 			clear_alpha = 0;
 			game_state = PLAY;
