@@ -32,8 +32,8 @@ Player::Player(float set_x)
 
 	anim_cnt = 0;
 
-	world.x = set_x;
-	world.y = 500.0f;
+	world.x = 200.0f;
+	world.y = 1700.0f;
 
 	location.x = 0;
 	location.y = 500.0f;
@@ -50,14 +50,17 @@ Player::Player(float set_x)
 	//幅と座標
 	width = 50;
 	height = 80;
+	half_width = width / 2.0f;
+	half_height = height / 2.0f;
 
 	direction = 0;
 
 	walk_velocity_x = 0;
-	speed = 1;
+	curent_x = world.x;
+	curent_y = world.y;
 
 	move_x = 0;
-	move_y = 3;
+	move_y = 1;
 
 	walk_abs = 0;
 
@@ -153,6 +156,9 @@ Player::Player(float set_x)
 
 	limit_y = 600;
 	fall_flg = false;
+	set_speed = 4.0f;
+	speed = set_speed;
+
 }
 
 Player::~Player()
@@ -212,6 +218,7 @@ void Player::Update(GameMainScene* gamemain)
 	SetVertex();
 
 
+
 	switch (player_state)
 	{
 	case DEATH:
@@ -245,7 +252,7 @@ void Player::Update(GameMainScene* gamemain)
 		anim_cnt = 0;
 		attacking = false;
 		wait_flg = true;
-
+		
 		if ((unsigned)move_x > 0) {
 			move_x *= 0.9f;
 			location.x += move_x;
@@ -295,6 +302,7 @@ void Player::Update(GameMainScene* gamemain)
 		WalkAnim();
 
 		PlayerFall();
+
 
 		if (gamemain->GetPlayerNotBack() ==false)
 		{
@@ -404,21 +412,42 @@ void Player::Update(GameMainScene* gamemain)
 			}
 		}
 
-		//if (stop_walk_snd == true)
-		//{
-			//StopSoundMem(op_run_sound);
-		//}
 
 		if (player_state != WALK)
 		{
 			// 上のif文から処理を持ってきました。
 			StopSoundMem(op_run_sound);
-
-			//if (stop_walk_snd == true)
-			//{
-			//	stop_walk_snd = false;
-			//}
 		}
+
+		//マップチップとの当たり判定
+		if (direction == 0 && gamemain->CollisionCharaRight(half_width, half_height, world))
+		{
+			//食い込んだので元の位置に戻す
+			world.x = curent_x;
+		}
+		else if (direction == 1 && gamemain->CollisionCharaLeft(half_width, half_height, world))
+		{
+			world.x = curent_x;
+		}
+
+		if (gamemain->CollisionCharaTop(half_width, half_height, world))
+		{
+			speed = set_speed;
+		}
+
+		//移動前のｘ座標を渡す
+		if (gamemain->CollisionCharaBottom(half_width, half_height, curent_x, world.y))
+		{
+			speed = 0.0f;
+			//くい込んでたら上に押し出す
+			SinkCheck(gamemain, curent_x-half_width, world.y+half_height-1.0f);
+
+		}
+		else {
+			speed = set_speed;
+		}
+
+
 
 		break;
 	default:
@@ -494,14 +523,16 @@ void Player::Draw() const
 	//}
 	////DrawFormatString(100, 100, 0xffffff, "Right:%d", a);
 	//DrawFormatString(100, 120, 0xffffff, "btnnum: % d", input.Btnnum);
-	DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + width / 2, (int)location.y + height / 2, 0x00ffff, FALSE);
+	DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + (int)width / 2, (int)location.y + (int)height / 2, 0x00ffff, FALSE);
 	//DrawBox((int)location.x - 128 / 2, (int)location.y - 128 / 2, (int)location.x + 128 / 2, (int)location.y + 128 / 2, 0x00ffff, FALSE);
 
-	DrawFormatString(location.x, location.y-60, 0xffffff, "world.y: %f,limit_y:%f",world.y,limit_y);
+	DrawFormatString(location.x, location.y-60, 0xffffff, "world.y: %f",world.y);
 	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 
-	DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
-	DrawFormatString(700, 500, 0xff0000, "move_x : %f", move_x);
+	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
+	//DrawFormatString(700, 500, 0xff0000, "move_x : %f", move_x);
+	//DrawFormatString(location.x, location.y - 80, 0xff0000, "fall_flg : %d",fall_flg);
+	//DrawFormatString(location.x, location.y -100, 0xff0000, "speed : %f",speed);
 
 
 #endif // DEBUG
@@ -509,6 +540,9 @@ void Player::Draw() const
 
 void Player::PlayerMove()
 {
+
+	curent_x = world.x;
+	curent_y = world.y;
 
 	//攻撃中じゃなかったらプレイヤー移動
 	//右移動
@@ -743,7 +777,8 @@ void Player::PlayerFall()
 	if (fall_flg == true)
 	{
 		//ワールド座標に動く分のY座標をプラスする
-		world.y += move_y;
+		//speed = 2.0f;
+
 		/*
 		limit_y = 600.0f + height / 2;
 		//着地座標がプレイヤーのワールド座標よりも大きかったら
@@ -761,6 +796,10 @@ void Player::PlayerFall()
 		}
 		*/
 	}
+	else {
+		//speed = 0.0f;
+	}
+	world.y += move_y * speed;
 }
 
 void Player::PlayerAttack()
@@ -1957,4 +1996,51 @@ void Player::CheckEdgeCage(float cage_x)
 	{
 		world.x = world.x - move_x;
 	}
+}
+
+//床ブロックと当たっていたらプレイヤーの移動を戻す
+void Player::MoveBack()
+{
+	//プレイヤーが右を向いていたら
+	if (direction == 0)
+	{
+		//プレイヤーの左上の点を渡す
+	}
+}
+
+//マップチップとキャラの右辺が重なっているか
+void Player::HitPlayerRight(Boxvertex set_box_vertex)
+{
+	//元居たｘ座標を持っておいて、移動後被ってたら元の場所に戻ってもらう？
+	world.x = curent_x;
+}
+
+void Player::HitPlayerDown(Boxvertex set_box_vertex)
+{
+
+
+
+}
+
+void Player::SinkCheck(GameMainScene* gamemain,float set_x, float set_y)
+{
+	int col = (int)set_x / BLOCKSIZE;
+	int row = (int)set_y / BLOCKSIZE;
+
+	if (gamemain->GetMapIo()->GetMapData(row, col) == 1) {
+		float block_x = (float)col* BLOCKSIZE;
+		float block_y = (float)row * BLOCKSIZE;
+
+		//上の座標を取る
+		block_x = block_x - (float)BLOCKSIZE;
+		//block_y = block_y - (float)BLOCKSIZE;
+
+		float sink_y = set_y - block_y;
+		
+		if (sink_y > 0) {
+			world.y = world.y - sink_y;
+		}
+	}
+
+
 }

@@ -59,7 +59,7 @@ TitleScene::TitleScene()
 	back_img = LoadGraph("images/scene/title/back.png");
 	pickaxe_img = LoadGraph("images/scene/title/pickaxe01.png");
 	LoadDivGraph("images/scene/title/cursor01.png", 3, 3, 1, 128, 92, cursor_img);
-	text_img[0] = LoadGraph("images/scene/title/gangancrush01.png");
+	text_img[0] = LoadGraph("images/scene/title/title.png");
 	text_img[1] = LoadGraph("images/scene/title/start01.png");
 	text_img[2] = LoadGraph("images/scene/title/end01.png");
 	text_img[3] = LoadGraph("images/scene/title/push_b_blue01.png");

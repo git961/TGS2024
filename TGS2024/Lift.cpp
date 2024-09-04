@@ -11,7 +11,7 @@ Lift::Lift(float set_x,float set_y)
 	move_y = 5.0f;
 	
 	up_max_y = 200;
-	down_max_y = 600.0f;
+	down_max_y =world.y;
 	screen_position_x = 0.0f;
 	screen_position_y = 0.0f;
 

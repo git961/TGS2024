@@ -62,6 +62,13 @@ enum class StageNum
     stage2
 };
 
+enum class CurrentLocation
+{
+    upper,//上部
+    middle,//中部
+    lower//下部
+};
+
 struct ObjectNum {
     int fragile_wall_cnt=0;
     int cage_cnt=0;
@@ -79,6 +86,7 @@ private:
 
     GameState game_state;
     StageNum stage_num;
+    CurrentLocation current_location;
 
     Player* player;
     Enemy* enemy[ENEMYMAXNUM];
@@ -221,6 +229,10 @@ public:
     int GetPlayerLife() { return p_life_num; }
     bool GetPlayerNotBack() { return p_notback_flg; }
 
+    MapIo* GetMapIo() { return mapio; }
+
+ //   StageBlock* GetStageBlock(int num_y,int num_x){return stage_block[num_y][num_x] }
+
     void Tutorial();
 
     void EnemyDamage(int enemynum,float damage);
@@ -240,6 +252,7 @@ public:
     void PlayerHitBlock();
 
     void SetObjectNull();//オブジェクトにNullを入れる
+    
 
     void FragileWallUpdate();               // 脆い壁更新処理
     void DynamiteHitFragileWall();          // ダイナマイトと脆い壁の当たり判定処理
@@ -283,7 +296,12 @@ public:
     void PlayerHitReboundEnemy();          // プレイヤーとつるはしで転がる敵の当たり判定
     void PickaxeHitReboundEnemy();         // つるはしとつるはしで転がる敵の当たり判定
 
-    //float GetCameraX() { return camera_x; };
-    //float GetCameraY() { return camera_y; };
+    bool CollisionCheck(float set_x,float set_y);
+    bool CollisionCharaRight(float set_half_width,float set_half_height,World set_xy);
+    bool CollisionCharaLeft(float set_half_width, float set_half_height, World set_xy);
+    bool CollisionCharaTop(float set_half_width, float set_half_height, World set_xy);
+    bool CollisionCharaBottom(float set_half_width, float set_half_height, float set_x,float set_y);
+    
+
 };
 

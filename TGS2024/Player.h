@@ -6,7 +6,6 @@
 #include "padinput.h"
 #include "Enemy.h"
 
-class GameMainScene;
 class StageBlock;
 class AnimScene;
 class Enemy;
@@ -38,8 +37,11 @@ private:
     int soil_effect[2];
 
     //int player_ase_img[10];
-
     
+    float curent_x;//元居たｘ
+    float curent_y;//元居たy
+    
+    float set_speed;
     
     float limit_y;//落下の上限用
     bool fall_flg;//落ちるか？
@@ -159,6 +161,7 @@ public:
     Player(float set_x);
     ~Player();
 
+
     void Update(GameMainScene* gamemain);
     void Draw() const;
 
@@ -248,4 +251,15 @@ public:
     bool GetChangeToTitleFlg() const { return change_to_title_flg; }
 
     void CheckEdgeCage(float cage_x);       // 檻の端にプレイヤーがいるのか調べる
+
+    void MoveBack();//床ブロックと当たっていたらプレイヤーの移動を戻す
+
+    void HitPlayerRight(Boxvertex set_box_vertex);
+    void HitPlayerLeft(Boxvertex set_box_vertex);
+    void HitPlayerUp(Boxvertex set_box_vertex);
+    void HitPlayerDown(Boxvertex set_box_vertex);
+
+    //下がめり込んでいるか
+    void SinkCheck(GameMainScene* gamemain,float set_x, float set_y);
+
 };

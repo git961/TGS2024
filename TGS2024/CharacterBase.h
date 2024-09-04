@@ -3,6 +3,7 @@
 #include "DxLib.h"
 #include "ObjectBase.h"
 
+
 class CharacterBase : public ObjectBase
 {
 protected:
@@ -12,6 +13,9 @@ protected:
 	float speed;
 	bool direction;				//向き　0:右 1:左
 	float attack;				//攻撃力
+
+	float old_world_x;
+
 
 public:
 	//コンストラクタとデストラクタ
@@ -27,6 +31,7 @@ public:
 
 	bool GetDirection() { return direction; }//キャラの向きを返す　0:右 1:左
 	float GetAttack() { return attack; }
+
 
 	void HitCheckB(Boxvertex set_box_vertex)
 	{
@@ -50,5 +55,7 @@ public:
 			}
 		}
 	};
+
+
 };
 

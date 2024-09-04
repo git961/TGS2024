@@ -16,6 +16,7 @@ GameMainScene::GameMainScene(bool set_flg)
 
 	// 読み込みたいステージ
 	stage_num = StageNum::stage2;
+	current_location = CurrentLocation::middle;
 
 	retry_flg = set_flg;
 	checkhit = false;
@@ -31,7 +32,6 @@ GameMainScene::GameMainScene(bool set_flg)
 		mapio->SetStageNum((int)stage_num);
 	}
 
-	
 	long_legs_enemy = new LongLeggedEnemy * [LONG_LEGS_ENEMY_MAXNUM];
 
 	//オブジェクトにNullを代入
@@ -731,6 +731,7 @@ void GameMainScene::Update()
 
 	case PLAY:
 
+
 		if (CheckHitKey(KEY_INPUT_SPACE) == 1)
 		{
 			game_state = EDITOR;
@@ -971,7 +972,9 @@ void GameMainScene::Draw() const
 	// 背景画像描画（仮）
 	for (int i = 0; i < 8; i++)
 	{
-		DrawGraph((int)location_x + 1280 * i, (int)location_y, back_img[1], FALSE);
+		for (int j = 0; j < 4; j++) {
+			DrawGraph((int)location_x + 1280 * i, (int)location_y+720*j, back_img[1], FALSE);
+		}
 	}
 
 	DrawGraph((int)location_x + 1280 * 8, (int)location_y, back_img[9], FALSE);
@@ -1223,6 +1226,7 @@ void GameMainScene::Draw() const
 		if (player != nullptr)
 		{
 			player->Draw();
+
 		}
 	}
 
@@ -1279,6 +1283,7 @@ void GameMainScene::Draw() const
 	if (player != nullptr)
 	{
 		player->Draw();
+
 	}
 
 #ifdef DEBUG
@@ -1286,10 +1291,6 @@ void GameMainScene::Draw() const
 	//DrawFormatString(300, 180, 0xffffff, "camerax: %f", camera_pos.x);
 	//DrawFormatString(300, 200, 0xffffff, "cameray: %f", camera_pos.y);
 	//DrawFormatString(300, 240, 0xffffff, "stagenum:%d", stage_num);
-	DrawFormatString(300, 240, 0xffffff, "lift:%d",object_num.lift_cnt);
-	DrawFormatString(300, 260, 0xffffff, "enemy:%d", enemy_count);
-	DrawFormatString(300, 280, 0xffffff, "rock:%d", object_num.rock_cnt);
-	DrawFormatString(300, 300, 0xffffff, "geyser:%d", object_num.geyser_cnt);
 	/*
 	*     int fragile_wall_cnt=0;
     int cage_cnt=0;
@@ -1300,35 +1301,21 @@ void GameMainScene::Draw() const
     int lift_cnt;
     int rock_cnt;
 	*/
-	//DrawFormatString(300, 220, 0xffffff, "screen_origin_position.x: %f", screen_origin_position.x);
-	//DrawFormatString(300, 240, 0xffffff, "screen_origin_position.y: %f", screen_origin_position.y);
+
+	if (game_state==EDITOR&&mapio != nullptr) {
+		DrawFormatString(400, 100, 0xffffff, "EDITOR_NOW");
+		mapio->Draw();
+	}
+
+	DrawFormatString(300, 220, 0xffffff, "camera.x: %f", camera_pos.x);
+	DrawFormatString(300, 240, 0xffffff, "camera.y: %f > y: %d", camera_pos.y, 960 - WINDOW_HALFY);
+	DrawFormatString(300, 260, 0xffffff, "CurrentLoction: %d", current_location);
+	//DrawCircleAA(camera_pos.x - screen_origin_position.x, camera_pos.y - screen_origin_position.y, 3, 1, 0x556b2f, TRUE);
+	DrawCircle(camera_pos.x - screen_origin_position.x, camera_pos.y - screen_origin_position.y, 3, 0x556b2f, TRUE);
 	//DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
 	//DrawFormatString(30, 300, 0xffffff, "m_mode: %d", map_mode);
 	//DrawFormatString(30, 300, 0xffffff, "e_cnt: %d", enemy_count);
 	//DrawFormatString(30, 300, 0xffffff, "p_life_num:%d",p_life_num );
-
-
-	switch (game_state)
-	{
-	case EDITOR:
-		DrawFormatString(400, 100, 0xffffff, "EDITOR_NOW");
-		mapio->Draw();
-		break;
-	case TUTORIAL:
-		//DrawFormatString(400, 100, 0xffffff, "TUTORIAL_NOW");
-		break;
-	case POSE:
-		//DrawFormatString(400, 100, 0xffffff, "POSE_NOW");
-		break;
-	case GOAL:
-		//DrawFormatString(400, 100, 0xffffff, "GOAL!!");
-		break;
-	case PLAY:
-		//DrawFormatString(400, 100, 0xffffff, "PLAY_NOW");
-		break;
-	default:
-		break;
-	}
 
 #endif // DEBUG
 }
@@ -1337,7 +1324,7 @@ void GameMainScene::UpdateCamera(World world)
 {
 	//追従する相手のワールド座標をもらう
 	camera_pos.x = world.x;
-	camera_pos.y = world.y;
+	//camera_pos.y = world.y;
 
 
 	//X軸のステージの内外判定
@@ -1353,18 +1340,114 @@ void GameMainScene::UpdateCamera(World world)
 		camera_pos.x = FIELD_WIDTH - WINDOW_HALFX;
 	}
 
+	
+
+	//ｙ：960よりも上に居たら上部に居る
+	if (world.y < 1280) {
+		
+		//今は言っている値がupperじゃなかったら
+		if (current_location != CurrentLocation::upper)
+		{
+			//プレイヤーのｙを追いかける
+			if (world.y < camera_pos.y) {
+				camera_pos.y -= 7;
+			}
+			else {
+				//プレイヤーのｙに追い付いたら上部に居るってことにする
+				current_location = CurrentLocation::upper;
+			}
+		}
+		else {
+			//カメラがプレイヤーのｙを追いかける
+			camera_pos.y = world.y;
+
+		}
+
+
+
+	}else if (world.y < 1920) {
+		//中部に居る
+		//プレイヤーのstateが中部ではなかったら、カメラをゆっくり上に追従させる動きをしてから固定する
+		if (current_location != CurrentLocation::middle)
+		{
+			//前に居たところが上部だったら
+			if (current_location == CurrentLocation::upper)
+			{
+				//プレイヤーのｙを追いかける
+				if (1920 - WINDOW_HALFY > camera_pos.y) {
+					camera_pos.y += 7;
+				}
+				else {
+					//プレイヤーのｙに追い付いたら中部に居るってことにする
+					current_location = CurrentLocation::middle;
+				}
+			}
+			else
+			{
+				//前に居たところが下部だったら
+								//プレイヤーのｙを追いかける
+				if (1920-WINDOW_HALFY < camera_pos.y) {
+					camera_pos.y -= 7;
+				}
+				else {
+					//プレイヤーのｙに追い付いたら中部に居るってことにする
+					current_location = CurrentLocation::middle;
+				}
+			}
+
+		}
+		else {
+			//プレイヤーが元々中部にいたら
+			camera_pos.y = 1920 - WINDOW_HALFY;
+		}
+
+
+
+	}
+	else
+	{
+		//下部に居る
+		if (current_location != CurrentLocation::lower)
+		{
+			//
+			if (world.y > camera_pos.y) {
+				camera_pos.y += 6;
+			}
+			else
+			{
+				//プレイヤーのｙに追い付いたら下部に居るってことにする
+				current_location = CurrentLocation::lower;
+			}
+
+		}
+		else {
+			//カメラがプレイヤーのｙを追いかける
+			
+			camera_pos.y = world.y;
+		}
+	}
+
+	////中部のｙ1280よりも下にいたら、カメラを動かさない
+	//if (world.y<1920&&world.y > 1280)
+	//{
+	//	camera_pos.y = 1920- WINDOW_HALFY;
+	//}
+	//else {
+	//	if (world.y < camera_pos.y) {
+	//		camera_pos.y-=7;
+	//	}
+	//}
 
 	//Y軸のステージの内外判定
-
 	//ワールドのてっぺんに到達したらカメラが移動しないように
 	if (camera_pos.y - WINDOW_HALFY <= 0.0f)
 	{
 		camera_pos.y = WINDOW_HALFY;
 	}
-	else if (camera_pos.y + WINDOW_HALFY >= FIELD_HEIGHT)
+	else if (camera_pos.y + WINDOW_HALFY >= 2944)
 	{
 		//ワールドの底に到達したらカメラが移動しないように
-		camera_pos.y = FIELD_HEIGHT - WINDOW_HALFY;
+		camera_pos.y = 2944 - WINDOW_HALFY;
 	}
 
 	screen_origin_position = { camera_pos.x - SCREEN_WIDTH / 2.0f,camera_pos.y - SCREEN_HEIGHT / 2.0f };
@@ -2128,6 +2211,7 @@ void GameMainScene::DynamiteHitEnemy()
 //プレイヤーと床ブロックの当たり判定
 void GameMainScene::PlayerHitBlock()
 {
+	/*
 	//範囲内にいくつブロックが当たってるか数える
 	for (int i = 0; i < block_count; i++)
 	{
@@ -2146,7 +2230,6 @@ void GameMainScene::PlayerHitBlock()
 		}
 	}
 
-
 	for (int i = 0; i < block_cnt; i++)
 	{
 		if (player != nullptr && stage_block[block_num[i]] != nullptr && stage_block[block_num[i]]->GetBlockNum() == 1)
@@ -2154,9 +2237,9 @@ void GameMainScene::PlayerHitBlock()
 			//もし範囲内のブロックと当たっていたら
 			if (stage_block[block_num[i]]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
 			{
-				//player->HitCheckB(stage_block[block_num[i]]->GetVertex());
 				//落ちれない状態にする
 				player->SetFallFlg(false);
+				player->HitCheckB(stage_block[block_num[i]]->GetVertex());
 				//当たったブロックの上部の座標をプレイヤーの着地座標にいれる（プレイヤーの画像分ずらしている）
 				//player->SetLimitY(stage_block[block_num[i]]->GetLocation().y - (stage_block[block_num[i]]->GetHeight() / 2 + 5) - player->GetHeight() / 2);
 				checkhit_block[i] = true;
@@ -2183,6 +2266,14 @@ void GameMainScene::PlayerHitBlock()
 		block_num[i] = 0;
 	}
 	block_cnt = 0;
+	*/
+	for (int i = 0; i < block_count; i++)
+	{
+		if (player != nullptr && stage_block[i] != nullptr && stage_block[i]->GetBlockNum() == 1)
+		{
+
+		}
+	}
 }
 
 //オブジェクトにNullを入れる
@@ -2996,6 +3087,68 @@ void GameMainScene::PickaxeHitReboundEnemy()
 		}
 	}
 }
+
+
+//当たり判定
+bool GameMainScene::CollisionCheck(float set_x, float set_y)
+{
+	//受け取ったワールド座標からマップデータの列colと行rowに各当する所を求める
+	int col = (int)set_x / BLOCKSIZE;
+	int row = (int)set_y / BLOCKSIZE;
+
+	if((col<0)||(col>=map_blockmax_x)||(row<0)||(row>=map_blockmax_y))
+	{
+		return false;
+	}
+
+	//求めた列colと行rowの場所にマップチップがあれば、当たっている
+	if (mapio->GetMapData(row, col) == 1) {
+		return true;
+	}
+
+	return false;
+}
+
+//マップチップとキャラの右辺が重なっているか
+bool GameMainScene::CollisionCharaRight(float set_half_width, float set_half_height, World set_xy)
+{
+	//プレイヤーの右上の座標を入れる
+	bool right_top = CollisionCheck(set_xy.x + set_half_width -1.0f, set_xy.y - set_half_height);
+	bool right_center = CollisionCheck(set_xy.x + set_half_width -1.0f, set_xy.y);
+	bool right_bottom = CollisionCheck(set_xy.x + set_half_width - 1.0f, set_xy.y + set_half_height - 2.0f);
+	return right_top ||right_center|| right_bottom;
+}
+
+//マップチップとキャラの左辺が重なっているか
+bool GameMainScene::CollisionCharaLeft(float set_half_width, float set_half_height, World set_xy)
+{
+	//プレイヤーの左上の座標を入れる
+	bool left_top = CollisionCheck(set_xy.x - set_half_width, set_xy.y - set_half_height);
+	bool left_center = CollisionCheck(set_xy.x - set_half_width, set_xy.y);
+	bool left_bottom = CollisionCheck(set_xy.x - set_half_width, set_xy.y + set_half_height - 2.0f);
+	return left_top ||left_center|| left_bottom;
+}
+
+//マップチップとキャラの上辺が重なっているか
+bool GameMainScene::CollisionCharaTop(float set_half_width, float set_half_height, World set_xy)
+{
+	bool top_left = CollisionCheck(set_xy.x - set_half_width, set_xy.y - set_half_height);
+	bool top_right = CollisionCheck(set_xy.x + set_half_width-1.0f, set_xy.y - set_half_height);
+	return top_left || top_right;
+}
+
+bool GameMainScene::CollisionCharaBottom(float set_half_width, float set_half_height, float set_x, float set_y)
+{
+	//マップチップとキャラの下が接しているか
+	bool bottom_left = CollisionCheck(set_x - set_half_width, set_y + set_half_height);
+	bool bottom_center = CollisionCheck(set_x, set_y + set_half_height);
+	bool bottom_right = CollisionCheck(set_x + set_half_width - 1.0f, set_y +set_half_height);
+	return bottom_left||bottom_center||bottom_right;
+
+}
+
+
+
 
 //プレイヤーとリスポーンブロックの当たり判定
 void GameMainScene::PlayerHitRespawn()
