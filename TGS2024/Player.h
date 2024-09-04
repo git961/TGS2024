@@ -158,7 +158,7 @@ private:
 
 public:
     Player();
-    Player(float set_x);
+    Player(float set_x,float set_y);
     ~Player();
 
 

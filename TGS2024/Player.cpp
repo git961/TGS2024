@@ -5,7 +5,7 @@ Player::Player()
 {
 }
 
-Player::Player(float set_x)
+Player::Player(float set_x,float set_y)
 {
 	//画像読込
 	LoadDivGraph("images/Player/player_img.png",68, 4, 17, 170, 170, player_img);
@@ -32,11 +32,13 @@ Player::Player(float set_x)
 
 	anim_cnt = 0;
 
-	world.x = 200.0f;
-	world.y = 1700.0f;
+	//world.x = 200.0f;
+	//world.y = 1700.0f;
+	world.x = set_x;
+	world.y = set_y;
 
-	location.x = 0;
-	location.y = 500.0f;
+	location.x = 0.0f;
+	location.y = 0.0f;
 
 	old_worldx = world.x;
 

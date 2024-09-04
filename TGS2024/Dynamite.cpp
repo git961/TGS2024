@@ -9,15 +9,15 @@ Dynamite::Dynamite(World set_xy,int set_direction)
 	if (direction == false)
 	{
 		location.x = set_xy.x+20;
-		location.y = set_xy.y + 20;
+		location.y = set_xy.y;
 		world.x = set_xy.x+20;
-		world.y = set_xy.y + 20;
+		world.y = set_xy.y;
 	}
 	else {
 		location.x = set_xy.x-20;
-		location.y = set_xy.y + 20;
+		location.y = set_xy.y;
 		world.x = set_xy.x-20;
-		world.y = set_xy.y + 20;
+		world.y = set_xy.y;
 	}
 	move_x = 5;
 	rotation = 0;

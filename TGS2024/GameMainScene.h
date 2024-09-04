@@ -139,9 +139,12 @@ private:
 
     int back_img[10];//背景入れるよう
     int goal_img;//ゴールした後に表示する画像入れる用
+    int goal_door_img;//ステージ２のゴール画像
     int death_img;//プレイヤーが死んだとき用
     float img_extrate;//画像の拡大率変更用
     int pose_img;//poseの文字を入れる
+
+    int goal_block_num;//ゴールブロックが何番目に生成されたのか入れる用
 
     int check_num;//blockのどこに当たったか貰うよう
 
@@ -286,8 +289,9 @@ public:
     void GeyserUpdete();                    // 間欠泉の更新処理
     void PlayerHitGeyser();                 // プレイヤーと間欠泉の当たり判定
     void PickaxeHitGeyser();                // つるはしと間欠泉の当たり判定
-
     void PlayerHitRespawn();                //プレイヤーとリスポーンブロックの当たり判定
+
+    void PlayerHitGoal();//プレイヤーとゴールの当たり判定
 
     void EnemyHitRock();//エネミーと岩ブロックの当たり判定
     void DynamiteHitRock();//ダイナマイトと岩の当たり判定

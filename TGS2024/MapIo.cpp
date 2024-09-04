@@ -81,7 +81,7 @@ void MapIo::InputTest(GameMainScene* gamemain)
 
 	GetMousePoint(&mouse_x, &mouse_y);
 
-
+	//床ブロック
 	if (CheckHitKey(KEY_INPUT_1) == TRUE)
 	{
 		map_data_num = 1;
@@ -92,6 +92,7 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		map_data_num = 2;
 	}
 
+	//ゴール
 	if (CheckHitKey(KEY_INPUT_3) == TRUE)
 	{
 		map_data_num = 3;

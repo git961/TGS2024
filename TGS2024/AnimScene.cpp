@@ -3,7 +3,7 @@
 AnimScene::AnimScene()
 {
 	fallingrock = new FallingRock;
-	player = new Player(0);
+	player = new Player(0.0f,600.0f);
 	back_img = LoadGraph("images/Animscene/backimg.png", TRUE);
 	block_img = LoadGraph("images/Animscene/block.png", TRUE);
 	black_img = LoadGraph("images/Animscene/blackimg.png", TRUE);

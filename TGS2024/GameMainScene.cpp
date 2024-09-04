@@ -17,8 +17,7 @@ GameMainScene::GameMainScene(bool set_flg)
 
 
 	// 読み込みたいステージ
-	stage_num = StageNum::stage2;
-	current_location = CurrentLocation::middle;
+	stage_num = StageNum::stage1;
 
 	retry_flg = set_flg;
 	checkhit = false;
@@ -42,20 +41,23 @@ GameMainScene::GameMainScene(bool set_flg)
 	//プレイヤー生成
 	if (retry_flg == false)
 	{
-		player = new Player(0.0f);
+		player = new Player(0.0f,600.0f);
 		p_notback_flg = false;
+		current_location = CurrentLocation::upper;
 	}
 	else
 	{
 		retry_fadein_once = true;
 		if (stage_num == StageNum::stage1) {
-			player = new Player(2200.0f);
+			player = new Player(2200.0f,600.0f);
 			p_notback_flg = true;
+			current_location = CurrentLocation::upper;
 		}
 		else {
 			//プレイヤーのリスタート位置を入れる
-			player = new Player(2200.0f);
+			player = new Player(200.0f, 1700.0f);
 			p_notback_flg = false;
+			current_location = CurrentLocation::middle;
 		}
 	}
 
@@ -73,6 +75,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	//back_img[9] = LoadGraph("images/Backimg/backimgGoal.png", TRUE);
 	back_img[9] = LoadGraph("images/Backimg/backimgGoal01.png", TRUE);
 	goal_img = LoadGraph("images/Ending/ending8.png", TRUE);
+	goal_door_img = LoadGraph("images/Stage/Key/Goal.png", TRUE);
 	death_img = LoadGraph("images/Backimg/death.png", TRUE);
 	pose_img = LoadGraph("images/UI/pose.png", TRUE);
 	//back_img = LoadGraph("images/background_test.png", TRUE);
@@ -104,7 +107,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	hard_enemy_cnt = 0;
 	rebound_enemy_cnt = 0;
 	put_key_cnt = 0;
-
+	goal_block_num = 0;
 
 	if (retry_flg == false)
 	{
@@ -146,6 +149,7 @@ GameMainScene::GameMainScene(bool set_flg)
 						enemy[enemy_count++] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, false);
 						break;
 					case 3:
+						goal_block_num = block_count;
 						stage_block[block_count++] = new StageBlock(3, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 4:
@@ -205,8 +209,9 @@ GameMainScene::GameMainScene(bool set_flg)
 	}
 	else
 	{
-
+		//ステージ２用とステージ１用で分ける
 		ResetMap();
+		current_location = CurrentLocation::middle;
 
 		//リトライして来たら
 		game_state = PLAY;
@@ -429,7 +434,7 @@ void GameMainScene::ResetMap()
 	long_legs_enemy_cnt = 0;
 	hard_enemy_cnt = 0;
 	rebound_enemy_cnt = 0;
-
+	goal_block_num = 0;
 
 	//マップチップに反映する
 	for (int i = 0; i < map_blockmax_y; i++)
@@ -442,6 +447,7 @@ void GameMainScene::ResetMap()
 				stage_block[block_count++] = new StageBlock(1, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 3:
+				goal_block_num = block_count;
 				stage_block[block_count++] = new StageBlock(3, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 4:
@@ -741,7 +747,7 @@ void GameMainScene::Update()
 
 				//gameover_flg = true;
 				black_flg = true;
-				player = new Player(respawn_x);
+				player = new Player(respawn_x,respawn_y);
 
 				UpdateCamera(player->GetWorldLocation());
 				player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
@@ -861,6 +867,7 @@ void GameMainScene::Update()
 		//リスポーン位置更新
 		PlayerHitRespawn();
 
+		//ステージ２の処理
 		if (stage_num == StageNum::stage2)
 		{
 			/** ギミック */
@@ -965,26 +972,17 @@ void GameMainScene::Update()
 			}
 		}
 
-
-
+		//ステージブロックの位置更新
 		for (int j = 0; j < block_count; j++)
 		{
 			if (stage_block[j] != nullptr)
 			{
 				stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-
-				if (player != nullptr)
-				{
-					if (stage_block[j]->GetBlockNum() == 3)
-					{
-						if (stage_block[j]->HitCheck(player->GetWorldLocation(), player->GetWidth(), player->GetHeight()) == true)
-						{
-							game_state = GOAL;
-						}
-					}
-				}
 			}
 		}
+
+		//ゴールの当たり判定
+		PlayerHitGoal();
 
 		//岩アップデート
 		RockUpdate();
@@ -1175,10 +1173,22 @@ void GameMainScene::Draw() const
 			{
 				stage_block[j]->Draw();
 			}
+
 		}
 
 		if (stage_num == StageNum::stage2)
 		{
+
+			//ステージブロック描画
+			for (int j = 0; j < block_count; j++)
+			{
+				if (stage_block[j] != nullptr && stage_block[j]->GetBlockNum() == 3)
+				{
+					//ゴールのドア描画
+					DrawGraph((int)stage_block[j]->GetLocation().x - 128, (int)stage_block[j]->GetLocation().y - 480, goal_door_img, TRUE);
+				}
+			}
+
 			// 脆い壁描画
 			for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
 			{
@@ -1410,90 +1420,96 @@ void GameMainScene::UpdateCamera(World world)
 	}
 
 	
+	if (stage_num == StageNum::stage1)
+	{
+		camera_pos.y = 720 - WINDOW_HALFY;
+	}
+	else if (stage_num == StageNum::stage2)
+	{
+		//ｙ：960よりも上に居たら上部に居る
+		if (world.y < 1280) {
 
-	//ｙ：960よりも上に居たら上部に居る
-	if (world.y < 1280) {
-		
-		//今は言っている値がupperじゃなかったら
-		if (current_location != CurrentLocation::upper)
-		{
-			//プレイヤーのｙを追いかける
-			if (world.y < camera_pos.y) {
-				camera_pos.y -= 7;
-			}
-			else {
-				//プレイヤーのｙに追い付いたら上部に居るってことにする
-				current_location = CurrentLocation::upper;
-			}
-		}
-		else {
-			//カメラがプレイヤーのｙを追いかける
-			camera_pos.y = world.y;
-
-		}
-
-
-
-	}else if (world.y < 1920) {
-		//中部に居る
-		//プレイヤーのstateが中部ではなかったら、カメラをゆっくり上に追従させる動きをしてから固定する
-		if (current_location != CurrentLocation::middle)
-		{
-			//前に居たところが上部だったら
-			if (current_location == CurrentLocation::upper)
+			//今は言っている値がupperじゃなかったら
+			if (current_location != CurrentLocation::upper)
 			{
 				//プレイヤーのｙを追いかける
-				if (1920 - WINDOW_HALFY > camera_pos.y) {
-					camera_pos.y += 7;
-				}
-				else {
-					//プレイヤーのｙに追い付いたら中部に居るってことにする
-					current_location = CurrentLocation::middle;
-				}
-			}
-			else
-			{
-				//前に居たところが下部だったら
-								//プレイヤーのｙを追いかける
-				if (1920-WINDOW_HALFY < camera_pos.y) {
+				if (world.y < camera_pos.y) {
 					camera_pos.y -= 7;
 				}
 				else {
-					//プレイヤーのｙに追い付いたら中部に居るってことにする
-					current_location = CurrentLocation::middle;
+					//プレイヤーのｙに追い付いたら上部に居るってことにする
+					current_location = CurrentLocation::upper;
 				}
 			}
+			else {
+				//カメラがプレイヤーのｙを追いかける
+				camera_pos.y = world.y;
 
-		}
-		else {
-			//プレイヤーが元々中部にいたら
-			camera_pos.y = 1920 - WINDOW_HALFY;
-		}
-
-
-
-	}
-	else
-	{
-		//下部に居る
-		if (current_location != CurrentLocation::lower)
-		{
-			//
-			if (world.y > camera_pos.y) {
-				camera_pos.y += 6;
 			}
-			else
+
+
+
+		}
+		else if (world.y < 1920) {
+			//中部に居る
+			//プレイヤーのstateが中部ではなかったら、カメラをゆっくり上に追従させる動きをしてから固定する
+			if (current_location != CurrentLocation::middle)
 			{
-				//プレイヤーのｙに追い付いたら下部に居るってことにする
-				current_location = CurrentLocation::lower;
+				//前に居たところが上部だったら
+				if (current_location == CurrentLocation::upper)
+				{
+					//プレイヤーのｙを追いかける
+					if (1920 - WINDOW_HALFY > camera_pos.y) {
+						camera_pos.y += 7;
+					}
+					else {
+						//プレイヤーのｙに追い付いたら中部に居るってことにする
+						current_location = CurrentLocation::middle;
+					}
+				}
+				else
+				{
+					//前に居たところが下部だったら
+									//プレイヤーのｙを追いかける
+					if (1920 - WINDOW_HALFY < camera_pos.y) {
+						camera_pos.y -= 7;
+					}
+					else {
+						//プレイヤーのｙに追い付いたら中部に居るってことにする
+						current_location = CurrentLocation::middle;
+					}
+				}
+
+			}
+			else {
+				//プレイヤーが元々中部にいたら
+				camera_pos.y = 1920 - WINDOW_HALFY;
 			}
 
 		}
-		else {
-			//カメラがプレイヤーのｙを追いかける
-			
-			camera_pos.y = world.y;
+		else
+		{
+			//下部に居る
+			if (current_location != CurrentLocation::lower)
+			{
+				//
+				if (world.y > camera_pos.y) {
+					camera_pos.y += 6;
+				}
+				else
+				{
+					//プレイヤーのｙに追い付いたら下部に居るってことにする
+					current_location = CurrentLocation::lower;
+				}
+
+			}
+			else {
+				//カメラがプレイヤーのｙを追いかける
+
+				camera_pos.y = world.y;
+			}
 		}
+
 	}
 
 	////中部のｙ1280よりも下にいたら、カメラを動かさない
@@ -3245,9 +3261,6 @@ void GameMainScene::PlayerHitKeyGem()
 	}
 }
 
-
-
-
 //プレイヤーとリスポーンブロックの当たり判定
 void GameMainScene::PlayerHitRespawn()
 {
@@ -3259,6 +3272,30 @@ void GameMainScene::PlayerHitRespawn()
 			{
 				respawn_x = stage_block[i]->GetWorldLocation().x;
 				respawn_y = stage_block[i]->GetWorldLocation().y;
+			}
+		}
+	}
+}
+
+void GameMainScene::PlayerHitGoal() {
+	if (player != nullptr && stage_block[goal_block_num] != nullptr && stage_block[goal_block_num]->GetBlockNum() == 3)
+	{
+		if (player->HitCheck(stage_block[goal_block_num]->GetWorldLocation(), stage_block[goal_block_num]->GetWidth(), stage_block[goal_block_num]->GetHeight()) == true)
+		{
+			//ステージ１のゴール処理
+			if (stage_num == StageNum::stage1)
+			{
+				game_state = GOAL;
+			}
+			else if (stage_num == StageNum::stage2)
+			{
+				//ステージ２のゴール処理
+				//カギを二つ持っていたらゴール
+				if (get_key_array[0] == true && get_key_array[1] == true)
+				{
+					game_state = GOAL;
+				}
+
 			}
 		}
 	}

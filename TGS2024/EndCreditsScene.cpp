@@ -2,7 +2,7 @@
 
 EndCreditsScene::EndCreditsScene(int set_score)
 {
-	player = new Player(-80.0f);
+	player = new Player(-80.0f,600.0f);
 
 	text_x = 700;
 	text_y = 720;
