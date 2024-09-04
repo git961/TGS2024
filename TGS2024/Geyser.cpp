@@ -11,7 +11,7 @@ Geyser::Geyser(float set_x, float set_y)
 
 	// 画像の読み込み
 	//geyser_img = LoadGraph("images/Stage/Gimmick/Geyser.png");
-	LoadDivGraph("images/Stage/Gimmick/Geyser.png", 3, 1, 3, 64, 64, geyser_img);
+	LoadDivGraph("images/Stage/Gimmick/Geyser.png", 6, 2, 3, 64, 64, geyser_img);
 	LoadDivGraph("images/Stage/Gimmick/Geyser_Hill.png", 4, 4, 1, 128, 64, geyser_hill_img);
 
 	hill_img_num = 0;
@@ -19,7 +19,11 @@ Geyser::Geyser(float set_x, float set_y)
 	hill_y = location.y;
 	now_water_height = 0.0f;
 
-	img_num = 0;
+	top_geyser_img_num = 0;
+	middle_geyser_img_num = 2;
+	under_geyser_img_num = 4;
+
+	//img_num = 0;
 	anim_cnt = 0;
 	water_supply_time = 360;		// 6秒間水が出る
 	push_up_flg = false;			// 水は打ちあがらない
@@ -33,7 +37,7 @@ Geyser::Geyser(float set_x, float set_y)
 Geyser::~Geyser()
 {
 	// 画像の削除
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		DeleteGraph(geyser_img[i]);
 	}
@@ -79,19 +83,19 @@ void Geyser::Update()
 // 描画処理
 void Geyser::Draw() const
 {
-	if (stop_water_flg == false)
-	{
-		// 間欠泉画像の描画
-		DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, geyser_img[0], TRUE);
-		if (draw_middle_flg)
-		{
-			DrawRotaGraph((int)location.x, (int)location.y + 64, 1.0, 0.0, geyser_img[1], TRUE);
-		}
-		if (draw_under_flg)
-		{
-			DrawRotaGraph((int)location.x, (int)location.y + 128, 1.0, 0.0, geyser_img[2], TRUE);
-		}
-	}
+	//if (stop_water_flg == false)
+	//{
+	//	// 間欠泉画像の描画
+	//	DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, geyser_img[top_geyser_img_num], TRUE);
+	//	if (draw_middle_flg)
+	//	{
+	//		DrawRotaGraph((int)location.x, (int)location.y + 64, 1.0, 0.0, geyser_img[middle_geyser_img_num], TRUE);
+	//	}
+	//	if (draw_under_flg)
+	//	{
+	//		DrawRotaGraph((int)location.x, (int)location.y + 128, 1.0, 0.0, geyser_img[under_geyser_img_num], TRUE);
+	//	}
+	//}
 
 	// 丘画像の描画
 	DrawRotaGraph((int)location.x, (int)hill_y, 1.0, 0.0, geyser_hill_img[hill_img_num], TRUE);
@@ -122,6 +126,7 @@ void Geyser::LaunchWater()
 
 	water_supply_time--;
 
+	// 水の画像を表示する
 	if (now_water_height >= 64)
 	{
 		draw_middle_flg = true;
@@ -142,6 +147,7 @@ void Geyser::StopWater()
 		now_water_height--;
 		stop_water_time--;
 
+		// 水の画像を非表示にする
 		if (now_water_height <= 128)
 		{
 			draw_under_flg = false;
@@ -167,7 +173,24 @@ void Geyser::StopWater()
 // 水のアニメーション
 void Geyser::GeyserAnimation()
 {
+	if (anim_cnt < 10)
+	{
+		anim_cnt++;
+	}
+	else
+	{
+		anim_cnt = 0;
+		top_geyser_img_num++;
+		middle_geyser_img_num++;
+		under_geyser_img_num++;
 
+		if (top_geyser_img_num > 1)
+		{
+			top_geyser_img_num = 0;
+			middle_geyser_img_num = 2;
+			under_geyser_img_num = 4;
+		}
+	}
 }
 
 // 丘のアニメーション

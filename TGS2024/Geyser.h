@@ -4,7 +4,7 @@
 class Geyser : public ObjectBase
 {
 private:
-	int geyser_img[3];						// 間欠泉の水画像
+	int geyser_img[6];						// 間欠泉の水画像
 	int geyser_hill_img[4];				// 間欠泉の丘画像
 
 	int hill_img_num;					// 丘の画像番号
@@ -12,7 +12,11 @@ private:
 	float hill_y;						// 丘のY座標
 	float now_water_height;				// 現在の水の高さ
 
-	int img_num;						// アニメーション用画像番号
+	int top_geyser_img_num;				// 水の上部画像の番号
+	int middle_geyser_img_num;			// 水の中部画像の番号
+	int under_geyser_img_num;			// 水の下部画像の番号
+
+	//int img_num;						// アニメーション用画像番号
 	int anim_cnt;						// アニメーション用カウント
 	int water_supply_time;				// 水の供給時間
 	bool push_up_flg;					// 水が吹きあがるか？
