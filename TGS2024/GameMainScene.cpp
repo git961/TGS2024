@@ -662,10 +662,7 @@ void GameMainScene::Update()
 
 
 	case TUTORIAL:
-		if (CheckHitKey(KEY_INPUT_SPACE) == 1)
-		{
-			game_state = EDITOR;
-		}
+
 		Tutorial();
 		break;
 
@@ -1657,74 +1654,6 @@ void GameMainScene::Tutorial()
 					}
 				}
 
-				if (stage_block[j]->GetBlockNum() == 4)
-				{
-					stage_block[j]->Update();
-
-					//プレイヤが右向きだったら
-					//if (player->GetDirection() == 0)
-					//{
-					// プレイヤーと岩が当たっていたら
-					//if (player->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-					//{
-					//	// プレイヤーの歩行を止める
-					//	player->HitCheckB(stage_block[j]->GetVertex());
-					//}
-					//}
-
-					//つるはしを振るってる時だけ
-					if (player->GetAttacking() == true)
-					{
-						//ダメージを一回だけ与える
-						if (rock_damage_once == false)
-						{
-							//つるはしとエネミーと当たってるかのチェック
-							if (ac->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true) {
-								stage_block[j]->SetDamage(10);
-								stage_block[j]->SetShakeFlg(true);
-								rock_damage_once = true;
-							}
-						}
-					}
-					else
-					{
-						//プレイヤーがつるはし振ってなかったら
-						rock_damage_once = false;
-					}
-
-					if (stage_block[j]->GetHp() <= 0 && stage_block[j]->GetDeleteFlg() == true)
-					{
-						stage_block[j] = nullptr;
-					}
-				}
-
-				for (int i = 0; i < DYNAMITE_MAXNUM; i++)
-				{
-					if (dynamite[i] != nullptr)
-					{
-						//ダイナマイトが岩と当たってるかのチェック
-						if (dynamite[i]->GetDynamite() == false)
-						{
-							if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-							{
-								dynamite[i]->SetDynamite(true);
-							}
-						}
-
-						//ダイナマイトの爆発とエネミーの当たり判定
-						if (dynamite[i]->Getdamage_flg() == true && stage_block[j]->GetHp() > 0)
-						{
-							if (dynamite[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
-							{
-								dynamite[i]->SetEnemyX(stage_block[j]->GetWorldLocation().x);
-								dynamite[i]->DamageCalculation();
-								stage_block[j]->SetDamage(30);
-								stage_block[j]->SetShakeFlg(true);
-								rock_damage_once = true;
-							}
-						}
-					}
-				}
 			}
 		}
 
@@ -1771,12 +1700,16 @@ void GameMainScene::Tutorial()
 	}
 
 	// プレイヤーと壊れる岩の当たり判定処理
+	RockUpdate();
 	PlayerHitRock();
+	EnemyHitRock();
+	DynamiteHitRock();
+	PickaxeHitRock();
+
 
 	//プレイヤーの攻撃
 	if (ac != nullptr) {
 		ac->Update(this, player);
-		//ac->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 	}
 
 	//ダイナマイト

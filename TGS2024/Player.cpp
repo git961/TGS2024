@@ -412,6 +412,9 @@ void Player::Update(GameMainScene* gamemain)
 			StopSoundMem(op_run_sound);
 		}
 
+		HitMapChip(gamemain);
+
+		/*
 		//マップチップとの当たり判定
 		if (direction == 0 && gamemain->CollisionCharaRight(half_width, half_height, world))
 		{
@@ -439,7 +442,7 @@ void Player::Update(GameMainScene* gamemain)
 		else {
 			speed = set_speed;
 		}
-
+		*/
 		break;
 	default:
 		break;
@@ -1174,6 +1177,7 @@ void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
 void Player::TutorialAnimUpdate()
 {
 	input.InputUpdate();
+	SetVertex();
 
 	switch (tuto_num)
 	{
@@ -1300,14 +1304,6 @@ void Player::TutorialAnimUpdate()
 						PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
 					}
 
-					//右向きだったら
-					if (direction == 0)
-					{
-						world.x += 3;
-					}
-					else {
-						world.x -= 3;
-					}
 
 					attacking = true;
 					player_state = ATTACK;
@@ -1344,15 +1340,6 @@ void Player::TutorialAnimUpdate()
 			{
 
 				PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
-			}
-
-			//右向きだったら
-			if (direction == 0)
-			{
-				world.x += 3;
-			}
-			else {
-				world.x -= 3;
 			}
 
 			attacking = true;
@@ -1466,15 +1453,6 @@ void Player::TutorialAnimUpdate()
 				PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
 			}
 
-			//右向きだったら
-			if (direction == 0)
-			{
-				world.x += 3;
-			}
-			else {
-				world.x -= 3;
-			}
-
 			attacking = true;
 			player_state = ATTACK;
 			wait_flg = false;
@@ -1523,30 +1501,6 @@ void Player::TutorialAnimUpdate()
 			location.x += 4;
 			world.x += 4;
 
-			/*
-			if (player_state == WALK)
-			{
-				if (abs((int)world.x - (int)old_worldx) > 59)
-				{
-					old_worldx = world.x;
-				}
-
-				walk_abs = abs((int)world.x - (int)old_worldx);
-				// 歩行
-				// 5カウントごとに変わる
-				if (walk_abs != 0)
-				{
-					if (direction == false)
-					{
-						p_imgnum = 4 + walk_abs / 20;
-					}
-					else {
-						p_imgnum = 7 + walk_abs / 20;
-
-					}
-				}
-			}
-			*/
 			TutoWalkAnim();
 		}
 
@@ -1595,6 +1549,8 @@ void Player::TutorialAnimUpdate()
 		StopSoundMem(op_run_sound);
 
 	}
+
+	//HitMapChip(gamemain);
 
 
 }
@@ -2000,17 +1956,35 @@ void Player::MoveBack()
 	}
 }
 
-//マップチップとキャラの右辺が重なっているか
-void Player::HitPlayerRight(Boxvertex set_box_vertex)
+void Player::HitMapChip(GameMainScene* gamemain)
 {
-	//元居たｘ座標を持っておいて、移動後被ってたら元の場所に戻ってもらう？
-	world.x = curent_x;
-}
+	//マップチップとの当たり判定
+	if (direction == 0 && gamemain->CollisionCharaRight(half_width, half_height, world))
+	{
+		//食い込んだので元の位置に戻す
+		world.x = curent_x;
+	}
+	else if (direction == 1 && gamemain->CollisionCharaLeft(half_width, half_height, world))
+	{
+		world.x = curent_x;
+	}
 
-void Player::HitPlayerDown(Boxvertex set_box_vertex)
-{
+	if (gamemain->CollisionCharaTop(half_width, half_height, world))
+	{
+		speed = set_speed;
+	}
 
+	//移動前のｘ座標を渡す
+	if (gamemain->CollisionCharaBottom(half_width, half_height, curent_x, world.y))
+	{
+		speed = 0.0f;
+		//くい込んでたら上に押し出す
+		SinkCheck(gamemain, curent_x - half_width, world.y + half_height - 1.0f);
 
+	}
+	else {
+		speed = set_speed;
+	}
 
 }
 

@@ -254,10 +254,7 @@ public:
 
     void MoveBack();//床ブロックと当たっていたらプレイヤーの移動を戻す
 
-    void HitPlayerRight(Boxvertex set_box_vertex);
-    void HitPlayerLeft(Boxvertex set_box_vertex);
-    void HitPlayerUp(Boxvertex set_box_vertex);
-    void HitPlayerDown(Boxvertex set_box_vertex);
+    void HitMapChip(GameMainScene* gamemain);
 
     //下がめり込んでいるか
     void SinkCheck(GameMainScene* gamemain,float set_x, float set_y);
