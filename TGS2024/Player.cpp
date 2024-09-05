@@ -439,24 +439,6 @@ void Player::Update(GameMainScene* gamemain)
 		player_state = DEATH;
 	}
 
-	//if (player_state != WALK && move_x > 0) {
-	//	//プレイヤーを歩かせる
-	//	rest_move_count++;
-	//	if (rest_move_count % 10 == 0)
-	//	{
-	//		p_imgnum = 54;
-	//	}
-	//	else if(rest_move_count%15==0) {
-	//		p_imgnum = 55;
-	//	}
-	//	else if (rest_move_count % 20 == 0)
-	//	{
-	//		p_imgnum = 56;
-	//	}
-	//}
-	//else {
-	//	rest_move_count = 0;
-	//}
 	
 #ifdef DEBUG
 
@@ -523,7 +505,7 @@ void Player::Draw() const
 	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 
 	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
-	//DrawFormatString(700, 500, 0xff0000, "move_x : %f", move_x);
+	DrawFormatString(location.x, location.y - 80, 0xff0000, "move_x : %f", move_x);
 	//DrawFormatString(location.x, location.y - 80, 0xff0000, "fall_flg : %d",fall_flg);
 	//DrawFormatString(location.x, location.y -100, 0xff0000, "speed : %f",speed);
 
@@ -628,6 +610,51 @@ void Player::WalkAnim()
 			}
 		}
 	}
+
+	//move_xが0になってない場合
+	if (player_state != WALK) {
+
+		if (direction == 0 && move_x > 0.0f)
+		{
+			if (move_x < 0.3f)
+			{
+				move_x = 0.0f;
+			}
+
+			//プレイヤーを歩かせる
+			rest_move_count++;
+			if (rest_move_count < 15) {
+				p_imgnum = 55;
+			}
+			else if (rest_move_count < 25)
+			{
+				p_imgnum = 56;
+			}
+		}
+
+		if (direction == 1 && move_x < 0.0f)
+		{
+			if (move_x > -0.3f)
+			{
+				move_x = 0.0f;
+			}
+
+			//プレイヤーを歩かせる
+			rest_move_count++;
+			if (rest_move_count < 15) {
+				p_imgnum = 58;
+			}
+			else if (rest_move_count < 25)
+			{
+				p_imgnum = 59;
+			}
+		}
+
+	}
+	else {
+		rest_move_count = 0;
+	}
+
 }
 
 void Player::DeathAnim()
