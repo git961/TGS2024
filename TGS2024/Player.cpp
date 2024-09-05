@@ -159,7 +159,7 @@ Player::Player(float set_x,float set_y)
 	limit_y = 600;
 	fall_flg = false;
 	vel = 1.0f;
-	set_speed = 4.0f;
+	set_speed = 0.0f;
 	speed = set_speed;
 	rest_move_count = 0;
 
@@ -306,6 +306,17 @@ void Player::Update(GameMainScene* gamemain)
 
 		PlayerFall();
 
+		//落下画像表示
+		if (fall_flg == true)
+		{
+			if (direction == 0)
+			{
+				p_imgnum = 66;
+			}
+			else {
+				p_imgnum = 67;
+			}
+		}
 
 
 		// 端に来たら跳ね返る
@@ -566,6 +577,13 @@ void Player::PlayerMove()
 	}
 
 
+	//落ちてる途中だったら
+	if (fall_flg == true)
+	{
+		move_x = move_x / 1.5f;
+	}
+
+
 	location.x += move_x;
 	world.x += move_x;
 	
@@ -784,11 +802,12 @@ void Player::PlayerFall()
 {
 	if (fall_flg == true)
 	{
-		if (vel < 5.0f)
+		if (vel < 4.0f)
 		{
 			vel += 1.0f;
 			speed += vel;
 		}
+
 	}
 	else {
 		vel = 1.0f;
@@ -796,7 +815,6 @@ void Player::PlayerFall()
 	}
 	//y座標に加算
 	world.y += speed;
-
 }
 
 void Player::PlayerAttack()
@@ -1974,7 +1992,7 @@ void Player::HitMapChip(GameMainScene* gamemain)
 
 	if (gamemain->CollisionCharaTop(half_width, half_height, world))
 	{
-		speed = set_speed;
+		//speed = set_speed;
 	}
 
 	//移動前のｘ座標を渡す
