@@ -2,8 +2,8 @@
 
 FragileWall::FragileWall(float set_x, float set_y)
 {
-	world.x = set_x;
-	world.y = set_y;
+	world.x = set_x+32.0f;
+	world.y = set_y-32.0f;
 	location.x = world.x;
 	location.y = world.y;
 	width = 128.0f;
