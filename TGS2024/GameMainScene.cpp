@@ -17,7 +17,7 @@ GameMainScene::GameMainScene(bool set_flg)
 
 
 	// 読み込みたいステージ
-	stage_num = StageNum::stage1;
+	stage_num = StageNum::stage2;
 
 	retry_flg = set_flg;
 	checkhit = false;
