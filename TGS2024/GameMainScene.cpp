@@ -17,7 +17,7 @@ GameMainScene::GameMainScene(bool set_flg)
 
 
 	// 読み込みたいステージ
-	stage_num = StageNum::stage2;
+	stage_num = StageNum::stage1;
 
 	retry_flg = set_flg;
 	checkhit = false;
@@ -867,12 +867,15 @@ void GameMainScene::Update()
 		//リスポーン位置更新
 		PlayerHitRespawn();
 
+		// 脆い壁更新処理
+		FragileWallUpdate();
+
 		//ステージ２の処理
 		if (stage_num == StageNum::stage2)
 		{
 			/** ギミック */
-			// 脆い壁更新処理
-			FragileWallUpdate();
+			//// 脆い壁更新処理
+			//FragileWallUpdate();
 
 			// 檻の更新処理
 			CageUpdate();
@@ -1086,6 +1089,15 @@ void GameMainScene::Draw() const
 			}
 		}
 
+		// 脆い壁描画
+		for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
+		{
+			if (fragile_wall[i] != nullptr)
+			{
+				fragile_wall[i]->Draw();
+			}
+		}
+
 		//ダイナマイト描画
 		for (int i = 0; i < DYNAMITE_MAXNUM; i++)
 		{
@@ -1176,6 +1188,15 @@ void GameMainScene::Draw() const
 
 		}
 
+		// 脆い壁描画
+		for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
+		{
+			if (fragile_wall[i] != nullptr)
+			{
+				fragile_wall[i]->Draw();
+			}
+		}
+
 		if (stage_num == StageNum::stage2)
 		{
 
@@ -1190,13 +1211,13 @@ void GameMainScene::Draw() const
 			}
 
 			// 脆い壁描画
-			for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
-			{
-				if (fragile_wall[i] != nullptr)
-				{
-					fragile_wall[i]->Draw();
-				}			
-			}
+			//for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
+			//{
+			//	if (fragile_wall[i] != nullptr)
+			//	{
+			//		fragile_wall[i]->Draw();
+			//	}			
+			//}
 
 			for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
 			{			
@@ -1708,6 +1729,13 @@ void GameMainScene::Tutorial()
 	EnemyHitRock();
 	DynamiteHitRock();
 	PickaxeHitRock();
+
+	//ダイナマイトじゃないと壊れない壁
+	// 脆い壁更新処理
+	FragileWallUpdate();
+	// プレイヤーと脆い壁の当たり判定処理
+	PlayerHitFragileWall();
+	DynamiteHitFragileWall();
 
 
 	//プレイヤーの攻撃
@@ -2379,9 +2407,19 @@ void GameMainScene::DynamiteHitFragileWall()
 						if (dynamite[j]->HitCheck(fragile_wall[i]->GetWorldLocation(), fragile_wall[i]->GetWidth(), fragile_wall[i]->GetHeight()) == true)
 						{
 							dynamite[j]->SetDynamite(true);
-							fragile_wall[i]->Damage(dynamite[j]->GetAttack());
+							fragile_wall[i]->SetBrokenFlg(true);
 						}
 					}
+
+					//ダイナマイトの爆発と岩の当たり判定
+					if (dynamite[j]->Getdamage_flg() == true)
+					{
+						if (dynamite[j]->HitCheck(fragile_wall[i]->GetWorldLocation(), fragile_wall[i]->GetWidth(), fragile_wall[i]->GetHeight()) == true)
+						{
+							fragile_wall[i]->SetBrokenFlg(true);
+						}
+					}
+
 				}
 			}
 		}
@@ -2478,6 +2516,7 @@ void GameMainScene::DynamiteHitRock()
 					rock[j]->SetShakeFlg(true);
 				}
 			}
+
 		}
 		
 	}

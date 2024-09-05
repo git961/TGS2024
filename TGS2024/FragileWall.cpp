@@ -29,10 +29,10 @@ void FragileWall::Update()
 	// 頂点の設定
 	SetVertex();
 
-	if (hp <= 0)
-	{
-		broken_flg = true;
-	}
+	//if (hp <= 0)
+	//{
+	//	broken_flg = true;
+	//}
 
 	if (broken_flg == true)
 	{

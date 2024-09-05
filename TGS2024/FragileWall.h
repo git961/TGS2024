@@ -26,5 +26,6 @@ public:
 	void Damage(float damage);            // 被ダメージ処理
 
 	bool GetDeleteFlg() const { return delete_flg; }
+	void SetBrokenFlg(bool set_flg) { broken_flg = set_flg; }
 
 };
