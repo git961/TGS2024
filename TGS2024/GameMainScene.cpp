@@ -461,7 +461,8 @@ void GameMainScene::ResetMap()
 				stage_block[block_count++] = new StageBlock(11, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 12:
-				fragile_wall[object_num.fragile_wall_cnt++] = new FragileWall((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				fragile_wall[object_num.fragile_wall_cnt] = new FragileWall((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				fragile_wall[object_num.fragile_wall_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				break;
 			case 13:
 				magma[object_num.magma_cnt++] = new Magma((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
