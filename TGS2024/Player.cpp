@@ -158,8 +158,10 @@ Player::Player(float set_x,float set_y)
 
 	limit_y = 600;
 	fall_flg = false;
+	vel = 1.0f;
 	set_speed = 4.0f;
 	speed = set_speed;
+	rest_move_count = 0;
 
 }
 
@@ -214,7 +216,6 @@ Player::~Player()
 void Player::Update(GameMainScene* gamemain)
 {
 	
-
 
 	input.InputUpdate();
 	SetVertex();
@@ -438,6 +439,24 @@ void Player::Update(GameMainScene* gamemain)
 		player_state = DEATH;
 	}
 
+	//if (player_state != WALK && move_x > 0) {
+	//	//プレイヤーを歩かせる
+	//	rest_move_count++;
+	//	if (rest_move_count % 10 == 0)
+	//	{
+	//		p_imgnum = 54;
+	//	}
+	//	else if(rest_move_count%15==0) {
+	//		p_imgnum = 55;
+	//	}
+	//	else if (rest_move_count % 20 == 0)
+	//	{
+	//		p_imgnum = 56;
+	//	}
+	//}
+	//else {
+	//	rest_move_count = 0;
+	//}
 	
 #ifdef DEBUG
 
@@ -736,33 +755,21 @@ void Player::ThrowAnim()
 
 void Player::PlayerFall()
 {
-	//落ちても良かったら
 	if (fall_flg == true)
 	{
-		//ワールド座標に動く分のY座標をプラスする
-		//speed = 2.0f;
-
-		/*
-		limit_y = 600.0f + height / 2;
-		//着地座標がプレイヤーのワールド座標よりも大きかったら
-		if (limit_y > world.y+height / 2)
+		if (vel < 5.0f)
 		{
-			//ワールド座標に動く分のY座標をプラスする
-			world.y += move_y;
+			vel += 1.0f;
+			speed += vel;
 		}
-		else
-		{
-			//プレイヤーが着地座標に付いたら
-			//着地座標をワールド座標に入れる
-			//world.y = limit_y-height / 2;
-			fall_flg = false;
-		}
-		*/
 	}
 	else {
-		//speed = 0.0f;
+		vel = 1.0f;
+
 	}
-	world.y += move_y * speed;
+	//y座標に加算
+	world.y += speed;
+
 }
 
 void Player::PlayerAttack()
@@ -1947,12 +1954,18 @@ void Player::HitMapChip(GameMainScene* gamemain)
 	if (gamemain->CollisionCharaBottom(half_width, half_height, curent_x, world.y))
 	{
 		speed = 0.0f;
+		if (fall_flg == true)
+		{
+			move_x = 0.0f;
+		}
+		fall_flg = false;
 		//くい込んでたら上に押し出す
 		SinkCheck(gamemain, curent_x - half_width, world.y + half_height - 1.0f);
 
 	}
 	else {
-		speed = set_speed;
+		fall_flg = true;
+		//speed = set_speed;
 	}
 
 }

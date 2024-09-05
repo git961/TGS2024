@@ -17,7 +17,7 @@ GameMainScene::GameMainScene(bool set_flg)
 
 
 	// 読み込みたいステージ
-	stage_num = StageNum::stage1;
+	stage_num = StageNum::stage2;
 
 	retry_flg = set_flg;
 	checkhit = false;
@@ -2596,6 +2596,7 @@ void GameMainScene::PlayerHitLift()
 			if (player->HitCheck(lift[i]->GetWorldLocation(), lift[i]->GetWidth(), lift[i]->GetHeight()) == true) {
 				
 				//player->SetY(lift[i]->GetWorldLocation().y);
+				player->SetFallFlg(false);
 				player->SinkCheckObject(lift[i]->GetWorldLocation().y - lift[i]->GetHeight() / 2.0f);
 			}
 			else {
@@ -2893,6 +2894,7 @@ void GameMainScene::PlayerHitGeyser()
 		{
 			// プレイヤーの落下を止める
 			// player->HitCheckB(geyser[i]->GetVertex());
+			player->SetFallFlg(false);
 			player->SetY(geyser[i]->GetWorldLocation().y - geyser[i]->GetHeight() / 2);
 		}
 	}

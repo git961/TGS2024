@@ -44,7 +44,8 @@ private:
     float set_speed;
     
     float limit_y;//落下の上限用
-    bool fall_flg;//落ちるか？
+    bool fall_flg;//落ちているか？
+    float vel;//初速度
 
     float img_down;//画像の表示位置を下げる用
     int p_imgnum;//プレイヤーの画像番号切り替え用
@@ -155,6 +156,8 @@ private:
     int change_scene_cnt;               // タイトルへ遷移するカウント
     int credits_walk_cnt;               // クレジット画面の歩行アニメーションカウント
     bool walk_cnt_up_flg;               // 歩行アニメーションのカウントを増やすか？
+
+    int rest_move_count;//移動量が残っている時用
 
 public:
     Player();
