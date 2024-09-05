@@ -523,12 +523,8 @@ void Player::PlayerMove()
 	
 	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_RIGHT) == TRUE||input.GetPadThumbLX()>=32000) {
 
-
-		if (move_x <= 4)
-		{
-			move_x += 1;
-		}
-
+		move_x = 5.0f;
+		
 		direction = 0;
 
 		if (player_state != ATTACK)
@@ -541,15 +537,8 @@ void Player::PlayerMove()
 	//左移動
 	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_LEFT) == TRUE||input.GetPadThumbLX() <= -32000) {
 
-		//if (stop_walk_snd == true)
-		//{
-		//	stop_walk_snd = false;
-		//}
 
-		if (move_x >= -4)
-		{
-			move_x -= 1;
-		}
+		move_x = -5.0f;		
 
 		direction = 1;
 
