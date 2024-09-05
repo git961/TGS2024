@@ -194,7 +194,6 @@ private:
     int volume;
 
     int p_life_num;//プレイヤーの残機数
-    bool p_notback_flg;//プレイヤー戻れなくするか
     int gameover_anim_cnt;
 
     //円形フェードイン
@@ -240,7 +239,6 @@ public:
     void ShakeCamera(bool set_true, int set_num);
 
     int GetPlayerLife() { return p_life_num; }
-    bool GetPlayerNotBack() { return p_notback_flg; }
 
     MapIo* GetMapIo() { return mapio; }
 

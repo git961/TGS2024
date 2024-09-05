@@ -42,7 +42,6 @@ GameMainScene::GameMainScene(bool set_flg)
 	if (retry_flg == false)
 	{
 		player = new Player(0.0f,600.0f);
-		p_notback_flg = false;
 		current_location = CurrentLocation::upper;
 	}
 	else
@@ -50,13 +49,11 @@ GameMainScene::GameMainScene(bool set_flg)
 		retry_fadein_once = true;
 		if (stage_num == StageNum::stage1) {
 			player = new Player(2200.0f,600.0f);
-			p_notback_flg = true;
 			current_location = CurrentLocation::upper;
 		}
 		else {
 			//プレイヤーのリスタート位置を入れる
 			player = new Player(200.0f, 1700.0f);
-			p_notback_flg = false;
 			current_location = CurrentLocation::middle;
 		}
 	}
@@ -416,7 +413,6 @@ void GameMainScene::ResetMap()
 		rebound_enemy[i] = nullptr;
 	}
 
-
 	for (int i = 0; i < KEY_MAXNUM; i++)
 	{
 		key_gem[i] = nullptr;
@@ -451,7 +447,8 @@ void GameMainScene::ResetMap()
 				stage_block[block_count++] = new StageBlock(3, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 4:
-				rock[object_num.rock_cnt++] = new Rock((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				rock[object_num.rock_cnt] = new Rock((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				rock[object_num.rock_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				//stage_block[block_count++] = new StageBlock(4, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 6:
@@ -683,7 +680,6 @@ void GameMainScene::Update()
 			stage_num = StageNum::stage2;
 			player = nullptr;
 			player = new Player(200.0f, 1700.0f);
-			p_notback_flg = false;
 			current_location = CurrentLocation::middle;
 			ResetMap();
 			clear_alpha = 0;
@@ -870,6 +866,12 @@ void GameMainScene::Update()
 		// 脆い壁更新処理
 		FragileWallUpdate();
 
+		// ダイナマイトと脆い壁の当たり判定処理
+		DynamiteHitFragileWall();
+
+		// プレイヤーと脆い壁の当たり判定処理
+		PlayerHitFragileWall();
+
 		//ステージ２の処理
 		if (stage_num == StageNum::stage2)
 		{
@@ -891,15 +893,6 @@ void GameMainScene::Update()
 
 			// 間欠泉の更新処理
 			GeyserUpdete();
-
-			// ダイナマイトと脆い壁の当たり判定処理
-			DynamiteHitFragileWall();
-
-			// プレイヤーと脆い壁の当たり判定処理
-			PlayerHitFragileWall();
-
-			// プレイヤーと壊れる岩の当たり判定処理
-			PlayerHitRock();
 
 			// プレイヤーと檻のドアの当たり判定処理
 			PlayerHitCageDoor();
@@ -986,7 +979,8 @@ void GameMainScene::Update()
 
 		//ゴールの当たり判定
 		PlayerHitGoal();
-
+		// プレイヤーと壊れる岩の当たり判定処理
+		PlayerHitRock();
 		//岩アップデート
 		RockUpdate();
 		EnemyHitRock();
@@ -1011,7 +1005,6 @@ void GameMainScene::Update()
 			{
 				fadein_flg = true;
 				p_life_num--;
-				p_notback_flg = true;
 				volume = 50;
 				ChangeVolumeSoundMem(volume, main_bgm);
 				game_state = RESPAWN;
@@ -3241,7 +3234,7 @@ void GameMainScene::PlayerHitRespawn()
 {
 	for (int i = 0; i < block_count; i++)
 	{
-		if (player!=nullptr && stage_block[i] != nullptr && stage_block[i]->GetBlockNum() == 18)
+		if (player!=nullptr && stage_block[i] != nullptr && stage_block[i]->GetBlockNum() == 19)
 		{
 			if (player->HitCheck(stage_block[i]->GetWorldLocation(), stage_block[i]->GetWidth(), stage_block[i]->GetHeight()) == true)
 			{
