@@ -2599,10 +2599,6 @@ void GameMainScene::PlayerHitLift()
 				player->SetFallFlg(false);
 				player->SinkCheckObject(lift[i]->GetWorldLocation().y - lift[i]->GetHeight() / 2.0f);
 			}
-			else {
-				//リフトの上に居て、リフトが下がっているときに、
-				//離れたらその離れた分player_yに足す？
-			}
 		}
 	}
 }
@@ -2895,7 +2891,9 @@ void GameMainScene::PlayerHitGeyser()
 			// プレイヤーの落下を止める
 			// player->HitCheckB(geyser[i]->GetVertex());
 			player->SetFallFlg(false);
-			player->SetY(geyser[i]->GetWorldLocation().y - geyser[i]->GetHeight() / 2);
+			if (geyser[i]->GetVertex().upper_y < player->GetWorldLocation().y) {
+				player->SetY(player->GetWorldLocation().y+0.5f);
+			}
 		}
 	}
 }

@@ -7,6 +7,8 @@ private:
 	int geyser_img[6];						// 間欠泉の水画像
 	int geyser_hill_img[4];				// 間欠泉の丘画像
 
+	float original_y;//配置された時のｙを入れる
+
 	int hill_img_num;					// 丘の画像番号
 	int hill_anim_cnt;					// 丘のアニメーション用カウント
 	float hill_y;						// 丘のY座標
