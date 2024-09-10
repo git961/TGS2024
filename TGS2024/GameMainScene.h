@@ -225,6 +225,7 @@ public:
     virtual~GameMainScene() override;
 
     void ResetMap();
+    void ChengeNextMap();
 
     void Update() override;
     void Draw() const override;
