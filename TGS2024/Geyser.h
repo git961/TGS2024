@@ -35,6 +35,8 @@ public:
 	void Update();						// 更新処理
 	void Draw() const;					// 描画処理
 
+	bool GetPushUpFlg() { return push_up_flg; }//水が吹きあがるか？を返す
+
 private:
 	void LaunchWater();					// 水を打ち上げる
 	void StopWater();					// 水を止める

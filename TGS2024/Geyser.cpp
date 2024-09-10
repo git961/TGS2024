@@ -112,7 +112,7 @@ void Geyser::LaunchWater()
 	{
 		// 上に移動
 		world.y--;
-		height+=1.2f;
+		height+=1.1f;
 
 		// 水の高さ
 		now_water_height++;
@@ -145,10 +145,10 @@ void Geyser::StopWater()
 	if (stop_water_time > 0)
 	{
 		// 元の高さに戻る
-		world.y++;
-		now_water_height--;
-		stop_water_time--;
-		height -= 1.2f;
+		world.y+=2.0f;
+		now_water_height-=2.0f;
+		stop_water_time-=2.0f;
+		height -= 2.2f;
 
 		// 水の画像を非表示にする
 		if (now_water_height <= 128)

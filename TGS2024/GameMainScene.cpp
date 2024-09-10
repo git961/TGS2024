@@ -2597,7 +2597,12 @@ void GameMainScene::PlayerHitLift()
 				
 				//player->SetY(lift[i]->GetWorldLocation().y);
 				player->SetFallFlg(false);
+				player->SetLiftHitFlg(true);
 				player->SinkCheckObject(lift[i]->GetWorldLocation().y - lift[i]->GetHeight() / 2.0f);
+			}
+			else
+			{
+				player->SetLiftHitFlg(false);
 			}
 		}
 	}
@@ -2885,15 +2890,22 @@ void GameMainScene::PlayerHitGeyser()
 	{
 		if (geyser[i] == nullptr)	continue;
 
-		// プレイヤーが落ちる床に当たったら
-		if (player->HitCheck(geyser[i]->GetWorldLocation(), geyser[i]->GetWidth(), geyser[i]->GetHeight()) == true)
+		// プレイヤーが間欠泉に当たったら
+		if (player->HitCheck(geyser[i]->GetWorldLocation(), geyser[i]->GetWidth(), geyser[i]->GetHeight()+10.0f) == true)
 		{
 			// プレイヤーの落下を止める
 			// player->HitCheckB(geyser[i]->GetVertex());
 			player->SetFallFlg(false);
-			if (geyser[i]->GetVertex().upper_y < player->GetWorldLocation().y) {
-				player->SetY(player->GetWorldLocation().y+0.5f);
+			player->SetGeyserHitFlg(true);
+			//間欠泉から水が上がってたら
+			if (geyser[i]->GetPushUpFlg() == true)
+			{
+				player->PushUpPlayer(geyser[i]->GetVertex().upper_y);
 			}
+		}
+		else
+		{
+			player->SetGeyserHitFlg(false);
 		}
 	}
 }
