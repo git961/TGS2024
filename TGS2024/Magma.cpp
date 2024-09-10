@@ -2,14 +2,14 @@
 
 Magma::Magma(float set_x, float set_y)
 {
-	world.x = set_x;
+	world.x = set_x - 32.0f;
 	world.y = set_y;
 	location.x = world.x;
 	location.y = world.y;
 	width = 128.0f;
 	height = 64.0f;
 
-	LoadDivGraph("images/Stage/Gimmick/Magma.png", 5, 5, 1, 128, 64, magma_img);
+	LoadDivGraph("images/Stage/Gimmick/Magma.png", 10, 5, 2, 128, 64, magma_img);
 
 	img_num = 0;
 	anim_cnt = 0;
@@ -18,7 +18,7 @@ Magma::Magma(float set_x, float set_y)
 
 Magma::~Magma()
 {
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		// 画像の削除
 		DeleteGraph(magma_img[i]);
@@ -70,9 +70,19 @@ void Magma::Animation()
 		// 画像切り替え
 		img_num++;
 
-		if (img_num == 5)
+		if (is_any_damage == true)
 		{
-			img_num = 0;
+			if (img_num == 5)
+			{
+				img_num = 0;
+			}
+		}
+		else
+		{
+			if (img_num == 10)
+			{
+				img_num = 6;
+			}
 		}
 	}
 }
