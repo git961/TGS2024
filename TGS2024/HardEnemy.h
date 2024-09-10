@@ -4,7 +4,7 @@
 class HardEnemy : public EnemyBase
 {
 private:
-	int enemy_img[6];						// 敵の画像
+	int enemy_img[10];						// 敵の画像
 
 	int anim_wait_time;						// 生きているときのアニメーション開始までの待ち時間
 

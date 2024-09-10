@@ -13,7 +13,7 @@ HardEnemy::HardEnemy(float set_x, float set_y)
 	hp = 30.0f;
 	direction = false;
 
-	LoadDivGraph("images/Enemy/Hard.png", 6, 5, 2, 128, 128, enemy_img);
+	LoadDivGraph("images/Enemy/Hard3.png", 10, 5, 2, 128, 128, enemy_img);
 
 	anim_wait_time = 0;
 }
@@ -21,7 +21,7 @@ HardEnemy::HardEnemy(float set_x, float set_y)
 HardEnemy::~HardEnemy()
 {
 	// 画像の削除
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		DeleteGraph(enemy_img[i]);
 	}
@@ -32,7 +32,7 @@ void HardEnemy::Update()
 	if (hp <= 0.0f)
 	{
 		// 死亡処理
-		Death();
+		//Death();
 		DeathAnimation();
 	}
 	else
@@ -78,7 +78,24 @@ void HardEnemy::Death()
 
 void HardEnemy::DeathAnimation()
 {
-	enemy_img_num = 5;
+	if (anim_cnt <= 2)
+	{
+		anim_cnt++;
+	}
+	else
+	{
+		anim_cnt = 0;
+
+		if (enemy_img_num < 9)
+		{
+			enemy_img_num++;
+		}
+		else
+		{
+			// 削除
+			is_delete = true;
+		}
+	}
 }
 
 // 生きているときのアニメーション
