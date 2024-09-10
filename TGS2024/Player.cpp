@@ -164,6 +164,7 @@ Player::Player(float set_x,float set_y)
 	set_speed = 0.0f;
 	speed = set_speed;
 	rest_move_count = 0;
+	stop_up_flg = false;
 
 }
 
@@ -1996,7 +1997,11 @@ void Player::HitMapChip(GameMainScene* gamemain)
 
 	if (gamemain->CollisionCharaTop(half_width, half_height, world))
 	{
-		//speed = set_speed;
+		//頭がぶつかったら押し返す
+		SinkCheckTop(gamemain, world.x, world.y-half_height-1.0f);
+		stop_up_flg = true;
+	}
+	else {
 	}
 
 	//移動前のｘ座標を渡す
@@ -2008,6 +2013,7 @@ void Player::HitMapChip(GameMainScene* gamemain)
 			move_x = 0.0f;
 		}
 		fall_flg = false;
+		stop_up_flg = false;
 		//くい込んでたら上に押し出す
 		SinkCheck(gamemain, curent_x - half_width, world.y + half_height - 1.0f);
 
@@ -2045,11 +2051,36 @@ void Player::SinkCheck(GameMainScene* gamemain,float set_x, float set_y)
 
 }
 
+void Player::SinkCheckTop(GameMainScene* gamemain, float set_x, float set_y)
+{
+	int col = (int)set_x / BLOCKSIZE;
+	int row = (int)set_y / BLOCKSIZE;
+
+	if (gamemain->GetMapIo()->GetMapData(row, col) == 1) {
+		float block_x = (float)col * BLOCKSIZE;
+		float block_y = (float)row * BLOCKSIZE;
+
+
+		//自分の上の座標
+
+		float sink_y = (block_y+BLOCKSIZE) - set_y;
+		//もしめりこんでいたら
+		if (sink_y > 0)
+		{
+			//めり込んでいる分上にあげる
+			world.y = world.y + sink_y;
+		}
+	}
+}
+
 void Player::SinkCheckObject(float set_y)
 {
-	float sink_y = (world.y + half_height) - set_y;
-	if (sink_y > 0) {
-		world.y = world.y - sink_y;
+	if (stop_up_flg == false)
+	{
+		float sink_y = (world.y + half_height) - set_y;
+		if (sink_y > 0) {
+			world.y = world.y - sink_y;
+		}
 	}
 }
 

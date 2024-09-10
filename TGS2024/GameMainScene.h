@@ -143,6 +143,8 @@ private:
     int death_img;//プレイヤーが死んだとき用
     float img_extrate;//画像の拡大率変更用
     int pose_img;//poseの文字を入れる
+    int back_lower_img;//下部の背景画像入れる用
+    int back_upper_img;//上部の背景画像入れる用
 
     int goal_block_num;//ゴールブロックが何番目に生成されたのか入れる用
 

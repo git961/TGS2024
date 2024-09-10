@@ -161,6 +161,7 @@ private:
 
     int rest_move_count;//移動量が残っている時用
     
+    bool stop_up_flg;//プレイヤーの上昇を止めるか？
 
 public:
     Player();
@@ -269,6 +270,7 @@ public:
 
     //下がめり込んでいるか
     void SinkCheck(GameMainScene* gamemain,float set_x, float set_y);
+    void SinkCheckTop(GameMainScene* gamemain,float set_x, float set_y);
     void SinkCheckObject(float set_y);
 
     void PushUpPlayer(float set_upper);

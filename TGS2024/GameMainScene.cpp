@@ -17,7 +17,7 @@ GameMainScene::GameMainScene(bool set_flg)
 
 
 	// 読み込みたいステージ
-	stage_num = StageNum::stage1;
+	stage_num = StageNum::stage2;
 
 	retry_flg = set_flg;
 	checkhit = false;
@@ -425,13 +425,11 @@ void GameMainScene::ResetMap()
 		dynamite[i] = nullptr;
 	}
 
-	//block_count = 0;
 	enemy_count = 0;
 	rolling_enemy_cnt = 0;
 	long_legs_enemy_cnt = 0;
 	hard_enemy_cnt = 0;
 	rebound_enemy_cnt = 0;
-	//goal_block_num = 0;
 
 	//マップチップに反映する
 	for (int i = 0; i < map_blockmax_y; i++)
@@ -3392,8 +3390,9 @@ bool GameMainScene::CollisionCharaLeft(float set_half_width, float set_half_heig
 bool GameMainScene::CollisionCharaTop(float set_half_width, float set_half_height, World set_xy)
 {
 	bool top_left = CollisionCheck(set_xy.x - set_half_width, set_xy.y - set_half_height);
+	bool top_center = CollisionCheck(set_xy.x, set_xy.y - set_half_height);
 	bool top_right = CollisionCheck(set_xy.x + set_half_width-1.0f, set_xy.y - set_half_height);
-	return top_left || top_right;
+	return top_left || top_center ||top_right;
 }
 
 bool GameMainScene::CollisionCharaBottom(float set_half_width, float set_half_height, float set_x, float set_y)
