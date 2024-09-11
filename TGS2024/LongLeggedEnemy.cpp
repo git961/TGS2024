@@ -56,23 +56,23 @@ void LongLeggedEnemy::Update()
 		Move();
 		WalkAnimation();
 		CheckDistanceToPlayer();
-
 		if (attack_flg == true)
 		{
 			enemy_state = EnemyState::ATTACK;		// 攻撃状態に遷移
 		}
 
+		// 死亡状態になったか調べる
 		CheckDeathCondition();
 		break;
 
 	case EnemyState::ATTACK:
 		Attack();
-
 		if (attack_flg == false)
 		{
 			enemy_state = EnemyState::WALK;			// 歩行状態に遷移
 		}
 
+		// 死亡状態になったか調べる
 		CheckDeathCondition();
 		break;
 
@@ -156,7 +156,8 @@ void LongLeggedEnemy::Attack()
 			return;
 		}
 
-		move_y = -1.0f;					// 上に上がる
+		// 上に上がる
+		move_y = -1.0f;
 	}
 
 	// 縦移動
@@ -165,12 +166,14 @@ void LongLeggedEnemy::Attack()
 	// 元の高さに戻ったら
 	if (world.y <= first_world_y)
 	{
-		attack_flg = false;					// 攻撃終了
+		// 攻撃終了
+		attack_flg = false;
 		move_y = 1.0f;
 		rising_interval = 30;
 	}
 }
 
+// プレイヤーとの距離を調べる
 void LongLeggedEnemy::CheckDistanceToPlayer()
 {
 	// 敵とプレイヤーのX座標の距離
@@ -182,6 +185,7 @@ void LongLeggedEnemy::CheckDistanceToPlayer()
 	}
 }
 
+// 死亡状態になったか調べる
 void LongLeggedEnemy::CheckDeathCondition()
 {
 	if (hp <= 0.0f)
@@ -207,12 +211,12 @@ void LongLeggedEnemy::WalkAnimation()
 	if (anim_cnt != 0)
 	{
 		// 歩行
-		// 10カウントごとに変わる
 		enemy_leg_img_num = anim_cnt / 8;
 	}
 
 }
 
+// プレイヤーの位置を保持する
 void LongLeggedEnemy::SetPlayerWorldLocation(World set_world)
 {
 	player_world_x = set_world.x;

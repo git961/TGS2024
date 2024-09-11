@@ -13,9 +13,12 @@ HardEnemy::HardEnemy(float set_x, float set_y)
 	hp = 30.0f;
 	direction = false;
 
-	LoadDivGraph("images/Enemy/Hard3.png", 10, 5, 2, 128, 128, enemy_img);
+	enemy_state = EnemyState::LIVE;
+
+	LoadDivGraph("images/Enemy/Hard4.png", 10, 5, 2, 128, 128, enemy_img);
 
 	anim_wait_time = 0;
+	delete_wait_time = 120;
 }
 
 HardEnemy::~HardEnemy()
@@ -29,14 +32,9 @@ HardEnemy::~HardEnemy()
 
 void HardEnemy::Update()
 {
-	if (hp <= 0.0f)
+	switch (enemy_state)
 	{
-		// 死亡処理
-		//Death();
-		DeathAnimation();
-	}
-	else
-	{
+	case EnemyState::LIVE:
 		if (anim_wait_time > 180)
 		{
 			// 生きているときのアニメーション
@@ -46,6 +44,20 @@ void HardEnemy::Update()
 		{
 			anim_wait_time++;
 		}
+
+		// 死亡状態になったか調べる
+		CheckDeathCondition();
+		break;
+
+
+	case EnemyState::DEATH:
+		// 死亡処理
+		Death();
+		DeathAnimation();
+		break;
+
+	default:
+		break;
 	}
 }
 
@@ -65,9 +77,9 @@ void HardEnemy::Move()
 
 void HardEnemy::Death()
 {
-	if (anim_cnt <= 120)
+	if (delete_wait_time > 0)
 	{
-		anim_cnt++;
+		delete_wait_time--;
 	}
 	else
 	{
@@ -78,8 +90,9 @@ void HardEnemy::Death()
 
 void HardEnemy::DeathAnimation()
 {
-	if (anim_cnt <= 2)
+	if (anim_cnt <= 4)
 	{
+		// アニメーション用カウント増加
 		anim_cnt++;
 	}
 	else
@@ -88,12 +101,8 @@ void HardEnemy::DeathAnimation()
 
 		if (enemy_img_num < 9)
 		{
+			// 画像切り替え
 			enemy_img_num++;
-		}
-		else
-		{
-			// 削除
-			is_delete = true;
 		}
 	}
 }
@@ -103,17 +112,33 @@ void HardEnemy::LivingAnimation()
 {
 	if (anim_cnt <= 4)
 	{
+		// アニメーション用カウント増加
 		anim_cnt++;
 	}
 	else
 	{
 		anim_cnt = 0;
 
+		// 画像切り替え
 		enemy_img_num++;
+
+		// 画像が一通り切り替え終わったら
 		if (enemy_img_num > 4)
 		{
 			enemy_img_num = 0;
+			// もう一度待つ
 			anim_wait_time = 0;
 		}
+	}
+}
+
+// 死亡状態になったか調べる
+void HardEnemy::CheckDeathCondition()
+{
+	if (hp <= 0.0f)
+	{
+		anim_cnt = 0;								// 死亡アニメーション用にカウントを0にする
+		enemy_img_num = 6;							// 死亡画像の最初の画像番号を設定
+		enemy_state = EnemyState::DEATH;			// 死亡状態に遷移
 	}
 }
