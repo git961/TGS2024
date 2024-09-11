@@ -12,7 +12,7 @@ private:
 
 	WallState wall_state;
 
-	int fragile_wall_img[7];				// 脆い壁の画像
+	int fragile_wall_img[11];				// 脆い壁の画像
 
 	float hp;							// 体力
 	int img_num;						// 画像番号

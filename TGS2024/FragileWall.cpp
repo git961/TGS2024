@@ -10,7 +10,7 @@ FragileWall::FragileWall(float set_x, float set_y)
 	height = 128.0f;
 
 	wall_state = WallState::GLOW;
-	LoadDivGraph("images/Stage/Gimmick/Fragile_Wall.png", 7, 7, 1, 128, 128, fragile_wall_img);
+	LoadDivGraph("images/Stage/Gimmick/Fragile_Wall.png", 11, 7, 2, 128, 128, fragile_wall_img);
 	hp = 40.0f;
 	img_num = 0;
 	anim_cnt = 0;
@@ -20,7 +20,7 @@ FragileWall::FragileWall(float set_x, float set_y)
 
 FragileWall::~FragileWall()
 {
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < 11; i++)
 	{
 		// 画像の削除
 		DeleteGraph(fragile_wall_img[i]);
@@ -68,14 +68,24 @@ void FragileWall::Draw() const
 // 壊れるアニメーション
 void FragileWall::BrokenAnimation()
 {
-	if (anim_cnt < 60)
+	if (anim_cnt <= 4)
 	{
 		anim_cnt++;
 	}
 	else
 	{
-		// 削除する
-		delete_flg = true;
+		anim_cnt = 0;
+
+		// 画像切り替え
+		img_num++;
+
+		if (img_num > 11)
+		{
+			img_num = 10;
+
+			// 削除する
+			delete_flg = true;
+		}
 	}
 }
 
@@ -109,7 +119,7 @@ void FragileWall::CheckBroken()
 	if (hp <= 0)
 	{
 		anim_cnt = 0;
-		//img_num = 7;
+		img_num = 7;
 		wall_state = WallState::BREAK;
 	}
 }
