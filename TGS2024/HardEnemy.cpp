@@ -15,7 +15,7 @@ HardEnemy::HardEnemy(float set_x, float set_y)
 
 	enemy_state = EnemyState::LIVE;
 
-	LoadDivGraph("images/Enemy/Hard4.png", 10, 5, 2, 128, 128, enemy_img);
+	LoadDivGraph("images/Enemy/Hard.png", 10, 5, 2, 128, 128, enemy_img);
 
 	anim_wait_time = 0;
 	delete_wait_time = 120;
@@ -90,7 +90,7 @@ void HardEnemy::Death()
 
 void HardEnemy::DeathAnimation()
 {
-	if (anim_cnt <= 4)
+	if (anim_cnt <= 3)
 	{
 		// アニメーション用カウント増加
 		anim_cnt++;
