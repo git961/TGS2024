@@ -2595,7 +2595,7 @@ void GameMainScene::DynamiteHitFragileWall()
 						if (dynamite[j]->HitCheck(fragile_wall[i]->GetWorldLocation(), fragile_wall[i]->GetWidth(), fragile_wall[i]->GetHeight()) == true)
 						{
 							dynamite[j]->SetDynamite(true);
-							fragile_wall[i]->SetBrokenFlg(true);
+							fragile_wall[i]->Damage(dynamite[j]->GetAttack());
 						}
 					}
 
@@ -2604,7 +2604,7 @@ void GameMainScene::DynamiteHitFragileWall()
 					{
 						if (dynamite[j]->HitCheck(fragile_wall[i]->GetWorldLocation(), fragile_wall[i]->GetWidth(), fragile_wall[i]->GetHeight()) == true)
 						{
-							fragile_wall[i]->SetBrokenFlg(true);
+							fragile_wall[i]->Damage(dynamite[j]->GetAttack());
 						}
 					}
 
