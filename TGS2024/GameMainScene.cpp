@@ -2666,45 +2666,45 @@ void GameMainScene::CheckPlayerInCage()
 // 檻のドアへの攻撃判定
 void GameMainScene::AttackCageDoor()
 {
+	if (player == nullptr)						return;
+
 	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
 	{
-		if (player != nullptr && cage_door[i] != nullptr)
-		{
-			for (int i = 0; i < DYNAMITE_MAXNUM; i++)
-			{
-				if (dynamite[i] != nullptr)
-				{
-					// ダイナマイト本体との当たり判定
-					if (dynamite[i]->GetDynamite() == false)
-					{
-						if (dynamite[i]->HitCheck(cage_door[i]->GetWorldLocation(), cage_door[i]->GetWidth(), cage_door[i]->GetHeight()) == true)
-						{
-							dynamite[i]->SetDynamite(true);
-							cage_door[i]->Damage(dynamite[i]->GetAttack());
-						}
-					}
-				}
-			}
+		if (cage_door[i] == nullptr)			continue;
 
-			//つるはしを振るってる時だけ
-			if (player->GetAttacking() == true)
+		for (int j = 0; j < DYNAMITE_MAXNUM; j++)
+		{
+			if (dynamite[j] == nullptr)			continue;
+
+			// ダイナマイト本体との当たり判定
+			if (dynamite[j]->GetDynamite() == false)
 			{
-				//ダメージを一回だけ与える
-				if (enemy_damage_once == false)
+				if (dynamite[j]->HitCheck(cage_door[i]->GetWorldLocation(), cage_door[i]->GetWidth(), cage_door[i]->GetHeight()) == true)
 				{
-					//つるはしとエネミーと当たってるかのチェック
-					if (ac->HitCheck(cage_door[i]->GetWorldLocation(), cage_door[i]->GetWidth(), cage_door[i]->GetHeight()) == true)
-					{
-						cage_door[i]->Damage(player->GetAttack());
-						enemy_damage_once = true;
-					}
+					dynamite[j]->SetDynamite(true);
+					cage_door[i]->Damage(dynamite[j]->GetAttack());
 				}
 			}
-			else
+		}
+
+		//つるはしを振るってる時だけ
+		if (player->GetAttacking() == true)
+		{
+			//ダメージを一回だけ与える
+			if (enemy_damage_once == false)
 			{
-				//プレイヤーがつるはし振ってなかったら
-				enemy_damage_once = false;
+				//つるはしとエネミーと当たってるかのチェック
+				if (ac->HitCheck(cage_door[i]->GetWorldLocation(), cage_door[i]->GetWidth(), cage_door[i]->GetHeight()) == true)
+				{
+					cage_door[i]->Damage(player->GetAttack());
+					enemy_damage_once = true;
+				}
 			}
+		}
+		else
+		{
+			//プレイヤーがつるはし振ってなかったら
+			enemy_damage_once = false;
 		}
 	}
 }

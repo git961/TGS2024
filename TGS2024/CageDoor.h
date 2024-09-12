@@ -4,11 +4,13 @@
 class CageDoor : public ObjectBase
 {
 private:
-	int cage_door_img[2];					// 檻のドアの画像
+	int cage_door_img[5];					// 檻のドアの画像
 
 	float hp;							// 体力
+	float damage_received;				// 受けたダメージ
 	int img_num;						// 画像番号
 	int anim_cnt;						// アニメーション用カウント
+	bool receive_damage_flg;			// ダメージを受けたか？
 	bool open_flg;						// 入口が開いたか？
 
 public:
