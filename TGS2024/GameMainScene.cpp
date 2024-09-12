@@ -11,7 +11,6 @@ static cameraposition screen_origin_position =
 	camera_pos.y - SCREEN_HEIGHT / 2.0f
 };
 
-
 GameMainScene::GameMainScene(bool set_flg)
 {
 
@@ -152,7 +151,7 @@ GameMainScene::GameMainScene(bool set_flg)
 						stage_block[block_count++] = new StageBlock(3, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 4:
-						rock[object_num.rock_cnt++] = new Rock((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+						rock[object_num.rock_cnt++] = new Rock(0,(float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						//stage_block[block_count++] = new StageBlock(4, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
 					case 5:
@@ -281,7 +280,6 @@ GameMainScene::GameMainScene(bool set_flg)
 	ChangeVolumeSoundMem(210, unpause_se);
 }
 
-
 GameMainScene::~GameMainScene()
 {
 	//プレイヤーと攻撃、ダイナマイトdelete
@@ -376,19 +374,12 @@ GameMainScene::~GameMainScene()
 	DeleteSoundMem(unpause_se);
 }
 
-
 void GameMainScene::ResetMap()
 {
 	mapio->LoadMapData(stage_num);
 
 	SetObjectNull();
 	score = nullptr;
-
-	////ステージブロックにNullを入れる
-	//for (int i = 0; i < MAP_BLOCKMAX; i++)
-	//{
-	//	stage_block[i] = nullptr;
-	//}
 
 	//エネミー削除
 	for (int i = 0; i < ENEMYMAXNUM; i++)
@@ -416,12 +407,6 @@ void GameMainScene::ResetMap()
 		rebound_enemy[i] = nullptr;
 	}
 
-	for (int i = 0; i < KEY_MAXNUM; i++)
-	{
-		key_gem[i] = nullptr;
-	}
-
-
 	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
 	{
 		dynamite[i] = nullptr;
@@ -440,26 +425,10 @@ void GameMainScene::ResetMap()
 		{
 			switch (mapio->GetMapData(i, j))
 			{
-			//case 1:
-			//	stage_block[block_count++] = new StageBlock(1, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-			//	break;
-			//case 3:
-			//	goal_block_num = block_count;
-			//	stage_block[block_count++] = new StageBlock(3, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-			//	break;
 			case 4:
-				rock[object_num.rock_cnt] = new Rock((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				rock[object_num.rock_cnt] = new Rock(0,(float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				rock[object_num.rock_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				break;
-			//case 6:
-			//	stage_block[block_count++] = new StageBlock(6, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-			//	break;
-			//case 10:
-			//	stage_block[block_count++] = new StageBlock(10, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-			//	break;
-			//case 11:
-			//	stage_block[block_count++] = new StageBlock(11, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-			//	break;
 			case 12:
 				fragile_wall[object_num.fragile_wall_cnt] = new FragileWall((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				fragile_wall[object_num.fragile_wall_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
@@ -480,12 +449,9 @@ void GameMainScene::ResetMap()
 			case 17:
 				lift[object_num.lift_cnt++] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
-			//case 18:
-			//	stage_block[block_count++] = new StageBlock(18, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-			//	break;
-			//case 19:
-			//	stage_block[block_count++] = new StageBlock(19, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-			//	break;
+			case 23:
+				rock[object_num.rock_cnt++] = new Rock(1, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				break;
 			}
 
 			if (enemy_count < ENEMYMAXNUM)
@@ -540,15 +506,14 @@ void GameMainScene::ResetMap()
 				}
 			}
 
-			if (put_key_cnt<KEY_MAXNUM)
-			{
-				if (mapio->GetMapData(i, j) == 23)
-				{
-					key_gem[put_key_cnt]=new Key(put_key_cnt,(float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-					key_gem[put_key_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-				}
-
-			}
+			//if (put_key_cnt<KEY_MAXNUM)
+			//{
+			//	if (mapio->GetMapData(i, j) == 23)
+			//	{
+			//		key_gem[put_key_cnt]=new Key(put_key_cnt,(float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+			//		key_gem[put_key_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			//	}
+			//}
 
 
 
@@ -610,7 +575,6 @@ void GameMainScene::ChengeNextMap()
 		key_gem[i] = nullptr;
 	}
 
-
 	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
 	{
 		dynamite[i] = nullptr;
@@ -639,7 +603,7 @@ void GameMainScene::ChengeNextMap()
 				stage_block[block_count++] = new StageBlock(3, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 4:
-				rock[object_num.rock_cnt] = new Rock((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				rock[object_num.rock_cnt] = new Rock(0,(float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				rock[object_num.rock_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				//stage_block[block_count++] = new StageBlock(4, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
@@ -677,6 +641,10 @@ void GameMainScene::ChengeNextMap()
 				break;
 			case 19:
 				stage_block[block_count++] = new StageBlock(19, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				break;
+			case 23:
+				rock[object_num.rock_cnt] = new Rock(1, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				rock[object_num.rock_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				break;
 			}
 
@@ -732,15 +700,14 @@ void GameMainScene::ChengeNextMap()
 				}
 			}
 
-			if (put_key_cnt < KEY_MAXNUM)
-			{
-				if (mapio->GetMapData(i, j) == 23)
-				{
-					key_gem[put_key_cnt] = new Key(put_key_cnt, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-					key_gem[put_key_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-				}
-
-			}
+			//if (put_key_cnt < KEY_MAXNUM)
+			//{
+			//	if (mapio->GetMapData(i, j) == 23)
+			//	{
+			//		key_gem[put_key_cnt] = new Key(put_key_cnt, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+			//		key_gem[put_key_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			//	}
+			//}
 
 
 
@@ -2743,7 +2710,6 @@ void GameMainScene::PickaxeHitRock()
 //岩アップデート
 void GameMainScene::RockUpdate()
 {
-
 	//岩を消す処理
 	for (int i = 0; i < object_num.rock_cnt; i++)
 	{
@@ -3346,7 +3312,6 @@ void GameMainScene::PickaxeHitReboundEnemy()
 		}
 	}
 }
-
 
 //当たり判定
 bool GameMainScene::CollisionCheck(float set_x, float set_y)

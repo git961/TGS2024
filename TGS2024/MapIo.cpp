@@ -210,7 +210,13 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		map_data_num = 22;
 	}
 
-	//カギ宝石
+	////カギ宝石
+	//if (CheckHitKey(KEY_INPUT_L) == TRUE)
+	//{
+	//	map_data_num = 23;
+	//}
+
+	//グリーン宝石
 	if (CheckHitKey(KEY_INPUT_L) == TRUE)
 	{
 		map_data_num = 23;
@@ -475,7 +481,7 @@ void MapIo::Draw() const
 		DrawFormatString(40, 200, 0xffffff, "PUT_ReboundEnemy");
 		break;
 	case 23:
-		DrawFormatString(40, 200, 0xffffff, "PUT_Key");
+		DrawFormatString(40, 200, 0xffffff, "PUT_GreenRock");
 		break;
 	}
 	

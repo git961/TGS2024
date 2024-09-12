@@ -56,7 +56,7 @@ private:
 	bool delete_flg;
 
 public:
-    Rock(float set_x, float set_y);
+    Rock(int type_num,float set_x, float set_y);
     ~Rock();
 
 	void Update();

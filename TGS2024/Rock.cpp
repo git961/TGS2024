@@ -1,11 +1,18 @@
 #include "Rock.h"
 #include <time.h>
 
-Rock::Rock(float set_x, float set_y)
+Rock::Rock(int type_num,float set_x, float set_y)
 {
-	LoadDivGraph("images/Stage/rock.png", 7, 7, 1, 64, 64, rock_img);
-	LoadDivGraph("images/Stage/rockeffect.png", 3, 3, 1, 128, 64, rock_effect_img);
-	
+
+	if (type_num == 0) {
+		LoadDivGraph("images/Stage/rock.png", 7, 7, 1, 64, 64, rock_img);
+		LoadDivGraph("images/Stage/rockeffect.png", 3, 3, 1, 128, 64, rock_effect_img);
+	}
+	else {
+		LoadDivGraph("images/Stage/GreenRock.png", 7, 7, 1, 64, 64, rock_img);
+		LoadDivGraph("images/Stage/rockeffect.png", 3, 3, 1, 128, 64, rock_effect_img);
+	}
+
 	world.x = set_x;
 	world.y = set_y;
 	location.x = world.x;
