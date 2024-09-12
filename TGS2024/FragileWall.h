@@ -4,12 +4,20 @@
 class FragileWall : public ObjectBase
 {
 private:
-	int fragile_wall_img;				// 脆い壁の画像
+	enum class WallState
+	{
+		GLOW,
+		BREAK
+	};
+
+	WallState wall_state;
+
+	int fragile_wall_img[11];				// 脆い壁の画像
 
 	float hp;							// 体力
 	int img_num;						// 画像番号
 	int anim_cnt;						// アニメーション用カウント
-	bool broken_flg;					// 壊れたか？
+	int anim_wait_time;					// 光るアニメーション開始までの待ち時間
 	bool delete_flg;					// 削除するか？
 
 public:
@@ -21,6 +29,8 @@ public:
 
 private:
 	void BrokenAnimation();				// 壊れるアニメーション
+	void GlowingAnimation();			// つやつや光るアニメーション
+	void CheckBroken();					// 壊れたか調べる
 
 public:
 	void Damage(float damage);            // 被ダメージ処理

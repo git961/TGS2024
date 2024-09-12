@@ -4,7 +4,7 @@
 class Magma : public ObjectBase
 {
 private:
-	int magma_img[5];				// マグマの画像
+	int magma_img[10];				// マグマの画像
 
 	int img_num;				// アニメーション用画像番号
 	int anim_cnt;				// アニメーション用カウント

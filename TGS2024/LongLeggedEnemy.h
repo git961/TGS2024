@@ -44,12 +44,12 @@ private:
 	void DeathAnimation() override;
 
 	void Attack();
-	void CheckDistanceToPlayer();
-	void CheckDeathCondition();
+	void CheckDistanceToPlayer();			// プレイヤーとの距離を調べる
+	void CheckDeathCondition();				// 死亡状態になったか調べる
 
 	void WalkAnimation();
 
 public:
-	void SetPlayerWorldLocation(World set_world);
+	void SetPlayerWorldLocation(World set_world);	// プレイヤーの位置を保持する
 };
 

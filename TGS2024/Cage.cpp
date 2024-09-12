@@ -54,7 +54,7 @@ void Cage::Draw() const
 	}
 	
 	// 頂点の確認
-	DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
+	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
 }
 
 void Cage::SetInsideFlg(bool set_flg)
