@@ -3251,17 +3251,17 @@ void GameMainScene::DynamiteHitHardEnemy()
 	{
 		if (hard_enemy[i] == nullptr)			continue;
 
-		for (int i = 0; i < DYNAMITE_MAXNUM; i++)
+		for (int j = 0; j < DYNAMITE_MAXNUM; j++)
 		{
-			if (dynamite[i] == nullptr)			continue;
+			if (dynamite[j] == nullptr)			continue;
 
 			// ダイナマイト本体との当たり判定
-			if (dynamite[i]->GetDynamite() == false)
+			if (dynamite[j]->GetDynamite() == false)
 			{
-				if (dynamite[i]->HitCheck(hard_enemy[i]->GetWorldLocation(), hard_enemy[i]->GetWidth(), hard_enemy[i]->GetHeight()) == true)
+				if (dynamite[j]->HitCheck(hard_enemy[i]->GetWorldLocation(), hard_enemy[i]->GetWidth(), hard_enemy[i]->GetHeight()) == true)
 				{
-					dynamite[i]->SetDynamite(true);
-					hard_enemy[i]->Damage(dynamite[i]->GetAttack());
+					dynamite[j]->SetDynamite(true);
+					hard_enemy[i]->Damage(dynamite[j]->GetAttack());
 				}
 			}
 		}
