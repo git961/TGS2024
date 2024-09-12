@@ -76,6 +76,8 @@ GameMainScene::GameMainScene(bool set_flg)
 	death_img = LoadGraph("images/Backimg/death.png", TRUE);
 	pose_img = LoadGraph("images/UI/pose.png", TRUE);
 	//back_img = LoadGraph("images/background_test.png", TRUE);
+	back_lower_img = LoadGraph("images/Backimg/lower.png", TRUE);
+	back_upper_img = LoadGraph("images/Backimg/upper.png", TRUE);
 
 
 	//game_state = RESPAWN;

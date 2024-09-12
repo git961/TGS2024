@@ -2078,7 +2078,8 @@ void Player::SinkCheckObject(float set_y)
 	if (stop_up_flg == false)
 	{
 		float sink_y = (world.y + half_height) - set_y;
-		if (sink_y > 0) {
+		if (sink_y > 0)
+		{
 			world.y = world.y - sink_y;
 		}
 	}
