@@ -477,7 +477,7 @@ void GameMainScene::ResetMap()
 				break;
 			case 16:
 				cage_door[object_num.cage_door_cnt++] = new CageDoor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-				cage[object_num.cage_cnt++] = new Cage(cage_door[0]->GetWorldLocation());
+				cage[object_num.cage_cnt++] = new Cage(cage_door[object_num.cage_door_cnt - 1]->GetWorldLocation());
 				break;
 			case 17:
 				lift[object_num.lift_cnt++] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);

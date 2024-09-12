@@ -52,7 +52,7 @@ void CageDoor::Draw() const
 	DrawFormatString((int)location.x, (int)location.y, 0xff0000, "anim_cnt; %d", anim_cnt);
 
 	// 頂点の確認
-	DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
+	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
 }
 
 // ドアが開くアニメーション
