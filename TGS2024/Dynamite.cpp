@@ -8,16 +8,16 @@ Dynamite::Dynamite(World set_xy,int set_direction)
 	height = 50;
 	if (direction == false)
 	{
-		location.x = set_xy.x+20;
-		location.y = set_xy.y;
-		world.x = set_xy.x+20;
-		world.y = set_xy.y;
+		location.x = set_xy.x+20.0f;
+		location.y = set_xy.y-15.0f;
+		world.x = set_xy.x+20.0f;
+		world.y = set_xy.y - 15.0f;
 	}
 	else {
 		location.x = set_xy.x-20;
-		location.y = set_xy.y;
+		location.y = set_xy.y - 15.0f;
 		world.x = set_xy.x-20;
-		world.y = set_xy.y;
+		world.y = set_xy.y - 15.0f;
 	}
 	move_x = 5;
 	rotation = 0;
