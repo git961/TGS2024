@@ -6,6 +6,7 @@ Geyser::Geyser(float set_x, float set_y)
 	world.y = set_y;
 	location.x = world.x;
 	location.y = world.y;
+	original_y = set_y;
 	width = 64.0f;
 	height = 64.0f;
 
@@ -111,6 +112,7 @@ void Geyser::LaunchWater()
 	{
 		// 上に移動
 		world.y--;
+		height+=1.1f;
 
 		// 水の高さ
 		now_water_height++;
@@ -143,9 +145,10 @@ void Geyser::StopWater()
 	if (stop_water_time > 0)
 	{
 		// 元の高さに戻る
-		world.y++;
-		now_water_height--;
-		stop_water_time--;
+		world.y+=2.0f;
+		now_water_height-=2.0f;
+		stop_water_time-=2.0f;
+		height -= 2.2f;
 
 		// 水の画像を非表示にする
 		if (now_water_height <= 128)
@@ -161,6 +164,7 @@ void Geyser::StopWater()
 	{
 		// 水が止まった
 		stop_water_flg = true;
+		world.y = original_y;
 
 		// 供給後から水が止まるまでの時間の再設定（3秒）
 		stop_water_time = 180;

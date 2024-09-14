@@ -8,7 +8,7 @@ Player::Player()
 Player::Player(float set_x,float set_y)
 {
 	//画像読込
-	LoadDivGraph("images/Player/player_img.png",68, 4, 17, 170, 170, player_img);
+	LoadDivGraph("images/Player/player_img.png",71, 4, 18, 170, 170, player_img);
 	LoadDivGraph("images/Player/pickaxe2.png", 8, 4, 2, 170, 170, pickaxe_img);
 	LoadDivGraph("images/Player/pickeffect3.png", 4, 4, 1, 170, 170, pickaxe_effect);
 	LoadDivGraph("images/Player/soil_effect.png", 2, 2, 1, 170, 170, soil_effect);
@@ -158,8 +158,13 @@ Player::Player(float set_x,float set_y)
 
 	limit_y = 600;
 	fall_flg = false;
-	set_speed = 4.0f;
+	lift_hit_flg = false;
+	geyser_hit_flg = false;
+	vel = 1.0f;
+	set_speed = 0.0f;
 	speed = set_speed;
+	rest_move_count = 0;
+	stop_up_flg = false;
 
 }
 
@@ -214,7 +219,6 @@ Player::~Player()
 void Player::Update(GameMainScene* gamemain)
 {
 	
-
 
 	input.InputUpdate();
 	SetVertex();
@@ -305,39 +309,32 @@ void Player::Update(GameMainScene* gamemain)
 
 		PlayerFall();
 
-
-		if (gamemain->GetPlayerNotBack() ==false)
+		//落下画像表示
+		if (fall_flg == true)
 		{
-			// 端に来たら跳ね返る
-			if (world.x + width / 2 > FIELD_WIDTH)
+			if (direction == 0)
 			{
-				world.x = FIELD_WIDTH - 20;
-				StopSoundMem(op_run_sound);
+				//落下右向き
+				p_imgnum = 66;
 			}
-			else if (world.x - width / 2 < 0) {
-				world.x = width / 2;
-				StopSoundMem(op_run_sound);
-
-			}
-		}
-		else
-		{
-			if (world.x + width / 2 > FIELD_WIDTH)
-			{
-				world.x = FIELD_WIDTH - 20;
-				StopSoundMem(op_run_sound);
-
-
-			}
-			else if (world.x - width / 2 < 2100) {
-				// 看板に来たら跳ね返る
-				world.x = 2100 + width / 2;
-				StopSoundMem(op_run_sound);
-
-
+			else {
+				//落下左向き
+				p_imgnum = 69;
 			}
 		}
 
+
+		// 端に来たら跳ね返る
+		if (world.x + width / 2 > FIELD_WIDTH)
+		{
+			world.x = FIELD_WIDTH - 20;
+			StopSoundMem(op_run_sound);
+		}
+		else if (world.x - width / 2 < 0) {
+			world.x = width / 2;
+			StopSoundMem(op_run_sound);
+
+		}
 
 
 		//敵からダメージを食らったら
@@ -524,8 +521,8 @@ void Player::Draw() const
 	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
 
 	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
-	//DrawFormatString(700, 500, 0xff0000, "move_x : %f", move_x);
-	//DrawFormatString(location.x, location.y - 80, 0xff0000, "fall_flg : %d",fall_flg);
+	//DrawFormatString(location.x, location.y - 80, 0xff0000, "move_x : %f", move_x);
+	DrawFormatString(location.x, location.y - 80, 0xff0000, "fall_flg : %d",fall_flg);
 	//DrawFormatString(location.x, location.y -100, 0xff0000, "speed : %f",speed);
 
 
@@ -543,12 +540,8 @@ void Player::PlayerMove()
 	
 	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_RIGHT) == TRUE||input.GetPadThumbLX()>=32000) {
 
-
-		if (move_x <= 4)
-		{
-			move_x += 1;
-		}
-
+		move_x = 5.0f;
+		
 		direction = 0;
 
 		if (player_state != ATTACK)
@@ -561,15 +554,8 @@ void Player::PlayerMove()
 	//左移動
 	if (input.LongPressBtn(XINPUT_BUTTON_DPAD_LEFT) == TRUE||input.GetPadThumbLX() <= -32000) {
 
-		//if (stop_walk_snd == true)
-		//{
-		//	stop_walk_snd = false;
-		//}
 
-		if (move_x >= -4)
-		{
-			move_x -= 1;
-		}
+		move_x = -5.0f;		
 
 		direction = 1;
 
@@ -593,6 +579,13 @@ void Player::PlayerMove()
 				player_state = NOMAL;
 			}
 		}
+	}
+
+
+	//落ちてる途中だったら
+	if (fall_flg == true)
+	{
+		move_x = move_x / 1.5f;
 	}
 
 
@@ -640,6 +633,51 @@ void Player::WalkAnim()
 			}
 		}
 	}
+
+	//move_xが0になってない場合
+	if (player_state != WALK) {
+
+		if (direction == 0 && move_x > 0.0f)
+		{
+			if (move_x < 0.3f)
+			{
+				move_x = 0.0f;
+			}
+
+			//プレイヤーを歩かせる
+			rest_move_count++;
+			if (rest_move_count < 15) {
+				p_imgnum = 55;
+			}
+			else if (rest_move_count < 25)
+			{
+				p_imgnum = 56;
+			}
+		}
+
+		if (direction == 1 && move_x < 0.0f)
+		{
+			if (move_x > -0.3f)
+			{
+				move_x = 0.0f;
+			}
+
+			//プレイヤーを歩かせる
+			rest_move_count++;
+			if (rest_move_count < 15) {
+				p_imgnum = 58;
+			}
+			else if (rest_move_count < 25)
+			{
+				p_imgnum = 59;
+			}
+		}
+
+	}
+	else {
+		rest_move_count = 0;
+	}
+
 }
 
 void Player::DeathAnim()
@@ -767,33 +805,21 @@ void Player::ThrowAnim()
 
 void Player::PlayerFall()
 {
-	//落ちても良かったら
 	if (fall_flg == true)
 	{
-		//ワールド座標に動く分のY座標をプラスする
-		//speed = 2.0f;
+		if (vel < 4.0f)
+		{
+			vel += 1.0f;
+			speed += vel;
+		}
 
-		/*
-		limit_y = 600.0f + height / 2;
-		//着地座標がプレイヤーのワールド座標よりも大きかったら
-		if (limit_y > world.y+height / 2)
-		{
-			//ワールド座標に動く分のY座標をプラスする
-			world.y += move_y;
-		}
-		else
-		{
-			//プレイヤーが着地座標に付いたら
-			//着地座標をワールド座標に入れる
-			//world.y = limit_y-height / 2;
-			fall_flg = false;
-		}
-		*/
 	}
 	else {
-		//speed = 0.0f;
+		vel = 1.0f;
+
 	}
-	world.y += move_y * speed;
+	//y座標に加算
+	world.y += speed;
 }
 
 void Player::PlayerAttack()
@@ -1971,20 +1997,33 @@ void Player::HitMapChip(GameMainScene* gamemain)
 
 	if (gamemain->CollisionCharaTop(half_width, half_height, world))
 	{
-		speed = set_speed;
+		//頭がぶつかったら押し返す
+		SinkCheckTop(gamemain, world.x, world.y-half_height-1.0f);
+		stop_up_flg = true;
+	}
+	else {
 	}
 
 	//移動前のｘ座標を渡す
 	if (gamemain->CollisionCharaBottom(half_width, half_height, curent_x, world.y))
 	{
 		speed = 0.0f;
+		if (fall_flg == true)
+		{
+			move_x = 0.0f;
+		}
+		fall_flg = false;
+		stop_up_flg = false;
 		//くい込んでたら上に押し出す
 		SinkCheck(gamemain, curent_x - half_width, world.y + half_height - 1.0f);
 
 	}
-	else {
-		speed = set_speed;
+	else if(lift_hit_flg == false && geyser_hit_flg == false)
+	{
+		fall_flg = true;
 	}
+
+	
 
 }
 
@@ -2002,8 +2041,9 @@ void Player::SinkCheck(GameMainScene* gamemain,float set_x, float set_y)
 		//block_y = block_y - (float)BLOCKSIZE;
 
 		float sink_y = set_y - block_y;
-		
+		//もしめりこんでいたら
 		if (sink_y > 0) {
+			//めり込んでいる分上にあげる
 			world.y = world.y - sink_y;
 		}
 	}
@@ -2011,10 +2051,45 @@ void Player::SinkCheck(GameMainScene* gamemain,float set_x, float set_y)
 
 }
 
+void Player::SinkCheckTop(GameMainScene* gamemain, float set_x, float set_y)
+{
+	int col = (int)set_x / BLOCKSIZE;
+	int row = (int)set_y / BLOCKSIZE;
+
+	if (gamemain->GetMapIo()->GetMapData(row, col) == 1) {
+		float block_x = (float)col * BLOCKSIZE;
+		float block_y = (float)row * BLOCKSIZE;
+
+
+		//自分の上の座標
+
+		float sink_y = (block_y+BLOCKSIZE) - set_y;
+		//もしめりこんでいたら
+		if (sink_y > 0)
+		{
+			//めり込んでいる分上にあげる
+			world.y = world.y + sink_y;
+		}
+	}
+}
+
 void Player::SinkCheckObject(float set_y)
 {
-	float sink_y = (world.y + half_height) - set_y;
-	if (sink_y > 0) {
-		world.y = world.y - sink_y;
+	if (stop_up_flg == false)
+	{
+		float sink_y = (world.y + half_height) - set_y;
+		if (sink_y > 0)
+		{
+			world.y = world.y - sink_y;
+		}
+	}
+}
+
+void Player::PushUpPlayer(float set_upper)
+{
+	//噴き出した水の頭のｙよりプレイヤーの足が下に居たら
+	if (set_upper+6.0f < GetVertex().lower_y)
+	{
+		world.y = world.y - 3.0f;
 	}
 }

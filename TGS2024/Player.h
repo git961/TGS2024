@@ -27,7 +27,7 @@ class Player :
 private:
     Input input;
     PlayerState player_state;
-    int player_img[68];
+    int player_img[72];
     //int player_walk_img[10];
     //int player_attack_img[15];
     //int player_throw_img[15];
@@ -44,7 +44,10 @@ private:
     float set_speed;
     
     float limit_y;//落下の上限用
-    bool fall_flg;//落ちるか？
+    bool fall_flg;//落ちているか？
+    bool lift_hit_flg;//リフトに当たっているか？
+    bool geyser_hit_flg;//間欠泉に当たっているか？
+    float vel;//初速度
 
     float img_down;//画像の表示位置を下げる用
     int p_imgnum;//プレイヤーの画像番号切り替え用
@@ -156,6 +159,10 @@ private:
     int credits_walk_cnt;               // クレジット画面の歩行アニメーションカウント
     bool walk_cnt_up_flg;               // 歩行アニメーションのカウントを増やすか？
 
+    int rest_move_count;//移動量が残っている時用
+    
+    bool stop_up_flg;//プレイヤーの上昇を止めるか？
+
 public:
     Player();
     Player(float set_x,float set_y);
@@ -192,6 +199,11 @@ public:
     void SetFallFlg(bool set_flg) {
         fall_flg = set_flg;
     }
+
+    void SetLiftHitFlg(bool set_flg) {lift_hit_flg = set_flg;}
+
+    void SetGeyserHitFlg(bool set_flg) {geyser_hit_flg = set_flg;}
+
     //いる所によって落下する所を更新する
     void SetLimitY(float set_y) {
         //30px分開いてしまうのでプラスしている
@@ -258,6 +270,9 @@ public:
 
     //下がめり込んでいるか
     void SinkCheck(GameMainScene* gamemain,float set_x, float set_y);
+    void SinkCheckTop(GameMainScene* gamemain,float set_x, float set_y);
     void SinkCheckObject(float set_y);
+
+    void PushUpPlayer(float set_upper);
 
 };

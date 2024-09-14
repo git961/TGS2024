@@ -241,12 +241,12 @@ void AnimScene::Draw() const
 
 		if (ase_flg == true)
 		{
-			DrawGraph((int)player->GetLocation().x-60, (int)player->GetLocation().y-60, p_ase_img, TRUE);
+			DrawGraph((int)player->GetLocation().x-60, (int)player->GetLocation().y-100, p_ase_img, TRUE);
 		}
 
 		if (exc_flg == true)
 		{
-			DrawGraph((int)player->GetLocation().x - 60, (int)player->GetLocation().y - 60, p_exc_img, TRUE);
+			DrawGraph((int)player->GetLocation().x - 60, (int)player->GetLocation().y - 100, p_exc_img, TRUE);
 		}
 	}
 
