@@ -94,6 +94,7 @@ public:
     void FragmentEffect();                      // 石の破片エフェクトの処理
     void Damage(int damage);                    // 被ダメージ処理
     void Fall();
+    void CheckDeathCondition();				    // 死亡状態になったか調べる
 
     // set関数
     void SetEnemyWorldLocation(World set_world)
@@ -106,7 +107,7 @@ public:
         player_x = set_world.x;
         player_y = set_world.y;
     }
-    void SetKnockBackStartFlg(bool set_flg) { is_knock_back_start = set_flg; }
+    void SetKnockBackStartFlg(bool set_flg);
     void SetStarDrawFlg(bool set_flg) { star.is_draw = set_flg; }       
     void SetGemDropFlg(bool set_flg){ gem_drop = set_flg; }
     void SetHitEnemyX(float set_x){ hit_enemy_x = set_x; }
