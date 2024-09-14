@@ -32,7 +32,6 @@ private:
     EnemyState enemy_state;
 
     int enemy_img[10];               // 敵画像
-    //int enemy_death_img[4];         // エネミー死亡画像
     int crack_img[2];               // ひび割れ画像
     int star_img;                   // 星エフェクト画像
     int fragment_img[4];            // 石の破片エフェクト画像
