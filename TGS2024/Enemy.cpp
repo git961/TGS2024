@@ -19,9 +19,8 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 	speed = 2.0f;
 
 	//画像読込
-	LoadDivGraph("images/Enemy/WalkTest.png", 5, 5, 1, 64, 64, enemy_walk_img);
-	LoadDivGraph("images/Enemy/WalkDeathTest.png", 4, 4, 1, 64, 64, enemy_death_img);
-	knock_back_img = LoadGraph("images/Enemy/KnockBack.png");
+	LoadDivGraph("images/Enemy/Walk.png", 10, 5, 2, 64, 64, enemy_img);
+	//LoadDivGraph("images/Enemy/WalkDeathTest.png", 4, 4, 1, 64, 64, enemy_death_img);
 	LoadDivGraph("images/Enemy/crack.png", 2, 2, 1, 64, 64, crack_img);
 	star_img = LoadGraph("images/Enemy/star.png");
 	LoadDivGraph("images/Enemy/fragment.png", 4, 4, 1, 64, 64, fragment_img);
@@ -51,16 +50,6 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 	player_x = 0.0f;
 	player_y = 0.0f;
 
-	//srand((unsigned int)time(NULL));			// 現在時刻の情報で初期化
-	//num = rand() % 10 + 1;
-	//if (num >= 5)
-	//{
-	//	direction = true;
-	//}
-	//else
-	//{
-	//	direction = false;
-	//}
 	// 進行方法が左ならx座標と移動方向が変わる
 	if (direction == true)
 	{
@@ -136,25 +125,15 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 Enemy::~Enemy()
 {
 	// 画像の削除
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 10; i++)
 	{
-		DeleteGraph(enemy_walk_img[i]);
+		DeleteGraph(enemy_img[i]);
 	}
-
-	for (int i = 0; i < 4; i++)
-	{
-		DeleteGraph(enemy_death_img[i]);
-	}
-
-	DeleteGraph(knock_back_img);
-
 	for (int i = 0; i < 2; i++)
 	{
 		DeleteGraph(crack_img[i]);
 	}
-
 	DeleteGraph(star_img);
-
 	for (int i = 0; i < 4; i++)
 	{
 		DeleteGraph(fragment_img[i]);
@@ -277,7 +256,7 @@ void Enemy::Draw() const
 		if (is_knock_back == false)
 		{
 			// 歩行画像
-			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_walk_img[image_num], TRUE, direction);
+			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img[image_num], TRUE, direction);
 
 			if (hp != 30)
 			{
@@ -295,7 +274,7 @@ void Enemy::Draw() const
 		else
 		{
 			// ノックバック画像
-			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, knock_back_img, TRUE, direction);
+			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img[5], TRUE, direction);
 		}
 
 		if (star.is_draw == true)
@@ -309,7 +288,7 @@ void Enemy::Draw() const
 		if (draw_death_img == true)
 		{
 			// 死亡画像
-			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_death_img[image_num], TRUE, direction);
+			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img[image_num], TRUE, direction);
 		}
 
 		for (int i = 0; i < 4; i++)
@@ -481,12 +460,12 @@ void Enemy::DeathAnimation()
 		{
 			// 死亡
 			// 5カウントごとに変わる
-			image_num = death_cnt / 5;
+			image_num = death_cnt / 5 + 6;
 
-			if (image_num > 3)
+			if (image_num > 9)
 			{
 				// 最終画像で止める
-				image_num = 3;
+				image_num = 9;
 			}
 		}
 	}

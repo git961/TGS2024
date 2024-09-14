@@ -1,8 +1,6 @@
 ﻿#pragma once
 #define DEBUG		        // デバッグ用、消すと#ifdef DEBUGの処理がされなくなる
 
-#include <stdlib.h>         // スポーン位置決定用
-#include <time.h>           // スポーン位置決定用
 #include <math.h>
 #include "CharacterBase.h"
 #include "GameMainScene.h"
@@ -23,9 +21,18 @@ struct effect
 class Enemy : public CharacterBase
 {
 private:
-    int enemy_walk_img[5];          // エネミー歩行画像
-    int enemy_death_img[4];         // エネミー死亡画像
-    int knock_back_img;             // ノックバック画像
+    enum class EnemyState
+    {
+        WALK,
+        KNOCKBACK,
+        FALL,
+        DEATH
+    };
+
+    EnemyState enemy_state;
+
+    int enemy_img[10];               // 敵画像
+    //int enemy_death_img[4];         // エネミー死亡画像
     int crack_img[2];               // ひび割れ画像
     int star_img;                   // 星エフェクト画像
     int fragment_img[4];            // 石の破片エフェクト画像
