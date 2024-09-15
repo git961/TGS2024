@@ -49,15 +49,6 @@ GreenGem::~GreenGem()
 
 void GreenGem::Update(GameMainScene* gamemain)
 {
-	if (play_drop_sound == true)
-	{
-		if (CheckSoundMem(drop_sound) == FALSE)
-		{
-			// ドロップse
-			PlaySoundMem(drop_sound, DX_PLAYTYPE_BACK);
-			play_drop_sound = false;
-		}
-	}
 
 	// 宝石が上下に揺れる
 	GemSway();

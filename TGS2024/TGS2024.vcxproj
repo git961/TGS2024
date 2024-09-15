@@ -167,6 +167,7 @@
     <ClCompile Include="EndScene.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
+    <ClCompile Include="EventLift.cpp" />
     <ClCompile Include="ExplosionEnemy.cpp" />
     <ClCompile Include="FallingFloor.cpp" />
     <ClCompile Include="FallingRock.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="Define.h" />
     <ClInclude Include="EndScene.h" />
     <ClInclude Include="EnemyBase.h" />
+    <ClInclude Include="EventLift.h" />
     <ClInclude Include="ExplosionEnemy.h" />
     <ClInclude Include="FallingFloor.h" />
     <ClInclude Include="FallingRock.h" />

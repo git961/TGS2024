@@ -216,6 +216,9 @@
     <ClCompile Include="GreenGem.cpp">
       <Filter>ソース ファイル\GemFile</Filter>
     </ClCompile>
+    <ClCompile Include="EventLift.cpp">
+      <Filter>ソース ファイル\StageObjectFile\Lift</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fps.h">
@@ -355,6 +358,9 @@
     </ClInclude>
     <ClInclude Include="GreenGem.h">
       <Filter>ヘッダー ファイル\GemFile</Filter>
+    </ClInclude>
+    <ClInclude Include="EventLift.h">
+      <Filter>ヘッダー ファイル\StageObjectFile\Lift</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

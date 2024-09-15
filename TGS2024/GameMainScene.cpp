@@ -18,6 +18,8 @@ GameMainScene::GameMainScene(bool set_flg)
 	// 読み込みたいステージ
 	stage_num = StageNum::stage2;
 
+	event_lift[0] = new EventLift(5280.0f, 1750.0f);//後で消す
+
 	retry_flg = set_flg;
 	checkhit = false;
 	block_cnt = 0;
@@ -52,7 +54,8 @@ GameMainScene::GameMainScene(bool set_flg)
 		}
 		else {
 			//プレイヤーのリスタート位置を入れる
-			player = new Player(200.0f, 1700.0f);
+			//player = new Player(200.0f, 1700.0f);
+			player = new Player(5080.0f, 1700.0f);
 			current_location = CurrentLocation::middle;
 		}
 	}
@@ -973,6 +976,7 @@ void GameMainScene::Update()
 		LiftUpDate();
 		LiftHitStop();
 		PlayerHitLift();
+		PlayerHitEventLift();
 
 		//押されたらポーズへ
 		if (input.CheckBtn(XINPUT_BUTTON_START) == TRUE)
@@ -1167,6 +1171,16 @@ void GameMainScene::Update()
 		}
 
 		PlayerHitBlock();
+
+		if (event_lift[0] != nullptr)
+		{
+			event_lift[0]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			event_lift[0]->SetScreenPos(screen_origin_position.x, screen_origin_position.y);
+			if (ac != nullptr && player != nullptr)
+			{
+				event_lift[0]->Update(ac, player);
+			}
+		}
 
 		break;
 	default:
@@ -1433,6 +1447,12 @@ void GameMainScene::Draw() const
 					green_gem[i]->Draw();
 				}
 			}
+
+		
+		if (event_lift[0] != nullptr)
+		{
+			event_lift[0]->Draw();
+		}
 
 		}
 
@@ -2762,7 +2782,6 @@ void GameMainScene::LiftUpDate()
 //プレイヤーとリフトの当たり判定
 void GameMainScene::PlayerHitLift()
 {
-	
 	for (int i = 0; i < LIFT_MAXNUM; i++)
 	{
 		if (lift[i] != nullptr && player != nullptr)
@@ -2779,6 +2798,29 @@ void GameMainScene::PlayerHitLift()
 			{
 				player->SetLiftHitFlg(false);
 			}
+		}
+	}
+}
+
+//プレイヤーとイベントリフトの当たり判定
+void GameMainScene::PlayerHitEventLift()
+{
+
+	if (event_lift[0] != nullptr && player != nullptr)
+	{
+
+		if (player->HitCheck(event_lift[0]->GetWorldLocation(), event_lift[0]->GetWidth(), event_lift[0]->GetHeight()) == true) {
+
+			player->SetY(event_lift[0]->GetWorldLocation().y);
+			player->SetFallFlg(false);
+			player->SetLiftHitFlg(true);
+			player->SetPlayerState(true);//プレイヤーの動きを止める
+			event_lift[0]->SetAnimStartFlg(true);//アニメーションスタート
+
+		}
+		else
+		{
+			player->SetLiftHitFlg(false);
 		}
 	}
 }

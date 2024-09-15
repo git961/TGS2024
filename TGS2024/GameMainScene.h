@@ -19,6 +19,7 @@
 #include "Cage.h"
 #include "CageDoor.h"
 #include "Lift.h"
+#include "EventLift.h"
 #include "Magma.h"
 #include "FallingFloor.h"
 #include "Geyser.h"
@@ -39,6 +40,7 @@ class UI;
 class Dynamite;
 class Gem;
 class Lift;
+class EventLift;
 class GreenGem;
 enum class StageNum;
 
@@ -111,6 +113,7 @@ private:
     Score* score;
 
     Lift* lift[LIFT_MAXNUM];
+    EventLift* event_lift[3];
 
     UI* ui;
 
@@ -269,6 +272,7 @@ public:
     void DynamiteHitEnemy();
     void LiftUpDate();
     void PlayerHitLift();
+    void PlayerHitEventLift();
     void LiftHitStop();
     void PlayerHitBlock();
 
