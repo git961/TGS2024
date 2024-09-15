@@ -33,8 +33,7 @@ EventLift::EventLift(float set_x, float set_y)
 	shift_img_y = 12.0f;
 	spear_num = 0;
 	player_anim_num = 0;
-
-	anim_sway_flg = false;
+	anim_end_flg = false;
 }
 
 EventLift::~EventLift()
@@ -77,8 +76,9 @@ void EventLift::Update(AttackCheck* ac, Player* player)
 		break;
 	case AnimState::Fall:
 		player_anim_num = 2;
+		player->SetY(world.y);
 		player->LiftEvent(player_anim_num);
-		if (world.y < 2880.f)
+		if (world.y < 2850.f)
 		{
 			world.y += 20.0f;
 		}
@@ -89,14 +89,13 @@ void EventLift::Update(AttackCheck* ac, Player* player)
 		break;
 	case AnimState::Clash:
 		player_anim_num = 3;
-		player->SetY(world.y);
 		player->LiftEvent(player_anim_num);
 		if (player->GetState() != 8) {
 			anim_state = AnimState::End;
 		}
 		break;
 	case AnimState::End:
-
+		anim_end_flg = true;
 		break;
 	default:
 		break;
@@ -142,9 +141,8 @@ void EventLift::DownEventAnim()
 		break;
 	case 25:
 		spear_num = 3;
-		switch_object->SetImgNum(5);
 		break;
-	case 180:
+	case 90:
 		anim_cnt = 0;
 		anim_state = AnimState::Fall;
 		break;

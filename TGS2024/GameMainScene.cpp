@@ -2804,10 +2804,7 @@ void GameMainScene::PlayerHitLift()
 //プレイヤーとイベントリフトの当たり判定
 void GameMainScene::PlayerHitEventLift()
 {
-	if (event_lift[0] != nullptr)
-	{
-		ShakeCamera(event_lift[0]->GetAnimSwayFlg(), 0);
-	}
+
 
 	if (event_lift[0] != nullptr && player != nullptr)
 	{
@@ -2816,8 +2813,13 @@ void GameMainScene::PlayerHitEventLift()
 			player->SetY(event_lift[0]->GetWorldLocation().y);
 			player->SetFallFlg(false);
 			player->SetLiftHitFlg(true);
-			player->SetPlayerState(true);//プレイヤーの動きを止める
-			event_lift[0]->SetAnimStartFlg(true);//アニメーションスタート
+			if (event_lift[0]->GetAnimEndFlg() == false) {
+				player->SetPlayerState(true);//プレイヤーの動きを止める
+				event_lift[0]->SetAnimStartFlg(true);//アニメーションスタート
+			}
+			else {
+				player->SetPlayerState(false);//プレイヤーの動きを止める
+			}
 		}
 		else
 		{

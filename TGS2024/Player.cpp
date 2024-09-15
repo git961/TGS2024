@@ -1108,17 +1108,11 @@ void Player::LiftEvent(int set_num)
 		if (lift_anim_cnt++ < 60) {
 			p_imgnum = 49;
 		}
-		else {
-			death_anim_cnt++;
-			switch (death_anim_cnt)
-			{
-			case 80:
-				p_imgnum = 27;
-				player_state = NOMAL;
-				death_anim_cnt = 0;
-				break;
-			}
-
+		else if(lift_anim_cnt>80)
+		{
+			p_imgnum = 27;
+			player_state = NOMAL;
+			lift_anim_cnt = 0;
 		}
 		break;
 	default:

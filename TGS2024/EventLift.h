@@ -46,7 +46,7 @@ private:
     int spear_num;
 
     int player_anim_num;//
-    bool anim_sway_flg;//揺らす
+    bool anim_end_flg;
 
 public:
     EventLift(float set_x, float set_y);
@@ -59,7 +59,7 @@ public:
     void DownEventAnim();
 
     void SetAnimStartFlg(bool set_flg) { anim_start_flg = set_flg; }
-    bool GetAnimSwayFlg() { return anim_sway_flg; }
+    bool GetAnimEndFlg() { return anim_end_flg; }
 
     void SetUpMaxY(float set_y) { up_max_y = set_y; }
     void SetCanMove(bool set_flg) { canmove_flg = set_flg; }
