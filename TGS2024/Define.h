@@ -42,3 +42,5 @@
 #define KEY_MAXNUM 2
 
 #define ROCK_MAXNUM 200
+
+#define GREEN_GEM_MAXNUM 20

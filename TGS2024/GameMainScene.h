@@ -27,6 +27,7 @@
 #include "HardEnemy.h"
 #include "ReboundEnemy.h"
 #include "Key.h"
+#include "GreenGem.h"
 #include <crtdbg.h>
 #include <stdlib.h>
 
@@ -38,6 +39,7 @@ class UI;
 class Dynamite;
 class Gem;
 class Lift;
+class GreenGem;
 enum class StageNum;
 
 struct cameraposition
@@ -79,6 +81,7 @@ struct ObjectNum {
     int geyser_cnt;
     int lift_cnt;
     int rock_cnt;
+    int green_gem_cnt;
 };
 
 class GameMainScene : public AbstractScene
@@ -102,6 +105,9 @@ private:
     StageBlock* stage_block[MAP_BLOCKMAX];
     Gem* walk_gem[ENEMYMAXNUM];             // 配列
     Gem* roll_gem[ROLLING_ENEMY_MAXNUM];
+
+    GreenGem* green_gem[GREEN_GEM_MAXNUM];
+
     Score* score;
 
     Lift* lift[LIFT_MAXNUM];

@@ -450,7 +450,7 @@ void GameMainScene::ResetMap()
 				lift[object_num.lift_cnt++] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 23:
-				rock[object_num.rock_cnt++] = new Rock(1, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				green_gem[object_num.green_gem_cnt++] = new GreenGem((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2,700);
 				break;
 			}
 
@@ -643,8 +643,8 @@ void GameMainScene::ChengeNextMap()
 				stage_block[block_count++] = new StageBlock(19, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 23:
-				rock[object_num.rock_cnt] = new Rock(1, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-				rock[object_num.rock_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				green_gem[object_num.green_gem_cnt] = new GreenGem((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, 700);
+				green_gem[object_num.green_gem_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				break;
 			}
 
@@ -700,14 +700,7 @@ void GameMainScene::ChengeNextMap()
 				}
 			}
 
-			//if (put_key_cnt < KEY_MAXNUM)
-			//{
-			//	if (mapio->GetMapData(i, j) == 23)
-			//	{
-			//		key_gem[put_key_cnt] = new Key(put_key_cnt, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-			//		key_gem[put_key_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-			//	}
-			//}
+
 
 
 
@@ -1273,16 +1266,12 @@ void GameMainScene::Draw() const
 	}
 	else
 	{
-		//プレイヤー描画
+
+
+			//プレイヤー描画
 		if (player != nullptr)
 		{
-			//player->Draw();
-			if (checkhit == true)
-			{
-				DrawFormatString(player->GetLocation().x, player->GetLocation().y - 80, 0xffffff, "true");
-			}
-			DrawFormatString(player->GetLocation().x, player->GetLocation().y - 100, 0xffffff, "bcnt:%d", block_cnt);
-			DrawFormatString(player->GetLocation().x, player->GetLocation().y - 120, 0xffffff, "0:%d,1:%d,2:%d", checkhit_block[0], checkhit_block[1], checkhit_block[2]);
+			player->Draw();
 		}
 
 		//プレイヤー攻撃描画
@@ -1365,14 +1354,6 @@ void GameMainScene::Draw() const
 				}
 			}
 
-			// 脆い壁描画
-			//for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
-			//{
-			//	if (fragile_wall[i] != nullptr)
-			//	{
-			//		fragile_wall[i]->Draw();
-			//	}			
-			//}
 
 			for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
 			{			
@@ -1442,6 +1423,17 @@ void GameMainScene::Draw() const
 					rebound_enemy[i]->Draw();
 				}
 			}
+
+
+			//緑の宝石
+		for (int i = 0; i < GREEN_GEM_MAXNUM; i++)
+			{
+				if (green_gem[i] != nullptr)
+				{
+					green_gem[i]->Draw();
+				}
+			}
+
 		}
 
 		//ダイナマイト描画
@@ -1468,15 +1460,7 @@ void GameMainScene::Draw() const
 
 	}
 
-	if (p_life_num < 0)
-	{
-		//プレイヤー描画
-		if (player != nullptr)
-		{
-			player->Draw();
 
-		}
-	}
 
 	if (fadein_flg == true)
 	{
@@ -1527,19 +1511,14 @@ void GameMainScene::Draw() const
 
 	}
 
-	//プレイヤー描画
-	if (player != nullptr)
-	{
-		player->Draw();
-	}
 
-	for (int i = 0; i < KEY_MAXNUM; i++)
-	{
-		if (key_gem[i] != nullptr)
-		{
-			key_gem[i]->Draw();
-		}
-	}
+	//for (int i = 0; i < KEY_MAXNUM; i++)
+	//{
+	//	if (key_gem[i] != nullptr)
+	//	{
+	//		key_gem[i]->Draw();
+	//	}
+	//}
 
 #ifdef DEBUG
 
@@ -2053,6 +2032,16 @@ void GameMainScene::GemUpDate()
 			roll_gem[i]->Update(this);
 		}
 	}
+
+	//緑の宝石更新処理
+	for (int i = 0; i < GREEN_GEM_MAXNUM; i++)
+	{
+		if (green_gem[i] != nullptr)
+		{
+			green_gem[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			green_gem[i]->Update(this);
+		}
+	}
 }
 
 void GameMainScene::EnemyHitEnemy()
@@ -2217,7 +2206,6 @@ void GameMainScene::PlayerHitGem()
 		}
 	}
 
-
 	// 転がるエネミーの宝石とプレイヤーの当たり判定
 	for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
 	{
@@ -2237,6 +2225,28 @@ void GameMainScene::PlayerHitGem()
 				delete roll_gem[i];
 				roll_gem[i] = nullptr;
 			}
+		}
+	}
+
+	for (int i = 0; i < GREEN_GEM_MAXNUM; i++)
+	{
+		if (player != nullptr && green_gem[i] != nullptr)
+		{
+			if (green_gem[i]->GetPlaySoundFlg() == true)
+			{
+				if (player->HitCheck(green_gem[i]->GetWorldLocation(), green_gem[i]->GetWidth(), green_gem[i]->GetHeight()) == true)
+				{
+					green_gem[i]->PlayGetSound();
+					score->SetScore(green_gem[i]->GetGemScore());
+				}
+			}
+
+			if (green_gem[i]->GetDeleteFlg() == true)
+			{
+				delete green_gem[i];
+				green_gem[i] = nullptr;
+			}
+
 		}
 	}
 }
@@ -2491,6 +2501,7 @@ void GameMainScene::SetObjectNull()
 	object_num.lift_cnt = 0;
 	object_num.magma_cnt = 0;
 	object_num.rock_cnt = 0;
+	object_num.green_gem_cnt = 0;
 
 	for (int i = 0; i < FRAGILE_WALL_MAXNUM; i++)
 	{
@@ -2520,6 +2531,10 @@ void GameMainScene::SetObjectNull()
 	for (int i = 0; i < ROCK_MAXNUM; i++)
 	{
 		rock[i] = nullptr;
+	}
+	for (int i = 0; i < GREEN_GEM_MAXNUM; i++)
+	{
+		green_gem[i] = nullptr;
 	}
 }
 

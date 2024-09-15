@@ -32,7 +32,7 @@ private:
 	bool draw_effect;			// エフェクトを表示するか？
 
 public:
-	GreenGem(World set_world, int set_score);
+	GreenGem(float set_x,float set_y, int set_score);
 	~GreenGem();
 
 	void Update(GameMainScene* gamemain);

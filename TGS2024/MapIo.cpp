@@ -481,7 +481,7 @@ void MapIo::Draw() const
 		DrawFormatString(40, 200, 0xffffff, "PUT_ReboundEnemy");
 		break;
 	case 23:
-		DrawFormatString(40, 200, 0xffffff, "PUT_GreenRock");
+		DrawFormatString(40, 200, 0xffffff, "PUT_GreenGem");
 		break;
 	}
 	
