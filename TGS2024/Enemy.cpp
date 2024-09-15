@@ -18,10 +18,11 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 	attack = 10.0f;
 	speed = 2.0f;
 
+	enemy_state = EnemyState::WALK;
+
 	//画像読込
-	LoadDivGraph("images/Enemy/WalkTest.png", 5, 5, 1, 64, 64, enemy_walk_img);
-	LoadDivGraph("images/Enemy/WalkDeathTest.png", 4, 4, 1, 64, 64, enemy_death_img);
-	knock_back_img = LoadGraph("images/Enemy/KnockBack.png");
+	LoadDivGraph("images/Enemy/Walk.png", 10, 5, 2, 64, 64, enemy_img);
+	//LoadDivGraph("images/Enemy/WalkDeathTest.png", 4, 4, 1, 64, 64, enemy_death_img);
 	LoadDivGraph("images/Enemy/crack.png", 2, 2, 1, 64, 64, crack_img);
 	star_img = LoadGraph("images/Enemy/star.png");
 	LoadDivGraph("images/Enemy/fragment.png", 4, 4, 1, 64, 64, fragment_img);
@@ -51,16 +52,6 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 	player_x = 0.0f;
 	player_y = 0.0f;
 
-	//srand((unsigned int)time(NULL));			// 現在時刻の情報で初期化
-	//num = rand() % 10 + 1;
-	//if (num >= 5)
-	//{
-	//	direction = true;
-	//}
-	//else
-	//{
-	//	direction = false;
-	//}
 	// 進行方法が左ならx座標と移動方向が変わる
 	if (direction == true)
 	{
@@ -124,6 +115,7 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 	if (direction == true)
 	{
 		fall_end_flg = false;
+		enemy_state = EnemyState::FALL;
 	}
 	else {
 
@@ -136,25 +128,15 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 Enemy::~Enemy()
 {
 	// 画像の削除
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 10; i++)
 	{
-		DeleteGraph(enemy_walk_img[i]);
+		DeleteGraph(enemy_img[i]);
 	}
-
-	for (int i = 0; i < 4; i++)
-	{
-		DeleteGraph(enemy_death_img[i]);
-	}
-
-	DeleteGraph(knock_back_img);
-
 	for (int i = 0; i < 2; i++)
 	{
 		DeleteGraph(crack_img[i]);
 	}
-
 	DeleteGraph(star_img);
-
 	for (int i = 0; i < 4; i++)
 	{
 		DeleteGraph(fragment_img[i]);
@@ -168,76 +150,58 @@ Enemy::~Enemy()
 
 void Enemy::Update(GameMainScene* gamemain)
 {
-	if (hp > 0)
+	SetVertex();
+
+	switch (enemy_state)
 	{
+	case EnemyState::WALK:
+		// 移動処理
+		Move();
+		// 歩行アニメーション
+		WalkingAnimation();
+		// 足音を鳴らす
+		if (CheckSoundMem(footsteps_sound) == FALSE)
+		{
+			PlaySoundMem(footsteps_sound, DX_PLAYTYPE_BACK);
+		}
 
 		if (is_knock_back_start == true)
 		{
-			is_knock_back = true;
+			enemy_state = EnemyState::KNOCKBACK;
 		}
-
-		if (is_knock_back == true)
+		if (play_sound == false)
 		{
-			// 足音を止める
-			if (CheckSoundMem(footsteps_sound) == TRUE)
-			{
-				StopSoundMem(footsteps_sound);
-			}
-
-			if (is_knock_back_start == true)
-			{
-				// ノックバックの準備
-				KnockBackPreparation();
-			}
-
-			if (play_sound == true)
-			{
-				if (CheckSoundMem(knock_back_sount) == FALSE)
-				{
-					// ノックバックse
-					PlaySoundMem(knock_back_sount, DX_PLAYTYPE_BACK);
-					play_sound = false;
-				}
-			}
-
-			// ノックバック処理
-			KnockBack();
+			play_sound = true;
 		}
-		else
+		// 死亡状態になったか調べる
+		CheckDeathCondition();
+		break;
+
+	case EnemyState::KNOCKBACK:
+		// 足音を止める
+		if (CheckSoundMem(footsteps_sound) == TRUE)
 		{
-			if (play_sound == false)
-			{
-				play_sound = true;
-			}
-
-			SetVertex();
-
-			if (fall_end_flg == false) {
-				Fall();
-			}
-			else 
-			{
-				// 移動処理
-				Move();
-			}
-			// 歩行アニメーション
-			WalkingAnimation();
-
-			// 足音を鳴らす
-			if (CheckSoundMem(footsteps_sound) == FALSE)
-			{
-				PlaySoundMem(footsteps_sound, DX_PLAYTYPE_BACK);
-			}
+			StopSoundMem(footsteps_sound);
 		}
+		// ノックバック処理
+		KnockBack();
+		// 死亡状態になったか調べる
+		CheckDeathCondition();
+		break;
 
-		// 星を描画するのであれば
-		if (star.is_draw == true)
+	case EnemyState::FALL:
+		// 落下
+		Fall();
+		// 落下アニメーション
+
+		if (play_sound == false)
 		{
-			StarEffect();
+			play_sound = true;
 		}
-	}
-	else
-	{
+
+		break;
+
+	case EnemyState::DEATH:
 		if (play_sound == true)
 		{
 			if (CheckSoundMem(death_sount) == FALSE)
@@ -250,10 +214,105 @@ void Enemy::Update(GameMainScene* gamemain)
 
 		// 死亡アニメーション
 		DeathAnimation();
-
 		// 破片エフェクト
 		FragmentEffect();
+		break;
+
+	default:
+		break;
 	}
+
+	// 星を描画するのであれば
+	if (star.is_draw == true)
+	{
+		StarEffect();
+	}
+
+	//if (hp > 0)
+	//{
+	//	if (is_knock_back_start == true)
+	//	{
+	//		is_knock_back = true;
+	//	}
+
+	//	if (is_knock_back == true)
+	//	{
+	//		// 足音を止める
+	//		if (CheckSoundMem(footsteps_sound) == TRUE)
+	//		{
+	//			StopSoundMem(footsteps_sound);
+	//		}
+
+	//		if (is_knock_back_start == true)
+	//		{
+	//			// ノックバックの準備
+	//			KnockBackPreparation();
+	//		}
+
+	//		if (play_sound == true)
+	//		{
+	//			if (CheckSoundMem(knock_back_sount) == FALSE)
+	//			{
+	//				// ノックバックse
+	//				PlaySoundMem(knock_back_sount, DX_PLAYTYPE_BACK);
+	//				play_sound = false;
+	//			}
+	//		}
+
+	//		// ノックバック処理
+	//		KnockBack();
+	//	}
+	//	else
+	//	{
+	//		if (play_sound == false)
+	//		{
+	//			play_sound = true;
+	//		}
+
+	//		SetVertex();
+
+	//		if (fall_end_flg == false) {
+	//			Fall();
+	//		}
+	//		else 
+	//		{
+	//			// 移動処理
+	//			Move();
+	//		}
+	//		// 歩行アニメーション
+	//		WalkingAnimation();
+
+	//		// 足音を鳴らす
+	//		if (CheckSoundMem(footsteps_sound) == FALSE)
+	//		{
+	//			PlaySoundMem(footsteps_sound, DX_PLAYTYPE_BACK);
+	//		}
+	//	}
+
+	//	// 星を描画するのであれば
+	//	if (star.is_draw == true)
+	//	{
+	//		StarEffect();
+	//	}
+	//}
+	//else
+	//{
+	//	if (play_sound == true)
+	//	{
+	//		if (CheckSoundMem(death_sount) == FALSE)
+	//		{
+	//			// 死亡se
+	//			PlaySoundMem(death_sount, DX_PLAYTYPE_BACK);
+	//			play_sound = false;
+	//		}
+	//	}
+
+	//	// 死亡アニメーション
+	//	DeathAnimation();
+
+	//	// 破片エフェクト
+	//	FragmentEffect();
+	//}
 }
 
 void Enemy::Draw() const
@@ -277,7 +336,7 @@ void Enemy::Draw() const
 		if (is_knock_back == false)
 		{
 			// 歩行画像
-			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_walk_img[image_num], TRUE, direction);
+			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img[image_num], TRUE, direction);
 
 			if (hp != 30)
 			{
@@ -295,7 +354,7 @@ void Enemy::Draw() const
 		else
 		{
 			// ノックバック画像
-			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, knock_back_img, TRUE, direction);
+			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img[5], TRUE, direction);
 		}
 
 		if (star.is_draw == true)
@@ -309,7 +368,7 @@ void Enemy::Draw() const
 		if (draw_death_img == true)
 		{
 			// 死亡画像
-			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_death_img[image_num], TRUE, direction);
+			DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img[image_num], TRUE, direction);
 		}
 
 		for (int i = 0; i < 4; i++)
@@ -389,6 +448,16 @@ void Enemy::ChangeDirection()
 // ノックバック処理
 void Enemy::KnockBack()
 {
+	if (play_sound == true)
+	{
+		if (CheckSoundMem(knock_back_sount) == FALSE)
+		{
+			// ノックバックse
+			PlaySoundMem(knock_back_sount, DX_PLAYTYPE_BACK);
+			play_sound = false;
+		}
+	}
+
 	if (speed >= 0.0f)
 	{
 		if (direction == false)
@@ -419,6 +488,7 @@ void Enemy::KnockBack()
 	{
 		// ノックバック終了
 		is_knock_back = false;
+		enemy_state = EnemyState::WALK;
 	}
 
 	if (is_knock_back_start == true)
@@ -481,12 +551,12 @@ void Enemy::DeathAnimation()
 		{
 			// 死亡
 			// 5カウントごとに変わる
-			image_num = death_cnt / 5;
+			image_num = death_cnt / 5 + 6;
 
-			if (image_num > 3)
+			if (image_num > 9)
 			{
 				// 最終画像で止める
-				image_num = 3;
+				image_num = 9;
 			}
 		}
 	}
@@ -670,7 +740,28 @@ void Enemy::Fall()
 		{
 			world.y = 608.0f;
 			fall_end_flg = true;
+			enemy_state = EnemyState::WALK;
 		}
 	}
 
+}
+
+// 死亡状態になったか調べる
+void Enemy::CheckDeathCondition()
+{
+	if (hp <= 0.0f)
+	{
+		anim_cnt = 0;								// 死亡アニメーション用にカウントを0にする
+		//enemy_img_num = 6;							// 死亡画像の最初の画像番号を設定
+		enemy_state = EnemyState::DEATH;			// 死亡状態に遷移
+	}
+}
+
+void Enemy::SetKnockBackStartFlg(bool set_flg)
+{
+	 is_knock_back_start = set_flg; 
+	 is_knock_back = true;
+
+	 // ノックバックの準備
+	 KnockBackPreparation();
 }

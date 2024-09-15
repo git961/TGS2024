@@ -1,8 +1,6 @@
 ﻿#pragma once
 #define DEBUG		        // デバッグ用、消すと#ifdef DEBUGの処理がされなくなる
 
-#include <stdlib.h>         // スポーン位置決定用
-#include <time.h>           // スポーン位置決定用
 #include <math.h>
 #include "CharacterBase.h"
 #include "GameMainScene.h"
@@ -23,9 +21,18 @@ struct effect
 class Enemy : public CharacterBase
 {
 private:
-    int enemy_walk_img[5];          // エネミー歩行画像
-    int enemy_death_img[4];         // エネミー死亡画像
-    int knock_back_img;             // ノックバック画像
+    enum class EnemyState
+    {
+        WALK,
+        KNOCKBACK,
+        FALL,
+        DEATH
+    };
+
+    EnemyState enemy_state;
+
+    int enemy_img[10];               // 敵画像
+    //int enemy_death_img[4];         // エネミー死亡画像
     int crack_img[2];               // ひび割れ画像
     int star_img;                   // 星エフェクト画像
     int fragment_img[4];            // 石の破片エフェクト画像
@@ -87,6 +94,7 @@ public:
     void FragmentEffect();                      // 石の破片エフェクトの処理
     void Damage(int damage);                    // 被ダメージ処理
     void Fall();
+    void CheckDeathCondition();				    // 死亡状態になったか調べる
 
     // set関数
     void SetEnemyWorldLocation(World set_world)
@@ -99,7 +107,7 @@ public:
         player_x = set_world.x;
         player_y = set_world.y;
     }
-    void SetKnockBackStartFlg(bool set_flg) { is_knock_back_start = set_flg; }
+    void SetKnockBackStartFlg(bool set_flg);
     void SetStarDrawFlg(bool set_flg) { star.is_draw = set_flg; }       
     void SetGemDropFlg(bool set_flg){ gem_drop = set_flg; }
     void SetHitEnemyX(float set_x){ hit_enemy_x = set_x; }
