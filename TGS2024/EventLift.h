@@ -7,12 +7,21 @@
 class Switch;
 class AttackCheck;
 class Player;
+enum class AnimState{
+    None,
+    GetOn,
+    BeTrapped,
+    Fall,
+    Clash,
+    End
+};
 
 class EventLift :
     public ObjectBase
 {
 private:
     Switch* switch_object;
+    AnimState anim_state;
 
     int lift_img;
     int spear_img[4];
@@ -36,6 +45,9 @@ private:
     int img_num;
     int spear_num;
 
+    int player_anim_num;//
+    bool anim_sway_flg;//揺らす
+
 public:
     EventLift(float set_x, float set_y);
     ~EventLift();
@@ -47,6 +59,7 @@ public:
     void DownEventAnim();
 
     void SetAnimStartFlg(bool set_flg) { anim_start_flg = set_flg; }
+    bool GetAnimSwayFlg() { return anim_sway_flg; }
 
     void SetUpMaxY(float set_y) { up_max_y = set_y; }
     void SetCanMove(bool set_flg) { canmove_flg = set_flg; }

@@ -164,6 +164,8 @@ private:
     
     bool stop_up_flg;//プレイヤーの上昇を止めるか？
 
+    int lift_anim_cnt;//リフトアニメカウント用
+
 public:
     Player();
     Player(float set_x,float set_y);
@@ -246,6 +248,10 @@ public:
             player_state = NOMAL;
         }
     };
+
+    PlayerState GetState() { return player_state; }
+
+    void LiftEvent(int set_num);
 
     void OpAnimUpdate(AnimScene *anim_scene,int set_case);//最初のアニメーション用
     void TutorialAnimUpdate();//チュートリアル用アップデート

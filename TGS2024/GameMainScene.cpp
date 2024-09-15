@@ -1114,7 +1114,7 @@ void GameMainScene::Update()
 		if (player != nullptr)
 		{
 			UpdateCamera(player->GetWorldLocation());
-
+			
 			//UIアップデート
 			if (ui != nullptr)
 			{
@@ -1712,7 +1712,6 @@ void GameMainScene::UpdateCamera(World world)
 
 	screen_origin_position = { camera_pos.x - SCREEN_WIDTH / 2.0f,camera_pos.y - SCREEN_HEIGHT / 2.0f };
 
-
 }
 
 void GameMainScene::ShakeCamera(bool set_true, int set_num)
@@ -1726,25 +1725,25 @@ void GameMainScene::ShakeCamera(bool set_true, int set_num)
 			//画面の揺れ
 			switch (shake_cnt)
 			{
-			case 0:
-				screen_origin_position.x += shake_x1;
-				break;
-			case 10:
-				screen_origin_position.x -= shake_x2;
-				break;
-			case 20:
-				screen_origin_position.x = 0;
-				break;
-			case 30:
-				screen_origin_position.x += shake_x1;
-				break;
-			case 40:
-				screen_origin_position.x -= shake_x2;
-				break;
-			case 50:
-				screen_origin_position.x = 0;
-				shake_cnt = 0;
-				break;
+			//case 0:
+			//	world_camera_shake.x += shake_x1;
+			//	break;
+			//case 10:
+			//	world_camera_shake.x -= shake_x2;
+			//	break;
+			//case 20:
+			//	world_camera_shake.x = 0;
+			//	break;
+			//case 30:
+			//	world_camera_shake.x += shake_x1;
+			//	break;
+			//case 40:
+			//	world_camera_shake.x -= shake_x2;
+			//	break;
+			//case 50:
+			//	world_camera_shake.x = 0;
+			//	shake_cnt = 0;
+			//	break;
 			}
 			shake_cnt++;
 		}
@@ -2805,18 +2804,20 @@ void GameMainScene::PlayerHitLift()
 //プレイヤーとイベントリフトの当たり判定
 void GameMainScene::PlayerHitEventLift()
 {
+	if (event_lift[0] != nullptr)
+	{
+		ShakeCamera(event_lift[0]->GetAnimSwayFlg(), 0);
+	}
 
 	if (event_lift[0] != nullptr && player != nullptr)
 	{
-
-		if (player->HitCheck(event_lift[0]->GetWorldLocation(), event_lift[0]->GetWidth(), event_lift[0]->GetHeight()) == true) {
-
+		if (player->HitCheck(event_lift[0]->GetWorldLocation(), event_lift[0]->GetWidth(), event_lift[0]->GetHeight()) == true)
+		{
 			player->SetY(event_lift[0]->GetWorldLocation().y);
 			player->SetFallFlg(false);
 			player->SetLiftHitFlg(true);
 			player->SetPlayerState(true);//プレイヤーの動きを止める
 			event_lift[0]->SetAnimStartFlg(true);//アニメーションスタート
-
 		}
 		else
 		{

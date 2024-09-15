@@ -166,6 +166,7 @@ Player::Player(float set_x,float set_y)
 	rest_move_count = 0;
 	stop_up_flg = false;
 
+	lift_anim_cnt = 0;
 }
 
 Player::~Player()
@@ -441,6 +442,8 @@ void Player::Update(GameMainScene* gamemain)
 		}
 		*/
 		break;
+		case STOP:
+			break;
 	default:
 		break;
 	}
@@ -467,7 +470,7 @@ void Player::Draw() const
 
 
 	//DrawBoxAA(location.x - width/2, location.y - height/2, location.x + width / 2, location.y + height / 2, 0xffffff,true);
-	//DrawFormatString(location.x, location.y - 80, 0xffffff, "draw%d",p_imgnum);
+	DrawFormatString(location.x, location.y - 80, 0xffffff, "draw%d",p_imgnum);
 	//DrawFormatString(location.x, location.y - 80, 0xffffff, "draw%d",direction);
 
 
@@ -1057,6 +1060,70 @@ void Player::TutoWalkAnim()
 		}
 	}
 
+}
+
+void Player::LiftEvent(int set_num)
+{
+	switch (set_num)
+	{
+	case 0:
+		location.x += 1.0f;
+		world.x += 1.0f;
+		if (abs((int)world.x - (int)old_worldx) > 59)
+		{
+			old_worldx = world.x;
+		}
+		walk_abs = abs((int)world.x - (int)old_worldx);
+		// 歩行
+		// 5カウントごとに変わる
+		if (walk_abs != 0)
+		{
+			p_imgnum = 54 + walk_abs / 40;
+		}
+		//走る音
+		if (CheckSoundMem(op_run_sound) == FALSE)
+		{
+			PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+		}
+		break;
+	case 1:
+		if (lift_anim_cnt++ < 30)
+		{
+			p_imgnum = 28;
+		}
+		else if (lift_anim_cnt < 60)
+		{
+			p_imgnum = 27;
+		}
+		else if (lift_anim_cnt < 90)
+		{
+			lift_anim_cnt = 0;
+		}
+		break;
+	case 2:
+		lift_anim_cnt = 0;
+		p_imgnum = 30;
+		break;
+	case 3:
+		if (lift_anim_cnt++ < 60) {
+			p_imgnum = 49;
+		}
+		else {
+			death_anim_cnt++;
+			switch (death_anim_cnt)
+			{
+			case 80:
+				p_imgnum = 27;
+				player_state = NOMAL;
+				death_anim_cnt = 0;
+				break;
+			}
+
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void Player::OpAnimUpdate(AnimScene* anim_scene,int set_case)
