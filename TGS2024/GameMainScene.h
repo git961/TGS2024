@@ -244,6 +244,7 @@ public:
     int GetPlayerLife() { return p_life_num; }
 
     MapIo* GetMapIo() { return mapio; }
+    Player* GetPlayer() { return player; }
 
  //   StageBlock* GetStageBlock(int num_y,int num_x){return stage_block[num_y][num_x] }
 

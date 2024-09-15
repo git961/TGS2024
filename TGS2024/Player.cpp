@@ -468,6 +468,7 @@ void Player::Draw() const
 
 	//DrawBoxAA(location.x - width/2, location.y - height/2, location.x + width / 2, location.y + height / 2, 0xffffff,true);
 	//DrawFormatString(location.x, location.y - 80, 0xffffff, "draw%d",p_imgnum);
+	//DrawFormatString(location.x, location.y - 80, 0xffffff, "draw%d",direction);
 
 
 	//プレイヤー画像表示
