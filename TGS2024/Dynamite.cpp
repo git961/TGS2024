@@ -27,6 +27,7 @@ Dynamite::Dynamite(World set_xy,int set_direction)
 	dynamite_flg = false;
 	damage_flg = false;
 	dynamite_death = false;
+	move_stop_flg = false;
 	explosion_cnt = 0;
 	explosion_num = 0;
 
@@ -72,11 +73,22 @@ void Dynamite::Update()
 			PlaySoundMem(bomb_sound, DX_PLAYTYPE_BACK);
 		}
 
-		if (direction == 0) {
-			world.x += move_x + 3;
+		if (move_stop_flg == false)
+		{
+			if (direction == 0) {
+				world.x += move_x + 3.0f;
+			}
+			else {
+				world.x -= move_x - 3.0f;
+			}
 		}
 		else {
-			world.x -= move_x;
+			if (direction == 0) {
+				world.x += move_x;
+			}
+			else {
+				world.x -= move_x;
+			}
 		}
 
 		explosion_cnt++;
@@ -89,9 +101,10 @@ void Dynamite::Update()
 			explosion_num = 1;
 			break;
 		case 10:
+			move_stop_flg = true;
 			explosion_num = 2;
-			width = 200;
-			height = 128;
+			width = 300;
+			height = 256;
 			damage_flg = true;
 			break;
 		case 11:
@@ -129,14 +142,14 @@ void Dynamite::DamageCalculation()
 
 	if (tmp_abs < 50)
 	{
-		attack = 30;
+		attack = 40;
 	}
 	else if (tmp_abs < 100)
 	{
-		attack = 20;
+		attack = 40;
 	}
 	else if (tmp_abs < 200)
 	{
-		attack = 10;
+		attack = 40;
 	}
 }

@@ -14,9 +14,8 @@ static cameraposition screen_origin_position =
 GameMainScene::GameMainScene(bool set_flg)
 {
 
-
 	// 読み込みたいステージ
-	stage_num = StageNum::stage2;
+	stage_num = StageNum::stage1;
 
 	event_lift[0] = new EventLift(5280.0f, 1750.0f);//後で消す
 
@@ -54,8 +53,8 @@ GameMainScene::GameMainScene(bool set_flg)
 		}
 		else {
 			//プレイヤーのリスタート位置を入れる
-			//player = new Player(200.0f, 1700.0f);
-			player = new Player(5080.0f, 1700.0f);
+			player = new Player(200.0f, 1700.0f);
+			//player = new Player(5080.0f, 1700.0f);
 			current_location = CurrentLocation::middle;
 		}
 	}
