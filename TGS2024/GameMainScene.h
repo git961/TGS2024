@@ -306,6 +306,7 @@ public:
     void PlayerHitGoal();//プレイヤーとゴールの当たり判定
 
     void EnemyHitRock();//エネミーと岩ブロックの当たり判定
+    void EnemyHitReturnBlock();//エネミーがあたったら向きが変わるブロックとの当たり判定
     void DynamiteHitRock();//ダイナマイトと岩の当たり判定
     void PickaxeHitRock();//つるはしと岩ブロックの当たり判定
     void RockUpdate();//岩のアップデート

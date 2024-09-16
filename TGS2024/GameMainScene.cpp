@@ -15,7 +15,7 @@ GameMainScene::GameMainScene(bool set_flg)
 {
 
 	// 読み込みたいステージ
-	stage_num = StageNum::stage1;
+	stage_num = StageNum::stage2;
 
 	event_lift[0] = new EventLift(5280.0f, 1750.0f);//後で消す
 
@@ -1142,6 +1142,9 @@ void GameMainScene::Update()
 		//岩アップデート
 		RockUpdate();
 		EnemyHitRock();
+
+		EnemyHitReturnBlock();//テスト
+
 		DynamiteHitRock();
 		PickaxeHitRock();
 
@@ -2674,6 +2677,40 @@ void GameMainScene::EnemyHitRock()
 			}
 		}
 	}
+}
+
+void GameMainScene::EnemyHitReturnBlock()
+{
+
+	for (int i = 0; i < ENEMYMAXNUM; i++)
+	{
+		if (enemy[i] != nullptr && enemy[i]->GetHp() > 0)
+		{
+			for (int j = 0; j < block_count; j++)
+			{
+				if (stage_block[j] != nullptr && stage_block[j]->GetBlockNum() == 18)
+				{
+					if (enemy[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight())==true)
+					{
+						if (enemy[i]->GetIsKnockBack() == true)
+						{
+							// ノックバックしている敵に当たったら自身もノックバックを開始する
+							enemy[i]->SetKnockBackStartFlg(true);
+						}
+						else
+						{
+							// 当たっていたら２体とも進行方向を反対に変更する
+							enemy[i]->SetHitEnemyX(stage_block[j]->GetWorldLocation().x);
+							enemy[i]->ChangeDirection();
+						}
+
+
+					}
+				}
+			}
+		}
+	}
+
 }
 
 void GameMainScene::DynamiteHitRock()
