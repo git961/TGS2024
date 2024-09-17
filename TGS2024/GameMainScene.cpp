@@ -53,8 +53,8 @@ GameMainScene::GameMainScene(bool set_flg)
 		}
 		else {
 			//プレイヤーのリスタート位置を入れる
-			player = new Player(200.0f, 1700.0f);
-			//player = new Player(5080.0f, 1700.0f);
+			//player = new Player(200.0f, 1700.0f);
+			player = new Player(5080.0f, 1700.0f);
 			current_location = CurrentLocation::middle;
 		}
 	}
@@ -76,7 +76,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	//back_img[9] = LoadGraph("images/Backimg/backimgGoal.png", TRUE);
 	back_img[9] = LoadGraph("images/Backimg/backimgGoal01.png", TRUE);
 	goal_img = LoadGraph("images/Ending/ending8.png", TRUE);
-	goal_door_img = LoadGraph("images/Stage/Key/Goal.png", TRUE);
+	goal_door_img = LoadGraph("images/Stage/Goal.png", TRUE);
 	death_img = LoadGraph("images/Backimg/death.png", TRUE);
 	pose_img = LoadGraph("images/UI/pose.png", TRUE);
 	//back_img = LoadGraph("images/background_test.png", TRUE);
@@ -1202,16 +1202,29 @@ void GameMainScene::Update()
 
 void GameMainScene::Draw() const
 {
-	// 背景画像描画（仮）
-	for (int i = 0; i < 8; i++)
+	//// 背景画像描画（仮）
+	if (stage_num == StageNum::stage1)
 	{
-		for (int j = 0; j < 4; j++) {
-			DrawGraph((int)location_x + 1280 * i, (int)location_y+720*j, back_img[1], FALSE);
+		for (int i = 0; i < 8; i++)
+		{
+			DrawGraph((int)location_x + 1280 * i, (int)location_y, back_img[0], FALSE);
 		}
+		//ゴールの画像
+		//DrawGraph((int)location_x + 1280 * 8, (int)location_y, back_img[9], FALSE);
+		// 矢印の表示
+		//DrawGraph((int)location_x + 1280, (int)location_y, back_img[0], FALSE);
 	}
 
-	DrawGraph((int)location_x + 1280 * 8, (int)location_y, back_img[9], FALSE);
-	DrawGraph((int)location_x + 1280, (int)location_y, back_img[0], FALSE);
+
+	if (stage_num == StageNum::stage2)
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			DrawGraph((int)location_x + 1280 * i, (int)location_y + 1080, back_img[0], FALSE);
+		}
+		DrawGraph((int)location_x + 5120, (int)location_y + 2006, back_lower_img, FALSE);
+		DrawGraph((int)location_x + 7680, (int)location_y, back_upper_img, FALSE);
+	}
 
 	for (int j = 0; j < block_count; j++)
 	{
@@ -1384,7 +1397,7 @@ void GameMainScene::Draw() const
 				if (stage_block[j] != nullptr && stage_block[j]->GetBlockNum() == 3)
 				{
 					//ゴールのドア描画
-					DrawGraph((int)stage_block[j]->GetLocation().x - 128, (int)stage_block[j]->GetLocation().y - 480, goal_door_img, TRUE);
+					DrawGraph((int)stage_block[j]->GetLocation().x - 448, (int)stage_block[j]->GetLocation().y - 480, goal_door_img, TRUE);
 				}
 			}
 
