@@ -53,8 +53,8 @@ GameMainScene::GameMainScene(bool set_flg)
 		}
 		else {
 			//プレイヤーのリスタート位置を入れる
-			//player = new Player(200.0f, 1700.0f);
-			player = new Player(5080.0f, 1700.0f);
+			player = new Player(200.0f, 1700.0f);
+			//player = new Player(5080.0f, 1700.0f);
 			current_location = CurrentLocation::middle;
 		}
 	}
@@ -1670,7 +1670,8 @@ void GameMainScene::UpdateCamera(World world)
 			if (current_location != CurrentLocation::lower)
 			{
 				
-				if (world.y > camera_pos.y) {
+				if (world.y > camera_pos.y)
+				{
 					camera_pos.y +=30;
 				}
 				else
@@ -2731,7 +2732,26 @@ void GameMainScene::EnemyHitReturnBlock()
 		}
 	}
 
-	//あしなが岩
+	//つるはしで叩くと跳ね返る岩
+	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
+	{
+		if (rebound_enemy[i] != nullptr && rebound_enemy[i]->GetHp() > 0&&rebound_enemy[i]->GetRollFlg()==false)
+		{
+			for (int j = 0; j < block_count; j++)
+			{
+				if (stage_block[j] != nullptr && stage_block[j]->GetBlockNum() == 18)
+				{
+					if (rebound_enemy[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+					{
+						// 当たっていたら進行方向を反対に変更する
+						rebound_enemy[i]->SetHitEnemyX(stage_block[j]->GetWorldLocation().x);
+						rebound_enemy[i]->ChangeDirection();
+					}
+				}
+			}
+		}
+
+	}
 
 }
 

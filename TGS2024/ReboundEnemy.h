@@ -23,6 +23,7 @@ private:
 	bool hit_pickaxe_flg;				// つるはしに当たったか？
 	bool roll_left_flg;					// 左に転がるか？
 	bool roll_flg;						// 転がっているか？
+	float hit_enemy_x;
 
 public:
 	ReboundEnemy(float set_x, float set_y);
@@ -51,4 +52,7 @@ public:
 
 	// つるはしで攻撃された
 	void SetHitPickaxeFlg();
+	void ChangeDirection();
+	void SetHitEnemyX(float set_x) { hit_enemy_x = set_x; }
+
 };
