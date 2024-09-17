@@ -46,8 +46,9 @@ private:
     
     float limit_y;//落下の上限用
     bool fall_flg;//落ちているか？
-    bool lift_hit_flg;//リフトに当たっているか？
-    bool geyser_hit_flg;//間欠泉に当たっているか？
+    //bool lift_hit_flg;//リフトに当たっているか？
+    //bool geyser_hit_flg;//間欠泉に当たっているか？
+    bool object_hit_flg;
     float vel;//初速度
 
     float img_down;//画像の表示位置を下げる用
@@ -203,9 +204,10 @@ public:
         fall_flg = set_flg;
     }
 
-    void SetLiftHitFlg(bool set_flg) {lift_hit_flg = set_flg;}
+    //void SetLiftHitFlg(bool set_flg) {lift_hit_flg = set_flg;}
 
-    void SetGeyserHitFlg(bool set_flg) {geyser_hit_flg = set_flg;}
+    //void SetGeyserHitFlg(bool set_flg) {geyser_hit_flg = set_flg;}
+    void SetObjectHitFlg(bool set_flg) {object_hit_flg = set_flg;}
 
     //いる所によって落下する所を更新する
     void SetLimitY(float set_y) {

@@ -2951,12 +2951,12 @@ void GameMainScene::PlayerHitLift()
 				
 				//player->SetY(lift[i]->GetWorldLocation().y);
 				player->SetFallFlg(false);
-				player->SetLiftHitFlg(true);
+				player->SetObjectHitFlg(true);
 				player->SinkCheckObject(lift[i]->GetWorldLocation().y - lift[i]->GetHeight() / 2.0f);
 			}
 			else
 			{
-				player->SetLiftHitFlg(false);
+				player->SetObjectHitFlg(false);
 			}
 		}
 	}
@@ -2971,7 +2971,7 @@ void GameMainScene::PlayerHitEventLift()
 		{
 			player->SetY(event_lift[0]->GetWorldLocation().y);
 			player->SetFallFlg(false);
-			player->SetLiftHitFlg(true);
+			player->SetObjectHitFlg(true);
 			if (event_lift[0]->GetAnimEndFlg() == false) {
 				player->SetPlayerState(true);//プレイヤーの動きを止める
 				event_lift[0]->SetAnimStartFlg(true);//アニメーションスタート
@@ -2982,7 +2982,7 @@ void GameMainScene::PlayerHitEventLift()
 		}
 		else
 		{
-			player->SetLiftHitFlg(false);
+			player->SetObjectHitFlg(false);
 		}
 	}
 }
@@ -3152,6 +3152,13 @@ void GameMainScene::PlayerHitMagma()
 		{
 			//プレイヤーに一回だけダメージを与える
 			PlayerDamage();
+			player->SetFallFlg(false);
+			player->SetObjectHitFlg(true);
+			player->SinkCheckObject(magma[i]->GetWorldLocation().y - magma[i]->GetHeight() / 2.0f);
+		}
+		else
+		{
+			player->SetObjectHitFlg(false);
 		}
 	}
 }
@@ -3183,7 +3190,14 @@ void GameMainScene::PlayerHitFallingFloor()
 		if (player->HitCheck(falling_floor[i]->GetWorldLocation(), falling_floor[i]->GetWidth(), falling_floor[i]->GetHeight()) == true)
 		{
 			// プレイヤーの落下を止める
-			player->HitCheckB(falling_floor[i]->GetVertex());
+			player->SetFallFlg(false);
+			player->SetObjectHitFlg(true);
+			player->SinkCheckObject(falling_floor[i]->GetWorldLocation().y - falling_floor[i]->GetHeight() / 2.0f);
+
+			//player->HitCheckB(falling_floor[i]->GetVertex());
+		}
+		else {
+			player->SetObjectHitFlg(false);
 		}
 	}
 }
@@ -3275,7 +3289,7 @@ void GameMainScene::PlayerHitGeyser()
 			// プレイヤーの落下を止める
 			// player->HitCheckB(geyser[i]->GetVertex());
 			player->SetFallFlg(false);
-			player->SetGeyserHitFlg(true);
+			player->SetObjectHitFlg(true);
 			//間欠泉から水が上がってたら
 			if (geyser[i]->GetPushUpFlg() == true)
 			{
@@ -3284,7 +3298,7 @@ void GameMainScene::PlayerHitGeyser()
 		}
 		else
 		{
-			player->SetGeyserHitFlg(false);
+			player->SetObjectHitFlg(false);
 		}
 	}
 }

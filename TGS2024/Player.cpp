@@ -158,8 +158,9 @@ Player::Player(float set_x,float set_y)
 
 	limit_y = 600;
 	fall_flg = false;
-	lift_hit_flg = false;
-	geyser_hit_flg = false;
+	//lift_hit_flg = false;
+	//geyser_hit_flg = false;
+	object_hit_flg = false;
 	vel = 1.0f;
 	set_speed = 0.0f;
 	speed = set_speed;
@@ -2072,7 +2073,7 @@ void Player::HitMapChip(GameMainScene* gamemain)
 		SinkCheck(gamemain, curent_x - half_width, world.y + half_height - 1.0f);
 
 	}
-	else if(lift_hit_flg == false && geyser_hit_flg == false)
+	else if(object_hit_flg==false/*lift_hit_flg == false && geyser_hit_flg == false*/)
 	{
 		fall_flg = true;
 	}
