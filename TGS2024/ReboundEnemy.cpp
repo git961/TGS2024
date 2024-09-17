@@ -56,7 +56,7 @@ void ReboundEnemy::Update()
 		{
 			enemy_state = EnemyState::ROLL;
 			enemy_img_num = 7;
-			world.y += 6.0f;
+			world.y += 5.0f;
 		}
 		CheckDeathCondition();
 		break;
@@ -180,7 +180,7 @@ void ReboundEnemy::CheckDeathCondition()
 	if (hp <= 0.0f)
 	{
 		enemy_state = EnemyState::DEATH;			// 死亡状態に遷移
-		world.y -= 6.0f;
+		world.y -= 5.0f;
 		anim_cnt = 0;
 	}
 }
