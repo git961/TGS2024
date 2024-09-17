@@ -26,6 +26,8 @@ private:
     float enemy_x;          // 当たった敵の座標
     float tmp_abs;
 
+    bool move_stop_flg;
+
     int bomb_sound;//爆発音
 public:
     Dynamite(World set_xy,int set_direction);

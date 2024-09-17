@@ -18,7 +18,8 @@ enum PlayerState {
     DYNAMITE,
     DEATH,
     PANIM,
-    ASE
+    ASE,
+    STOP
 };
 
 class Player :
@@ -163,6 +164,8 @@ private:
     
     bool stop_up_flg;//プレイヤーの上昇を止めるか？
 
+    int lift_anim_cnt;//リフトアニメカウント用
+
 public:
     Player();
     Player(float set_x,float set_y);
@@ -235,6 +238,20 @@ public:
            world.y = set_y-35;
     }
 
+    void SetPlayerState(bool is_stop)
+    {
+        if (is_stop == true)
+        {
+            player_state = STOP;
+        }
+        else {
+            player_state = NOMAL;
+        }
+    };
+
+    PlayerState GetState() { return player_state; }
+
+    void LiftEvent(int set_num);
 
     void OpAnimUpdate(AnimScene *anim_scene,int set_case);//最初のアニメーション用
     void TutorialAnimUpdate();//チュートリアル用アップデート

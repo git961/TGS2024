@@ -16,6 +16,8 @@ LongLeggedEnemy::LongLeggedEnemy(float set_x, float set_y)
 	speed = 2.0f;
 	direction = false;
 
+	hit_enemy_x = 0.0f;
+
 	enemy_state = EnemyState::WALK;
 
 	// 画像の読み込み
@@ -212,6 +214,34 @@ void LongLeggedEnemy::WalkAnimation()
 	{
 		// 歩行
 		enemy_leg_img_num = anim_cnt / 8;
+	}
+
+}
+
+// 進行方向の変更
+void LongLeggedEnemy::ChangeDirection()
+{
+	// 移動量の反転
+	move_x *= -1;
+
+	if (direction == false)
+	{
+		// 左向きに変更
+		direction = true;
+	}
+	else
+	{
+		// 右向きに変更
+		direction = false;
+	}
+
+	if (world.x > hit_enemy_x)
+	{
+		world.x += 5;
+	}
+	else
+	{
+		world.x -= 5;
 	}
 
 }

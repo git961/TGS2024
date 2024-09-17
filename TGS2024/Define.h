@@ -25,7 +25,7 @@
 #define DEGREE_RADIAN(_deg) (M_PI*(_deg)/180.0)
 
 // 敵の最大数
-#define ENEMYMAXNUM				20
+#define ENEMYMAXNUM				30
 #define ROLLING_ENEMY_MAXNUM	20
 #define LONG_LEGS_ENEMY_MAXNUM	20
 #define HARD_ENEMY_MAXNUM		1
@@ -42,3 +42,5 @@
 #define KEY_MAXNUM 2
 
 #define ROCK_MAXNUM 200
+
+#define GREEN_GEM_MAXNUM 20

@@ -19,6 +19,7 @@
 #include "Cage.h"
 #include "CageDoor.h"
 #include "Lift.h"
+#include "EventLift.h"
 #include "Magma.h"
 #include "FallingFloor.h"
 #include "Geyser.h"
@@ -27,6 +28,7 @@
 #include "HardEnemy.h"
 #include "ReboundEnemy.h"
 #include "Key.h"
+#include "GreenGem.h"
 #include <crtdbg.h>
 #include <stdlib.h>
 
@@ -38,6 +40,8 @@ class UI;
 class Dynamite;
 class Gem;
 class Lift;
+class EventLift;
+class GreenGem;
 enum class StageNum;
 
 struct cameraposition
@@ -79,6 +83,7 @@ struct ObjectNum {
     int geyser_cnt;
     int lift_cnt;
     int rock_cnt;
+    int green_gem_cnt;
 };
 
 class GameMainScene : public AbstractScene
@@ -102,9 +107,13 @@ private:
     StageBlock* stage_block[MAP_BLOCKMAX];
     Gem* walk_gem[ENEMYMAXNUM];             // 配列
     Gem* roll_gem[ROLLING_ENEMY_MAXNUM];
+
+    GreenGem* green_gem[GREEN_GEM_MAXNUM];
+
     Score* score;
 
     Lift* lift[LIFT_MAXNUM];
+    EventLift* event_lift[3];
 
     UI* ui;
 
@@ -244,6 +253,7 @@ public:
     int GetPlayerLife() { return p_life_num; }
 
     MapIo* GetMapIo() { return mapio; }
+    Player* GetPlayer() { return player; }
 
  //   StageBlock* GetStageBlock(int num_y,int num_x){return stage_block[num_y][num_x] }
 
@@ -262,6 +272,7 @@ public:
     void DynamiteHitEnemy();
     void LiftUpDate();
     void PlayerHitLift();
+    void PlayerHitEventLift();
     void LiftHitStop();
     void PlayerHitBlock();
 
@@ -295,6 +306,7 @@ public:
     void PlayerHitGoal();//プレイヤーとゴールの当たり判定
 
     void EnemyHitRock();//エネミーと岩ブロックの当たり判定
+    void EnemyHitReturnBlock();//エネミーがあたったら向きが変わるブロックとの当たり判定
     void DynamiteHitRock();//ダイナマイトと岩の当たり判定
     void PickaxeHitRock();//つるはしと岩ブロックの当たり判定
     void RockUpdate();//岩のアップデート
