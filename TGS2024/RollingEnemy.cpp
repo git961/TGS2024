@@ -20,8 +20,8 @@ RollingEnemy::RollingEnemy(float set_x)
 	direction = false;	// 左向き
 
 	//画像読込
-	LoadDivGraph("images/Enemy/RollingTest.png", 5, 5, 1, 64, 64, enemy_roll_img);
-	LoadDivGraph("images/Enemy/EffectTest.png", 4, 4, 1, 64, 64, enemy_effect_img);
+	LoadDivGraph("images/Enemy/Roll.png", 5, 5, 1, 64, 64, enemy_roll_img);
+	LoadDivGraph("images/Enemy/Effect.png", 4, 4, 1, 64, 64, enemy_effect_img);
 
 	// サウンド読込
 	roll_sound = LoadSoundMem("sounds/se/enemy/roll.mp3");

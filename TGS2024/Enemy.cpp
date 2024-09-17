@@ -22,7 +22,6 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 
 	//画像読込
 	LoadDivGraph("images/Enemy/Walk.png", 10, 5, 2, 64, 64, enemy_img);
-	//LoadDivGraph("images/Enemy/WalkDeathTest.png", 4, 4, 1, 64, 64, enemy_death_img);
 	LoadDivGraph("images/Enemy/crack.png", 2, 2, 1, 64, 64, crack_img);
 	star_img = LoadGraph("images/Enemy/star.png");
 	LoadDivGraph("images/Enemy/fragment.png", 4, 4, 1, 64, 64, fragment_img);
