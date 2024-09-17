@@ -31,6 +31,8 @@ private:
 
 	bool attack_flg;					// true:攻撃中
 
+	float hit_enemy_x;
+
 public:
 	LongLeggedEnemy(float set_x, float set_y);
 	~LongLeggedEnemy();
@@ -49,7 +51,12 @@ private:
 
 	void WalkAnimation();
 
+
+
 public:
 	void SetPlayerWorldLocation(World set_world);	// プレイヤーの位置を保持する
+	void ChangeDirection();
+	void SetHitEnemyX(float set_x) { hit_enemy_x = set_x; }
+
 };
 

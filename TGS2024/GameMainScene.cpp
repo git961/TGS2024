@@ -53,8 +53,8 @@ GameMainScene::GameMainScene(bool set_flg)
 		}
 		else {
 			//プレイヤーのリスタート位置を入れる
-			player = new Player(200.0f, 1700.0f);
-			//player = new Player(5080.0f, 1700.0f);
+			//player = new Player(200.0f, 1700.0f);
+			player = new Player(5080.0f, 1700.0f);
 			current_location = CurrentLocation::middle;
 		}
 	}
@@ -1669,9 +1669,9 @@ void GameMainScene::UpdateCamera(World world)
 			//下部に居る
 			if (current_location != CurrentLocation::lower)
 			{
-				//
+				
 				if (world.y > camera_pos.y) {
-					camera_pos.y += 6;
+					camera_pos.y +=30;
 				}
 				else
 				{
@@ -2681,7 +2681,7 @@ void GameMainScene::EnemyHitRock()
 
 void GameMainScene::EnemyHitReturnBlock()
 {
-
+	//歩行エネミー
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
 		if (enemy[i] != nullptr && enemy[i]->GetHp() > 0)
@@ -2710,6 +2710,28 @@ void GameMainScene::EnemyHitReturnBlock()
 			}
 		}
 	}
+
+	//あしなが岩
+	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
+	{
+		if (long_legs_enemy[i] != nullptr && long_legs_enemy[i]->GetHp() > 0)
+		{
+			for (int j = 0; j < block_count; j++)
+			{
+				if (stage_block[j] != nullptr && stage_block[j]->GetBlockNum() == 18)
+				{
+					if (long_legs_enemy[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+					{
+						// 当たっていたら進行方向を反対に変更する
+						long_legs_enemy[i]->SetHitEnemyX(stage_block[j]->GetWorldLocation().x);
+						long_legs_enemy[i]->ChangeDirection();
+					}
+				}
+			}
+		}
+	}
+
+	//あしなが岩
 
 }
 
