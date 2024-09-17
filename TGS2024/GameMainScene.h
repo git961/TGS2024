@@ -143,8 +143,12 @@ private:
     bool goal_flg;//ゴールしたか
 
     bool player_damage_once;
+    bool enemy_check_damage_once;
     bool enemy_damage_once;
     bool rock_damage_once;
+
+    bool rebound_check_once;
+    bool rebound_damage_once;
 
     int back_img[10];//背景入れるよう
     int goal_img;//ゴールした後に表示する画像入れる用
@@ -255,7 +259,7 @@ public:
     MapIo* GetMapIo() { return mapio; }
     Player* GetPlayer() { return player; }
 
- //   StageBlock* GetStageBlock(int num_y,int num_x){return stage_block[num_y][num_x] }
+    //StageBlock* GetStageBlock(int num_y,int num_x){return stage_block[num_y][num_x] }
 
     void Tutorial();
 
@@ -320,6 +324,7 @@ public:
     void DynamiteHitHardEnemy();            // つるはしとダイナマイトでしか倒せない敵の当たり判定
 
     void ReboundEnemyUpdate();             // つるはしで転がる敵の更新処理
+    void ReboundHitEnemy();                //つるはしで転がる敵とエネミーの当たり判定
     void PlayerHitReboundEnemy();          // プレイヤーとつるはしで転がる敵の当たり判定
     void PickaxeHitReboundEnemy();         // つるはしとつるはしで転がる敵の当たり判定
 
@@ -332,6 +337,5 @@ public:
     bool CollisionCharaTop(float set_half_width, float set_half_height, World set_xy);
     bool CollisionCharaBottom(float set_half_width, float set_half_height, float set_x,float set_y);
     
-
 };
 

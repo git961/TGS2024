@@ -9,6 +9,7 @@ ReboundEnemy::ReboundEnemy(float set_x, float set_y)
 	location.y = set_y;
 	width = 64.0f;
 	height = 64.0f;
+	attack = 10.0f;
 
 	move_x = -1.0f;			// 移動量
 	move_y = 1.0f;
