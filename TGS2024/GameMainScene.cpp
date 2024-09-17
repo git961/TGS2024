@@ -3422,6 +3422,7 @@ void GameMainScene::ReboundHitEnemy()
 				if (enemy[j]->GetIsKnockBack() == false)
 				{
 					EnemyDamage(j, rebound_enemy[i]->GetAttack());
+					rebound_enemy[i]->Damage(20.0f);
 				}
 			}
 
