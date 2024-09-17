@@ -14,7 +14,7 @@ private:
 	EnemyState enemy_state;
 
 	int enemy_img[5];						// 脚が長い敵の顔の画像
-	int enemy_leg_img[5];					// 脚の画像
+	int enemy_leg_img[8];					// 脚の画像
 
 	int enemy_leg_img_num;					// 脚の画像番号
 	float leg_location_y;					// 脚のY座標
