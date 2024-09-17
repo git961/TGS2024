@@ -57,5 +57,6 @@ public:
 	void SetHitPickaxeFlg();
 	void ChangeDirection();
 	void SetHitEnemyX(float set_x) { hit_enemy_x = set_x; }
+	bool GetGemDropFlg() const;
 
 };

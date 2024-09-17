@@ -239,6 +239,7 @@ GameMainScene::GameMainScene(bool set_flg)
 
 	walk_gem_score = 100;
 	roll_gem_score = 500;
+	rebound_gem_score = 200;
 	goal_flg = false;
 
 
@@ -410,6 +411,7 @@ void GameMainScene::ResetMap()
 	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
 	{
 		rebound_enemy[i] = nullptr;
+		rebound_gem[i] = nullptr;
 	}
 
 	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
@@ -573,6 +575,7 @@ void GameMainScene::ChengeNextMap()
 	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
 	{
 		rebound_enemy[i] = nullptr;
+		rebound_gem[i] = nullptr;
 	}
 
 	for (int i = 0; i < KEY_MAXNUM; i++)
@@ -1323,6 +1326,15 @@ void GameMainScene::Draw() const
 			}
 		}
 
+		for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
+		{
+			if (rebound_gem[i] != nullptr)
+			{
+				// 転がるエネミーの宝石描画処理
+				rebound_gem[i]->Draw();
+			}
+		}
+
 		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
 			// エネミー描画処理
@@ -2012,7 +2024,7 @@ void GameMainScene::GemGenerate()
 			{
 				if (walk_gem[i] == nullptr)
 				{
-					walk_gem[i] = new Gem(enemy[i]->GetWorldLocation(), walk_gem_score);
+					walk_gem[i] = new Gem(enemy[i]->GetWorldLocation(),0, walk_gem_score);
 					walk_gem[i]->SetPlayerWorldLocation(player->GetWorldLocation());
 					enemy[i]->SetGemDropFlg(false);
 				}
@@ -2030,13 +2042,30 @@ void GameMainScene::GemGenerate()
 			{
 				if (player != nullptr && roll_gem[i] == nullptr)
 				{
-					roll_gem[i] = new Gem(rolling_enemy[i]->GetWorldLocation(), roll_gem_score);
+					roll_gem[i] = new Gem(rolling_enemy[i]->GetWorldLocation(),0,roll_gem_score);
 					roll_gem[i]->SetFromRollingEnemyFlg(true);
 					roll_gem[i]->SetPlayerWorldLocation(player->GetWorldLocation());
 				}
 			}
 		}
 	}
+
+	// つるはしで跳ね返る岩エネミーの宝石生成処理
+	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
+	{
+		if (rebound_enemy[i] != nullptr)
+		{
+			if (rebound_enemy[i]->GetGemDropFlg() == true)
+			{
+				if (player != nullptr && rebound_gem[i] == nullptr)
+				{
+					rebound_gem[i] = new Gem(rebound_enemy[i]->GetWorldLocation(), 1, rebound_gem_score);
+					rebound_gem[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+				}
+			}
+		}
+	}
+
 }
 
 void GameMainScene::GemUpDate()
@@ -2068,6 +2097,16 @@ void GameMainScene::GemUpDate()
 		{
 			green_gem[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 			green_gem[i]->Update(this);
+		}
+	}
+
+	//赤の宝石更新処理
+	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
+	{
+		if (rebound_gem[i] != nullptr)
+		{
+			rebound_gem[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			rebound_gem[i]->Update(this);
 		}
 	}
 }
@@ -2273,6 +2312,29 @@ void GameMainScene::PlayerHitGem()
 			{
 				delete green_gem[i];
 				green_gem[i] = nullptr;
+			}
+
+		}
+	}
+
+	//つるはしで跳ね返る敵の宝石
+	for (int i = 0; i <REBOUND_ENEMY_MAXNUM; i++)
+	{
+		if (player != nullptr && rebound_gem[i] != nullptr)
+		{
+			if (rebound_gem[i]->GetPlaySoundFlg() == true)
+			{
+				if (player->HitCheck(rebound_gem[i]->GetWorldLocation(), rebound_gem[i]->GetWidth(), rebound_gem[i]->GetHeight()) == true)
+				{
+					rebound_gem[i]->PlayGetSound();
+					score->SetScore(rebound_gem[i]->GetGemScore());
+				}
+			}
+
+			if (rebound_gem[i]->GetDeleteFlg() == true)
+			{
+				delete rebound_gem[i];
+				rebound_gem[i] = nullptr;
 			}
 
 		}

@@ -35,7 +35,7 @@ private:
 	bool draw_effect;			// エフェクトを表示するか？
 
 public:
-	Gem(World set_world, int set_score);
+	Gem(World set_world,int gem_type,int set_score);
 	~Gem();
 
 	void Update(GameMainScene* gamemain);
