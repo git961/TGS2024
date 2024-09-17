@@ -13,13 +13,13 @@ ReboundEnemy::ReboundEnemy(float set_x, float set_y)
 	move_x = -1.0f;			// 移動量
 	move_y = 1.0f;
 	hp = 30.0f;
-	speed = 2.0f;
+	speed = 1.0f;
 	direction = false;
 
 	enemy_state = EnemyState::WALK;
 
 	// 画像の読み込み
-	enemy_img = LoadGraph("images/Enemy/Rebound.png");
+	LoadDivGraph("images/Enemy/Rebound.png", 12, 5, 3, 64, 64, enemy_img);
 
 	angle = 0.0;
 	degree = 0.0;
@@ -33,8 +33,11 @@ ReboundEnemy::ReboundEnemy(float set_x, float set_y)
 
 ReboundEnemy::~ReboundEnemy()
 {
-	// 画像の削除
-	DeleteGraph(enemy_img);
+	for (int i = 0; i < 12; i++)
+	{
+		// 画像の削除
+		DeleteGraph(enemy_img[i]);
+	}
 }
 
 void ReboundEnemy::Update()
@@ -46,11 +49,14 @@ void ReboundEnemy::Update()
 	{
 	case EnemyState::WALK:
 		Move();
-		CheckDeathCondition();
+		WalkAnimation();
 		if (hit_pickaxe_flg == true)
 		{
 			enemy_state = EnemyState::ROLL;
+			enemy_img_num = 7;
+			world.y += 6.0f;
 		}
+		CheckDeathCondition();
 		break;
 
 	case EnemyState::ROLL:
@@ -76,7 +82,7 @@ void ReboundEnemy::Update()
 void ReboundEnemy::Draw() const
 {
 	// つるはしで跳ね返る敵の画像
-	DrawRotaGraph((int)location.x, (int)location.y, 1.0, angle, enemy_img, TRUE, direction);
+	DrawRotaGraph((int)location.x, (int)location.y, 1.0, angle, enemy_img[enemy_img_num], TRUE, direction);
 
 	DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", hp);
 }
@@ -108,7 +114,18 @@ void ReboundEnemy::Death()
 
 void ReboundEnemy::DeathAnimation()
 {
+	// 画像切り替え
+	if (anim_cnt != 0)
+	{
+		// 死亡
+		// 5カウントごとに変わる
+		enemy_img_num = anim_cnt / 5 + 8;
 
+		if (enemy_img_num > 11)
+		{
+			enemy_img_num = 11;			// 最終画像で止める
+		}
+	}
 }
 
 void ReboundEnemy::ChangeAngle()
@@ -161,6 +178,29 @@ void ReboundEnemy::CheckDeathCondition()
 	if (hp <= 0.0f)
 	{
 		enemy_state = EnemyState::DEATH;			// 死亡状態に遷移
+		world.y -= 6.0f;
+		anim_cnt = 0;
+	}
+}
+
+void ReboundEnemy::WalkAnimation()
+{
+	if (anim_cnt < 68)
+	{
+		// アニメーション用カウント増加
+		anim_cnt++;
+	}
+	else
+	{
+		anim_cnt = 0;
+	}
+
+	// 画像切り替え
+	if (anim_cnt != 0)
+	{
+		// 歩行
+		// 5カウントごとに変わる
+		enemy_img_num = anim_cnt / 10;
 	}
 }
 

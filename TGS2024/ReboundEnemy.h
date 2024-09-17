@@ -13,7 +13,7 @@ private:
 	};
 
 	EnemyState enemy_state;
-	int enemy_img;						// つるはしで跳ね返る敵の画像
+	int enemy_img[12];						// つるはしで跳ね返る敵の画像
 
 	double angle;						// 画像の角度
 	double degree;						// 角度計算用
@@ -43,6 +43,9 @@ private:
 
 	// 死亡状態に遷移するか調べる
 	void CheckDeathCondition();
+
+	// 歩行アニメーション
+	void WalkAnimation();
 
 public:
 	void SetPlayerDirection(bool set_direction);
