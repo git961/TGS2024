@@ -53,8 +53,8 @@ GameMainScene::GameMainScene(bool set_flg)
 		}
 		else {
 			//プレイヤーのリスタート位置を入れる
-			//player = new Player(200.0f, 1700.0f);
-			player = new Player(5080.0f, 1700.0f);
+			player = new Player(200.0f, 1700.0f);
+			//player = new Player(5080.0f, 1700.0f);
 			current_location = CurrentLocation::middle;
 		}
 	}
@@ -2942,22 +2942,26 @@ void GameMainScene::LiftUpDate()
 //プレイヤーとリフトの当たり判定
 void GameMainScene::PlayerHitLift()
 {
+	//int hit_lift_num=-1;
+
 	for (int i = 0; i < LIFT_MAXNUM; i++)
 	{
 		if (lift[i] != nullptr && player != nullptr)
 		{
-
-			if (player->HitCheck(lift[i]->GetWorldLocation(), lift[i]->GetWidth(), lift[i]->GetHeight()) == true) {
-				
+			if (player->HitCheck(lift[i]->GetWorldLocation(), lift[i]->GetWidth(), lift[i]->GetHeight()+20.0f) == true) {
+				//hit_lift_num = i;
 				//player->SetY(lift[i]->GetWorldLocation().y);
 				player->SetFallFlg(false);
-				player->SetObjectHitFlg(true);
+				player->SetLiftHitFlg(true);
 				player->SinkCheckObject(lift[i]->GetWorldLocation().y - lift[i]->GetHeight() / 2.0f);
 			}
-			else
-			{
-				player->SetObjectHitFlg(false);
-			}
+
+			//if (hit_lift_num != -1) {
+			//	if (player->HitCheck(lift[hit_lift_num]->GetWorldLocation(), lift[hit_lift_num]->GetWidth(), lift[hit_lift_num]->GetHeight() + 20.0f) == false) {
+			//		player->SetLiftHitFlg(false);
+			//	}
+			//}
+
 		}
 	}
 }
@@ -2971,7 +2975,7 @@ void GameMainScene::PlayerHitEventLift()
 		{
 			player->SetY(event_lift[0]->GetWorldLocation().y);
 			player->SetFallFlg(false);
-			player->SetObjectHitFlg(true);
+			player->SetLiftHitFlg(true);
 			if (event_lift[0]->GetAnimEndFlg() == false) {
 				player->SetPlayerState(true);//プレイヤーの動きを止める
 				event_lift[0]->SetAnimStartFlg(true);//アニメーションスタート
@@ -2982,7 +2986,7 @@ void GameMainScene::PlayerHitEventLift()
 		}
 		else
 		{
-			player->SetObjectHitFlg(false);
+			player->SetLiftHitFlg(false);
 		}
 	}
 }
@@ -3148,17 +3152,17 @@ void GameMainScene::PlayerHitMagma()
 		if (magma[i]->GetAnyDamageFlg() == false) continue;
 
 		// プレイヤーがマグマに当たっていたら
-		if (player->HitCheck(magma[i]->GetWorldLocation(), magma[i]->GetWidth(), magma[i]->GetHeight()) == true)
+		if (player->HitCheck(magma[i]->GetWorldLocation(), magma[i]->GetWidth(), magma[i]->GetHeight() + 20.0f) == true)
 		{
 			//プレイヤーに一回だけダメージを与える
 			PlayerDamage();
 			player->SetFallFlg(false);
-			player->SetObjectHitFlg(true);
-			player->SinkCheckObject(magma[i]->GetWorldLocation().y - magma[i]->GetHeight() / 2.0f);
+			player->SetMagmaHitFlg(true);
+			player->SinkCheckObjectBlock(magma[i]->GetWorldLocation().y - magma[i]->GetHeight() / 2.0f);
 		}
 		else
 		{
-			player->SetObjectHitFlg(false);
+			player->SetMagmaHitFlg(false);
 		}
 	}
 }
@@ -3187,20 +3191,22 @@ void GameMainScene::PlayerHitFallingFloor()
 		if (falling_floor[i] == nullptr)	continue;
 
 		// プレイヤーが落ちる床に当たったら
-		if (player->HitCheck(falling_floor[i]->GetWorldLocation(), falling_floor[i]->GetWidth(), falling_floor[i]->GetHeight()) == true)
+		if (player->HitCheck(falling_floor[i]->GetWorldLocation(), falling_floor[i]->GetWidth(), falling_floor[i]->GetHeight()+20.0f) == true)
 		{
 			// プレイヤーの落下を止める
 			player->SetFallFlg(false);
-			player->SetObjectHitFlg(true);
+			player->SetFallingFloorHitFlg(true);
 			player->SinkCheckObject(falling_floor[i]->GetWorldLocation().y - falling_floor[i]->GetHeight() / 2.0f);
 
 			//player->HitCheckB(falling_floor[i]->GetVertex());
 		}
 		else {
-			player->SetObjectHitFlg(false);
+			player->SetFallingFloorHitFlg(false);
 		}
 	}
 }
+
+
 
 // つるはしと落ちる床の当たり判定
 void GameMainScene::PickaxeHitFallingFloor()
@@ -3251,7 +3257,7 @@ void GameMainScene::FallingFloorHitMagma()
 			}
 
 			// 落ちる床の中心座標がマグマの中心座標以上になったら
-			if (falling_floor[i]->GetWorldLocation().y >= magma[j]->GetWorldLocation().y)
+			if (falling_floor[i]->GetWorldLocation().y+5.0f >= magma[j]->GetWorldLocation().y)
 			{
 				// 落ちる床の落下を止める
 				falling_floor[i]->StopFalling();
@@ -3289,7 +3295,7 @@ void GameMainScene::PlayerHitGeyser()
 			// プレイヤーの落下を止める
 			// player->HitCheckB(geyser[i]->GetVertex());
 			player->SetFallFlg(false);
-			player->SetObjectHitFlg(true);
+			player->SetGeyserHitFlg(true);
 			//間欠泉から水が上がってたら
 			if (geyser[i]->GetPushUpFlg() == true)
 			{
@@ -3298,7 +3304,7 @@ void GameMainScene::PlayerHitGeyser()
 		}
 		else
 		{
-			player->SetObjectHitFlg(false);
+			player->SetGeyserHitFlg(false);
 		}
 	}
 }
