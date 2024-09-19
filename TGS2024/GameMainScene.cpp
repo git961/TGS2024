@@ -1370,8 +1370,11 @@ void GameMainScene::Draw() const
 		{
 			if (rebound_gem[i] != nullptr)
 			{
-				// 転がるエネミーの宝石描画処理
-				rebound_gem[i]->Draw();
+				if (rebound_gem[i]->GetWorldLocation().x > screen_origin_position.x - 30 && rebound_gem[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 30)
+				{
+					// 転がるエネミーの宝石描画処理
+					rebound_gem[i]->Draw();
+				}
 			}
 		}
 
