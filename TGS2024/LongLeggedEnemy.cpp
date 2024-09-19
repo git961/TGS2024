@@ -130,7 +130,7 @@ void LongLeggedEnemy::Draw() const
 	// 敵の顔の画像
 	DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img[enemy_img_num], TRUE, direction);
 
-	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %d", attack_anim_count);
+	DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %d", gem_drop_flg);
 	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", attack_anim_count);
 }
 
@@ -229,6 +229,7 @@ void LongLeggedEnemy::CheckDeathCondition()
 		anim_cnt = 0;								// 死亡アニメーション用にカウントを0にする
 		enemy_state = EnemyState::DEATH;			// 死亡状態に遷移
 		world.y = attack_max_y;
+		gem_drop_flg = true;
 	}
 }
 

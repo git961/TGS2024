@@ -33,8 +33,6 @@ GameMainScene::GameMainScene(bool set_flg)
 		mapio->SetStageNum((int)stage_num);
 	}
 
-	long_legs_enemy = new LongLeggedEnemy * [LONG_LEGS_ENEMY_MAXNUM];
-
 	//オブジェクトにNullを代入
 	SetObjectNull();
 
@@ -356,6 +354,11 @@ GameMainScene::~GameMainScene()
 	score->Finalize();
 	delete score;
 	
+	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
+	{
+		delete long_legs_enemy[i];
+		delete long_gem[i];
+	}
 	for (int i = 0; i < HARD_ENEMY_MAXNUM; i++)
 	{
 		delete hard_enemy[i];
@@ -402,6 +405,7 @@ void GameMainScene::ResetMap()
 	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
 	{
 		long_legs_enemy[i] = nullptr;
+		long_gem[i] = nullptr;
 	}
 	for (int i = 0; i < HARD_ENEMY_MAXNUM; i++)
 	{
@@ -565,6 +569,7 @@ void GameMainScene::ChengeNextMap()
 	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
 	{
 		long_legs_enemy[i] = nullptr;
+		long_gem[i] = nullptr;
 	}
 	for (int i = 0; i < HARD_ENEMY_MAXNUM; i++)
 	{
@@ -704,11 +709,6 @@ void GameMainScene::ChengeNextMap()
 					rebound_enemy[rebound_enemy_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				}
 			}
-
-
-
-
-
 		}
 	}
 
@@ -721,7 +721,6 @@ void GameMainScene::ChengeNextMap()
 	}
 
 	score = new Score();
-
 }
 
 void GameMainScene::Update()
@@ -1426,6 +1425,12 @@ void GameMainScene::Draw() const
 				{
 					long_legs_enemy[i]->Draw();
 				}
+
+				// 宝石描画
+				if (long_gem[i] != nullptr)
+				{
+					long_gem[i]->Draw();
+				}
 			}
 
 			// ダイナマイトでしか倒せない敵の描画
@@ -1483,12 +1488,7 @@ void GameMainScene::Draw() const
 		{
 			score->Draw();
 		}
-
-
-
 	}
-
-
 
 	if (fadein_flg == true)
 	{
@@ -2037,6 +2037,23 @@ void GameMainScene::GemGenerate()
 			}
 		}
 	}
+
+	// 脚長エネミーの宝石生成処理
+	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
+	{
+		if (long_legs_enemy[i] != nullptr)
+		{
+			if (long_legs_enemy[i]->GetGemDropFlg() == true)
+			{
+				if (player != nullptr && long_gem[i] == nullptr)
+				{
+					long_gem[i] = new Gem(long_legs_enemy[i]->GetWorldLocation(), 200);
+					long_gem[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+					long_legs_enemy[i]->SetGemDropFlg(false);
+				}
+			}
+		}
+	}
 }
 
 void GameMainScene::GemUpDate()
@@ -2058,6 +2075,16 @@ void GameMainScene::GemUpDate()
 		{
 			roll_gem[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 			roll_gem[i]->Update(this);
+		}
+	}
+
+	// 脚長エネミーの宝石更新処理
+	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
+	{
+		if (long_gem[i] != nullptr)
+		{
+			long_gem[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			long_gem[i]->Update(this);
 		}
 	}
 
@@ -2252,6 +2279,28 @@ void GameMainScene::PlayerHitGem()
 			{
 				delete roll_gem[i];
 				roll_gem[i] = nullptr;
+			}
+		}
+	}
+
+	// 脚長エネミーの宝石とプレイヤーの当たり判定
+	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
+	{
+		if (player != nullptr && long_gem[i] != nullptr)
+		{
+			if (long_gem[i]->GetPlaySoundFlg() == true)
+			{
+				if (player->HitCheck(long_gem[i]->GetWorldLocation(), long_gem[i]->GetWidth(), long_gem[i]->GetHeight()) == true)
+				{
+					long_gem[i]->PlayGetSound();
+					score->SetScore(long_gem[i]->GetGemScore());
+				}
+			}
+
+			if (long_gem[i]->GetDeleteFlg() == true)
+			{
+				delete long_gem[i];
+				long_gem[i] = nullptr;
 			}
 		}
 	}

@@ -60,6 +60,6 @@ public:
 	void SetPlayerWorldLocation(World set_world);	// プレイヤーの位置を保持する
 	void ChangeDirection();
 	void SetHitEnemyX(float set_x) { hit_enemy_x = set_x; }
-
+	void SetGemDropFlg(bool set_flg) { gem_drop_flg = set_flg; }
 };
 
