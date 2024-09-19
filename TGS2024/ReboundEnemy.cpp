@@ -57,7 +57,6 @@ void ReboundEnemy::Update()
 		{
 			enemy_state = EnemyState::ROLL;
 			enemy_img_num = 7;
-			world.y += 5.0f;
 		}
 		CheckDeathCondition();
 		break;
@@ -74,6 +73,8 @@ void ReboundEnemy::Update()
 
 	case EnemyState::DEATH:
 		gem_drop_flg = true;
+		// 死亡seの再生
+		PlayDeathSound();
 		Death();
 		DeathAnimation();
 		break;
@@ -85,10 +86,24 @@ void ReboundEnemy::Update()
 
 void ReboundEnemy::Draw() const
 {
-	// つるはしで跳ね返る敵の画像
-	DrawRotaGraph((int)location.x, (int)location.y, 1.0, angle, enemy_img[enemy_img_num], TRUE, direction);
+	switch (enemy_state)
+	{
+	case EnemyState::WALK:
+	case EnemyState::DEATH:
+		// つるはしで跳ね返る敵の画像
+		DrawRotaGraph((int)location.x, (int)location.y, 1.0, angle, enemy_img[enemy_img_num], TRUE, direction);
+		break;
 
-	DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", hp);
+	case EnemyState::ROLL:
+		// つるはしで跳ね返る敵の画像
+		DrawRotaGraph((int)location.x, (int)location.y + 5, 1.0, angle, enemy_img[enemy_img_num], TRUE, direction);
+		break;
+
+	default:
+		break;
+	}
+
+	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", hp);
 }
 
 void ReboundEnemy::Move()
@@ -182,7 +197,6 @@ void ReboundEnemy::CheckDeathCondition()
 	if (hp <= 0.0f)
 	{
 		enemy_state = EnemyState::DEATH;			// 死亡状態に遷移
-		world.y -= 5.0f;
 		anim_cnt = 0;
 
 		degree = 0.0;

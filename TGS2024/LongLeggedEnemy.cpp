@@ -105,6 +105,8 @@ void LongLeggedEnemy::Update()
 		break;
 
 	case EnemyState::DEATH:
+		// 死亡seの再生
+		PlayDeathSound();
 		Death();
 		DeathAnimation();
 		break;
