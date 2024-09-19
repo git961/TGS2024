@@ -2078,7 +2078,7 @@ void GameMainScene::GemGenerate()
 			{
 				if (player != nullptr && long_gem[i] == nullptr)
 				{
-					long_gem[i] = new Gem(long_legs_enemy[i]->GetWorldLocation(), 200);
+					long_gem[i] = new Gem(long_legs_enemy[i]->GetWorldLocation(),0, 200);
 					long_gem[i]->SetPlayerWorldLocation(player->GetWorldLocation());
 					long_legs_enemy[i]->SetGemDropFlg(false);
 				}
