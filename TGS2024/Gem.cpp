@@ -1,6 +1,6 @@
 #include "Gem.h"
 
-Gem::Gem(World set_world, int set_score)
+Gem::Gem(World set_world, int gem_type,int set_score)
 {
 	location.x = set_world.x;
 	location.y = set_world.y;
@@ -11,8 +11,15 @@ Gem::Gem(World set_world, int set_score)
 	width = 32.0f;
 	height = 32.0f;
 
-	// 画像の読み込み
-	LoadDivGraph("images/Gem/Gem.png", 5, 5, 1, 32, 32,gem_img);
+	if (gem_type == 0) {
+		// 青の宝石画像の読み込み
+		LoadDivGraph("images/Gem/Gem.png", 5, 5, 1, 32, 32, gem_img);
+	}
+	else {
+		// 赤の宝石画像の読み込み
+		LoadDivGraph("images/Gem/RedGem.png", 5, 5, 1, 32, 32, gem_img);
+	}
+
 	LoadDivGraph("images/Gem/effect.png", 4, 4, 1, 32, 32, effect_img);
 
 	// サウンド読込

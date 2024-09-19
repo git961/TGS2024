@@ -48,6 +48,8 @@ private:
     bool fall_flg;//落ちているか？
     bool lift_hit_flg;//リフトに当たっているか？
     bool geyser_hit_flg;//間欠泉に当たっているか？
+    bool magma_hit_flg;//マグマに当たっているか
+    bool fallingfloor_hit_flg;//落ちる床に当たっているか
     float vel;//初速度
 
     float img_down;//画像の表示位置を下げる用
@@ -204,8 +206,9 @@ public:
     }
 
     void SetLiftHitFlg(bool set_flg) {lift_hit_flg = set_flg;}
-
     void SetGeyserHitFlg(bool set_flg) {geyser_hit_flg = set_flg;}
+    void SetMagmaHitFlg(bool set_flg) {magma_hit_flg = set_flg;}
+    void SetFallingFloorHitFlg(bool set_flg) {fallingfloor_hit_flg = set_flg;}
 
     //いる所によって落下する所を更新する
     void SetLimitY(float set_y) {
@@ -289,6 +292,7 @@ public:
     void SinkCheck(GameMainScene* gamemain,float set_x, float set_y);
     void SinkCheckTop(GameMainScene* gamemain,float set_x, float set_y);
     void SinkCheckObject(float set_y);
+    void SinkCheckObjectBlock(float set_y);
 
     void PushUpPlayer(float set_upper);
 

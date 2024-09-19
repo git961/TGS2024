@@ -160,6 +160,8 @@ Player::Player(float set_x,float set_y)
 	fall_flg = false;
 	lift_hit_flg = false;
 	geyser_hit_flg = false;
+	magma_hit_flg = false;
+	fallingfloor_hit_flg = false;
 	vel = 1.0f;
 	set_speed = 0.0f;
 	speed = set_speed;
@@ -528,7 +530,8 @@ void Player::Draw() const
 	//DrawFormatString(location.x, location.y - 80, 0xff0000, "move_x : %f", move_x);
 	DrawFormatString(location.x, location.y - 80, 0xff0000, "fall_flg : %d",fall_flg);
 	//DrawFormatString(location.x, location.y -100, 0xff0000, "speed : %f",speed);
-
+	//DrawCircle(location.x + half_width, location.y + half_height, 3, 0xffffff, TRUE);
+		//(set_xy.y + set_half_height) - 3.0f
 
 #endif // DEBUG
 }
@@ -590,6 +593,10 @@ void Player::PlayerMove()
 	if (fall_flg == true)
 	{
 		move_x = move_x / 1.5f;
+	}
+	else {
+		//落ちていなかったら
+		speed = 0.0f;
 	}
 
 
@@ -2072,8 +2079,13 @@ void Player::HitMapChip(GameMainScene* gamemain)
 		SinkCheck(gamemain, curent_x - half_width, world.y + half_height - 1.0f);
 
 	}
-	else if(lift_hit_flg == false && geyser_hit_flg == false)
+	else
 	{
+		if (lift_hit_flg != false)return;
+		if (geyser_hit_flg != false)return;
+		if (magma_hit_flg != false)return;
+		if (fallingfloor_hit_flg != false)return;
+
 		fall_flg = true;
 	}
 
@@ -2134,9 +2146,25 @@ void Player::SinkCheckObject(float set_y)
 		float sink_y = (world.y + half_height) - set_y;
 		if (sink_y > 0)
 		{
-			world.y = world.y - sink_y;
+			world.y = world.y - sink_y-1.0f;
 		}
 	}
+}
+
+void Player::SinkCheckObjectBlock(float set_y)
+{
+	int row = (int)set_y / BLOCKSIZE;
+
+		float block_y = (float)row * BLOCKSIZE;
+
+		float sink_y = fabs(block_y - set_y);
+		//もしめりこんでいたら
+		if (sink_y > 0) {
+			//めり込んでいる分上にあげる
+			world.y = world.y - sink_y;
+		}
+
+
 }
 
 void Player::PushUpPlayer(float set_upper)

@@ -74,7 +74,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	//back_img[9] = LoadGraph("images/Backimg/backimgGoal.png", TRUE);
 	back_img[9] = LoadGraph("images/Backimg/backimgGoal01.png", TRUE);
 	goal_img = LoadGraph("images/Ending/ending8.png", TRUE);
-	goal_door_img = LoadGraph("images/Stage/Key/Goal.png", TRUE);
+	goal_door_img = LoadGraph("images/Stage/Goal.png", TRUE);
 	death_img = LoadGraph("images/Backimg/death.png", TRUE);
 	pose_img = LoadGraph("images/UI/pose.png", TRUE);
 	//back_img = LoadGraph("images/background_test.png", TRUE);
@@ -237,6 +237,7 @@ GameMainScene::GameMainScene(bool set_flg)
 
 	walk_gem_score = 100;
 	roll_gem_score = 500;
+	rebound_gem_score = 200;
 	goal_flg = false;
 
 
@@ -414,6 +415,7 @@ void GameMainScene::ResetMap()
 	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
 	{
 		rebound_enemy[i] = nullptr;
+		rebound_gem[i] = nullptr;
 	}
 
 	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
@@ -578,6 +580,7 @@ void GameMainScene::ChengeNextMap()
 	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
 	{
 		rebound_enemy[i] = nullptr;
+		rebound_gem[i] = nullptr;
 	}
 
 	for (int i = 0; i < KEY_MAXNUM; i++)
@@ -1204,16 +1207,29 @@ void GameMainScene::Update()
 
 void GameMainScene::Draw() const
 {
-	// 背景画像描画（仮）
-	for (int i = 0; i < 8; i++)
+	//// 背景画像描画（仮）
+	if (stage_num == StageNum::stage1)
 	{
-		for (int j = 0; j < 4; j++) {
-			DrawGraph((int)location_x + 1280 * i, (int)location_y+720*j, back_img[1], FALSE);
+		for (int i = 0; i < 8; i++)
+		{
+			DrawGraph((int)location_x + 1280 * i, (int)location_y, back_img[0], FALSE);
 		}
+		//ゴールの画像
+		//DrawGraph((int)location_x + 1280 * 8, (int)location_y, back_img[9], FALSE);
+		// 矢印の表示
+		//DrawGraph((int)location_x + 1280, (int)location_y, back_img[0], FALSE);
 	}
 
-	DrawGraph((int)location_x + 1280 * 8, (int)location_y, back_img[9], FALSE);
-	DrawGraph((int)location_x + 1280, (int)location_y, back_img[0], FALSE);
+
+	if (stage_num == StageNum::stage2)
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			DrawGraph((int)location_x + 1280 * i, (int)location_y + 1080, back_img[0], FALSE);
+		}
+		DrawGraph((int)location_x + 5120, (int)location_y + 2006, back_lower_img, FALSE);
+		DrawGraph((int)location_x + 7680, (int)location_y, back_upper_img, FALSE);
+	}
 
 	for (int j = 0; j < block_count; j++)
 	{
@@ -1350,6 +1366,15 @@ void GameMainScene::Draw() const
 			}
 		}
 
+		for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
+		{
+			if (rebound_gem[i] != nullptr)
+			{
+				// 転がるエネミーの宝石描画処理
+				rebound_gem[i]->Draw();
+			}
+		}
+
 		for (int i = 0; i < ENEMYMAXNUM; i++)
 		{
 			// エネミー描画処理
@@ -1407,7 +1432,7 @@ void GameMainScene::Draw() const
 				if (stage_block[j] != nullptr && stage_block[j]->GetBlockNum() == 3)
 				{
 					//ゴールのドア描画
-					DrawGraph((int)stage_block[j]->GetLocation().x - 128, (int)stage_block[j]->GetLocation().y - 480, goal_door_img, TRUE);
+					DrawGraph((int)stage_block[j]->GetLocation().x - 448, (int)stage_block[j]->GetLocation().y - 480, goal_door_img, TRUE);
 				}
 			}
 
@@ -2077,7 +2102,7 @@ void GameMainScene::GemGenerate()
 			{
 				if (walk_gem[i] == nullptr)
 				{
-					walk_gem[i] = new Gem(enemy[i]->GetWorldLocation(), walk_gem_score);
+					walk_gem[i] = new Gem(enemy[i]->GetWorldLocation(),0, walk_gem_score);
 					walk_gem[i]->SetPlayerWorldLocation(player->GetWorldLocation());
 					enemy[i]->SetGemDropFlg(false);
 				}
@@ -2095,7 +2120,7 @@ void GameMainScene::GemGenerate()
 			{
 				if (player != nullptr && roll_gem[i] == nullptr)
 				{
-					roll_gem[i] = new Gem(rolling_enemy[i]->GetWorldLocation(), roll_gem_score);
+					roll_gem[i] = new Gem(rolling_enemy[i]->GetWorldLocation(),0,roll_gem_score);
 					roll_gem[i]->SetFromRollingEnemyFlg(true);
 					roll_gem[i]->SetPlayerWorldLocation(player->GetWorldLocation());
 				}
@@ -2112,13 +2137,30 @@ void GameMainScene::GemGenerate()
 			{
 				if (player != nullptr && long_gem[i] == nullptr)
 				{
-					long_gem[i] = new Gem(long_legs_enemy[i]->GetWorldLocation(), 200);
+					long_gem[i] = new Gem(long_legs_enemy[i]->GetWorldLocation(),0, 200);
 					long_gem[i]->SetPlayerWorldLocation(player->GetWorldLocation());
 					long_legs_enemy[i]->SetGemDropFlg(false);
 				}
 			}
 		}
 	}
+
+	// つるはしで跳ね返る岩エネミーの宝石生成処理
+	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
+	{
+		if (rebound_enemy[i] != nullptr)
+		{
+			if (rebound_enemy[i]->GetGemDropFlg() == true)
+			{
+				if (player != nullptr && rebound_gem[i] == nullptr)
+				{
+					rebound_gem[i] = new Gem(rebound_enemy[i]->GetWorldLocation(), 1, rebound_gem_score);
+					rebound_gem[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+				}
+			}
+		}
+	}
+
 }
 
 void GameMainScene::GemUpDate()
@@ -2160,6 +2202,16 @@ void GameMainScene::GemUpDate()
 		{
 			green_gem[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 			green_gem[i]->Update(this);
+		}
+	}
+
+	//赤の宝石更新処理
+	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
+	{
+		if (rebound_gem[i] != nullptr)
+		{
+			rebound_gem[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			rebound_gem[i]->Update(this);
 		}
 	}
 }
@@ -2389,6 +2441,29 @@ void GameMainScene::PlayerHitGem()
 			{
 				delete green_gem[i];
 				green_gem[i] = nullptr;
+			}
+
+		}
+	}
+
+	//つるはしで跳ね返る敵の宝石
+	for (int i = 0; i <REBOUND_ENEMY_MAXNUM; i++)
+	{
+		if (player != nullptr && rebound_gem[i] != nullptr)
+		{
+			if (rebound_gem[i]->GetPlaySoundFlg() == true)
+			{
+				if (player->HitCheck(rebound_gem[i]->GetWorldLocation(), rebound_gem[i]->GetWidth(), rebound_gem[i]->GetHeight()) == true)
+				{
+					rebound_gem[i]->PlayGetSound();
+					score->SetScore(rebound_gem[i]->GetGemScore());
+				}
+			}
+
+			if (rebound_gem[i]->GetDeleteFlg() == true)
+			{
+				delete rebound_gem[i];
+				rebound_gem[i] = nullptr;
 			}
 
 		}
@@ -2983,22 +3058,26 @@ void GameMainScene::LiftUpDate()
 //プレイヤーとリフトの当たり判定
 void GameMainScene::PlayerHitLift()
 {
+	//int hit_lift_num=-1;
+
 	for (int i = 0; i < LIFT_MAXNUM; i++)
 	{
 		if (lift[i] != nullptr && player != nullptr)
 		{
-
-			if (player->HitCheck(lift[i]->GetWorldLocation(), lift[i]->GetWidth(), lift[i]->GetHeight()) == true) {
-				
+			if (player->HitCheck(lift[i]->GetWorldLocation(), lift[i]->GetWidth(), lift[i]->GetHeight()+20.0f) == true) {
+				//hit_lift_num = i;
 				//player->SetY(lift[i]->GetWorldLocation().y);
 				player->SetFallFlg(false);
 				player->SetLiftHitFlg(true);
 				player->SinkCheckObject(lift[i]->GetWorldLocation().y - lift[i]->GetHeight() / 2.0f);
 			}
-			else
-			{
-				player->SetLiftHitFlg(false);
-			}
+
+			//if (hit_lift_num != -1) {
+			//	if (player->HitCheck(lift[hit_lift_num]->GetWorldLocation(), lift[hit_lift_num]->GetWidth(), lift[hit_lift_num]->GetHeight() + 20.0f) == false) {
+			//		player->SetLiftHitFlg(false);
+			//	}
+			//}
+
 		}
 	}
 }
@@ -3189,10 +3268,17 @@ void GameMainScene::PlayerHitMagma()
 		if (magma[i]->GetAnyDamageFlg() == false) continue;
 
 		// プレイヤーがマグマに当たっていたら
-		if (player->HitCheck(magma[i]->GetWorldLocation(), magma[i]->GetWidth(), magma[i]->GetHeight()) == true)
+		if (player->HitCheck(magma[i]->GetWorldLocation(), magma[i]->GetWidth(), magma[i]->GetHeight() + 20.0f) == true)
 		{
 			//プレイヤーに一回だけダメージを与える
 			PlayerDamage();
+			player->SetFallFlg(false);
+			player->SetMagmaHitFlg(true);
+			player->SinkCheckObjectBlock(magma[i]->GetWorldLocation().y - magma[i]->GetHeight() / 2.0f);
+		}
+		else
+		{
+			player->SetMagmaHitFlg(false);
 		}
 	}
 }
@@ -3221,13 +3307,22 @@ void GameMainScene::PlayerHitFallingFloor()
 		if (falling_floor[i] == nullptr)	continue;
 
 		// プレイヤーが落ちる床に当たったら
-		if (player->HitCheck(falling_floor[i]->GetWorldLocation(), falling_floor[i]->GetWidth(), falling_floor[i]->GetHeight()) == true)
+		if (player->HitCheck(falling_floor[i]->GetWorldLocation(), falling_floor[i]->GetWidth(), falling_floor[i]->GetHeight()+20.0f) == true)
 		{
 			// プレイヤーの落下を止める
-			player->HitCheckB(falling_floor[i]->GetVertex());
+			player->SetFallFlg(false);
+			player->SetFallingFloorHitFlg(true);
+			player->SinkCheckObject(falling_floor[i]->GetWorldLocation().y - falling_floor[i]->GetHeight() / 2.0f);
+
+			//player->HitCheckB(falling_floor[i]->GetVertex());
+		}
+		else {
+			player->SetFallingFloorHitFlg(false);
 		}
 	}
 }
+
+
 
 // つるはしと落ちる床の当たり判定
 void GameMainScene::PickaxeHitFallingFloor()
@@ -3278,7 +3373,7 @@ void GameMainScene::FallingFloorHitMagma()
 			}
 
 			// 落ちる床の中心座標がマグマの中心座標以上になったら
-			if (falling_floor[i]->GetWorldLocation().y >= magma[j]->GetWorldLocation().y)
+			if (falling_floor[i]->GetWorldLocation().y+5.0f >= magma[j]->GetWorldLocation().y)
 			{
 				// 落ちる床の落下を止める
 				falling_floor[i]->StopFalling();
@@ -3568,6 +3663,7 @@ void GameMainScene::ReboundHitEnemy()
 				if (enemy[j]->GetIsKnockBack() == false)
 				{
 					EnemyDamage(j, rebound_enemy[i]->GetAttack());
+					rebound_enemy[i]->Damage(20.0f);
 				}
 			}
 

@@ -107,6 +107,7 @@ private:
     StageBlock* stage_block[MAP_BLOCKMAX];
     Gem* walk_gem[ENEMYMAXNUM];             // 配列
     Gem* roll_gem[ROLLING_ENEMY_MAXNUM];
+    Gem* rebound_gem[REBOUND_ENEMY_MAXNUM];
 
     GreenGem* green_gem[GREEN_GEM_MAXNUM];
 
@@ -187,6 +188,7 @@ private:
 
     int walk_gem_score;             // 歩行エネミーの宝石スコア
     int roll_gem_score;             // 転がるエネミーの宝石スコア
+    int rebound_gem_score;             // つるはしで跳ね返るエネミーの宝石スコア
     //int rock_gem_score;             //岩から出る宝石スコア
 
     float camera_old_x;

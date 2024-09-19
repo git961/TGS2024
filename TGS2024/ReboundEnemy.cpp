@@ -9,7 +9,7 @@ ReboundEnemy::ReboundEnemy(float set_x, float set_y)
 	location.y = set_y;
 	width = 64.0f;
 	height = 64.0f;
-	attack = 10.0f;
+	attack = 30.0f;
 
 	move_x = -1.0f;			// 移動量
 	move_y = 1.0f;
@@ -31,6 +31,7 @@ ReboundEnemy::ReboundEnemy(float set_x, float set_y)
 	hit_pickaxe_flg = false;						// つるはしに当たっていない
 	roll_left_flg = true;							// 左に転がる
 	roll_flg = false;								// 転がっていない
+	gem_drop_flg = false;
 }
 
 ReboundEnemy::~ReboundEnemy()
@@ -72,6 +73,7 @@ void ReboundEnemy::Update()
 		break;
 
 	case EnemyState::DEATH:
+		gem_drop_flg = true;
 		Death();
 		DeathAnimation();
 		break;
@@ -182,6 +184,11 @@ void ReboundEnemy::CheckDeathCondition()
 		enemy_state = EnemyState::DEATH;			// 死亡状態に遷移
 		world.y -= 5.0f;
 		anim_cnt = 0;
+
+		degree = 0.0;
+		// 画像の角度
+		angle = DEGREE_RADIAN(degree);
+
 	}
 }
 
@@ -219,6 +226,11 @@ bool ReboundEnemy::GetRollFlg() const
 void ReboundEnemy::SetHitPickaxeFlg()
 {
 	hit_pickaxe_flg = true;
+}
+
+bool ReboundEnemy::GetGemDropFlg() const
+{
+	return gem_drop_flg;
 }
 
 void ReboundEnemy::ChangeDirection()
