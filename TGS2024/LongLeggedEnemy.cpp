@@ -128,9 +128,15 @@ void LongLeggedEnemy::Draw() const
 	}
 
 	// 敵の顔の画像
-	DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img[enemy_img_num], TRUE, direction);
+	if (enemy_leg_img_num == 1 || enemy_leg_img_num == 5)
+	{
+		DrawRotaGraph((int)location.x, (int)location.y + 3, 1.0, 0.0, enemy_img[enemy_img_num], TRUE, direction);
+	}
+	else
+	{
+		DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img[enemy_img_num], TRUE, direction);
+	}
 
-	DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %d", gem_drop_flg);
 	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", attack_anim_count);
 }
 
