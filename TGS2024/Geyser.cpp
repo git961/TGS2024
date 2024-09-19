@@ -11,7 +11,6 @@ Geyser::Geyser(float set_x, float set_y)
 	height = 64.0f;
 
 	// 画像の読み込み
-	//geyser_img = LoadGraph("images/Stage/Gimmick/Geyser.png");
 	LoadDivGraph("images/Stage/Gimmick/Geyser.png", 4, 2, 2, 64, 64, geyser_img);
 	LoadDivGraph("images/Stage/Gimmick/Geyser_Hill.png", 4, 4, 1, 128, 64, geyser_hill_img);
 
@@ -53,7 +52,7 @@ void Geyser::Update()
 
 	// 丘の描画座標の更新
 	hill_y = location.y;
-	geyser_y = hill_y;
+	geyser_y = hill_y - height / 2 + 32.0f;
 
 	// 水が出ているなら
 	if (stop_water_flg == false)
@@ -99,7 +98,7 @@ void Geyser::Draw() const
 
 	// 頂点の確認
 	DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
-	DrawCircle((int)location.x, (int)location.y, 2, 0xff0000, TRUE);
+	DrawCircle((int)location.x, (int)geyser_y, 2, 0xff0000, TRUE);
 }
 
 // 水を打ち上げる
@@ -113,8 +112,6 @@ void Geyser::LaunchWater()
 
 		// 水の高さ
 		now_water_height++;
-		//geyser_y = hill_y - 1.0f;
-		geyser_y -= height + 64.0f;
 	}
 	else if (water_supply_time <= 0)
 	{
@@ -141,9 +138,7 @@ void Geyser::StopWater()
 		stop_water_time-=2.0f;
 		height -= 2.2f;
 
-		geyser_y = hill_y + 2.0f;
-
-		draw_image_count = (int)now_water_height / 64;
+		draw_image_count = (int)height / 64;
 	}
 	else
 	{
