@@ -7,6 +7,7 @@ private:
 	enum class EnemyState
 	{
 		WALK,
+		WAIT,
 		ATTACK,
 		DEATH
 	};
@@ -33,6 +34,8 @@ private:
 	int attack_anim_count;				// 攻撃アニメーション用カウント
 
 	float hit_enemy_x;
+
+	int attack_wait_time;				// 攻撃の待ち時間
 
 public:
 	LongLeggedEnemy(float set_x, float set_y);

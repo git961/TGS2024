@@ -37,6 +37,7 @@ LongLeggedEnemy::LongLeggedEnemy(float set_x, float set_y)
 
 	attack_flg = false;				// 攻撃中ではない
 	attack_anim_count = 0;
+	attack_wait_time = 0;
 }
 
 LongLeggedEnemy::~LongLeggedEnemy()
@@ -60,18 +61,32 @@ void LongLeggedEnemy::Update()
 	switch (enemy_state)
 	{
 	case EnemyState::WALK:
-		Move();
-		WalkAnimation();
 		CheckDistanceToPlayer();
 		if (attack_flg == true)
 		{
-			enemy_state = EnemyState::ATTACK;		// 攻撃状態に遷移
+			enemy_state = EnemyState::WAIT;		// 攻撃待ち状態に遷移
+			break;
 		}
 
 		// 死亡状態になったか調べる
 		CheckDeathCondition();
-		break;
 
+		Move();
+		WalkAnimation();
+		break;
+	case EnemyState::WAIT:
+		if (attack_wait_time < 60)
+		{
+			attack_wait_time++;
+		}
+		else
+		{
+			attack_wait_time = 0;
+			enemy_leg_img_num = 8;
+			enemy_state = EnemyState::ATTACK;		// 攻撃状態に遷移
+		}
+
+		break;
 	case EnemyState::ATTACK:
 		Attack();
 		AttackAnimation();
@@ -105,6 +120,9 @@ void LongLeggedEnemy::Draw() const
 		DrawRotaGraph((int)location.x, (int)leg_location_y, 1.0, 0.0, enemy_leg_img[enemy_leg_img_num], TRUE, direction);
 		break;
 
+	case EnemyState::WAIT:
+		// 脚の画像
+		DrawRotaGraph((int)location.x, (int)leg_location_y, 1.0, 0.0, enemy_leg_img[8], TRUE, direction);
 	default:
 		break;
 	}
@@ -112,7 +130,7 @@ void LongLeggedEnemy::Draw() const
 	// 敵の顔の画像
 	DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img[enemy_img_num], TRUE, direction);
 
-	DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %d", attack_anim_count);
+	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %d", attack_anim_count);
 	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", attack_anim_count);
 }
 
