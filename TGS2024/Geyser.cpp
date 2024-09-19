@@ -57,6 +57,9 @@ void Geyser::Update()
 	// 水が出ているなら
 	if (stop_water_flg == false)
 	{
+		// 丘のY座標の計算
+		hill_y += now_water_height;
+
 		if (push_up_flg == true)
 		{
 			// 水を打ち上げる
@@ -67,9 +70,6 @@ void Geyser::Update()
 			// 水を止めていく
 			StopWater();
 		}
-
-		// 丘のY座標の計算
-		hill_y += now_water_height;
 
 		// 水のアニメーション
 		GeyserAnimation();
@@ -94,11 +94,11 @@ void Geyser::Draw() const
 	// 丘画像の描画
 	DrawRotaGraph((int)location.x, (int)hill_y, 1.0, 0.0, geyser_hill_img[hill_img_num], TRUE);
 
-	DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", height);
+	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", height);
 
 	// 頂点の確認
-	DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
-	DrawCircle((int)location.x, (int)geyser_y, 2, 0xff0000, TRUE);
+	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
+	//DrawCircle((int)location.x, (int)geyser_y, 2, 0xff0000, TRUE);
 }
 
 // 水を打ち上げる
@@ -108,7 +108,7 @@ void Geyser::LaunchWater()
 	{
 		// 上に移動
 		world.y--;
-		height+=1.1f;
+		height += 1.2f;
 
 		// 水の高さ
 		now_water_height++;
@@ -133,10 +133,10 @@ void Geyser::StopWater()
 	if (stop_water_time > 0)
 	{
 		// 元の高さに戻る
-		world.y+=2.0f;
-		now_water_height-=2.0f;
-		stop_water_time-=2.0f;
-		height -= 2.2f;
+		world.y += 2.0f;
+		now_water_height -= 2.0f;
+		stop_water_time -= 2;
+		height -= 2.4f;
 
 		draw_image_count = (int)height / 64;
 	}
@@ -151,6 +151,7 @@ void Geyser::StopWater()
 
 		now_water_height = 0.0f;
 		hill_img_num = 0;
+		height = 64.0f;
 	}
 }
 

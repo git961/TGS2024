@@ -1402,6 +1402,21 @@ void GameMainScene::Draw() const
 			}
 		}
 
+		if (stage_num == StageNum::stage2)
+		{
+			// 間欠泉の描画
+			for (int i = 0; i < GEYSER_MAXNUM; i++)
+			{
+				if (geyser[i] != nullptr)
+				{
+					if (geyser[i]->GetWorldLocation().x > screen_origin_position.x - 100 && geyser[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+					{
+						geyser[i]->Draw();
+					}
+				}
+			}
+		}
+
 		//ステージブロック描画
 		for (int j = 0; j < block_count; j++)
 		{
@@ -1477,18 +1492,6 @@ void GameMainScene::Draw() const
 					if (magma[i]->GetWorldLocation().x > screen_origin_position.x - 100 && magma[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 					{
 						magma[i]->Draw();
-					}
-				}
-			}
-
-			// 間欠泉の描画
-			for (int i = 0; i < GEYSER_MAXNUM; i++)
-			{
-				if (geyser[i] != nullptr)
-				{
-					if (geyser[i]->GetWorldLocation().x > screen_origin_position.x - 100 && geyser[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
-					{
-						geyser[i]->Draw();
 					}
 				}
 			}
