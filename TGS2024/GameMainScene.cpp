@@ -1219,7 +1219,10 @@ void GameMainScene::Draw() const
 	{
 		if (stage_block[j] != nullptr)
 		{
-			stage_block[j]->DrawKanban();
+			if (stage_block[j]->GetWorldLocation().x > screen_origin_position.x - 100 && stage_block[j]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+			{
+				stage_block[j]->DrawKanban();
+			}
 		}
 	}
 
@@ -1228,7 +1231,10 @@ void GameMainScene::Draw() const
 	{
 		if (lift[i] != nullptr)
 		{
-			lift[i]->Draw();
+			if (lift[i]->GetWorldLocation().x > screen_origin_position.x - 100 && lift[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+			{
+				lift[i]->Draw();
+			}
 		}
 	}
 
@@ -1237,7 +1243,10 @@ void GameMainScene::Draw() const
 	{
 		if (rock[i] != nullptr)
 		{
-			rock[i]->Draw();
+			if (rock[i]->GetWorldLocation().x > screen_origin_position.x - 100 && rock[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+			{
+				rock[i]->Draw();
+			}
 		}
 	}
 
@@ -1260,7 +1269,10 @@ void GameMainScene::Draw() const
 		{
 			if (stage_block[j] != nullptr)
 			{
-				stage_block[j]->Draw();
+				if (stage_block[j]->GetWorldLocation().x > screen_origin_position.x - 100 && stage_block[j]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+				{
+					stage_block[j]->Draw();
+				}
 			}
 		}
 
@@ -1269,7 +1281,10 @@ void GameMainScene::Draw() const
 		{
 			if (fragile_wall[i] != nullptr)
 			{
-				fragile_wall[i]->Draw();
+				if (fragile_wall[i]->GetWorldLocation().x > screen_origin_position.x - 100 && fragile_wall[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+				{
+					fragile_wall[i]->Draw();
+				}
 			}
 		}
 
@@ -1278,8 +1293,11 @@ void GameMainScene::Draw() const
 		{
 			if (dynamite[i] != nullptr)
 			{
-				dynamite[i]->Draw();
-				//DrawFormatString(300 * i, 0, 0xff0000, "tmp_abs: %f", dynamite[i]->GetTmpAbs());
+				if (dynamite[i]->GetWorldLocation().x > screen_origin_position.x - 100 && dynamite[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+				{
+					dynamite[i]->Draw();
+					//DrawFormatString(300 * i, 0, 0xff0000, "tmp_abs: %f", dynamite[i]->GetTmpAbs());
+				}
 			}
 		}
 
@@ -1293,8 +1311,6 @@ void GameMainScene::Draw() const
 	}
 	else
 	{
-
-
 			//プレイヤー描画
 		if (player != nullptr)
 		{
@@ -1315,7 +1331,10 @@ void GameMainScene::Draw() const
 			// 歩行エネミーの宝石描画処理
 			if (walk_gem[i] != nullptr)
 			{
-				walk_gem[i]->Draw();
+				if (walk_gem[i]->GetWorldLocation().x > screen_origin_position.x - 30 && walk_gem[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 30)
+				{
+					walk_gem[i]->Draw();
+				}
 			}
 		}
 
@@ -1323,8 +1342,11 @@ void GameMainScene::Draw() const
 		{
 			if (roll_gem[i] != nullptr)
 			{
-				// 転がるエネミーの宝石描画処理
-				roll_gem[i]->Draw();
+				if (roll_gem[i]->GetWorldLocation().x > screen_origin_position.x - 30 && roll_gem[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 30)
+				{
+					// 転がるエネミーの宝石描画処理
+					roll_gem[i]->Draw();
+				}
 			}
 		}
 
@@ -1344,8 +1366,11 @@ void GameMainScene::Draw() const
 		{
 			if (rolling_enemy[i] != nullptr)
 			{
-				// 転がるエネミー描画
-				rolling_enemy[i]->Draw();
+				if (rolling_enemy[i]->GetWorldLocation().x > screen_origin_position.x - 30 && rolling_enemy[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 30)
+				{
+					// 転がるエネミー描画
+					rolling_enemy[i]->Draw();
+				}
 			}
 		}
 
@@ -1354,9 +1379,11 @@ void GameMainScene::Draw() const
 		{
 			if (stage_block[j] != nullptr)
 			{
-				stage_block[j]->Draw();
+				if (stage_block[j]->GetWorldLocation().x > screen_origin_position.x - 100 && stage_block[j]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+				{
+					stage_block[j]->Draw();
+				}
 			}
-
 		}
 
 		// 脆い壁描画
@@ -1364,7 +1391,10 @@ void GameMainScene::Draw() const
 		{
 			if (fragile_wall[i] != nullptr)
 			{
-				fragile_wall[i]->Draw();
+				if (fragile_wall[i]->GetWorldLocation().x > screen_origin_position.x - 100 && fragile_wall[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+				{
+					fragile_wall[i]->Draw();
+				}
 			}
 		}
 
@@ -1381,19 +1411,21 @@ void GameMainScene::Draw() const
 				}
 			}
 
-
 			for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
-			{			
+			{
 				// 檻の描画
 				if (cage[i] != nullptr)
 				{
-					cage[i]->Draw();
-				}
+					if (cage[i]->GetWorldLocation().x > screen_origin_position.x - 300 && cage[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 300)
+					{
+						cage[i]->Draw();
 
-				// 檻のドアの描画
-				if (cage_door[i] != nullptr)
-				{
-					cage_door[i]->Draw();
+						// 檻のドアの描画
+						if (cage_door[i] != nullptr)
+						{
+							cage_door[i]->Draw();
+						}
+					}
 				}
 			}
 
@@ -1402,7 +1434,10 @@ void GameMainScene::Draw() const
 			{
 				if (falling_floor[i] != nullptr)
 				{
-					falling_floor[i]->Draw();
+					if (falling_floor[i]->GetWorldLocation().x > screen_origin_position.x - 100 && falling_floor[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+					{
+						falling_floor[i]->Draw();
+					}
 				}
 			}
 
@@ -1411,7 +1446,10 @@ void GameMainScene::Draw() const
 			{
 				if (magma[i] != nullptr)
 				{
-					magma[i]->Draw();
+					if (magma[i]->GetWorldLocation().x > screen_origin_position.x - 100 && magma[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+					{
+						magma[i]->Draw();
+					}
 				}
 			}
 
@@ -1420,7 +1458,10 @@ void GameMainScene::Draw() const
 			{
 				if (geyser[i] != nullptr)
 				{
-					geyser[i]->Draw();
+					if (geyser[i]->GetWorldLocation().x > screen_origin_position.x - 100 && geyser[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+					{
+						geyser[i]->Draw();
+					}
 				}
 			}
 
@@ -1429,13 +1470,19 @@ void GameMainScene::Draw() const
 			{
 				if (long_legs_enemy[i] != nullptr)
 				{
-					long_legs_enemy[i]->Draw();
+					if (long_legs_enemy[i]->GetWorldLocation().x > screen_origin_position.x - 100 && long_legs_enemy[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+					{
+						long_legs_enemy[i]->Draw();
+					}
 				}
 
 				// 宝石描画
 				if (long_gem[i] != nullptr)
 				{
-					long_gem[i]->Draw();
+					if (long_gem[i]->GetWorldLocation().x > screen_origin_position.x - 30 && long_gem[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 30)
+					{
+						long_gem[i]->Draw();
+					}
 				}
 			}
 
@@ -1444,7 +1491,10 @@ void GameMainScene::Draw() const
 			{
 				if (hard_enemy[i] != nullptr)
 				{
-					hard_enemy[i]->Draw();
+					if (hard_enemy[i]->GetWorldLocation().x > screen_origin_position.x - 100 && hard_enemy[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+					{
+						hard_enemy[i]->Draw();
+					}
 				}
 			}
 
@@ -1453,26 +1503,32 @@ void GameMainScene::Draw() const
 			{
 				if (rebound_enemy[i] != nullptr)
 				{
-					rebound_enemy[i]->Draw();
+					if (rebound_enemy[i]->GetWorldLocation().x > screen_origin_position.x - 100 && rebound_enemy[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+					{
+						rebound_enemy[i]->Draw();
+					}
 				}
 			}
 
-
 			//緑の宝石
-		for (int i = 0; i < GREEN_GEM_MAXNUM; i++)
+			for (int i = 0; i < GREEN_GEM_MAXNUM; i++)
 			{
 				if (green_gem[i] != nullptr)
 				{
-					green_gem[i]->Draw();
+					if (green_gem[i]->GetWorldLocation().x > screen_origin_position.x - 100 && green_gem[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+					{
+						green_gem[i]->Draw();
+					}
 				}
 			}
 
-		
-		if (event_lift[0] != nullptr)
-		{
-			event_lift[0]->Draw();
-		}
-
+			if (event_lift[0] != nullptr)
+			{
+				if (event_lift[0]->GetWorldLocation().x > screen_origin_position.x - 100 && event_lift[0]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+				{
+					event_lift[0]->Draw();
+				}
+			}
 		}
 
 		//ダイナマイト描画
@@ -1480,8 +1536,11 @@ void GameMainScene::Draw() const
 		{
 			if (dynamite[i] != nullptr)
 			{
-				dynamite[i]->Draw();
-				//DrawFormatString(300 * i , 0, 0xff0000, "tmp_abs: %f", dynamite[i]->GetTmpAbs());
+				if (dynamite[i]->GetWorldLocation().x > screen_origin_position.x - 100 && dynamite[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+				{
+					dynamite[i]->Draw();
+					//DrawFormatString(300 * i , 0, 0xff0000, "tmp_abs: %f", dynamite[i]->GetTmpAbs());
+				}
 			}
 		}
 
@@ -2147,6 +2206,7 @@ void GameMainScene::EnemyUpDate()
 		{
 			if (enemy[i]->GetWorldLocation().x > screen_origin_position.x - 100 && enemy[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 			{
+				// 指定した範囲にいたら
 				enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				if (enemy[i]->GetFallEndFlg() == false) {
 					enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
@@ -2176,6 +2236,7 @@ void GameMainScene::EnemyUpDate()
 
 			if (rolling_enemy[i]->GetWorldLocation().x > screen_origin_position.x - 100 && rolling_enemy[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 30)
 			{
+				// 指定した範囲にいたら更新処理
 				rolling_enemy[i]->Update(this);
 			}
 			if (rolling_enemy[i]->GetDeleteFlg() == true)
@@ -3299,18 +3360,22 @@ void GameMainScene::LongLegsEnemyUpdate()
 	{
 		if (long_legs_enemy[i] == nullptr) continue;
 
-		// カメラから見た座標の設定
-		long_legs_enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-
-		long_legs_enemy[i]->Update();
-
-		long_legs_enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
-
-		if (long_legs_enemy[i]->GetDeleteFlg() == true)
+		// ワールドx座標が画面左端 - 100～画面右端 + 100だったら
+		if (long_legs_enemy[i]->GetWorldLocation().x > screen_origin_position.x - 100 && long_legs_enemy[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 		{
-			// 脚が長い敵の削除
-			delete long_legs_enemy[i];
-			long_legs_enemy[i] = nullptr;
+			// カメラから見た座標の設定
+			long_legs_enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+			long_legs_enemy[i]->Update();
+
+			long_legs_enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+
+			if (long_legs_enemy[i]->GetDeleteFlg() == true)
+			{
+				// 脚が長い敵の削除
+				delete long_legs_enemy[i];
+				long_legs_enemy[i] = nullptr;
+			}
 		}
 	}
 }
