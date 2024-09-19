@@ -22,7 +22,7 @@ LongLeggedEnemy::LongLeggedEnemy(float set_x, float set_y)
 
 	// 画像の読み込み
 	LoadDivGraph("images/Enemy/LongLegs.png", 5, 5, 1, 64, 64, enemy_img);
-	LoadDivGraph("images/Enemy/Leg1.png", 11, 5, 3, 128, 128, enemy_leg_img);
+	LoadDivGraph("images/Enemy/Leg.png", 11, 5, 3, 128, 128, enemy_leg_img);
 
 	enemy_leg_img_num = 0;
 	leg_location_y = location.y;
