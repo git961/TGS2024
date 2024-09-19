@@ -320,6 +320,7 @@ public:
     void LongLegsEnemyUpdate();             // 脚が長い敵の更新処理
     void PlayerHitLongLegsEnemy();          // プレイヤーと脚が長い敵の当たり判定
     void PickaxeHitLongLegsEnemy();         // つるはしと脚が長い敵の当たり判定
+    void DynamiteHitLongLegsEnemy();        // ダイナマイトと脚が長い敵の当たり判定
 
     void HardEnemyUpdate();                 // ダイナマイトでしか倒せない敵の更新処理
     void PlayerHitHardEnemy();              // プレイヤーとダイナマイトでしか倒せない敵の当たり判定

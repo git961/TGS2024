@@ -1094,6 +1094,9 @@ void GameMainScene::Update()
 
 			// つるはしと脚が長い敵の当たり判定
 			PickaxeHitLongLegsEnemy();
+			
+			// ダイナマイトと脚が長い敵の当たり判定
+			DynamiteHitLongLegsEnemy();
 
 			//ダイナマイトでしか倒せない敵の更新処理
 			HardEnemyUpdate();
@@ -3357,6 +3360,32 @@ void GameMainScene::PickaxeHitLongLegsEnemy()
 		{
 			//プレイヤーがつるはし振ってなかったら
 			enemy_damage_once = false;
+		}
+	}
+}
+
+// ダイナマイトと脚が長い敵の当たり判定
+void GameMainScene::DynamiteHitLongLegsEnemy()
+{
+	if (player == nullptr)						return;
+
+	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
+	{
+		if (long_legs_enemy[i] == nullptr)			continue;
+
+		for (int j = 0; j < DYNAMITE_MAXNUM; j++)
+		{
+			if (dynamite[j] == nullptr)			continue;
+
+			// ダイナマイト本体との当たり判定
+			if (dynamite[j]->GetDynamite() == false)
+			{
+				if (dynamite[j]->HitCheck(long_legs_enemy[i]->GetWorldLocation(), long_legs_enemy[i]->GetWidth(), long_legs_enemy[i]->GetHeight()) == true)
+				{
+					dynamite[j]->SetDynamite(true);
+					long_legs_enemy[i]->Damage(dynamite[j]->GetAttack());
+				}
+			}
 		}
 	}
 }
