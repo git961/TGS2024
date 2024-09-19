@@ -36,6 +36,7 @@ private:
 	float hit_enemy_x;
 
 	int attack_wait_time;				// 攻撃の待ち時間
+	float now_attack_hight;				// 現在の攻撃の高さ
 
 public:
 	LongLeggedEnemy(float set_x, float set_y);
