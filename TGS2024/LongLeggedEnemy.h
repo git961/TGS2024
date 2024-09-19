@@ -14,7 +14,7 @@ private:
 	EnemyState enemy_state;
 
 	int enemy_img[5];						// 脚が長い敵の顔の画像
-	int enemy_leg_img[8];					// 脚の画像
+	int enemy_leg_img[13];					// 脚の画像
 
 	int enemy_leg_img_num;					// 脚の画像番号
 	float leg_location_y;					// 脚のY座標
@@ -30,6 +30,7 @@ private:
 	float player_world_y;
 
 	bool attack_flg;					// true:攻撃中
+	int attack_anim_count;				// 攻撃アニメーション用カウント
 
 	float hit_enemy_x;
 
@@ -49,9 +50,8 @@ private:
 	void CheckDistanceToPlayer();			// プレイヤーとの距離を調べる
 	void CheckDeathCondition();				// 死亡状態になったか調べる
 
-	void WalkAnimation();
-
-
+	void WalkAnimation();					// 歩行アニメーション
+	void AttackAnimation();					// 攻撃アニメーション
 
 public:
 	void SetPlayerWorldLocation(World set_world);	// プレイヤーの位置を保持する

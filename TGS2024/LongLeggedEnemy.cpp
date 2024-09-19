@@ -22,7 +22,7 @@ LongLeggedEnemy::LongLeggedEnemy(float set_x, float set_y)
 
 	// 画像の読み込み
 	LoadDivGraph("images/Enemy/LongLegs.png", 5, 5, 1, 64, 64, enemy_img);
-	LoadDivGraph("images/Enemy/Leg.png", 8, 5, 2, 128, 128, enemy_leg_img);
+	LoadDivGraph("images/Enemy/Leg1.png", 11, 5, 3, 128, 128, enemy_leg_img);
 
 	enemy_leg_img_num = 0;
 	leg_location_y = location.y;
@@ -36,6 +36,7 @@ LongLeggedEnemy::LongLeggedEnemy(float set_x, float set_y)
 	player_world_y = 0.0f;
 
 	attack_flg = false;				// 攻撃中ではない
+	attack_anim_count = 0;
 }
 
 LongLeggedEnemy::~LongLeggedEnemy()
@@ -73,9 +74,11 @@ void LongLeggedEnemy::Update()
 
 	case EnemyState::ATTACK:
 		Attack();
+		AttackAnimation();
 		if (attack_flg == false)
 		{
 			enemy_state = EnemyState::WALK;			// 歩行状態に遷移
+			anim_cnt = 0;
 		}
 
 		// 死亡状態になったか調べる
@@ -97,6 +100,7 @@ void LongLeggedEnemy::Draw() const
 	switch (enemy_state)
 	{
 	case EnemyState::WALK:
+	case EnemyState::ATTACK:
 		// 脚の画像
 		DrawRotaGraph((int)location.x, (int)leg_location_y, 1.0, 0.0, enemy_leg_img[enemy_leg_img_num], TRUE, direction);
 		break;
@@ -108,7 +112,8 @@ void LongLeggedEnemy::Draw() const
 	// 敵の顔の画像
 	DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img[enemy_img_num], TRUE, direction);
 
-	DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", hp);
+	DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %d", attack_anim_count);
+	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", attack_anim_count);
 }
 
 void LongLeggedEnemy::Move()
@@ -173,6 +178,7 @@ void LongLeggedEnemy::Attack()
 
 	// 縦移動
 	world.y += speed * move_y;
+	attack_anim_count += (int)move_y;
 
 	// 元の高さに戻ったら
 	if (world.y <= first_world_y)
@@ -181,6 +187,7 @@ void LongLeggedEnemy::Attack()
 		attack_flg = false;
 		move_y = 1.0f;
 		rising_interval = 30;
+		attack_anim_count = 0;
 	}
 }
 
@@ -207,6 +214,7 @@ void LongLeggedEnemy::CheckDeathCondition()
 	}
 }
 
+// 歩行アニメーション
 void LongLeggedEnemy::WalkAnimation()
 {
 	if (anim_cnt < 103)
@@ -225,6 +233,12 @@ void LongLeggedEnemy::WalkAnimation()
 		// 歩行
 		enemy_leg_img_num = anim_cnt / 15;
 	}
+}
+
+// 攻撃アニメーション
+void LongLeggedEnemy::AttackAnimation()
+{
+	enemy_leg_img_num = attack_anim_count / 12 + 8;
 }
 
 // 進行方向の変更
