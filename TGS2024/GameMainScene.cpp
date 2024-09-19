@@ -1115,6 +1115,9 @@ void GameMainScene::Update()
 
 			// つるはしとつるはしで転がる敵の当たり判定
 			PickaxeHitReboundEnemy();
+
+			// ダイナマイトとつるはしで転がる敵の当たり判定
+			DynamiteHitReboundEnemy();
 		}
 
 		//カメラとUIのアップデート
@@ -3560,6 +3563,32 @@ void GameMainScene::PickaxeHitReboundEnemy()
 		{
 			//プレイヤーがつるはし振ってなかったら
 			enemy_damage_once = false;
+		}
+	}
+}
+
+// ダイナマイトとつるはしで転がる敵の当たり判定
+void GameMainScene::DynamiteHitReboundEnemy()
+{
+	if (player == nullptr)						return;
+
+	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
+	{
+		if (rebound_enemy[i] == nullptr)			continue;
+
+		for (int j = 0; j < DYNAMITE_MAXNUM; j++)
+		{
+			if (dynamite[j] == nullptr)			continue;
+
+			// ダイナマイト本体との当たり判定
+			if (dynamite[j]->GetDynamite() == false)
+			{
+				if (dynamite[j]->HitCheck(rebound_enemy[i]->GetWorldLocation(), rebound_enemy[i]->GetWidth(), rebound_enemy[i]->GetHeight()) == true)
+				{
+					dynamite[j]->SetDynamite(true);
+					rebound_enemy[i]->Damage(dynamite[j]->GetAttack());
+				}
+			}
 		}
 	}
 }

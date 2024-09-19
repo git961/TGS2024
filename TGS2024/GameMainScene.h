@@ -330,6 +330,7 @@ public:
     void ReboundHitEnemy();                //つるはしで転がる敵とエネミーの当たり判定
     void PlayerHitReboundEnemy();          // プレイヤーとつるはしで転がる敵の当たり判定
     void PickaxeHitReboundEnemy();         // つるはしとつるはしで転がる敵の当たり判定
+    void DynamiteHitReboundEnemy();        // ダイナマイトとつるはしで転がる敵の当たり判定
 
     void KeyGemUpdate();//カギ宝石のアップデート
     void PlayerHitKeyGem();//プレイヤーとカギ宝石の当たり判定
