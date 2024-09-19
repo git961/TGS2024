@@ -188,7 +188,6 @@ void ReboundEnemy::CheckDeathCondition()
 		degree = 0.0;
 		// 画像の角度
 		angle = DEGREE_RADIAN(degree);
-
 	}
 }
 
@@ -242,11 +241,19 @@ void ReboundEnemy::ChangeDirection()
 	{
 		// 左向きに変更
 		direction = true;
+		if (roll_left_flg == false)
+		{
+			roll_left_flg = true;
+		}
 	}
 	else
 	{
 		// 右向きに変更
 		direction = false;
+		if (roll_left_flg == true)
+		{
+			roll_left_flg = false;
+		}
 	}
 
 	if (world.x > hit_enemy_x)
