@@ -2475,21 +2475,23 @@ void GameMainScene::PlayerHitGem()
 
 void GameMainScene::PlayerHitEnemy()
 {
-
 	if (player == nullptr) return;
 	//プレイヤーと歩行の敵との当たり判定
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
 		if (enemy[i] == nullptr) continue;
 
-		//もしプレイヤーとエネミーが当たったら
-		if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true)
+		if (enemy[i]->GetWorldLocation().x > screen_origin_position.x - 100 && enemy[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 		{
-			//敵のHPが0より大きかったら
-			if (enemy[i]->GetHp() > 0)
+			//もしプレイヤーとエネミーが当たったら
+			if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true)
 			{
-				//プレイヤーに一回だけダメージを与える
-				PlayerDamage();
+				//敵のHPが0より大きかったら
+				if (enemy[i]->GetHp() > 0)
+				{
+					//プレイヤーに一回だけダメージを与える
+					PlayerDamage();
+				}
 			}
 		}
 	}
@@ -2497,15 +2499,19 @@ void GameMainScene::PlayerHitEnemy()
 	//プレイヤーと転がる敵との当たり判定
 	for (int i = 0; i < ROLLING_ENEMY_MAXNUM; i++)
 	{
-		if (player != nullptr && rolling_enemy[i] != nullptr) {
-			//プレイヤーと転がる敵が当たったら
-			if (player->HitCheck(rolling_enemy[i]->GetWorldLocation(), rolling_enemy[i]->GetWidth(), rolling_enemy[i]->GetHeight()) == true)
+		if (player != nullptr && rolling_enemy[i] != nullptr)
+		{
+			if (rolling_enemy[i]->GetWorldLocation().x > screen_origin_position.x - 100 && rolling_enemy[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 			{
-				//敵のHPが0より大きかったら
-				if (rolling_enemy[i]->GetHp() > 0)
+				//プレイヤーと転がる敵が当たったら
+				if (player->HitCheck(rolling_enemy[i]->GetWorldLocation(), rolling_enemy[i]->GetWidth(), rolling_enemy[i]->GetHeight()) == true)
 				{
-					//プレイヤーに一回だけダメージを与える
-					PlayerDamage();
+					//敵のHPが0より大きかったら
+					if (rolling_enemy[i]->GetHp() > 0)
+					{
+						//プレイヤーに一回だけダメージを与える
+						PlayerDamage();
+					}
 				}
 			}
 		}
@@ -2520,24 +2526,27 @@ void GameMainScene::PickaxeHitEnemy()
 		//歩行エネミーがNULLではないかつHPが0より大きかったら
 		if (enemy[i] != nullptr && enemy[i]->GetHp() > 0)
 		{
-			//つるはしを振るってる時だけ
-			if (player != nullptr && player->GetAttacking() == true)
+			if (enemy[i]->GetWorldLocation().x > screen_origin_position.x - 100 && enemy[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 			{
-				//ダメージを一回だけ与える
-				if (enemy[i]->GetIsKnockBack()==false)
+				//つるはしを振るってる時だけ
+				if (player != nullptr && player->GetAttacking() == true)
 				{
-					//つるはしとエネミーと当たってるかのチェック
-					if (ac->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
+					//ダメージを一回だけ与える
+					if (enemy[i]->GetIsKnockBack() == false)
+					{
+						//つるはしとエネミーと当たってるかのチェック
+						if (ac->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
 
-						EnemyDamage(i, player->GetAttack());
-						enemy_damage_once = true;
+							EnemyDamage(i, player->GetAttack());
+							enemy_damage_once = true;
+						}
 					}
 				}
-			}
-			else
-			{
-				//プレイヤーがつるはし振ってなかったら
-				enemy_damage_once = false;
+				else
+				{
+					//プレイヤーがつるはし振ってなかったら
+					enemy_damage_once = false;
+				}
 			}
 		}
 	}
@@ -2547,28 +2556,31 @@ void GameMainScene::PickaxeHitEnemy()
 	{
 		if (rolling_enemy[i] != nullptr)
 		{
-			if (rolling_enemy[i]->GetHp() > 0)
+			if (rolling_enemy[i]->GetWorldLocation().x > screen_origin_position.x - 100 && rolling_enemy[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 			{
-				if (player != nullptr)
+				if (rolling_enemy[i]->GetHp() > 0)
 				{
-					//つるはしを振るってる時だけ
-					if (player->GetAttacking() == true)
+					if (player != nullptr)
 					{
-						//ダメージを一回だけ与える
-						if (enemy_damage_once == false)
+						//つるはしを振るってる時だけ
+						if (player->GetAttacking() == true)
 						{
-							//つるはしとエネミーと当たってるかのチェック
-							if (ac->HitCheck(rolling_enemy[i]->GetWorldLocation(), rolling_enemy[i]->GetWidth(), rolling_enemy[i]->GetHeight()) == true) {
+							//ダメージを一回だけ与える
+							if (enemy_damage_once == false)
+							{
+								//つるはしとエネミーと当たってるかのチェック
+								if (ac->HitCheck(rolling_enemy[i]->GetWorldLocation(), rolling_enemy[i]->GetWidth(), rolling_enemy[i]->GetHeight()) == true) {
 
-								rolling_enemy[i]->Damage(10);
-								enemy_damage_once = true;
+									rolling_enemy[i]->Damage(10);
+									enemy_damage_once = true;
+								}
 							}
 						}
-					}
-					else
-					{
-						//プレイヤーがつるはし振ってなかったら
-						enemy_damage_once = false;
+						else
+						{
+							//プレイヤーがつるはし振ってなかったら
+							enemy_damage_once = false;
+						}
 					}
 				}
 			}
@@ -2769,17 +2781,20 @@ void GameMainScene::FragileWallUpdate()
 	{
 		if (fragile_wall[i] == nullptr) continue;
 
-		// カメラから見た座標の設定
-		fragile_wall[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-
-		// 更新
-		fragile_wall[i]->Update();
-
-		if (fragile_wall[i]->GetDeleteFlg() == true)
+		if (fragile_wall[i]->GetWorldLocation().x > screen_origin_position.x - 100 && fragile_wall[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 		{
-			// 脆い壁の削除
-			delete fragile_wall[i];
-			fragile_wall[i] = nullptr;
+			// カメラから見た座標の設定
+			fragile_wall[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
+			// 更新
+			fragile_wall[i]->Update();
+
+			if (fragile_wall[i]->GetDeleteFlg() == true)
+			{
+				// 脆い壁の削除
+				delete fragile_wall[i];
+				fragile_wall[i] = nullptr;
+			}
 		}
 	}
 }
@@ -2828,11 +2843,14 @@ void GameMainScene::PlayerHitFragileWall()
 	{
 		if (fragile_wall[i] == nullptr) continue;
 
-		// プレイヤーが脆い壁に当たっていたら
-		if (player->HitCheck(fragile_wall[i]->GetWorldLocation(), fragile_wall[i]->GetWidth(), fragile_wall[i]->GetHeight()) == true)
+		if (fragile_wall[i]->GetWorldLocation().x > screen_origin_position.x - 100 && fragile_wall[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 		{
-			// プレイヤーの歩行を止める
-			player->HitCheckB(fragile_wall[i]->GetVertex());
+			// プレイヤーが脆い壁に当たっていたら
+			if (player->HitCheck(fragile_wall[i]->GetWorldLocation(), fragile_wall[i]->GetWidth(), fragile_wall[i]->GetHeight()) == true)
+			{
+				// プレイヤーの歩行を止める
+				player->HitCheckB(fragile_wall[i]->GetVertex());
+			}
 		}
 	}
 }
@@ -2998,24 +3016,27 @@ void GameMainScene::PickaxeHitRock()
 	{
 		if (rock[i] != nullptr && player != nullptr)
 		{
-			//つるはしを振るってる時だけ
-			if (player->GetAttacking() == true)
+			if (rock[i]->GetWorldLocation().x > screen_origin_position.x - 100 && rock[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 			{
-				//ダメージを一回だけ与える
-				if (rock_damage_once == false)
+				//つるはしを振るってる時だけ
+				if (player->GetAttacking() == true)
 				{
-					//つるはしと岩と当たってるかのチェック
-					if (ac->HitCheck(rock[i]->GetWorldLocation(), rock[i]->GetWidth(), rock[i]->GetHeight()) == true) {
-						rock[i]->SetDamage(10);
-						rock[i]->SetShakeFlg(true);
-						rock_damage_once = true;
+					//ダメージを一回だけ与える
+					if (rock_damage_once == false)
+					{
+						//つるはしと岩と当たってるかのチェック
+						if (ac->HitCheck(rock[i]->GetWorldLocation(), rock[i]->GetWidth(), rock[i]->GetHeight()) == true) {
+							rock[i]->SetDamage(10);
+							rock[i]->SetShakeFlg(true);
+							rock_damage_once = true;
+						}
 					}
 				}
-			}
-			else
-			{
-				//プレイヤーがつるはし振ってなかったら
-				rock_damage_once = false;
+				else
+				{
+					//プレイヤーがつるはし振ってなかったら
+					rock_damage_once = false;
+				}
 			}
 		}
 	}
@@ -3029,8 +3050,11 @@ void GameMainScene::RockUpdate()
 	{
 		if (rock[i] != nullptr)
 		{
-			rock[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-			rock[i]->Update();
+			if (rock[i]->GetWorldLocation().x > screen_origin_position.x - 100 && rock[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+			{
+				rock[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				rock[i]->Update();
+			}
 		}
 
 		if (rock[i] != nullptr&& rock[i]->GetDeleteFlg() == true)
@@ -3048,11 +3072,14 @@ void GameMainScene::LiftUpDate()
 		//リフトテスト後で消す
 		if (lift[i] != nullptr)
 		{
-			lift[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-			lift[i]->SetScreenPos(screen_origin_position.x, screen_origin_position.y);
-			if (ac != nullptr && player != nullptr)
+			if (lift[i]->GetWorldLocation().x > screen_origin_position.x - 100 && lift[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 			{
-				lift[i]->Update(ac, player);
+				lift[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				lift[i]->SetScreenPos(screen_origin_position.x, screen_origin_position.y);
+				if (ac != nullptr && player != nullptr)
+				{
+					lift[i]->Update(ac, player);
+				}
 			}
 		}
 	}
@@ -3067,12 +3094,15 @@ void GameMainScene::PlayerHitLift()
 	{
 		if (lift[i] != nullptr && player != nullptr)
 		{
-			if (player->HitCheck(lift[i]->GetWorldLocation(), lift[i]->GetWidth(), lift[i]->GetHeight()+20.0f) == true) {
-				//hit_lift_num = i;
-				//player->SetY(lift[i]->GetWorldLocation().y);
-				player->SetFallFlg(false);
-				player->SetLiftHitFlg(true);
-				player->SinkCheckObject(lift[i]->GetWorldLocation().y - lift[i]->GetHeight() / 2.0f);
+			if (lift[i]->GetWorldLocation().x > screen_origin_position.x - 100 && lift[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+			{
+				if (player->HitCheck(lift[i]->GetWorldLocation(), lift[i]->GetWidth(), lift[i]->GetHeight() + 20.0f) == true) {
+					//hit_lift_num = i;
+					//player->SetY(lift[i]->GetWorldLocation().y);
+					player->SetFallFlg(false);
+					player->SetLiftHitFlg(true);
+					player->SinkCheckObject(lift[i]->GetWorldLocation().y - lift[i]->GetHeight() / 2.0f);
+				}
 			}
 
 			//if (hit_lift_num != -1) {
