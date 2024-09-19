@@ -673,7 +673,7 @@ void Enemy::CheckDeathCondition()
 	if (hp <= 0.0f)
 	{
 		anim_cnt = 0;								// 死亡アニメーション用にカウントを0にする
-		//enemy_img_num = 6;							// 死亡画像の最初の画像番号を設定
+		image_num = 6;								// 死亡画像の最初の画像番号を設定
 		enemy_state = EnemyState::DEATH;			// 死亡状態に遷移
 	}
 }
