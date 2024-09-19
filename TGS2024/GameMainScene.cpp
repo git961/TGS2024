@@ -53,8 +53,8 @@ GameMainScene::GameMainScene(bool set_flg)
 		}
 		else {
 			//プレイヤーのリスタート位置を入れる
-			//player = new Player(200.0f, 1700.0f);
-			player = new Player(5080.0f, 1700.0f);
+			player = new Player(200.0f, 1700.0f);
+			//player = new Player(5080.0f, 1700.0f);
 			current_location = CurrentLocation::middle;
 		}
 	}
@@ -63,8 +63,11 @@ GameMainScene::GameMainScene(bool set_flg)
 	ac = new AttackCheck;
 
 	enemy_damage_once = false;
+	enemy_check_damage_once = false;
 	rock_damage_once = false;
 	player_damage_once = false;
+	rebound_check_once = false;
+	rebound_damage_once = false;
 	////back.png
 	//back_img[0] = LoadGraph("images/Backimg/backimg0.png", TRUE);
 	//back_img[1] = LoadGraph("images/Backimg/backimg01.png", TRUE);
@@ -1012,6 +1015,9 @@ void GameMainScene::Update()
 		//エネミー同士の当たり判定
 		EnemyHitEnemy();
 
+		////つるはしで転がる敵とエネミーの当たり判定
+		ReboundHitEnemy();
+
 		//プレイヤーがエネミーに当たったときの被弾処理
 		PlayerHitEnemy();
 
@@ -1670,7 +1676,8 @@ void GameMainScene::UpdateCamera(World world)
 			if (current_location != CurrentLocation::lower)
 			{
 				
-				if (world.y > camera_pos.y) {
+				if (world.y > camera_pos.y)
+				{
 					camera_pos.y +=30;
 				}
 				else
@@ -2274,19 +2281,21 @@ void GameMainScene::PlayerHitGem()
 
 void GameMainScene::PlayerHitEnemy()
 {
+
+	if (player == nullptr) return;
 	//プレイヤーと歩行の敵との当たり判定
 	for (int i = 0; i < ENEMYMAXNUM; i++)
 	{
-		if (player != nullptr && enemy[i] != nullptr) {
-			//もしプレイヤーとエネミーが当たったら
-			if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true)
+		if (enemy[i] == nullptr) continue;
+
+		//もしプレイヤーとエネミーが当たったら
+		if (player->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true)
+		{
+			//敵のHPが0より大きかったら
+			if (enemy[i]->GetHp() > 0)
 			{
-				//敵のHPが0より大きかったら
-				if (enemy[i]->GetHp() > 0)
-				{
-					//プレイヤーに一回だけダメージを与える
-					PlayerDamage();
-				}
+				//プレイヤーに一回だけダメージを与える
+				PlayerDamage();
 			}
 		}
 	}
@@ -2321,7 +2330,7 @@ void GameMainScene::PickaxeHitEnemy()
 			if (player != nullptr && player->GetAttacking() == true)
 			{
 				//ダメージを一回だけ与える
-				if (enemy_damage_once == false)
+				if (enemy[i]->GetIsKnockBack()==false)
 				{
 					//つるはしとエネミーと当たってるかのチェック
 					if (ac->HitCheck(enemy[i]->GetWorldLocation(), enemy[i]->GetWidth(), enemy[i]->GetHeight()) == true) {
@@ -2731,7 +2740,26 @@ void GameMainScene::EnemyHitReturnBlock()
 		}
 	}
 
-	//あしなが岩
+	//つるはしで叩くと跳ね返る岩
+	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
+	{
+		if (rebound_enemy[i] != nullptr && rebound_enemy[i]->GetHp() > 0&&rebound_enemy[i]->GetRollFlg()==false)
+		{
+			for (int j = 0; j < block_count; j++)
+			{
+				if (stage_block[j] != nullptr && stage_block[j]->GetBlockNum() == 18)
+				{
+					if (rebound_enemy[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
+					{
+						// 当たっていたら進行方向を反対に変更する
+						rebound_enemy[i]->SetHitEnemyX(stage_block[j]->GetWorldLocation().x);
+						rebound_enemy[i]->ChangeDirection();
+					}
+				}
+			}
+		}
+
+	}
 
 }
 
@@ -2862,8 +2890,6 @@ void GameMainScene::PlayerHitLift()
 //プレイヤーとイベントリフトの当たり判定
 void GameMainScene::PlayerHitEventLift()
 {
-
-
 	if (event_lift[0] != nullptr && player != nullptr)
 	{
 		if (player->HitCheck(event_lift[0]->GetWorldLocation(), event_lift[0]->GetWidth(), event_lift[0]->GetHeight()) == true)
@@ -3372,6 +3398,35 @@ void GameMainScene::ReboundEnemyUpdate()
 			delete rebound_enemy[i];
 			rebound_enemy[i] = nullptr;
 		}
+	}
+}
+
+//つるはしで転がる敵とエネミーの当たり判定
+void GameMainScene::ReboundHitEnemy()
+{
+
+	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
+	{
+		if (rebound_enemy[i] == nullptr)				continue;
+		if (rebound_enemy[i]->GetHp() <= 0.0f)			continue;
+		if (rebound_enemy[i]->GetRollFlg() == false)	continue;
+
+		for (int j = 0; j < ENEMYMAXNUM; j++)
+		{
+			if (enemy[j] == nullptr)					continue;
+			if (enemy[j]->GetHp() <= 0.0f)				continue;
+
+			// 歩行エネミーがつるはしで転がる敵に当たっていたら
+			if (enemy[j]->HitCheck(rebound_enemy[i]->GetWorldLocation(), rebound_enemy[i]->GetWidth(), rebound_enemy[i]->GetHeight()) == true)
+			{
+				if (enemy[j]->GetIsKnockBack() == false)
+				{
+					EnemyDamage(j, rebound_enemy[i]->GetAttack());
+				}
+			}
+
+		}
+
 	}
 }
 

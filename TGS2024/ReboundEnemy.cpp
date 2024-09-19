@@ -9,12 +9,14 @@ ReboundEnemy::ReboundEnemy(float set_x, float set_y)
 	location.y = set_y;
 	width = 64.0f;
 	height = 64.0f;
+	attack = 10.0f;
 
 	move_x = -1.0f;			// 移動量
 	move_y = 1.0f;
 	hp = 30.0f;
 	speed = 1.0f;
 	direction = false;
+	hit_enemy_x = 0.0f;
 
 	enemy_state = EnemyState::WALK;
 
@@ -54,7 +56,7 @@ void ReboundEnemy::Update()
 		{
 			enemy_state = EnemyState::ROLL;
 			enemy_img_num = 7;
-			world.y += 6.0f;
+			world.y += 5.0f;
 		}
 		CheckDeathCondition();
 		break;
@@ -178,7 +180,7 @@ void ReboundEnemy::CheckDeathCondition()
 	if (hp <= 0.0f)
 	{
 		enemy_state = EnemyState::DEATH;			// 死亡状態に遷移
-		world.y -= 6.0f;
+		world.y -= 5.0f;
 		anim_cnt = 0;
 	}
 }
@@ -217,4 +219,30 @@ bool ReboundEnemy::GetRollFlg() const
 void ReboundEnemy::SetHitPickaxeFlg()
 {
 	hit_pickaxe_flg = true;
+}
+
+void ReboundEnemy::ChangeDirection()
+{
+	// 移動量の反転
+	move_x *= -1;
+
+	if (direction == false)
+	{
+		// 左向きに変更
+		direction = true;
+	}
+	else
+	{
+		// 右向きに変更
+		direction = false;
+	}
+
+	if (world.x > hit_enemy_x)
+	{
+		world.x += 5;
+	}
+	else
+	{
+		world.x -= 5;
+	}
 }

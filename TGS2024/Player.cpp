@@ -898,11 +898,7 @@ void Player::PlayerAttack()
 	if (attacking == true)
 	{
 		anim_cnt++;
-		if (anim_cnt > 1)
-		{
-			//そのままやるとそのままcheckBtnの中に入ってしまうので、数フレーム待たせる
 
-		}
 		//20フレーム回ったら
 		if (atk_cnt_timer++ > 20)
 		{
@@ -911,19 +907,15 @@ void Player::PlayerAttack()
 				StopSoundMem(atk_sound);
 			}
 
-			if (next_attackflg == false || attack_cnt >= 2)
-			{
+
 				p_atk_imgnum = 0;
 				attack_cnt = 0;
 				anim_cnt = 0;
 				atk_cnt_timer = 0;
 				is_atk_putout = false;
-				next_attackflg = false;
 				attacking = false;
 				wait_flg = true;
 				player_state = NOMAL;
-
-			}
 		}
 	}
 }
