@@ -33,8 +33,6 @@ GameMainScene::GameMainScene(bool set_flg)
 		mapio->SetStageNum((int)stage_num);
 	}
 
-	long_legs_enemy = new LongLeggedEnemy * [LONG_LEGS_ENEMY_MAXNUM];
-
 	//オブジェクトにNullを代入
 	SetObjectNull();
 
@@ -357,6 +355,11 @@ GameMainScene::~GameMainScene()
 	score->Finalize();
 	delete score;
 	
+	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
+	{
+		delete long_legs_enemy[i];
+		delete long_gem[i];
+	}
 	for (int i = 0; i < HARD_ENEMY_MAXNUM; i++)
 	{
 		delete hard_enemy[i];
@@ -403,6 +406,7 @@ void GameMainScene::ResetMap()
 	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
 	{
 		long_legs_enemy[i] = nullptr;
+		long_gem[i] = nullptr;
 	}
 	for (int i = 0; i < HARD_ENEMY_MAXNUM; i++)
 	{
@@ -567,6 +571,7 @@ void GameMainScene::ChengeNextMap()
 	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
 	{
 		long_legs_enemy[i] = nullptr;
+		long_gem[i] = nullptr;
 	}
 	for (int i = 0; i < HARD_ENEMY_MAXNUM; i++)
 	{
@@ -707,11 +712,6 @@ void GameMainScene::ChengeNextMap()
 					rebound_enemy[rebound_enemy_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				}
 			}
-
-
-
-
-
 		}
 	}
 
@@ -724,7 +724,6 @@ void GameMainScene::ChengeNextMap()
 	}
 
 	score = new Score();
-
 }
 
 void GameMainScene::Update()
@@ -1098,6 +1097,9 @@ void GameMainScene::Update()
 
 			// つるはしと脚が長い敵の当たり判定
 			PickaxeHitLongLegsEnemy();
+			
+			// ダイナマイトと脚が長い敵の当たり判定
+			DynamiteHitLongLegsEnemy();
 
 			//ダイナマイトでしか倒せない敵の更新処理
 			HardEnemyUpdate();
@@ -1116,6 +1118,9 @@ void GameMainScene::Update()
 
 			// つるはしとつるはしで転がる敵の当たり判定
 			PickaxeHitReboundEnemy();
+
+			// ダイナマイトとつるはしで転がる敵の当たり判定
+			DynamiteHitReboundEnemy();
 		}
 
 		//カメラとUIのアップデート
@@ -1451,6 +1456,12 @@ void GameMainScene::Draw() const
 				{
 					long_legs_enemy[i]->Draw();
 				}
+
+				// 宝石描画
+				if (long_gem[i] != nullptr)
+				{
+					long_gem[i]->Draw();
+				}
 			}
 
 			// ダイナマイトでしか倒せない敵の描画
@@ -1508,12 +1519,7 @@ void GameMainScene::Draw() const
 		{
 			score->Draw();
 		}
-
-
-
 	}
-
-
 
 	if (fadein_flg == true)
 	{
@@ -2063,6 +2069,23 @@ void GameMainScene::GemGenerate()
 		}
 	}
 
+	// 脚長エネミーの宝石生成処理
+	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
+	{
+		if (long_legs_enemy[i] != nullptr)
+		{
+			if (long_legs_enemy[i]->GetGemDropFlg() == true)
+			{
+				if (player != nullptr && long_gem[i] == nullptr)
+				{
+					long_gem[i] = new Gem(long_legs_enemy[i]->GetWorldLocation(), 200);
+					long_gem[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+					long_legs_enemy[i]->SetGemDropFlg(false);
+				}
+			}
+		}
+	}
+
 	// つるはしで跳ね返る岩エネミーの宝石生成処理
 	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
 	{
@@ -2100,6 +2123,16 @@ void GameMainScene::GemUpDate()
 		{
 			roll_gem[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 			roll_gem[i]->Update(this);
+		}
+	}
+
+	// 脚長エネミーの宝石更新処理
+	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
+	{
+		if (long_gem[i] != nullptr)
+		{
+			long_gem[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			long_gem[i]->Update(this);
 		}
 	}
 
@@ -2304,6 +2337,28 @@ void GameMainScene::PlayerHitGem()
 			{
 				delete roll_gem[i];
 				roll_gem[i] = nullptr;
+			}
+		}
+	}
+
+	// 脚長エネミーの宝石とプレイヤーの当たり判定
+	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
+	{
+		if (player != nullptr && long_gem[i] != nullptr)
+		{
+			if (long_gem[i]->GetPlaySoundFlg() == true)
+			{
+				if (player->HitCheck(long_gem[i]->GetWorldLocation(), long_gem[i]->GetWidth(), long_gem[i]->GetHeight()) == true)
+				{
+					long_gem[i]->PlayGetSound();
+					score->SetScore(long_gem[i]->GetGemScore());
+				}
+			}
+
+			if (long_gem[i]->GetDeleteFlg() == true)
+			{
+				delete long_gem[i];
+				long_gem[i] = nullptr;
 			}
 		}
 	}
@@ -3407,6 +3462,32 @@ void GameMainScene::PickaxeHitLongLegsEnemy()
 	}
 }
 
+// ダイナマイトと脚が長い敵の当たり判定
+void GameMainScene::DynamiteHitLongLegsEnemy()
+{
+	if (player == nullptr)						return;
+
+	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
+	{
+		if (long_legs_enemy[i] == nullptr)			continue;
+
+		for (int j = 0; j < DYNAMITE_MAXNUM; j++)
+		{
+			if (dynamite[j] == nullptr)			continue;
+
+			// ダイナマイト本体との当たり判定
+			if (dynamite[j]->GetDynamite() == false)
+			{
+				if (dynamite[j]->HitCheck(long_legs_enemy[i]->GetWorldLocation(), long_legs_enemy[i]->GetWidth(), long_legs_enemy[i]->GetHeight()) == true)
+				{
+					dynamite[j]->SetDynamite(true);
+					long_legs_enemy[i]->Damage(dynamite[j]->GetAttack());
+				}
+			}
+		}
+	}
+}
+
 // ダイナマイトでしか倒せない敵の更新処理
 void GameMainScene::HardEnemyUpdate()
 {
@@ -3578,6 +3659,32 @@ void GameMainScene::PickaxeHitReboundEnemy()
 		{
 			//プレイヤーがつるはし振ってなかったら
 			enemy_damage_once = false;
+		}
+	}
+}
+
+// ダイナマイトとつるはしで転がる敵の当たり判定
+void GameMainScene::DynamiteHitReboundEnemy()
+{
+	if (player == nullptr)						return;
+
+	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
+	{
+		if (rebound_enemy[i] == nullptr)			continue;
+
+		for (int j = 0; j < DYNAMITE_MAXNUM; j++)
+		{
+			if (dynamite[j] == nullptr)			continue;
+
+			// ダイナマイト本体との当たり判定
+			if (dynamite[j]->GetDynamite() == false)
+			{
+				if (dynamite[j]->HitCheck(rebound_enemy[i]->GetWorldLocation(), rebound_enemy[i]->GetWidth(), rebound_enemy[i]->GetHeight()) == true)
+				{
+					dynamite[j]->SetDynamite(true);
+					rebound_enemy[i]->Damage(dynamite[j]->GetAttack());
+				}
+			}
 		}
 	}
 }

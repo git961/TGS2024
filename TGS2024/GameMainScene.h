@@ -130,9 +130,11 @@ private:
 
     ObjectNum object_num;
 
-    LongLeggedEnemy** long_legs_enemy;  // 脚が長い敵
+    LongLeggedEnemy* long_legs_enemy[LONG_LEGS_ENEMY_MAXNUM]; // 脚が長い敵
     HardEnemy* hard_enemy[HARD_ENEMY_MAXNUM];             // ダイナマイトでしか倒せない敵
     ReboundEnemy* rebound_enemy[REBOUND_ENEMY_MAXNUM];      // つるはし攻撃で転がる敵
+
+    Gem* long_gem[LONG_LEGS_ENEMY_MAXNUM];                   // 脚長からの宝石
 
     cameraposition camera_pos;
 
@@ -320,6 +322,7 @@ public:
     void LongLegsEnemyUpdate();             // 脚が長い敵の更新処理
     void PlayerHitLongLegsEnemy();          // プレイヤーと脚が長い敵の当たり判定
     void PickaxeHitLongLegsEnemy();         // つるはしと脚が長い敵の当たり判定
+    void DynamiteHitLongLegsEnemy();        // ダイナマイトと脚が長い敵の当たり判定
 
     void HardEnemyUpdate();                 // ダイナマイトでしか倒せない敵の更新処理
     void PlayerHitHardEnemy();              // プレイヤーとダイナマイトでしか倒せない敵の当たり判定
@@ -329,6 +332,7 @@ public:
     void ReboundHitEnemy();                //つるはしで転がる敵とエネミーの当たり判定
     void PlayerHitReboundEnemy();          // プレイヤーとつるはしで転がる敵の当たり判定
     void PickaxeHitReboundEnemy();         // つるはしとつるはしで転がる敵の当たり判定
+    void DynamiteHitReboundEnemy();        // ダイナマイトとつるはしで転がる敵の当たり判定
 
     void KeyGemUpdate();//カギ宝石のアップデート
     void PlayerHitKeyGem();//プレイヤーとカギ宝石の当たり判定

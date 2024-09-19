@@ -31,7 +31,7 @@ private:
 
     EnemyState enemy_state;
 
-    int enemy_img[10];               // 敵画像
+    int enemy_img[11];               // 敵画像
     int crack_img[2];               // ひび割れ画像
     int star_img;                   // 星エフェクト画像
     int fragment_img[4];            // 石の破片エフェクト画像
@@ -75,6 +75,8 @@ private:
 
     bool fall_flg;//敵が落ちてくるフラグ
     bool fall_end_flg;//敵が地面に付いたらtrue
+
+    bool fragment_draw_flg;             // 石の破片を描画するか？
 
 public:
     Enemy(float set_x, float set_y,bool set_direction);
