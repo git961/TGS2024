@@ -231,7 +231,7 @@ void Player::Update(GameMainScene* gamemain)
 	switch (player_state)
 	{
 	case DEATH:
-
+		is_atk_putout = false;
 		DeathAnim();
 
 		break;
@@ -257,9 +257,11 @@ void Player::Update(GameMainScene* gamemain)
 		}
 
 		attacking = false;
+		is_atk_putout = false;
+		p_atk_imgnum = 0;
 		attack_cnt = 0;
 		anim_cnt = 0;
-		attacking = false;
+		atk_cnt_timer = 0;
 		wait_flg = true;
 		
 		if ((unsigned)move_x > 0) {
@@ -528,7 +530,8 @@ void Player::Draw() const
 
 	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
 	//DrawFormatString(location.x, location.y - 80, 0xff0000, "move_x : %f", move_x);
-	DrawFormatString(location.x, location.y - 80, 0xff0000, "fall_flg : %d",fall_flg);
+	//DrawFormatString(location.x, location.y - 80, 0xff0000, "fall_flg : %d",fall_flg);
+	DrawFormatString(location.x, location.y - 80, 0xff0000, "attacking : %d",attacking);
 	//DrawFormatString(location.x, location.y -100, 0xff0000, "speed : %f",speed);
 	//DrawCircle(location.x + half_width, location.y + half_height, 3, 0xffffff, TRUE);
 		//(set_xy.y + set_half_height) - 3.0f
