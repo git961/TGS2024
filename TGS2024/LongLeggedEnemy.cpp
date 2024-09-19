@@ -238,7 +238,10 @@ void LongLeggedEnemy::WalkAnimation()
 // 攻撃アニメーション
 void LongLeggedEnemy::AttackAnimation()
 {
-	enemy_leg_img_num = attack_anim_count / 12 + 8;
+	if (attack_anim_count != 0)
+	{
+		enemy_leg_img_num = attack_anim_count / 12 + 8;
+	}
 }
 
 // 進行方向の変更
