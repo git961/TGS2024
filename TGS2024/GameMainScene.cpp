@@ -2934,7 +2934,7 @@ void GameMainScene::EnemyHitReturnBlock()
 	//つるはしで叩くと跳ね返る岩
 	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
 	{
-		if (rebound_enemy[i] != nullptr && rebound_enemy[i]->GetHp() > 0&&rebound_enemy[i]->GetRollFlg()==false)
+		if (rebound_enemy[i] != nullptr && rebound_enemy[i]->GetHp() > 0)
 		{
 			for (int j = 0; j < block_count; j++)
 			{
