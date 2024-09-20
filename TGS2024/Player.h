@@ -292,7 +292,7 @@ public:
     void SinkCheck(GameMainScene* gamemain,float set_x, float set_y);
     void SinkCheckTop(GameMainScene* gamemain,float set_x, float set_y);
     void SinkCheckObject(float set_y);
-    void SinkCheckObjectBlock(float set_y);
+    void SinkCheckX(float set_x,float set_half_width);
 
     void PushUpPlayer(float set_upper);
 

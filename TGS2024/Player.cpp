@@ -2156,23 +2156,37 @@ void Player::SinkCheckObject(float set_y)
 		float sink_y = (world.y + half_height) - set_y;
 		if (sink_y > 0)
 		{
-			world.y = world.y - sink_y-1.0f;
+			world.y = world.y - sink_y - 1.0f;
 		}
 	}
 }
 
-void Player::SinkCheckObjectBlock(float set_y)
+void Player::SinkCheckX(float set_x,float set_half_width)
 {
-	int row = (int)set_y / BLOCKSIZE;
+	if (direction == 0)
+	{
+		int col = ((int)set_x - set_half_width) / BLOCKSIZE;
+		float block_x = (float)col * BLOCKSIZE;
+		float sink_x = fabs(block_x - set_x);
 
-		float block_y = (float)row * BLOCKSIZE;
-
-		float sink_y = fabs(block_y - set_y);
-		//もしめりこんでいたら
-		if (sink_y > 0) {
+		if (sink_x > 0)
+		{
 			//めり込んでいる分上にあげる
-			world.y = world.y - sink_y;
+			world.x = curent_x;
 		}
+	}
+	else
+	{
+		int col = ((int)set_x + set_half_width) / BLOCKSIZE;
+		float block_x = (float)col * BLOCKSIZE;
+		float sink_x = fabs(world.x - block_x);
+
+		if (sink_x > 0) 
+		{
+			world.x = curent_x;
+		}
+	}
+	
 
 
 }

@@ -3335,7 +3335,7 @@ void GameMainScene::PlayerHitMagma()
 				PlayerDamage();
 				player->SetFallFlg(false);
 				player->SetMagmaHitFlg(true);
-				player->SinkCheckObjectBlock(magma[i]->GetWorldLocation().y - magma[i]->GetHeight() / 2.0f);
+				player->SinkCheckObject(magma[i]->GetWorldLocation().y - magma[i]->GetHeight() / 2.0f);
 			}
 			else
 			{
@@ -3379,8 +3379,17 @@ void GameMainScene::PlayerHitFallingFloor()
 				// プレイヤーの落下を止める
 				player->SetFallFlg(false);
 				player->SetFallingFloorHitFlg(true);
-				player->SinkCheckObject(falling_floor[i]->GetWorldLocation().y - falling_floor[i]->GetHeight() / 2.0f);
+				
+				if (player->GetVertex().lower_y > falling_floor[i]->GetLocation().y)
+				{
+					player->SinkCheckX(falling_floor[i]->GetWorldLocation().x, falling_floor[i]->GetWidth() / 2.0f);
+				}
 
+				if (player->GetVertex().lower_y< falling_floor[i]->GetLocation().y)
+				{
+					player->SinkCheckObject(falling_floor[i]->GetWorldLocation().y - falling_floor[i]->GetHeight() / 2.0f);
+				}
+				
 				//player->HitCheckB(falling_floor[i]->GetVertex());
 			}
 			else {
