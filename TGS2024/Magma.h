@@ -11,6 +11,9 @@ private:
 
 	bool is_any_damage;			// 落ちる床と当たっていたらダメージを与えない
 
+	int magma_se;				// マグマのse
+	int volume;					// se音量
+
 public:
 	Magma(float set_x, float set_y);
 	~Magma();
@@ -25,5 +28,5 @@ public:
 
 private:
 	void Animation();			// マグマのアニメーション
+	void CheckPlaySound();		// サウンドを再生するか調べる
 };
-
