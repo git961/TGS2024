@@ -17,7 +17,7 @@ Lift::Lift(float set_x,float set_y)
 	screen_position_y = 0.0f;
 
 	width = 192.0f;
-	height = 11.0f;
+	height = 6.0f;
 
 	check_inside_x = width;
 
@@ -118,7 +118,7 @@ void Lift::Draw() const
 {
 
 	DrawRotaGraph((int)location.x, (int)location.y-shift_img_y, 1,0, lift_img, TRUE);
-	//DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + width / 2, (int)location.y + height / 2,0x00ffff,FALSE);
+	DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + width / 2, (int)location.y + height / 2,0x00ffff,FALSE);
 	//DrawFormatString((int)location.x, (int)location.y-60, 0xFFFFFF, "y:%f", world.y);
 	//DrawFormatString((int)location.x, (int)location.y-60, 0xFFFFFF, "count:%d",anim_cnt);
 	//DrawFormatString((int)location.x, (int)location.y, 0xFFFFFF, "Canmove:%d,down_flg:%d", canmove_flg,down_flg);

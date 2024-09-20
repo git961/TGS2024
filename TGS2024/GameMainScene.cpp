@@ -51,8 +51,8 @@ GameMainScene::GameMainScene(bool set_flg)
 		}
 		else {
 			//プレイヤーのリスタート位置を入れる
-			//player = new Player(200.0f, 1700.0f);
-			player = new Player(5080.0f, 1700.0f);
+			player = new Player(200.0f, 1700.0f);
+			//player = new Player(5080.0f, 1700.0f);
 			current_location = CurrentLocation::middle;
 		}
 	}
@@ -3102,20 +3102,14 @@ void GameMainScene::PlayerHitLift()
 		{
 			if (lift[i]->GetWorldLocation().x > screen_origin_position.x - 100 && lift[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 			{
-				if (player->HitCheck(lift[i]->GetWorldLocation(), lift[i]->GetWidth(), lift[i]->GetHeight() + 20.0f) == true) {
-					//hit_lift_num = i;
+				if (player->HitCheck(lift[i]->GetWorldLocation(), lift[i]->GetWidth(), lift[i]->GetHeight() + 20.0f) == true)
+				{
 					//player->SetY(lift[i]->GetWorldLocation().y);
 					player->SetFallFlg(false);
 					player->SetLiftHitFlg(true);
-					player->SinkCheckObject(lift[i]->GetWorldLocation().y - lift[i]->GetHeight() / 2.0f);
+					player->SinkCheckObject(lift[i]->GetWorldLocation().y - (lift[i]->GetHeight() / 2.0f));
 				}
 			}
-
-			//if (hit_lift_num != -1) {
-			//	if (player->HitCheck(lift[hit_lift_num]->GetWorldLocation(), lift[hit_lift_num]->GetWidth(), lift[hit_lift_num]->GetHeight() + 20.0f) == false) {
-			//		player->SetLiftHitFlg(false);
-			//	}
-			//}
 
 		}
 	}
@@ -3157,7 +3151,7 @@ void GameMainScene::LiftHitStop()
 			{
 				if (lift[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()))
 				{
-					lift[i]->SetUpMaxY(stage_block[j]->GetWorldLocation().y);
+					lift[i]->SetUpMaxY(stage_block[j]->GetWorldLocation().y-BLOCK_HALFSIZE);
 				}
 			}
 		}
