@@ -3331,8 +3331,6 @@ void GameMainScene::PlayerHitMagma()
 			// プレイヤーがマグマに当たっていたら
 			if (player->HitCheck(magma[i]->GetWorldLocation(), magma[i]->GetWidth(), magma[i]->GetHeight() + 20.0f) == true)
 			{
-				//プレイヤーに一回だけダメージを与える
-				PlayerDamage();
 				player->SetFallFlg(false);
 				player->SetMagmaHitFlg(true);
 				player->SinkCheckObject(magma[i]->GetWorldLocation().y - magma[i]->GetHeight() / 2.0f);
@@ -3340,6 +3338,12 @@ void GameMainScene::PlayerHitMagma()
 			else
 			{
 				player->SetMagmaHitFlg(false);
+			}
+
+			if (player->HitCheck(magma[i]->GetWorldLocation(), magma[i]->GetWidth(), magma[i]->GetHeight()+1.0f) == true)
+			{
+				//プレイヤーに一回だけダメージを与える
+				PlayerDamage();
 			}
 		}
 	}
