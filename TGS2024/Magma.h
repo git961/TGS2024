@@ -5,9 +5,13 @@ class Magma : public ObjectBase
 {
 private:
 	int magma_img[10];				// マグマの画像
+	int magma_effect_img[4];		// マグマのeffect画像
 
 	int img_num;				// アニメーション用画像番号
 	int anim_cnt;				// アニメーション用カウント
+
+	int effect_img_num;				// アニメーション用画像番号
+	int effect_anim_cnt;				// アニメーション用カウント
 
 	bool is_any_damage;			// 落ちる床と当たっていたらダメージを与えない
 

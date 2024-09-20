@@ -317,21 +317,6 @@ void Player::Update(GameMainScene* gamemain)
 		PlayerFall();
 		PlayerFallAnim();
 
-		////落下画像表示
-		//if (fall_flg == true)
-		//{
-		//	if (direction == 0)
-		//	{
-		//		//落下右向き
-		//		p_imgnum = 66;
-		//	}
-		//	else {
-		//		//落下左向き
-		//		p_imgnum = 69;
-		//	}
-		//}
-
-
 		// 端に来たら跳ね返る
 		if (world.x + width / 2 > FIELD_WIDTH)
 		{
@@ -343,7 +328,6 @@ void Player::Update(GameMainScene* gamemain)
 			StopSoundMem(op_run_sound);
 
 		}
-
 
 		//敵からダメージを食らったら
 		if (hit_damage == true)
