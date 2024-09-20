@@ -62,6 +62,8 @@ private:
     //int walk_num;//プレイヤ歩行画像切り替え用
     int walk_abs;//プレイヤ歩行画像切りかえ計算用
     float old_worldx;
+    int fall_abs;//プレイヤ落下画像切りかえ計算用
+    float old_worldy;
 
     int effect_num;//effectの画像番号切り替え用
     int anim_cnt;//画像切り替え用
@@ -184,7 +186,7 @@ public:
     void ThrowAnim();
 
     void PlayerFall();//プレイヤーが落下する処理
-
+    void PlayerFallAnim();//落下中のプレイヤーアニメーション更新
 
     void PlayerAttack();
     void PlayerTutoAttack();

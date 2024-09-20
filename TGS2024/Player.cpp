@@ -8,7 +8,7 @@ Player::Player()
 Player::Player(float set_x,float set_y)
 {
 	//画像読込
-	LoadDivGraph("images/Player/player_img.png",71, 4, 18, 170, 170, player_img);
+	LoadDivGraph("images/Player/player_img.png",72, 4, 18, 170, 170, player_img);
 	LoadDivGraph("images/Player/pickaxe2.png", 8, 4, 2, 170, 170, pickaxe_img);
 	LoadDivGraph("images/Player/pickeffect3.png", 4, 4, 1, 170, 170, pickaxe_effect);
 	LoadDivGraph("images/Player/soil_effect.png", 2, 2, 1, 170, 170, soil_effect);
@@ -41,6 +41,7 @@ Player::Player(float set_x,float set_y)
 	location.y = 0.0f;
 
 	old_worldx = world.x;
+	old_worldy = world.y;
 
 	//体力
 	hp = 50;
@@ -65,6 +66,7 @@ Player::Player(float set_x,float set_y)
 	move_y = 1;
 
 	walk_abs = 0;
+	fall_abs = 0;
 
 	//攻撃に使用変数
 	attacking = false;
@@ -313,20 +315,21 @@ void Player::Update(GameMainScene* gamemain)
 		WalkAnim();
 
 		PlayerFall();
+		PlayerFallAnim();
 
-		//落下画像表示
-		if (fall_flg == true)
-		{
-			if (direction == 0)
-			{
-				//落下右向き
-				p_imgnum = 66;
-			}
-			else {
-				//落下左向き
-				p_imgnum = 69;
-			}
-		}
+		////落下画像表示
+		//if (fall_flg == true)
+		//{
+		//	if (direction == 0)
+		//	{
+		//		//落下右向き
+		//		p_imgnum = 66;
+		//	}
+		//	else {
+		//		//落下左向き
+		//		p_imgnum = 69;
+		//	}
+		//}
 
 
 		// 端に来たら跳ね返る
@@ -391,7 +394,7 @@ void Player::Update(GameMainScene* gamemain)
 		}
 
 		//つるはし攻撃
-		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE&&fall_flg==false)
 		{
 			attacking = true;
 			player_state = ATTACK;
@@ -531,7 +534,7 @@ void Player::Draw() const
 	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
 	//DrawFormatString(location.x, location.y - 80, 0xff0000, "move_x : %f", move_x);
 	//DrawFormatString(location.x, location.y - 80, 0xff0000, "fall_flg : %d",fall_flg);
-	DrawFormatString(location.x, location.y - 80, 0xff0000, "attacking : %d",attacking);
+//	DrawFormatString(location.x, location.y - 80, 0xff0000, "attacking : %d",attacking);
 	//DrawFormatString(location.x, location.y -100, 0xff0000, "speed : %f",speed);
 	//DrawCircle(location.x + half_width, location.y + half_height, 3, 0xffffff, TRUE);
 		//(set_xy.y + set_half_height) - 3.0f
@@ -611,7 +614,7 @@ void Player::PlayerMove()
 
 void Player::WalkAnim()
 {
-	if (player_state == WALK)
+	if (player_state == WALK&&fall_flg==false)
 	{
 
 		if (abs((int)world.x - (int)old_worldx) > 119)
@@ -834,6 +837,35 @@ void Player::PlayerFall()
 	}
 	//y座標に加算
 	world.y += speed;
+}
+
+void Player::PlayerFallAnim()
+{
+
+	//落下画像表示
+	if (fall_flg == true)
+	{
+		if (abs((int)world.y - (int)old_worldy) > 119)
+		{
+			old_worldy = world.y;
+		}
+
+		fall_abs = abs((int)world.y - (int)old_worldy);
+
+		if (fall_abs != 0)
+		{
+			if (direction == 0)
+			{
+				//落下右向き
+				p_imgnum = 66 + fall_abs / 40;
+			}
+			else {
+				//落下左向き
+				p_imgnum = 69 + fall_abs / 40;
+			}
+		}
+	}
+
 }
 
 void Player::PlayerAttack()
