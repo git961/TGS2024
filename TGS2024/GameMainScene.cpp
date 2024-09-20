@@ -3352,7 +3352,7 @@ void GameMainScene::FallingFloorUpdate()
 	{
 		if (falling_floor[i] == nullptr) continue;
 
-		if (falling_floor[i]->GetWorldLocation().x > screen_origin_position.x - 100 && falling_floor[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+		if (falling_floor[i]->GetWorldLocation().x > screen_origin_position.x - 500 && falling_floor[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 500)
 		{
 			// カメラから見た座標の設定
 			falling_floor[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);

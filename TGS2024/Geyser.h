@@ -44,10 +44,9 @@ private:
 	void GeyserAnimation();				// 水のアニメーション
 	void HillAnimation();				// 丘のアニメーション
 	void CheckPlaySound();				// サウンドを再生するか調べる
+	void StopSE();						// 水が出ているときのseを止める
 
 public:
 	void WaterComesOut();				// 水を出す
 	bool GetStopWaterFlg() const;		// 水が出ているかの確認
-	void StopSE();						// 水が出ているときのseを止める
 };
-

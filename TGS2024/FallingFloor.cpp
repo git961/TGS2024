@@ -16,6 +16,13 @@ FallingFloor::FallingFloor(float set_x, float set_y)
 	falling_speed = 3.0f;
 	touched_magma = false;			// 地面に触れていない
 	falling_flg = false;			// 落下しない
+
+	// サウンド読込
+	falling_se = LoadSoundMem("sounds/se/gimmick/falling_floor.mp3");
+	volume = 150;
+
+	// サウンドの音量設定
+	ChangeVolumeSoundMem(volume, falling_se);
 }
 
 FallingFloor::~FallingFloor()
@@ -33,6 +40,18 @@ void FallingFloor::Update()
 	{
 		// 落下
 		world.y += falling_speed;
+
+		// サウンドを再生するか調べる
+		CheckPlaySound();
+	}
+	else
+	{
+		// 音が鳴っていたら
+		if (CheckSoundMem(falling_se) == TRUE)
+		{
+			// 音を止める
+			StopSoundMem(falling_se);
+		}
 	}
 }
 
@@ -66,4 +85,47 @@ void FallingFloor::StartFalling()
 {
 	// 落下を開始する
 	falling_flg = true;
+}
+
+// サウンドを再生するか調べる
+void FallingFloor::CheckPlaySound()
+{
+	// スクリーン範囲にいるんだったら
+	if (location.x > 50.0f && location.x < 1230.0f && location.y > 50.0f && location.y < 670.0f)
+	{
+		if (volume != 150)
+		{
+			volume = 150;
+			ChangeVolumeSoundMem(volume, falling_se);
+		}
+
+		// 音を鳴らす
+		if (CheckSoundMem(falling_se) == FALSE)
+		{
+			PlaySoundMem(falling_se, DX_PLAYTYPE_BACK);
+		}
+	}
+	else if (location.x > 0.0f && location.x < 1280.0f && location.y > 0.0f && location.y < 720.0f)
+	{
+		// 音量を小さくする
+		if (volume != 120)
+		{
+			volume = 120;
+			ChangeVolumeSoundMem(volume, falling_se);
+		}
+
+		// 音を鳴らす
+		if (CheckSoundMem(falling_se) == FALSE)
+		{
+			PlaySoundMem(falling_se, DX_PLAYTYPE_BACK);
+		}
+	}
+	else
+	{
+		// 音を止める
+		if (CheckSoundMem(falling_se) == TRUE)
+		{
+			StopSoundMem(falling_se);
+		}
+	}
 }
