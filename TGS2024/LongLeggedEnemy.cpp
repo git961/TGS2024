@@ -38,6 +38,7 @@ LongLeggedEnemy::LongLeggedEnemy(float set_x, float set_y)
 	attack_flg = false;				// 攻撃中ではない
 	attack_anim_count = 0;
 	attack_wait_time = 0;
+	now_attack_hight = 0.0f;
 }
 
 LongLeggedEnemy::~LongLeggedEnemy()
@@ -57,6 +58,9 @@ void LongLeggedEnemy::Update()
 {
 	// 頂点の設定
 	SetVertex();
+
+	// 脚の画像のY座標更新
+	leg_location_y = location.y + 32.0f;
 
 	switch (enemy_state)
 	{
@@ -101,6 +105,8 @@ void LongLeggedEnemy::Update()
 		break;
 
 	case EnemyState::DEATH:
+		// 死亡seの再生
+		PlayDeathSound();
 		Death();
 		DeathAnimation();
 		break;
@@ -122,7 +128,7 @@ void LongLeggedEnemy::Draw() const
 
 	case EnemyState::WAIT:
 		// 脚の画像
-		DrawRotaGraph((int)location.x, (int)leg_location_y, 1.0, 0.0, enemy_leg_img[8], TRUE, direction);
+		DrawRotaGraph((int)location.x, (int)location.y + 32, 1.0, 0.0, enemy_leg_img[8], TRUE, direction);
 	default:
 		break;
 	}
@@ -151,9 +157,6 @@ void LongLeggedEnemy::Move()
 
 	// 横移動
 	world.x += speed * move_x;
-
-	// 脚の画像のY座標更新
-	leg_location_y = location.y + 32.0f;
 }
 
 void LongLeggedEnemy::Death()
@@ -193,6 +196,8 @@ void LongLeggedEnemy::Attack()
 		if (rising_interval >= 0)
 		{
 			rising_interval--;
+			// 脚の画像のY座標更新
+			leg_location_y -= now_attack_hight;
 			return;
 		}
 
@@ -202,7 +207,11 @@ void LongLeggedEnemy::Attack()
 
 	// 縦移動
 	world.y += speed * move_y;
+	now_attack_hight += speed * move_y;
 	attack_anim_count += (int)move_y;
+
+	// 脚の画像のY座標更新
+	leg_location_y -= now_attack_hight;
 
 	// 元の高さに戻ったら
 	if (world.y <= first_world_y)
