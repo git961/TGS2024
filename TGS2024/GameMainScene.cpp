@@ -51,8 +51,8 @@ GameMainScene::GameMainScene(bool set_flg)
 		}
 		else {
 			//プレイヤーのリスタート位置を入れる
-			player = new Player(200.0f, 1700.0f);
-			//player = new Player(5080.0f, 1700.0f);
+			//player = new Player(200.0f, 1700.0f);
+			player = new Player(5080.0f, 1700.0f);
 			current_location = CurrentLocation::middle;
 		}
 	}

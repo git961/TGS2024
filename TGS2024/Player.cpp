@@ -526,7 +526,7 @@ void Player::Draw() const
 	//DrawBox((int)location.x - 128 / 2, (int)location.y - 128 / 2, (int)location.x + 128 / 2, (int)location.y + 128 / 2, 0x00ffff, FALSE);
 
 	DrawFormatString(location.x, location.y-60, 0xffffff, "world.y: %f",world.y);
-	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
+	DrawCircleAA(curent_x - half_width, location.y, 1, 0xff00ff, true);
 
 	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
 	//DrawFormatString(location.x, location.y - 80, 0xff0000, "move_x : %f", move_x);
@@ -2079,8 +2079,13 @@ void Player::HitMapChip(GameMainScene* gamemain)
 		fall_flg = false;
 		stop_up_flg = false;
 		//くい込んでたら上に押し出す
-		SinkCheck(gamemain, curent_x - half_width, world.y + half_height - 1.0f);
+		if (direction == 0) {
+			SinkCheck(gamemain, curent_x + half_width, world.y + half_height - 1.0f);
+		}
+		else {
+			SinkCheck(gamemain, curent_x - half_width, world.y + half_height - 1.0f);
 
+		}
 	}
 	else
 	{
