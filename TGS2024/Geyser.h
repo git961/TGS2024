@@ -25,6 +25,9 @@ private:
 	int draw_image_count;				// 描画する画像の枚数
 	float geyser_y;						// 水の描画位置
 
+	int geyser_se;						// 水が出ているときのse
+	int volume;							// se音量
+
 public:
 	Geyser(float set_x, float set_y);
 	~Geyser();
@@ -40,9 +43,11 @@ private:
 
 	void GeyserAnimation();				// 水のアニメーション
 	void HillAnimation();				// 丘のアニメーション
+	void CheckPlaySound();				// サウンドを再生するか調べる
 
 public:
 	void WaterComesOut();				// 水を出す
 	bool GetStopWaterFlg() const;		// 水が出ているかの確認
+	void StopSE();						// 水が出ているときのseを止める
 };
 

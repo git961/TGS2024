@@ -3459,7 +3459,7 @@ void GameMainScene::GeyserUpdete()
 	{
 		if (geyser[i] == nullptr) continue;
 
-		if (geyser[i]->GetWorldLocation().x > screen_origin_position.x - 100 && geyser[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+		if (geyser[i]->GetWorldLocation().x > screen_origin_position.x - 900 && geyser[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 900)
 		{
 			// カメラから見た座標の設定
 			geyser[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);

@@ -29,6 +29,13 @@ Geyser::Geyser(float set_x, float set_y)
 
 	draw_image_count = 0;
 	geyser_y = world.y;
+
+	// サウンド読込
+	geyser_se = LoadSoundMem("sounds/se/gimmick/geyser.mp3");
+	volume = 150;
+
+	// サウンドの音量設定
+	ChangeVolumeSoundMem(volume, geyser_se);
 }
 
 Geyser::~Geyser()
@@ -42,6 +49,9 @@ Geyser::~Geyser()
 	{
 		DeleteGraph(geyser_hill_img[i]);
 	}
+
+	// サウンド削除
+	DeleteSoundMem(geyser_se);
 }
 
 // 更新処理
@@ -64,9 +74,15 @@ void Geyser::Update()
 		{
 			// 水を打ち上げる
 			LaunchWater();
+
+			// サウンドを再生するか調べる
+			CheckPlaySound();
 		}
 		else
 		{
+			// サウンドを再生するか調べる
+			CheckPlaySound();
+
 			// 水を止めていく
 			StopWater();
 		}
@@ -142,6 +158,8 @@ void Geyser::StopWater()
 	}
 	else
 	{
+		StopSE();
+
 		// 水が止まった
 		stop_water_flg = true;
 		world.y = original_y;
@@ -193,6 +211,46 @@ void Geyser::HillAnimation()
 	}
 }
 
+// サウンドを再生するか調べる
+void Geyser::CheckPlaySound()
+{
+	// スクリーン範囲にいるんだったら
+	if (location.x > 50.0f && location.x < 1230.0f && location.y > 50.0f && location.y < 670.0f)
+	{
+		if (volume != 150)
+		{
+			volume = 150;
+			ChangeVolumeSoundMem(volume, geyser_se);
+		}
+
+		// 音を鳴らす
+		if (CheckSoundMem(geyser_se) == FALSE)
+		{
+			PlaySoundMem(geyser_se, DX_PLAYTYPE_BACK);
+		}
+	}
+	else if(location.x > 0.0f && location.x < 1280.0f && location.y > 0.0f && location.y < 720.0f)
+	{
+		// 音量を小さくする
+		if (volume != 100)
+		{
+			volume = 100;
+			ChangeVolumeSoundMem(volume, geyser_se);
+		}
+
+		// 音を鳴らす
+		if (CheckSoundMem(geyser_se) == FALSE)
+		{
+			PlaySoundMem(geyser_se, DX_PLAYTYPE_BACK);
+		}
+	}
+	else
+	{
+		// 音を止める
+		StopSE();
+	}
+}
+
 // 水を噴き出す
 void Geyser::WaterComesOut()
 {
@@ -206,4 +264,14 @@ void Geyser::WaterComesOut()
 bool Geyser::GetStopWaterFlg() const
 {
 	return stop_water_flg;
+}
+
+// 水が出ているときのseを止める
+void Geyser::StopSE()
+{
+	// 音を止める
+	if (CheckSoundMem(geyser_se) == TRUE)
+	{
+		StopSoundMem(geyser_se);
+	}
 }
