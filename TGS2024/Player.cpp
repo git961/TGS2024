@@ -2065,7 +2065,9 @@ void Player::HitMapChip(GameMainScene* gamemain)
 		SinkCheckTop(gamemain, world.x, world.y-half_height-1.0f);
 		stop_up_flg = true;
 	}
-	else {
+	else
+	{
+		stop_up_flg = false;
 	}
 
 	//移動前のｘ座標を渡す
@@ -2177,9 +2179,12 @@ void Player::SinkCheckObjectBlock(float set_y)
 
 void Player::PushUpPlayer(float set_upper)
 {
-	//噴き出した水の頭のｙよりプレイヤーの足が下に居たら
-	if (set_upper+6.0f < GetVertex().lower_y)
+	if (stop_up_flg == false)
 	{
-		world.y = world.y - 3.0f;
+		//噴き出した水の頭のｙよりプレイヤーの足が下に居たら
+		if (set_upper + 6.0f < GetVertex().lower_y)
+		{
+			world.y = world.y - 3.0f;
+		}
 	}
 }

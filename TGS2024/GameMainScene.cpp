@@ -3480,18 +3480,17 @@ void GameMainScene::PlayerHitGeyser()
 
 		if (geyser[i]->GetWorldLocation().x > screen_origin_position.x - 100 && geyser[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 		{
+			//間欠泉から水が上がっていて
 			// プレイヤーが間欠泉に当たったら
-			if (player->HitCheck(geyser[i]->GetWorldLocation(), geyser[i]->GetWidth(), geyser[i]->GetHeight() + 10.0f) == true)
+			if (geyser[i]->GetPushUpFlg() == true &&player->HitCheck(geyser[i]->GetWorldLocation(), geyser[i]->GetWidth(), geyser[i]->GetHeight() + 10.0f) == true)
 			{
 				// プレイヤーの落下を止める
 				// player->HitCheckB(geyser[i]->GetVertex());
 				player->SetFallFlg(false);
 				player->SetGeyserHitFlg(true);
-				//間欠泉から水が上がってたら
-				if (geyser[i]->GetPushUpFlg() == true)
-				{
-					player->PushUpPlayer(geyser[i]->GetVertex().upper_y);
-				}
+
+				player->PushUpPlayer(geyser[i]->GetVertex().upper_y);
+				
 			}
 			else
 			{
