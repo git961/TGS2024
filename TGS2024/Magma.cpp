@@ -17,6 +17,14 @@ Magma::Magma(float set_x, float set_y)
 	effect_img_num = 0;
 	effect_anim_cnt = 0;
 	is_any_damage = true;				// ダメージあり
+
+	// サウンド読込
+	magma_se = LoadSoundMem("sounds/se/gimmick/magma.mp3");
+	volume = 0;
+
+	// サウンドの音量設定
+	ChangeVolumeSoundMem(volume, magma_se);
+
 }
 
 Magma::~Magma()
@@ -32,6 +40,9 @@ Magma::~Magma()
 		// 画像の削除
 		DeleteGraph(magma_effect_img[i]);
 	}
+
+	// サウンド削除
+	DeleteSoundMem(magma_se);
 }
 
 // 更新処理
@@ -42,6 +53,9 @@ void Magma::Update()
 
 	// マグマのアニメーション
 	Animation();
+
+	// サウンドを再生するか調べる
+	CheckPlaySound();
 }
 
 // 描画処理
@@ -95,6 +109,49 @@ void Magma::Animation()
 			{
 				img_num = 6;
 			}
+		}
+	}
+}
+
+// サウンドを再生するか調べる
+void Magma::CheckPlaySound()
+{
+	// スクリーン範囲にいるんだったら
+	if (location.x > 50.0f && location.x < 1230.0f && location.y > 0.0f && location.y < 720.0f)
+	{
+		if (volume != 170)
+		{
+			volume = 170;
+			ChangeVolumeSoundMem(volume, magma_se);
+		}
+
+		// 音を鳴らす
+		if (CheckSoundMem(magma_se) == FALSE)
+		{
+			PlaySoundMem(magma_se, DX_PLAYTYPE_BACK);
+		}
+	}
+	else if (location.x > 0.0f && location.x < 1280.0f && location.y > 0.0f && location.y < 720.0f)
+	{
+		// 音量を小さくする
+		if (volume != 150)
+		{
+			volume = 150;
+			ChangeVolumeSoundMem(volume, magma_se);
+		}
+
+		// 音を鳴らす
+		if (CheckSoundMem(magma_se) == FALSE)
+		{
+			PlaySoundMem(magma_se, DX_PLAYTYPE_BACK);
+		}
+	}
+	else
+	{
+		// 音を止める
+		if (CheckSoundMem(magma_se) == TRUE)
+		{
+			StopSoundMem(magma_se);
 		}
 	}
 

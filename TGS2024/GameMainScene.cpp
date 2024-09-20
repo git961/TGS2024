@@ -3352,7 +3352,7 @@ void GameMainScene::FallingFloorUpdate()
 	{
 		if (falling_floor[i] == nullptr) continue;
 
-		if (falling_floor[i]->GetWorldLocation().x > screen_origin_position.x - 100 && falling_floor[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+		if (falling_floor[i]->GetWorldLocation().x > screen_origin_position.x - 500 && falling_floor[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 500)
 		{
 			// カメラから見た座標の設定
 			falling_floor[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
@@ -3468,7 +3468,7 @@ void GameMainScene::GeyserUpdete()
 	{
 		if (geyser[i] == nullptr) continue;
 
-		if (geyser[i]->GetWorldLocation().x > screen_origin_position.x - 100 && geyser[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+		if (geyser[i]->GetWorldLocation().x > screen_origin_position.x - 900 && geyser[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 900)
 		{
 			// カメラから見た座標の設定
 			geyser[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
@@ -3736,8 +3736,6 @@ void GameMainScene::ReboundEnemyUpdate()
 
 			rebound_enemy[i]->Update();
 
-			rebound_enemy[i]->SetPlayerDirection(player->GetDirection());
-
 			if (rebound_enemy[i]->GetDeleteFlg() == true)
 			{
 				// つるはしで転がる敵の削除
@@ -3824,6 +3822,7 @@ void GameMainScene::PickaxeHitReboundEnemy()
 						rebound_enemy[i]->Damage(10.0f);
 						if (rebound_enemy[i]->GetRollFlg() == false)
 						{
+							rebound_enemy[i]->SetPlayerDirection(player->GetDirection());
 							rebound_enemy[i]->SetHitPickaxeFlg();
 						}
 						enemy_damage_once = true;

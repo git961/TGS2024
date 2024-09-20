@@ -12,6 +12,9 @@ private:
 	bool touched_magma;					// マグマに触れたか？
 	bool falling_flg;					// 落下するか？
 
+	int falling_se;						// 落下se
+	int volume;							// se音量
+
 public:
 	FallingFloor(float set_x, float set_y);
 	~FallingFloor();
@@ -24,5 +27,8 @@ public:
 
 	bool GetFallingFlg() const;
 	void StartFalling();				// 落下を開始する
+
+private:
+	void CheckPlaySound();				// サウンドを再生するか調べる
 };
 
