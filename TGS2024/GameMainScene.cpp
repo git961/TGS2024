@@ -3728,8 +3728,6 @@ void GameMainScene::ReboundEnemyUpdate()
 
 			rebound_enemy[i]->Update();
 
-			rebound_enemy[i]->SetPlayerDirection(player->GetDirection());
-
 			if (rebound_enemy[i]->GetDeleteFlg() == true)
 			{
 				// つるはしで転がる敵の削除
@@ -3816,6 +3814,7 @@ void GameMainScene::PickaxeHitReboundEnemy()
 						rebound_enemy[i]->Damage(10.0f);
 						if (rebound_enemy[i]->GetRollFlg() == false)
 						{
+							rebound_enemy[i]->SetPlayerDirection(player->GetDirection());
 							rebound_enemy[i]->SetHitPickaxeFlg();
 						}
 						enemy_damage_once = true;

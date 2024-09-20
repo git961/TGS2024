@@ -186,6 +186,10 @@ void ReboundEnemy::CheckDirectionRolling()
 		roll_left_flg = false;
 		move_x = 1.0f;
 	}
+	else
+	{
+		move_x = -1.0f;
+	}
 
 	speed = 4.0f;
 	roll_flg = true;
