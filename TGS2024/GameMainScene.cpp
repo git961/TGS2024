@@ -1327,6 +1327,22 @@ void GameMainScene::Draw() const
 	}
 	else
 	{
+
+		if (stage_num == StageNum::stage2)
+		{
+
+			//ステージブロック描画
+			for (int j = 0; j < block_count; j++)
+			{
+				if (stage_block[j] != nullptr && stage_block[j]->GetBlockNum() == 3)
+				{
+					//ゴールのドア描画
+					DrawGraph((int)stage_block[j]->GetLocation().x - 440, (int)stage_block[j]->GetLocation().y - 480, goal_door_img, TRUE);
+				}
+			}
+		}
+
+
 			//プレイヤー描画
 		if (player != nullptr)
 		{
@@ -1445,14 +1461,14 @@ void GameMainScene::Draw() const
 		{
 
 			//ステージブロック描画
-			for (int j = 0; j < block_count; j++)
-			{
-				if (stage_block[j] != nullptr && stage_block[j]->GetBlockNum() == 3)
-				{
-					//ゴールのドア描画
-					DrawGraph((int)stage_block[j]->GetLocation().x - 448, (int)stage_block[j]->GetLocation().y - 480, goal_door_img, TRUE);
-				}
-			}
+			//for (int j = 0; j < block_count; j++)
+			//{
+			//	if (stage_block[j] != nullptr && stage_block[j]->GetBlockNum() == 3)
+			//	{
+			//		//ゴールのドア描画
+			//		DrawGraph((int)stage_block[j]->GetLocation().x - 448, (int)stage_block[j]->GetLocation().y - 480, goal_door_img, TRUE);
+			//	}
+			//}
 
 			for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
 			{
