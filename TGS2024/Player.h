@@ -163,6 +163,7 @@ private:
     int change_scene_cnt;               // タイトルへ遷移するカウント
     int credits_walk_cnt;               // クレジット画面の歩行アニメーションカウント
     bool walk_cnt_up_flg;               // 歩行アニメーションのカウントを増やすか？
+    bool anim_end_flg;                  // プレイヤーのアニメーションが終わったか？
 
     int rest_move_count;//移動量が残っている時用
     
@@ -280,6 +281,7 @@ public:
     void ApplauseAnim();                // 拍手アニメーション
     void CrackerAnim();                 // クラッカーアニメーション
     void RibbonAnim();                  // リボンアニメーション
+    bool GetAnimEndFlg() const { return anim_end_flg; }
 
     void SetPushBFlg() { push_b_flg = true; }       // Bボタン押したフラグの設定
     bool GetChangeToTitleFlg() const { return change_to_title_flg; }
