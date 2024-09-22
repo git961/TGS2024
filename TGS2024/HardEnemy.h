@@ -32,5 +32,7 @@ private:
 	void LivingAnimation();					// 生きているときのアニメーション
 	void CheckDeathCondition();				// 死亡状態になったか調べる
 
+public:
+	void SetGemDropFlg(bool set_flg) { gem_drop_flg = set_flg; }
 };
 
