@@ -3094,7 +3094,6 @@ void GameMainScene::LiftUpDate()
 //プレイヤーとリフトの当たり判定
 void GameMainScene::PlayerHitLift()
 {
-	//int hit_lift_num=-1;
 
 	for (int i = 0; i < LIFT_MAXNUM; i++)
 	{

@@ -388,7 +388,7 @@ void Player::Update(GameMainScene* gamemain)
 		if (dyna_stock_num > 0)
 		{
 			//ダイナマイト攻撃
-			if (input.CheckBtn(XINPUT_BUTTON_Y) == TRUE || CheckHitKey(KEY_INPUT_S) == TRUE)
+			if (input.CheckBtn(XINPUT_BUTTON_Y) == TRUE && attacking == false)
 			{
 				player_state = DYNAMITE;
 			}
