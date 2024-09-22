@@ -3113,7 +3113,7 @@ void GameMainScene::PlayerHitLift()
 					}
 					else
 					{
-						player->SetY(lift[i]->GetWorldLocation().y);
+						player->SetY(lift[i]->GetWorldLocation().y-2.0f);
 					}
 				}
 			}
@@ -3132,11 +3132,14 @@ void GameMainScene::PlayerHitEventLift()
 			player->SetY(event_lift[0]->GetWorldLocation().y);
 			player->SetFallFlg(false);
 			player->SetLiftHitFlg(true);
-			if (event_lift[0]->GetAnimEndFlg() == false) {
+
+			if (event_lift[0]->GetAnimEndFlg() == false)
+			{
 				player->SetPlayerState(true);//プレイヤーの動きを止める
 				event_lift[0]->SetAnimStartFlg(true);//アニメーションスタート
 			}
 			else {
+				if(player->GetState()==8)
 				player->SetPlayerState(false);//プレイヤーの動きを止める
 			}
 		}
@@ -3145,6 +3148,8 @@ void GameMainScene::PlayerHitEventLift()
 			player->SetLiftHitFlg(false);
 		}
 	}
+
+
 }
 
 //リフトとリフトとめる奴の判定
