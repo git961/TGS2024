@@ -59,12 +59,29 @@ void HardEnemy::Update()
 	default:
 		break;
 	}
+
+	if (star_flg == true)
+	{
+		StarEffectPreparation();
+	}
+
+	// 星を描画するのであれば
+	if (star_is_draw == true)
+	{
+		StarEffect();
+	}
 }
 
 void HardEnemy::Draw() const
 {
 	// ダイナマイトでしか倒せない敵の画像
 	DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img[enemy_img_num], TRUE, direction);
+
+	if (star_is_draw == true)
+	{
+		// 星描画
+		DrawRotaGraph((int)star_x, (int)star_y, 1.0, star_radian, star_img, TRUE, star_direction);
+	}
 
 	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", hp);
 	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "anim_cnt: %d", anim_cnt);

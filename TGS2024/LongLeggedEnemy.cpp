@@ -33,9 +33,6 @@ LongLeggedEnemy::LongLeggedEnemy(float set_x, float set_y)
 
 	rising_interval = 30;
 
-	player_world_x = 0.0f;
-	player_world_y = 0.0f;
-
 	attack_flg = false;				// 攻撃中ではない
 	attack_anim_count = 0;
 	attack_wait_time = 0;
@@ -119,6 +116,17 @@ void LongLeggedEnemy::Update()
 	default:
 		break;
 	}
+
+	if (star_flg == true)
+	{
+		StarEffectPreparation();
+	}
+
+	// 星を描画するのであれば
+	if (star_is_draw == true)
+	{
+		StarEffect();
+	}
 }
 
 void LongLeggedEnemy::Draw() const
@@ -171,6 +179,12 @@ void LongLeggedEnemy::Draw() const
 		}
 	}
 
+	if (star_is_draw == true)
+	{
+		// 星描画
+		DrawRotaGraph((int)star_x, (int)star_y, 1.0, star_radian, star_img, TRUE, star_direction);
+	}
+
 	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", attack_anim_count);
 }
 
@@ -189,7 +203,7 @@ void LongLeggedEnemy::Move()
 
 void LongLeggedEnemy::Death()
 {
-	if (anim_cnt <= 60)
+	if (anim_cnt <= 90)
 	{
 		anim_cnt++;
 	}
@@ -333,11 +347,4 @@ void LongLeggedEnemy::ChangeDirection()
 		world.x -= 5;
 	}
 
-}
-
-// プレイヤーの位置を保持する
-void LongLeggedEnemy::SetPlayerWorldLocation(World set_world)
-{
-	player_world_x = set_world.x;
-	player_world_y = set_world.y;
 }

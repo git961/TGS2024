@@ -28,9 +28,6 @@ private:
 
 	int rising_interval;				// 攻撃で下降後、上昇するまでの間隔
 
-	float player_world_x;
-	float player_world_y;
-
 	bool attack_flg;					// true:攻撃中
 	int attack_anim_count;				// 攻撃アニメーション用カウント
 
@@ -59,7 +56,6 @@ private:
 	void AttackAnimation();					// 攻撃アニメーション
 
 public:
-	void SetPlayerWorldLocation(World set_world);	// プレイヤーの位置を保持する
 	void ChangeDirection();
 	void SetHitEnemyX(float set_x) { hit_enemy_x = set_x; }
 	void SetGemDropFlg(bool set_flg) { gem_drop_flg = set_flg; }

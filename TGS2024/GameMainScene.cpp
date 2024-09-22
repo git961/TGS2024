@@ -3709,6 +3709,9 @@ void GameMainScene::PickaxeHitLongLegsEnemy()
 					{
 						long_legs_enemy[i]->Damage(10.0f);
 						enemy_damage_once = true;
+						// 星エフェクト
+						long_legs_enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+						long_legs_enemy[i]->SetStarFlg();
 					}
 				}
 			}
@@ -3742,6 +3745,21 @@ void GameMainScene::DynamiteHitLongLegsEnemy()
 				{
 					dynamite[j]->SetDynamite(true);
 					long_legs_enemy[i]->Damage(dynamite[j]->GetAttack());
+					// 星エフェクト
+					long_legs_enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+					long_legs_enemy[i]->SetStarFlg();
+				}
+			}
+
+			//ダイナマイトの爆発と岩の当たり判定
+			if (dynamite[j]->Getdamage_flg() == true)
+			{
+				if (dynamite[j]->HitCheck(long_legs_enemy[i]->GetWorldLocation(), long_legs_enemy[i]->GetWidth(), long_legs_enemy[i]->GetHeight()) == true)
+				{
+					long_legs_enemy[i]->Damage(dynamite[j]->GetAttack());
+					// 星エフェクト
+					long_legs_enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+					long_legs_enemy[i]->SetStarFlg();
 				}
 			}
 		}
@@ -3816,6 +3834,9 @@ void GameMainScene::DynamiteHitHardEnemy()
 				{
 					dynamite[j]->SetDynamite(true);
 					hard_enemy[i]->Damage(dynamite[j]->GetAttack());
+					// 星エフェクト
+					hard_enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+					hard_enemy[i]->SetStarFlg();
 				}
 			}
 		}
@@ -3867,6 +3888,9 @@ void GameMainScene::ReboundHitEnemy()
 				{
 					EnemyDamage(j, rebound_enemy[i]->GetAttack());
 					rebound_enemy[i]->Damage(20.0f);
+					// 星エフェクト
+					rebound_enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+					rebound_enemy[i]->SetStarFlg();
 				}
 			}
 		}
@@ -3920,6 +3944,9 @@ void GameMainScene::PickaxeHitReboundEnemy()
 					if (ac->HitCheck(rebound_enemy[i]->GetWorldLocation(), rebound_enemy[i]->GetWidth(), rebound_enemy[i]->GetHeight()) == true)
 					{
 						rebound_enemy[i]->Damage(10.0f);
+						// 星エフェクト
+						rebound_enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+						rebound_enemy[i]->SetStarFlg();
 						if (rebound_enemy[i]->GetRollFlg() == false)
 						{
 							rebound_enemy[i]->SetPlayerDirection(player->GetDirection());
@@ -3965,6 +3992,21 @@ void GameMainScene::DynamiteHitReboundEnemy()
 				{
 					dynamite[j]->SetDynamite(true);
 					rebound_enemy[i]->Damage(dynamite[j]->GetAttack());
+					// 星エフェクト
+					rebound_enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+					rebound_enemy[i]->SetStarFlg();
+				}
+			}
+
+			//ダイナマイトの爆発と岩の当たり判定
+			if (dynamite[j]->Getdamage_flg() == true)
+			{
+				if (dynamite[j]->HitCheck(rebound_enemy[i]->GetWorldLocation(), rebound_enemy[i]->GetWidth(), rebound_enemy[i]->GetHeight()) == true)
+				{
+					rebound_enemy[i]->Damage(dynamite[j]->GetAttack());
+					// 星エフェクト
+					rebound_enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+					rebound_enemy[i]->SetStarFlg();
 				}
 			}
 		}

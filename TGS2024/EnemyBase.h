@@ -1,4 +1,6 @@
 #pragma once
+#include <math.h>
+#define _USE_MATH_DEFINES       // M_PI使用用
 #include "CharacterBase.h"
 
 class EnemyBase : public CharacterBase
@@ -14,6 +16,21 @@ protected:
 	bool gem_drop_flg;				// 宝石をドロップするか？
 	bool is_delete;					// 自身を削除するか？
 
+	// 星エフェクト
+	int star_img;                   // 星エフェクト画像
+	bool star_flg;					// 星エフェクトが出るか？
+	float star_x;
+	float star_y;
+	double star_degree;				// 画像の角度（デグリー）
+	double star_radian;				// 画像の角度（ラジアン）
+	int star_timer;					// 描画時間
+	int star_count;					// 三角関数用
+	bool star_is_draw;				// 描画するか？
+	bool star_direction;            // 向きの一時保管
+
+	float player_world_x;
+	float player_world_y;
+
 public:
 	EnemyBase();
 	~EnemyBase();
@@ -27,6 +44,8 @@ protected:
 	virtual void DeathAnimation() = 0;
 
 	void PlayDeathSound();					// 死亡音を1回だけ再生する処理
+	void StarEffectPreparation();			// 星エフェクトの準備
+	void StarEffect();                      // 星エフェクトの処理
 
 public:
 	void Damage(float damage);
@@ -35,4 +54,7 @@ public:
 	float GetAttack() const;
 	bool GetGemDropFlg() const;
 	bool GetDeleteFlg() const;
+
+	void SetPlayerWorldLocation(World set_world);
+	void SetStarFlg();
 };
