@@ -461,7 +461,7 @@ void Player::Draw() const
 
 
 	//DrawBoxAA(location.x - width/2, location.y - height/2, location.x + width / 2, location.y + height / 2, 0xffffff,true);
-	DrawFormatString(location.x, location.y - 80, 0xffffff, "draw%d",p_imgnum);
+	//DrawFormatString(location.x, location.y - 80, 0xffffff, "draw%d",p_imgnum);
 	//DrawFormatString(location.x, location.y - 80, 0xffffff, "draw%d",direction);
 
 
@@ -509,11 +509,11 @@ void Player::Draw() const
 	//}
 	////DrawFormatString(100, 100, 0xffffff, "Right:%d", a);
 	//DrawFormatString(100, 120, 0xffffff, "btnnum: % d", input.Btnnum);
-	DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + (int)width / 2, (int)location.y + (int)height / 2, 0x00ffff, FALSE);
+	//DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + (int)width / 2, (int)location.y + (int)height / 2, 0x00ffff, FALSE);
 	//DrawBox((int)location.x - 128 / 2, (int)location.y - 128 / 2, (int)location.x + 128 / 2, (int)location.y + 128 / 2, 0x00ffff, FALSE);
 
-	DrawFormatString(location.x, location.y-60, 0xffffff, "world.y: %f",world.y);
-	DrawCircleAA(curent_x - half_width, location.y, 1, 0xff00ff, true);
+	//DrawFormatString(location.x, location.y-60, 0xffffff, "world.y: %f",world.y);
+	//DrawCircleAA(curent_x - half_width, location.y, 1, 0xff00ff, true);
 
 	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
 	//DrawFormatString(location.x, location.y - 80, 0xff0000, "move_x : %f", move_x);

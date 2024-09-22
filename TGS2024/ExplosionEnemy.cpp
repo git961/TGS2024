@@ -63,7 +63,7 @@ void ExplosionEnemy::Draw() const
 	// 爆発する敵の画像
 	DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img, TRUE, direction);
 
-	DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", hp);
+	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", hp);
 }
 
 void ExplosionEnemy::Move()

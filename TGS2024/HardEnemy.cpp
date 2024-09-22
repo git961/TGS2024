@@ -66,7 +66,7 @@ void HardEnemy::Draw() const
 	// ダイナマイトでしか倒せない敵の画像
 	DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img[enemy_img_num], TRUE, direction);
 
-	DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", hp);
+	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", hp);
 	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "anim_cnt: %d", anim_cnt);
 }
 
