@@ -49,6 +49,7 @@ private:
     bool lift_hit_flg;//リフトに当たっているか？
     bool geyser_hit_flg;//間欠泉に当たっているか？
     bool magma_hit_flg;//マグマに当たっているか
+    bool floorblock_hit_flg;//床ブロックに当たっているか
     bool fallingfloor_hit_flg;//落ちる床に当たっているか
     float vel;//初速度
 
@@ -240,7 +241,15 @@ public:
     //リフトのYをプレイヤーのワールド座標に入れる
     void SetY(float set_y)
     {
-           world.y = set_y-35;
+        if (floorblock_hit_flg == false)
+        {
+            world.y = set_y - 35.0f;
+        }
+    }
+
+    void EventSetY(float set_y)
+    {
+         world.y = set_y - 35.0f;
     }
 
     void SetPlayerState(bool is_stop)

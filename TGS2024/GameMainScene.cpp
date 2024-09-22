@@ -3192,7 +3192,8 @@ void GameMainScene::PlayerHitLift()
 					}
 					else
 					{
-						player->SetY(lift[i]->GetWorldLocation().y-2.0f);
+						player->SetY(lift[i]->GetWorldLocation().y - 2.0f);
+						
 					}
 
 					//止まっていたら押し上げる
@@ -3212,9 +3213,9 @@ void GameMainScene::PlayerHitEventLift()
 {
 	if (event_lift[0] != nullptr && player != nullptr)
 	{
-		if (player->HitCheck(event_lift[0]->GetWorldLocation(), event_lift[0]->GetWidth(), event_lift[0]->GetHeight()) == true)
+		if (player->HitCheck(event_lift[0]->GetWorldLocation(), event_lift[0]->GetWidth(), event_lift[0]->GetHeight()+20.0f) == true)
 		{
-			player->SetY(event_lift[0]->GetWorldLocation().y);
+			player->EventSetY(event_lift[0]->GetWorldLocation().y);
 			player->SetFallFlg(false);
 			player->SetLiftHitFlg(true);
 
