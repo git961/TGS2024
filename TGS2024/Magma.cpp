@@ -9,7 +9,7 @@ Magma::Magma(float set_x, float set_y)
 	width = 128.0f;
 	height = 64.0f;
 
-	LoadDivGraph("images/Stage/Gimmick/Magma.png", 10, 5, 2, 128, 64, magma_img);
+	LoadDivGraph("images/Stage/Gimmick/Magma.png", 10, 5, 2, 128, 80, magma_img);
 	LoadDivGraph("images/Stage/Gimmick/MagmaEffect.png", 4, 4, 1, 168, 84, magma_effect_img);
 
 	img_num = 0;
@@ -62,13 +62,13 @@ void Magma::Update()
 void Magma::Draw() const
 {
 	// マグマ画像の描画
-	DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, magma_img[img_num], TRUE);
+	DrawRotaGraph((int)location.x, (int)location.y-10, 1.0, 0.0, magma_img[img_num], TRUE);
 	if (is_any_damage == true)
 	{
 		DrawRotaGraph((int)location.x, (int)location.y-20, 1.0, 0.0, magma_effect_img[effect_img_num], TRUE);
 	}
 	// 頂点の確認
-	DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
+	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
 }
 
 bool Magma::GetAnyDamageFlg() const
