@@ -1228,7 +1228,7 @@ void GameMainScene::Draw() const
 			DrawGraph((int)location_x + 1280 * i, (int)location_y + 1080, back_img[0], FALSE);
 		}
 		DrawGraph((int)location_x + 5120, (int)location_y + 2006, back_lower_img, FALSE);
-		DrawGraph((int)location_x + 7680, (int)location_y, back_upper_img, FALSE);
+		DrawGraph((int)location_x + 7454, (int)location_y, back_upper_img, FALSE);
 	}
 
 	for (int j = 0; j < block_count; j++)
@@ -3115,6 +3115,12 @@ void GameMainScene::PlayerHitLift()
 					{
 						player->SetY(lift[i]->GetWorldLocation().y-2.0f);
 					}
+
+					//止まっていたら押し上げる
+					if (lift[i]->GetCanMoveFlg() == false)
+					{
+						player->SinkCheckObject(lift[i]->GetWorldLocation().y - (lift[i]->GetHeight() / 2.0f));
+					}
 				}
 			}
 
@@ -3396,6 +3402,12 @@ void GameMainScene::PlayerHitFallingFloor()
 					player->SinkCheckObject(falling_floor[i]->GetWorldLocation().y - falling_floor[i]->GetHeight() / 2.0f);
 				}
 				
+				if (falling_floor[i]->GetFallingFlg() == true)
+				{
+					player->SetY(falling_floor[i]->GetWorldLocation().y - (falling_floor[i]->GetHeight()/2)-2.0f);
+				}
+
+
 				//player->HitCheckB(falling_floor[i]->GetVertex());
 			}
 			else {
@@ -3995,10 +4007,10 @@ void GameMainScene::PlayerHitGoal() {
 			{
 				//ステージ２のゴール処理
 				//カギを二つ持っていたらゴール
-				if (get_key_array[0] == true && get_key_array[1] == true)
-				{
+				//if (get_key_array[0] == true && get_key_array[1] == true)
+				//{
 					game_state = GOAL;
-				}
+				//}
 
 			}
 		}

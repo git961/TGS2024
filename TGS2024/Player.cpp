@@ -288,7 +288,7 @@ void Player::Update(GameMainScene* gamemain)
 		//	world.y = 600.0f;
 		//}
 
-		if (player_state == NOMAL)
+		if (player_state == NOMAL && fall_flg == false)
 		{
 			if (direction == false)
 			{
@@ -378,7 +378,7 @@ void Player::Update(GameMainScene* gamemain)
 		}
 
 		//つるはし攻撃
-		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE&&fall_flg==false)
+		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE && fall_flg == false)
 		{
 			attacking = true;
 			player_state = ATTACK;
@@ -388,7 +388,7 @@ void Player::Update(GameMainScene* gamemain)
 		if (dyna_stock_num > 0)
 		{
 			//ダイナマイト攻撃
-			if (input.CheckBtn(XINPUT_BUTTON_Y) == TRUE && attacking == false)
+			if (input.CheckBtn(XINPUT_BUTTON_Y) == TRUE && attacking == false && fall_flg == false)
 			{
 				player_state = DYNAMITE;
 			}
@@ -598,7 +598,7 @@ void Player::PlayerMove()
 
 void Player::WalkAnim()
 {
-	if (player_state == WALK&&fall_flg==false)
+	if (player_state == WALK && fall_flg == false)
 	{
 
 		if (abs((int)world.x - (int)old_worldx) > 119)
@@ -636,7 +636,7 @@ void Player::WalkAnim()
 	}
 
 	//move_xが0になってない場合
-	if (player_state != WALK) {
+	if (player_state != WALK && fall_flg == false) {
 
 		if (direction == 0 && move_x > 0.0f)
 		{
