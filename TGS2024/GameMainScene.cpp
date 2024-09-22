@@ -2175,7 +2175,7 @@ void GameMainScene::GemGenerate()
 			{
 				if (player != nullptr && hard_gem[i] == nullptr)
 				{
-					hard_gem[i] = new Gem(hard_enemy[i]->GetWorldLocation(),0, hard_gem_score);
+					hard_gem[i] = new Gem(hard_enemy[i]->GetWorldLocation(),2, hard_gem_score);
 					hard_gem[i]->SetPlayerWorldLocation(player->GetWorldLocation());
 					hard_enemy[i]->SetGemDropFlg(false);
 				}

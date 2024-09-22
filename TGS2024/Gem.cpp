@@ -15,9 +15,14 @@ Gem::Gem(World set_world, int gem_type,int set_score)
 		// 青の宝石画像の読み込み
 		LoadDivGraph("images/Gem/Gem.png", 5, 5, 1, 32, 32, gem_img);
 	}
-	else {
+	else if (gem_type == 1) {
 		// 赤の宝石画像の読み込み
 		LoadDivGraph("images/Gem/RedGem.png", 5, 5, 1, 32, 32, gem_img);
+	}
+	else {
+		// 黄の宝石画像の読み込み
+		LoadDivGraph("images/Gem/YellowGem1.png", 5, 5, 1, 32, 32, gem_img);
+		world.y += 32.0f;
 	}
 
 	LoadDivGraph("images/Gem/effect.png", 4, 4, 1, 32, 32, effect_img);
