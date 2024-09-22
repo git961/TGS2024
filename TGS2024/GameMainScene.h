@@ -135,6 +135,7 @@ private:
     ReboundEnemy* rebound_enemy[REBOUND_ENEMY_MAXNUM];      // つるはし攻撃で転がる敵
 
     Gem* long_gem[LONG_LEGS_ENEMY_MAXNUM];                   // 脚長からの宝石
+    Gem* hard_gem[HARD_ENEMY_MAXNUM];                   // ダイナマイトでしか倒せない敵からの宝石
 
     cameraposition camera_pos;
 
@@ -189,6 +190,8 @@ private:
     int walk_gem_score;             // 歩行エネミーの宝石スコア
     int roll_gem_score;             // 転がるエネミーの宝石スコア
     int rebound_gem_score;             // つるはしで跳ね返るエネミーの宝石スコア
+    int long_gem_score;             // 脚長エネミーの宝石スコア
+    int hard_gem_score;             // つるはしで跳ね返るエネミーの宝石スコア
     //int rock_gem_score;             //岩から出る宝石スコア
 
     float camera_old_x;

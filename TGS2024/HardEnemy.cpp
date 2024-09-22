@@ -140,5 +140,6 @@ void HardEnemy::CheckDeathCondition()
 		anim_cnt = 0;								// 死亡アニメーション用にカウントを0にする
 		enemy_img_num = 6;							// 死亡画像の最初の画像番号を設定
 		enemy_state = EnemyState::DEATH;			// 死亡状態に遷移
+		gem_drop_flg = true;						// 宝石をドロップする
 	}
 }
