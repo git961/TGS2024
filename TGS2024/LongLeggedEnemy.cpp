@@ -161,7 +161,7 @@ void LongLeggedEnemy::Move()
 
 void LongLeggedEnemy::Death()
 {
-	if (anim_cnt <= 40)
+	if (anim_cnt <= 60)
 	{
 		anim_cnt++;
 	}

@@ -120,7 +120,7 @@ void ReboundEnemy::Move()
 
 void ReboundEnemy::Death()
 {
-	if (anim_cnt <= 30)
+	if (anim_cnt <= 60)
 	{
 		anim_cnt++;
 	}
