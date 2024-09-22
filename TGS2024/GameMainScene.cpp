@@ -981,6 +981,23 @@ void GameMainScene::Update()
 		location_x = world_x - screen_origin_position.x;
 		location_y = world_y - screen_origin_position.y;
 
+		//カメラとUIのアップデート
+		if (player != nullptr)
+		{
+			UpdateCamera(player->GetWorldLocation());
+
+			//UIアップデート
+			if (ui != nullptr)
+			{
+				ui->SetLifeNum(p_life_num);
+				ui->Update((int)player->GetHp(), player->GetDynaNum());
+				if (player->GetHp() <= 0)
+				{
+					ui->Update(0, 0);
+				}
+			}
+		}
+
 		//リフトアップデート
 		LiftUpDate();
 		LiftHitStop();
@@ -995,7 +1012,6 @@ void GameMainScene::Update()
 			game_state = POSE;
 		}
 		
-
 		//エネミー更新
 		EnemyUpDate();
 
@@ -1128,23 +1144,6 @@ void GameMainScene::Update()
 			DynamiteHitReboundEnemy();
 		}
 
-		//カメラとUIのアップデート
-		if (player != nullptr)
-		{
-			UpdateCamera(player->GetWorldLocation());
-			
-			//UIアップデート
-			if (ui != nullptr)
-			{
-				ui->SetLifeNum(p_life_num);
-				ui->Update((int)player->GetHp(), player->GetDynaNum());
-				if (player->GetHp() <= 0)
-				{
-					ui->Update(0, 0);
-				}
-			}
-		}
-
 		//ステージブロックの位置更新
 		for (int j = 0; j < block_count; j++)
 		{
@@ -1224,7 +1223,6 @@ void GameMainScene::Draw() const
 		// 矢印の表示
 		//DrawGraph((int)location_x + 1280, (int)location_y, back_img[0], FALSE);
 	}
-
 
 	if (stage_num == StageNum::stage2)
 	{
@@ -2889,6 +2887,7 @@ void GameMainScene::DynamiteHitFragileWall()
 	{
 		if (fragile_wall[i] != nullptr)
 		{
+			if (fragile_wall[i]->GetHp() <= 0.0f) continue;
 			for (int j = 0; j < DYNAMITE_MAXNUM; j++)
 			{
 				if (dynamite[j] != nullptr)
@@ -3349,6 +3348,7 @@ void GameMainScene::AttackCageDoor()
 	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
 	{
 		if (cage_door[i] == nullptr)			continue;
+		if (cage_door[i]->GetHp() <= 0.0f)		continue;
 
 		if (cage_door[i]->GetWorldLocation().x > screen_origin_position.x - 100 && cage_door[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 		{
@@ -3729,6 +3729,7 @@ void GameMainScene::DynamiteHitLongLegsEnemy()
 	for (int i = 0; i < LONG_LEGS_ENEMY_MAXNUM; i++)
 	{
 		if (long_legs_enemy[i] == nullptr)			continue;
+		if (long_legs_enemy[i]->GetHp() <= 0.0f)	continue;
 
 		for (int j = 0; j < DYNAMITE_MAXNUM; j++)
 		{
@@ -3802,6 +3803,7 @@ void GameMainScene::DynamiteHitHardEnemy()
 	for (int i = 0; i < HARD_ENEMY_MAXNUM; i++)
 	{
 		if (hard_enemy[i] == nullptr)			continue;
+		if (hard_enemy[i]->GetHp() <= 0.0f)		continue;
 
 		for (int j = 0; j < DYNAMITE_MAXNUM; j++)
 		{
@@ -3950,6 +3952,7 @@ void GameMainScene::DynamiteHitReboundEnemy()
 	for (int i = 0; i < REBOUND_ENEMY_MAXNUM; i++)
 	{
 		if (rebound_enemy[i] == nullptr)			continue;
+		if (rebound_enemy[i]->GetHp() <= 0.0f)		continue;
 
 		for (int j = 0; j < DYNAMITE_MAXNUM; j++)
 		{

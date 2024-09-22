@@ -27,5 +27,5 @@ public:
 	bool GetOpenFlg() const;
 
 	void Damage(float damage);
-
+	float GetHp() const { return hp; }
 };

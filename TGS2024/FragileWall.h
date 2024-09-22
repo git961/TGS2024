@@ -35,5 +35,6 @@ private:
 public:
 	void Damage(float damage);            // 被ダメージ処理
 	bool GetDeleteFlg() const { return delete_flg; }
+	float GetHp() const { return hp; }
 
 };
