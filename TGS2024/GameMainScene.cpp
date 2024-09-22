@@ -1665,11 +1665,11 @@ void GameMainScene::Draw() const
 		mapio->Draw();
 	}
 
-	DrawFormatString(300, 220, 0xffffff, "camera.x: %f", camera_pos.x);
-	DrawFormatString(300, 240, 0xffffff, "camera.y: %f > y: %d", camera_pos.y, 960 - WINDOW_HALFY);
-	DrawFormatString(300, 260, 0xffffff, "CurrentLoction: %d", current_location);
+	//DrawFormatString(300, 220, 0xffffff, "camera.x: %f", camera_pos.x);
+	//DrawFormatString(300, 240, 0xffffff, "camera.y: %f > y: %d", camera_pos.y, 960 - WINDOW_HALFY);
+	//DrawFormatString(300, 260, 0xffffff, "CurrentLoction: %d", current_location);
 	//DrawCircleAA(camera_pos.x - screen_origin_position.x, camera_pos.y - screen_origin_position.y, 3, 1, 0x556b2f, TRUE);
-	DrawCircle(camera_pos.x - screen_origin_position.x, camera_pos.y - screen_origin_position.y, 3, 0x556b2f, TRUE);
+	//DrawCircle(camera_pos.x - screen_origin_position.x, camera_pos.y - screen_origin_position.y, 3, 0x556b2f, TRUE);
 	//DrawFormatString(400, 150, 0xffffff, "enemyhit = %d", enemyhit);
 	//DrawFormatString(30, 300, 0xffffff, "m_mode: %d", map_mode);
 	//DrawFormatString(30, 300, 0xffffff, "e_cnt: %d", enemy_count);
@@ -3830,6 +3830,12 @@ void GameMainScene::PickaxeHitReboundEnemy()
 						{
 							rebound_enemy[i]->SetPlayerDirection(player->GetDirection());
 							rebound_enemy[i]->SetHitPickaxeFlg();
+						}
+						else
+						{
+							// 当たっていたら進行方向を反対に変更する
+							rebound_enemy[i]->SetHitEnemyX(player->GetWorldLocation().x);
+							rebound_enemy[i]->ChangeDirection();
 						}
 						enemy_damage_once = true;
 					}

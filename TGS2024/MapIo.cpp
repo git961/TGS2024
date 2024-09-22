@@ -342,8 +342,8 @@ void MapIo::SaveMapData(StageNum set_num)
 
 void MapIo::Draw() const
 {
-	DrawFormatString(mouse_x, mouse_y, 0xffffff, "x: %f", world_mouse_x);
-	DrawFormatString(mouse_x,mouse_y +20, 0xffffff, "y: %f", world_mouse_y);
+	//DrawFormatString(mouse_x, mouse_y, 0xffffff, "x: %f", world_mouse_x);
+	//DrawFormatString(mouse_x,mouse_y +20, 0xffffff, "y: %f", world_mouse_y);
 
 
 	for (int i = 0; i < map_blockmax_y; i++)
