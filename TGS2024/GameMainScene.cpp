@@ -2105,10 +2105,10 @@ void GameMainScene::Tutorial()
 void GameMainScene::EnemyDamage(int enemynum, float damage)
 {
 	enemy[enemynum]->Damage(damage);
+	enemy[enemynum]->SetPlayerWorldLocation(player->GetWorldLocation());
 	// 歩行エネミーのノックバック処理
 	enemy[enemynum]->SetKnockBackStartFlg(true);
 	enemy[enemynum]->SetStarDrawFlg(true);
-	enemy[enemynum]->SetPlayerWorldLocation(player->GetWorldLocation());
 }
 
 void GameMainScene::PlayerDamage()

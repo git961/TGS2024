@@ -23,6 +23,7 @@ LongLeggedEnemy::LongLeggedEnemy(float set_x, float set_y)
 	// 画像の読み込み
 	LoadDivGraph("images/Enemy/LongLegs.png", 5, 5, 1, 64, 64, enemy_img);
 	LoadDivGraph("images/Enemy/Leg.png", 11, 5, 3, 128, 128, enemy_leg_img);
+	LoadDivGraph("images/Enemy/Long_Crack.png", 2, 2, 1, 64, 64, crack_img);
 
 	enemy_leg_img_num = 0;
 	leg_location_y = location.y;
@@ -51,6 +52,10 @@ LongLeggedEnemy::~LongLeggedEnemy()
 	for (int i = 0; i < 8; i++)
 	{
 		DeleteGraph(enemy_leg_img[i]);
+	}
+	for (int i = 0; i < 2; i++)
+	{
+		DeleteGraph(crack_img[i]);
 	}
 }
 
@@ -137,10 +142,33 @@ void LongLeggedEnemy::Draw() const
 	if (enemy_leg_img_num == 1 || enemy_leg_img_num == 5)
 	{
 		DrawRotaGraph((int)location.x, (int)location.y + 3, 1.0, 0.0, enemy_img[enemy_img_num], TRUE, direction);
+
+		// ヒビ画像
+		if (hp <= 10.0f)
+		{
+			DrawRotaGraph((int)location.x, (int)location.y + 3, 1.0, 0.0, crack_img[1], TRUE, direction);
+		}
+		else if (hp <= 20.0f)
+		{
+			DrawRotaGraph((int)location.x, (int)location.y + 3, 1.0, 0.0, crack_img[0], TRUE, direction);
+		}
 	}
 	else
 	{
 		DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img[enemy_img_num], TRUE, direction);
+
+		if (enemy_state != EnemyState::DEATH)
+		{
+			// ヒビ画像
+			if (hp <= 10.0f)
+			{
+				DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, crack_img[1], TRUE, direction);
+			}
+			else if (hp <= 20.0f)
+			{
+				DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, crack_img[0], TRUE, direction);
+			}
+		}
 	}
 
 	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", attack_anim_count);
@@ -179,7 +207,7 @@ void LongLeggedEnemy::DeathAnimation()
 	{
 		// 死亡
 		// 5カウントごとに変わる
-		enemy_img_num = anim_cnt / 5;
+		enemy_img_num = anim_cnt / 5 + 1;
 
 		if (enemy_img_num > 4)
 		{
@@ -243,6 +271,7 @@ void LongLeggedEnemy::CheckDeathCondition()
 	{
 		anim_cnt = 0;								// 死亡アニメーション用にカウントを0にする
 		enemy_state = EnemyState::DEATH;			// 死亡状態に遷移
+		enemy_img_num = 1;
 		world.y = attack_max_y;
 		gem_drop_flg = true;
 	}
