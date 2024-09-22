@@ -3100,14 +3100,22 @@ void GameMainScene::PlayerHitLift()
 	{
 		if (lift[i] != nullptr && player != nullptr)
 		{
+			//カメラの近くにいたら、カメラ内にいたら当たり判定をする
 			if (lift[i]->GetWorldLocation().x > screen_origin_position.x - 100 && lift[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 			{
 				if (player->HitCheck(lift[i]->GetWorldLocation(), lift[i]->GetWidth(), lift[i]->GetHeight() + 20.0f) == true)
 				{
-					//player->SetY(lift[i]->GetWorldLocation().y);
 					player->SetFallFlg(false);
 					player->SetLiftHitFlg(true);
-					player->SinkCheckObject(lift[i]->GetWorldLocation().y - (lift[i]->GetHeight() / 2.0f));
+
+					if (lift[i]->GetDownFlg() == false)
+					{
+						player->SinkCheckObject(lift[i]->GetWorldLocation().y - (lift[i]->GetHeight() / 2.0f));
+					}
+					else
+					{
+						player->SetY(lift[i]->GetWorldLocation().y);
+					}
 				}
 			}
 

@@ -43,6 +43,8 @@ public:
     void UpAnim();
     void DownAnim();
 
+    bool GetDownFlg() { return down_flg; }
+
     void SetUpMaxY(float set_y) { up_max_y = set_y; }
     void SetCanMove(bool set_flg) { canmove_flg = set_flg; }
     void SetDownFlg(bool set_flg) { down_flg = set_flg; }
