@@ -8,7 +8,7 @@ Player::Player()
 Player::Player(float set_x,float set_y)
 {
 	//画像読込
-	LoadDivGraph("images/Player/player_img.png",71, 4, 18, 170, 170, player_img);
+	LoadDivGraph("images/Player/player_img.png",72, 4, 18, 170, 170, player_img);
 	LoadDivGraph("images/Player/pickaxe2.png", 8, 4, 2, 170, 170, pickaxe_img);
 	LoadDivGraph("images/Player/pickeffect3.png", 4, 4, 1, 170, 170, pickaxe_effect);
 	LoadDivGraph("images/Player/soil_effect.png", 2, 2, 1, 170, 170, soil_effect);
@@ -41,6 +41,7 @@ Player::Player(float set_x,float set_y)
 	location.y = 0.0f;
 
 	old_worldx = world.x;
+	old_worldy = world.y;
 
 	//体力
 	hp = 50;
@@ -65,6 +66,7 @@ Player::Player(float set_x,float set_y)
 	move_y = 1;
 
 	walk_abs = 0;
+	fall_abs = 0;
 
 	//攻撃に使用変数
 	attacking = false;
@@ -313,21 +315,7 @@ void Player::Update(GameMainScene* gamemain)
 		WalkAnim();
 
 		PlayerFall();
-
-		//落下画像表示
-		if (fall_flg == true)
-		{
-			if (direction == 0)
-			{
-				//落下右向き
-				p_imgnum = 66;
-			}
-			else {
-				//落下左向き
-				p_imgnum = 69;
-			}
-		}
-
+		PlayerFallAnim();
 
 		// 端に来たら跳ね返る
 		if (world.x + width / 2 > FIELD_WIDTH)
@@ -340,7 +328,6 @@ void Player::Update(GameMainScene* gamemain)
 			StopSoundMem(op_run_sound);
 
 		}
-
 
 		//敵からダメージを食らったら
 		if (hit_damage == true)
@@ -391,7 +378,7 @@ void Player::Update(GameMainScene* gamemain)
 		}
 
 		//つるはし攻撃
-		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE)
+		if (input.CheckBtn(XINPUT_BUTTON_B) == TRUE&&fall_flg==false)
 		{
 			attacking = true;
 			player_state = ATTACK;
@@ -401,7 +388,7 @@ void Player::Update(GameMainScene* gamemain)
 		if (dyna_stock_num > 0)
 		{
 			//ダイナマイト攻撃
-			if (input.CheckBtn(XINPUT_BUTTON_Y) == TRUE || CheckHitKey(KEY_INPUT_S) == TRUE)
+			if (input.CheckBtn(XINPUT_BUTTON_Y) == TRUE && attacking == false)
 			{
 				player_state = DYNAMITE;
 			}
@@ -526,12 +513,12 @@ void Player::Draw() const
 	//DrawBox((int)location.x - 128 / 2, (int)location.y - 128 / 2, (int)location.x + 128 / 2, (int)location.y + 128 / 2, 0x00ffff, FALSE);
 
 	DrawFormatString(location.x, location.y-60, 0xffffff, "world.y: %f",world.y);
-	DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);
+	DrawCircleAA(curent_x - half_width, location.y, 1, 0xff00ff, true);
 
 	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
 	//DrawFormatString(location.x, location.y - 80, 0xff0000, "move_x : %f", move_x);
 	//DrawFormatString(location.x, location.y - 80, 0xff0000, "fall_flg : %d",fall_flg);
-	DrawFormatString(location.x, location.y - 80, 0xff0000, "attacking : %d",attacking);
+//	DrawFormatString(location.x, location.y - 80, 0xff0000, "attacking : %d",attacking);
 	//DrawFormatString(location.x, location.y -100, 0xff0000, "speed : %f",speed);
 	//DrawCircle(location.x + half_width, location.y + half_height, 3, 0xffffff, TRUE);
 		//(set_xy.y + set_half_height) - 3.0f
@@ -611,7 +598,7 @@ void Player::PlayerMove()
 
 void Player::WalkAnim()
 {
-	if (player_state == WALK)
+	if (player_state == WALK&&fall_flg==false)
 	{
 
 		if (abs((int)world.x - (int)old_worldx) > 119)
@@ -834,6 +821,35 @@ void Player::PlayerFall()
 	}
 	//y座標に加算
 	world.y += speed;
+}
+
+void Player::PlayerFallAnim()
+{
+
+	//落下画像表示
+	if (fall_flg == true)
+	{
+		if (abs((int)world.y - (int)old_worldy) > 119)
+		{
+			old_worldy = world.y;
+		}
+
+		fall_abs = abs((int)world.y - (int)old_worldy);
+
+		if (fall_abs != 0)
+		{
+			if (direction == 0)
+			{
+				//落下右向き
+				p_imgnum = 66 + fall_abs / 40;
+			}
+			else {
+				//落下左向き
+				p_imgnum = 69 + fall_abs / 40;
+			}
+		}
+	}
+
 }
 
 void Player::PlayerAttack()
@@ -1074,6 +1090,11 @@ void Player::LiftEvent(int set_num)
 		if (abs((int)world.x - (int)old_worldx) > 59)
 		{
 			old_worldx = world.x;
+			//走る音
+			if (CheckSoundMem(op_run_sound) == FALSE)
+			{
+				PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+			}
 		}
 		walk_abs = abs((int)world.x - (int)old_worldx);
 		// 歩行
@@ -1081,12 +1102,9 @@ void Player::LiftEvent(int set_num)
 		if (walk_abs != 0)
 		{
 			p_imgnum = 54 + walk_abs / 40;
+
 		}
-		//走る音
-		if (CheckSoundMem(op_run_sound) == FALSE)
-		{
-			PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
-		}
+
 		break;
 	case 1:
 		if (lift_anim_cnt++ < 30)
@@ -1112,7 +1130,11 @@ void Player::LiftEvent(int set_num)
 		}
 		else if(lift_anim_cnt>80)
 		{
-			p_imgnum = 27;
+			p_imgnum = 29;
+		}
+		
+		if (lift_anim_cnt > 100)
+		{
 			player_state = NOMAL;
 			lift_anim_cnt = 0;
 		}
@@ -2065,7 +2087,9 @@ void Player::HitMapChip(GameMainScene* gamemain)
 		SinkCheckTop(gamemain, world.x, world.y-half_height-1.0f);
 		stop_up_flg = true;
 	}
-	else {
+	else
+	{
+		stop_up_flg = false;
 	}
 
 	//移動前のｘ座標を渡す
@@ -2079,8 +2103,13 @@ void Player::HitMapChip(GameMainScene* gamemain)
 		fall_flg = false;
 		stop_up_flg = false;
 		//くい込んでたら上に押し出す
-		SinkCheck(gamemain, curent_x - half_width, world.y + half_height - 1.0f);
+		if (direction == 0) {
+			SinkCheck(gamemain, curent_x + half_width, world.y + half_height - 1.0f);
+		}
+		else {
+			SinkCheck(gamemain, curent_x - half_width, world.y + half_height - 1.0f);
 
+		}
 	}
 	else
 	{
@@ -2149,32 +2178,49 @@ void Player::SinkCheckObject(float set_y)
 		float sink_y = (world.y + half_height) - set_y;
 		if (sink_y > 0)
 		{
-			world.y = world.y - sink_y-1.0f;
+			world.y = world.y - sink_y - 1.0f;
 		}
 	}
 }
 
-void Player::SinkCheckObjectBlock(float set_y)
+void Player::SinkCheckX(float set_x,float set_half_width)
 {
-	int row = (int)set_y / BLOCKSIZE;
+	if (direction == 0)
+	{
+		int col = ((int)set_x - set_half_width) / BLOCKSIZE;
+		float block_x = (float)col * BLOCKSIZE;
+		float sink_x = fabs(block_x - set_x);
 
-		float block_y = (float)row * BLOCKSIZE;
-
-		float sink_y = fabs(block_y - set_y);
-		//もしめりこんでいたら
-		if (sink_y > 0) {
+		if (sink_x > 0)
+		{
 			//めり込んでいる分上にあげる
-			world.y = world.y - sink_y;
+			world.x = curent_x;
 		}
+	}
+	else
+	{
+		int col = ((int)set_x + set_half_width) / BLOCKSIZE;
+		float block_x = (float)col * BLOCKSIZE;
+		float sink_x = fabs(world.x - block_x);
+
+		if (sink_x > 0) 
+		{
+			world.x = curent_x;
+		}
+	}
+	
 
 
 }
 
 void Player::PushUpPlayer(float set_upper)
 {
-	//噴き出した水の頭のｙよりプレイヤーの足が下に居たら
-	if (set_upper+6.0f < GetVertex().lower_y)
+	if (stop_up_flg == false)
 	{
-		world.y = world.y - 3.0f;
+		//噴き出した水の頭のｙよりプレイヤーの足が下に居たら
+		if (set_upper + 6.0f < GetVertex().lower_y)
+		{
+			world.y = world.y - 3.0f;
+		}
 	}
 }
