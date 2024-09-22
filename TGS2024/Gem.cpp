@@ -21,7 +21,7 @@ Gem::Gem(World set_world, int gem_type,int set_score)
 	}
 	else {
 		// 黄の宝石画像の読み込み
-		LoadDivGraph("images/Gem/YellowGem1.png", 5, 5, 1, 32, 32, gem_img);
+		LoadDivGraph("images/Gem/YellowGem.png", 5, 5, 1, 32, 32, gem_img);
 		world.y += 32.0f;
 	}
 
