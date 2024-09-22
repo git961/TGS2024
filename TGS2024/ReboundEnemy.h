@@ -14,6 +14,7 @@ private:
 
 	EnemyState enemy_state;
 	int enemy_img[12];						// つるはしで跳ね返る敵の画像
+	int crack_img[2];						// ヒビ画像
 
 	double angle;						// 画像の角度
 	double degree;						// 角度計算用

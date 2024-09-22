@@ -22,6 +22,7 @@ ReboundEnemy::ReboundEnemy(float set_x, float set_y)
 
 	// 画像の読み込み
 	LoadDivGraph("images/Enemy/Rebound.png", 12, 5, 3, 64, 64, enemy_img);
+	LoadDivGraph("images/Enemy/Rebound_Crack.png", 2, 2, 1, 64, 64, crack_img);
 
 	angle = 0.0;
 	degree = 0.0;
@@ -36,10 +37,14 @@ ReboundEnemy::ReboundEnemy(float set_x, float set_y)
 
 ReboundEnemy::~ReboundEnemy()
 {
+	// 画像の削除
 	for (int i = 0; i < 12; i++)
 	{
-		// 画像の削除
 		DeleteGraph(enemy_img[i]);
+	}
+	for (int i = 0; i < 2; i++)
+	{
+		DeleteGraph(crack_img[i]);
 	}
 }
 
@@ -97,6 +102,15 @@ void ReboundEnemy::Draw() const
 	case EnemyState::ROLL:
 		// つるはしで跳ね返る敵の画像
 		DrawRotaGraph((int)location.x, (int)location.y + 5, 1.0, angle, enemy_img[enemy_img_num], TRUE, direction);
+		// ヒビ画像
+		if (hp <= 10.0f)
+		{
+			DrawRotaGraph((int)location.x, (int)location.y + 5, 1.0, angle, crack_img[1], TRUE, direction);
+		}
+		else if (hp <= 20.0f)
+		{
+			DrawRotaGraph((int)location.x, (int)location.y + 5, 1.0, angle, crack_img[0], TRUE, direction);
+		}
 		break;
 
 	default:
