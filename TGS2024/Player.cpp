@@ -1090,6 +1090,11 @@ void Player::LiftEvent(int set_num)
 		if (abs((int)world.x - (int)old_worldx) > 59)
 		{
 			old_worldx = world.x;
+			//走る音
+			if (CheckSoundMem(op_run_sound) == FALSE)
+			{
+				PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+			}
 		}
 		walk_abs = abs((int)world.x - (int)old_worldx);
 		// 歩行
@@ -1097,12 +1102,9 @@ void Player::LiftEvent(int set_num)
 		if (walk_abs != 0)
 		{
 			p_imgnum = 54 + walk_abs / 40;
+
 		}
-		//走る音
-		if (CheckSoundMem(op_run_sound) == FALSE)
-		{
-			PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
-		}
+
 		break;
 	case 1:
 		if (lift_anim_cnt++ < 30)
@@ -1128,7 +1130,11 @@ void Player::LiftEvent(int set_num)
 		}
 		else if(lift_anim_cnt>80)
 		{
-			p_imgnum = 27;
+			p_imgnum = 29;
+		}
+		
+		if (lift_anim_cnt > 100)
+		{
 			player_state = NOMAL;
 			lift_anim_cnt = 0;
 		}

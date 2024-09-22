@@ -78,7 +78,7 @@ void EventLift::Update(AttackCheck* ac, Player* player)
 		player_anim_num = 2;
 		player->SetY(world.y);
 		player->LiftEvent(player_anim_num);
-		if (world.y < 2850.f)
+		if (world.y < 2870.f)
 		{
 			world.y += 20.0f;
 		}
@@ -134,13 +134,17 @@ void EventLift::DownEventAnim()
 		break;
 	case 15:
 		spear_num = 2;
-		switch_object->SetImgNum(3);
 		break;
 	case 20:
-		switch_object->SetImgNum(4);
 		break;
 	case 25:
 		spear_num = 3;
+		break;
+	case 80:
+		switch_object->SetImgNum(3);
+		break;
+	case 85:
+		switch_object->SetImgNum(4);
 		break;
 	case 90:
 		anim_cnt = 0;

@@ -52,6 +52,6 @@ void Switch::Draw() const
 	}
 	else
 	{
-		DrawRotaGraph((int)location.x, (int)location.y, 2, 0, switch_img[img_num], TRUE);
+		DrawRotaGraph((int)location.x, (int)location.y, 2, 0, event_switch_img[img_num], TRUE);
 	}
 }
