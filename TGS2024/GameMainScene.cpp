@@ -15,7 +15,7 @@ GameMainScene::GameMainScene(bool set_flg)
 {
 
 	// 読み込みたいステージ
-	stage_num = StageNum::stage2;
+	stage_num = StageNum::stage1;
 
 	event_lift[0] = new EventLift(5280.0f, 1750.0f);//後で消す
 
@@ -2208,11 +2208,11 @@ void GameMainScene::GemGenerate()
 				{
 					rebound_gem[i] = new Gem(rebound_enemy[i]->GetWorldLocation(), 1, rebound_gem_score);
 					rebound_gem[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+					rebound_enemy[i]->SetGemDropFlg(false);
 				}
 			}
 		}
 	}
-
 }
 
 void GameMainScene::GemUpDate()
@@ -2970,8 +2970,8 @@ void GameMainScene::EnemyHitRock()
 				{
 					if (enemy[i]->GetIsKnockBack() == true)
 					{
-						// ノックバックしている敵に当たったら自身もノックバックを開始する
-						enemy[i]->SetKnockBackStartFlg(true);
+						// ノックバックしていたらダメージを与える
+						enemy[i]->Damage(10);
 					}
 					else
 					{
@@ -3000,8 +3000,8 @@ void GameMainScene::EnemyHitReturnBlock()
 					{
 						if (enemy[i]->GetIsKnockBack() == true)
 						{
-							// ノックバックしている敵に当たったら自身もノックバックを開始する
-							enemy[i]->SetKnockBackStartFlg(true);
+							// ノックバックしていたらダメージを与える
+							enemy[i]->Damage(10);
 						}
 						else
 						{

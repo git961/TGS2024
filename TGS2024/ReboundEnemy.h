@@ -59,4 +59,5 @@ public:
 	void ChangeDirection();
 	void SetHitEnemyX(float set_x) { hit_enemy_x = set_x; }
 	bool GetGemDropFlg() const;
+	void SetGemDropFlg(bool set_flg) { gem_drop_flg = set_flg; }
 };
