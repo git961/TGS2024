@@ -42,13 +42,15 @@ EndCreditsScene::EndCreditsScene(int set_score)
 	text_img[11] = LoadGraph("images/scene/credit/your_score.png");
 	text_img[12] = LoadGraph("images/scene/credit/dova_sindrome.png");
 	LoadDivGraph("images/scene/credit/num.png", 10, 10, 1, 64, 64, num_img);
-	push_b_img = LoadGraph("images/scene/credit/push_b_white.png");
+	LoadDivGraph("images/scene/credit/push_b.png", 3, 3, 1, 300, 64, push_b_img);
 
 	// サウンド読込
 	credits_bgm = LoadSoundMem("sounds/bgm/ending.mp3");
 	// サウンドの音量設定
 	ChangeVolumeSoundMem(volume, credits_bgm);
 
+	anim_cnt = 0;
+	b_img_num = 0;
 }
 
 EndCreditsScene::~EndCreditsScene()
@@ -63,7 +65,10 @@ EndCreditsScene::~EndCreditsScene()
 	{
 		DeleteGraph(num_img[i]);
 	}
-	DeleteGraph(push_b_img);
+	for (int i = 0; i < 3; i++)
+	{
+		DeleteGraph(push_b_img[i]);
+	}
 
 	// サウンド削除
 	DeleteSoundMem(credits_bgm);
@@ -117,8 +122,17 @@ void EndCreditsScene::Update()
 			// プレイヤーつるはしアニメーション開始
 			player->SetPushBFlg();
 		}
-	}
 
+		if (player->GetAnimEndFlg() == true)
+		{
+			if (b_img_num < 2)
+			{
+				anim_cnt++;
+
+				b_img_num = anim_cnt / 8;
+			}
+		}
+	}
 }
 
 void EndCreditsScene::Draw() const
@@ -158,15 +172,15 @@ void EndCreditsScene::Draw() const
 		DrawRotaGraph(860 - 110 * i, 2870 - timer, 2.0, 0.0, num_img[num[i]], TRUE, FALSE);
 	}
 
-	if (change_cnt <= 0)
-	{
-		DrawRotaGraph(640, 600, 1.0, 0.0, push_b_img, TRUE, FALSE);
-	}
-
 	if (volume >= 40)
 	{
 		// プレイヤーアニメーション描画処理
 		player->EndCreditsAnimDraw();
+	}
+
+	if (change_cnt <= 0)
+	{
+		DrawRotaGraph(640, 600, 1.2, 0.0, push_b_img[b_img_num], TRUE, FALSE);
 	}
 }
 

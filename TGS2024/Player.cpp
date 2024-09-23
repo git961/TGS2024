@@ -157,6 +157,7 @@ Player::Player(float set_x,float set_y)
 	change_scene_cnt = 0;
 	credits_walk_cnt = 0;
 	walk_cnt_up_flg = true;
+	anim_end_flg = false;
 
 	limit_y = 600;
 	fall_flg = false;
@@ -1767,6 +1768,7 @@ void Player::EndCreditsAnimUpdate()
 	{
 		// Bボタンでシーンを変えるときのアニメーション
 		ChangeSceneAnim();
+
 	}
 }
 
@@ -1957,6 +1959,7 @@ void Player::ChangeSceneAnim()
 				// つるはしse
 				PlaySoundMem(atk_sound, DX_PLAYTYPE_BACK);
 			}
+			anim_end_flg = true;
 		}
 	}
 

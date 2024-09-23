@@ -21,8 +21,11 @@ private:
 	int volume_timer;
 	int text_img[13];	// 使用素材のテキスト画像
 	int num_img[10];	// スコアで使う数字画像
-	int push_b_img;
+	int push_b_img[3];
 	int credits_bgm;
+
+	int anim_cnt;
+	int b_img_num;
 
 public:
 	EndCreditsScene(int set_score);
