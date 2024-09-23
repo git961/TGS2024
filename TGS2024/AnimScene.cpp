@@ -219,9 +219,9 @@ void AnimScene::Update()
 	//};
 
 	//仮スキップ
-	if (CheckHitKey(KEY_INPUT_SPACE) == 1) {
-		next_scene_flg = true;
-	}
+	//if (CheckHitKey(KEY_INPUT_SPACE) == 1) {
+	//	next_scene_flg = true;
+	//}
 }
 
 void AnimScene::Draw() const

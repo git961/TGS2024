@@ -994,9 +994,6 @@ void GameMainScene::Update()
 			game_state = EDITOR;
 		}
 
-		if (CheckHitKey(KEY_INPUT_N) == TRUE) {
-			game_state = GOAL;
-		}
 
 		if (retry_flg == true&&retry_fadein_once==true)
 		{
