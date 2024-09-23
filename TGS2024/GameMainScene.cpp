@@ -1377,8 +1377,19 @@ void GameMainScene::Draw() const
 					DrawGraph((int)stage_block[j]->GetLocation().x - 440, (int)stage_block[j]->GetLocation().y - 480, goal_door_img, TRUE);
 				}
 			}
-		}
 
+			// 間欠泉の描画
+			for (int i = 0; i < GEYSER_MAXNUM; i++)
+			{
+				if (geyser[i] != nullptr)
+				{
+					if (geyser[i]->GetWorldLocation().x > screen_origin_position.x - 100 && geyser[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+					{
+						geyser[i]->Draw();
+					}
+				}
+			}
+		}
 
 			//プレイヤー描画
 		if (player != nullptr)
@@ -1455,20 +1466,7 @@ void GameMainScene::Draw() const
 			}
 		}
 
-		if (stage_num == StageNum::stage2)
-		{
-			// 間欠泉の描画
-			for (int i = 0; i < GEYSER_MAXNUM; i++)
-			{
-				if (geyser[i] != nullptr)
-				{
-					if (geyser[i]->GetWorldLocation().x > screen_origin_position.x - 100 && geyser[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
-					{
-						geyser[i]->Draw();
-					}
-				}
-			}
-		}
+
 
 		//ステージブロック描画
 		for (int j = 0; j < block_count; j++)
