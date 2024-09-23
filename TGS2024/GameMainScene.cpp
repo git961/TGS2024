@@ -54,7 +54,7 @@ GameMainScene::GameMainScene(bool set_flg,int get_stage_num)
 		}
 		else {
 			//プレイヤーのリスタート位置を入れる
-			player = new Player(200.0f, 1700.0f);
+			player = new Player(0.0f, 1751.0f);
 			//player = new Player(5080.0f, 1700.0f);
 			current_location = CurrentLocation::middle;
 		}
@@ -281,6 +281,10 @@ GameMainScene::GameMainScene(bool set_flg,int get_stage_num)
 	alpha = 255;
 	black_flg = false;
 
+	change_stage_fadeout_flg = false;
+	change_stage_fadein_flg = false;
+	change_stage_alpha = 0;
+
 	p_life_num = 2;
 	gameover_anim_cnt = 0;
 	fadein_snd_flg = true;
@@ -454,23 +458,29 @@ void GameMainScene::ResetMap()
 				fragile_wall[object_num.fragile_wall_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				break;
 			case 13:
-				magma[object_num.magma_cnt++] = new Magma((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				magma[object_num.magma_cnt] = new Magma((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				magma[object_num.magma_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				break;
 			case 14:
-				falling_floor[object_num.falling_floor_cnt++] = new FallingFloor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				falling_floor[object_num.falling_floor_cnt] = new FallingFloor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				falling_floor[object_num.falling_floor_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				break;
 			case 15:
-				geyser[object_num.geyser_cnt++] = new Geyser((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				geyser[object_num.geyser_cnt] = new Geyser((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				geyser[object_num.geyser_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				break;
 			case 16:
 				cage_door[object_num.cage_door_cnt++] = new CageDoor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				cage[object_num.cage_cnt++] = new Cage(cage_door[object_num.cage_door_cnt - 1]->GetWorldLocation());
 				break;
 			case 17:
-				lift[object_num.lift_cnt++] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				lift[object_num.lift_cnt] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				lift[object_num.lift_cnt]->SetScreenPos(screen_origin_position.x, screen_origin_position.y);
+				lift[object_num.lift_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				break;
 			case 23:
-				green_gem[object_num.green_gem_cnt++] = new GreenGem((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2,700);
+				green_gem[object_num.green_gem_cnt] = new GreenGem((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2,700);
+				green_gem[object_num.green_gem_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				break;
 			}
 
@@ -774,6 +784,15 @@ void GameMainScene::Update()
 		}
 	}
 
+	if (stage_num == StageNum::stage2 && change_stage_fadein_flg == true)
+	{
+		change_stage_alpha -= 5;
+		if (change_stage_alpha < 0)
+		{
+			change_stage_fadein_flg = false;
+		}
+	}
+
 	switch (game_state)
 	{
 	case EDITOR:
@@ -849,14 +868,24 @@ void GameMainScene::Update()
 
 	case GOAL:
 		if (stage_num == StageNum::stage1) {
-			stage_num = StageNum::stage2;
-			player = nullptr;
-			player = new Player(200.0f, 1700.0f);
-			current_location = CurrentLocation::middle;
-			//ResetMap();
-			ChengeNextMap();
-			clear_alpha = 0;
-			game_state = PLAY;
+
+			//fadeする
+			change_stage_fadeout_flg = true;
+			change_stage_alpha += 4;
+			if (change_stage_alpha > 255)
+			{
+				stage_num = StageNum::stage2;
+				player = nullptr;
+				player = new Player(0.0f, 1751.0f);
+				current_location = CurrentLocation::middle;
+				//ResetMap();
+				ChengeNextMap();
+				clear_alpha = 0;
+				game_state = PLAY;
+				change_stage_fadeout_flg = false;
+				change_stage_fadein_flg = true;
+			}
+
 		}
 		else {
 			if (clear_alpha++ > 300)
@@ -1650,9 +1679,15 @@ void GameMainScene::Draw() const
 
 	if (game_state == GOAL)
 	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)clear_alpha);
-		DrawGraph(0, 0, goal_img, FALSE);
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		if (stage_num == StageNum::stage2) {
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)clear_alpha);
+			DrawGraph(0, 0, goal_img, FALSE);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		}
+		else {
+
+
+		}
 	}
 
 	if (game_state == POSE)
@@ -1663,12 +1698,21 @@ void GameMainScene::Draw() const
 		DrawGraph(550, 350, pose_img, FALSE);
 	}
 
-	if (retry_flg == true)
+	if (change_stage_fadeout_flg == true)
 	{
-		//リトライしてきたら、画面を黒から明るくする
-
+		//画面暗く
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, change_stage_alpha);
+		DrawGraph(0, 0, death_img, FALSE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 
+	if (change_stage_fadein_flg == true)
+	{
+		//画面暗く
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, change_stage_alpha);
+		DrawGraph(0, 0, death_img, FALSE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
 
 	//for (int i = 0; i < KEY_MAXNUM; i++)
 	//{
