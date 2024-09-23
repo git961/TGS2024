@@ -1635,6 +1635,12 @@ void Player::TutorialAnimUpdate()
 		{
 			move_x = 0;
 			start_flg = true;
+			attacking = false;
+			is_atk_putout = false;
+			p_atk_imgnum = 0;
+			attack_cnt = 0;
+			anim_cnt = 0;
+			atk_cnt_timer = 0;
 			player_state = NOMAL;
 		}
 		break;

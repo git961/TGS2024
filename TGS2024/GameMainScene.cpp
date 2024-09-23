@@ -3812,6 +3812,8 @@ void GameMainScene::PlayerHitHardEnemy()
 			// プレイヤーがダイナマイトでしか倒せない敵に当たっていたら
 			if (player->HitCheck(hard_enemy[i]->GetWorldLocation(), hard_enemy[i]->GetWidth(), hard_enemy[i]->GetHeight()) == true)
 			{
+				player->SinkCheckX(hard_enemy[i]->GetWorldLocation().x, hard_enemy[i]->GetWidth() / 2.0f);
+				
 				//プレイヤーに一回だけダメージを与える
 				PlayerDamage();
 			}
