@@ -320,7 +320,7 @@ void GameOverScene::Update()
 	if (change_flg==true)
 	{
 		//画面暗くする
-		if (fade_alpha < 255)
+		if (fade_alpha > 255)
 		{
 			fadeout_flg = true;
 		}

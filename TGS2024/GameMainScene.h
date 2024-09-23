@@ -244,6 +244,10 @@ private:
     float respawn_x;    //復活位置ｘ
     float respawn_y;    //復活位置ｙ
 
+    bool change_stage_fadeout_flg;//次のステージに以降するときの画面暗くする用
+    int change_stage_alpha;
+    bool change_stage_fadein_flg;
+
 public:
     GameMainScene(bool set_flg,int get_stage_num);
     virtual~GameMainScene() override;

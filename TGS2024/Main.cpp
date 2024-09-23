@@ -37,8 +37,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if (DxLib_Init() == -1) return -1;	// DXライブラリの初期化処理
 
 	SetDrawScreen(DX_SCREEN_BACK);	// 描画先画面を裏にする
-	//new GameMainScene(true)
-	SceneManager SceneManager(dynamic_cast<AbstractScene*>(new GameMainScene(true,0)));
+	//new GameMainScene(true,1)
+	SceneManager SceneManager(dynamic_cast<AbstractScene*>(new TitleScene));
 	Input input;
 	fps fp;
 	//ループ前にFPS計測を初期化
