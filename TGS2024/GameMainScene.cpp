@@ -1245,6 +1245,9 @@ void GameMainScene::Update()
 
 void GameMainScene::Draw() const
 {
+
+	DrawBox(0, 0, 11520, 3136, 0x161520, TRUE);
+
 	//// 背景画像描画（仮）
 	if (stage_num == StageNum::stage1)
 	{
@@ -1260,11 +1263,11 @@ void GameMainScene::Draw() const
 
 	if (stage_num == StageNum::stage2)
 	{
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < 9; i++)
 		{
 			DrawGraph((int)location_x + 1280 * i, (int)location_y + 1080, back_img[1], FALSE);
 		}
-		DrawGraph((int)location_x + 5120, (int)location_y + 2006, back_lower_img, FALSE);
+		DrawGraph((int)location_x + 5120, (int)location_y +1750, back_lower_img, FALSE);
 		DrawGraph((int)location_x + 7454, (int)location_y, back_upper_img, FALSE);
 	}
 
