@@ -65,8 +65,10 @@ private:
 	bool fadeout_flg;//画面が暗くなったか？
 	int black_img;//暗転用画像
 
+	int set_stage_num;
+
 public:
-	GameOverScene();
+	GameOverScene(int stage_num);
 	~GameOverScene();
 
 	void Update() override;

@@ -7,7 +7,8 @@ GreenGem::GreenGem(float set_x, float set_y, int set_score)
 	location.x = set_x;
 	location.y = set_y;
 
-	gem_img[0] = LoadGraph("images/Gem/GreenGem.png");
+	//gem_img[0] = LoadGraph("images/Gem/GreenGem.png");
+	LoadDivGraph("images/Gem/GreenGem.png", 5, 5, 1, 49, 46, gem_img);
 	LoadDivGraph("images/Gem/effect.png", 4, 4, 1, 32, 32, effect_img);
 	size = 1.0f;
 	width = 50.0f;
@@ -91,7 +92,7 @@ void GreenGem::Draw() const
 	if (draw_effect == false)
 	{
 		// 宝石画像
-		DrawRotaGraph((int)location.x, (int)location.y, size, 0.0, gem_img[0], TRUE, 0);
+		DrawRotaGraph((int)location.x, (int)location.y, size, 0.0, gem_img[anim_num], TRUE, 0);
 	}
 	else
 	{

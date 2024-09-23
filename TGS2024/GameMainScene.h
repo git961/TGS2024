@@ -96,6 +96,8 @@ private:
 
     bool get_key_array[KEY_MAXNUM];//手に入れたカギ入る番号 青：0 赤：1
 
+    int check_point_score;//チェックポイント時点のスコアを保存する
+
     Player* player;
     Enemy* enemy[ENEMYMAXNUM];
     RollingEnemy* rolling_enemy[ROLLING_ENEMY_MAXNUM];
@@ -243,7 +245,7 @@ private:
     float respawn_y;    //復活位置ｙ
 
 public:
-    GameMainScene(bool set_flg);
+    GameMainScene(bool set_flg,int get_stage_num);
     virtual~GameMainScene() override;
 
     void ResetMap();
