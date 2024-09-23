@@ -77,7 +77,6 @@ void ReboundEnemy::Update()
 		break;
 
 	case EnemyState::DEATH:
-		gem_drop_flg = true;
 		// 死亡seの再生
 		PlayDeathSound();
 		Death();
@@ -237,6 +236,7 @@ void ReboundEnemy::CheckDeathCondition()
 		degree = 0.0;
 		// 画像の角度
 		angle = DEGREE_RADIAN(degree);
+		gem_drop_flg = true;
 	}
 }
 
