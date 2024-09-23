@@ -1263,10 +1263,10 @@ void GameMainScene::Draw() const
 
 	if (stage_num == StageNum::stage2)
 	{
-		//for (int i = 0; i < 9; i++)
-		//{
-			DrawGraph((int)location_x + 1280 * 9, (int)location_y + 1080, back_img[1], FALSE);
-		//}
+		for (int i = 0; i < 9; i++)
+		{
+			DrawGraph((int)location_x + 1280 * i, (int)location_y + 1080, back_img[1], FALSE);
+		}
 		DrawGraph((int)location_x + 5120, (int)location_y +1750, back_lower_img, FALSE);
 		DrawGraph((int)location_x + 7454, (int)location_y, back_upper_img, FALSE);
 	}
