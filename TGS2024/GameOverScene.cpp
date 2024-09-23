@@ -1,7 +1,10 @@
 #include "GameOverScene.h"
 
-GameOverScene::GameOverScene()
+GameOverScene::GameOverScene(int stage_num)
 {
+
+	set_stage_num = stage_num;
+
 	change_cnt = 60;
 	volume = 150;
 	play_sound_flg = true;
@@ -402,7 +405,7 @@ AbstractScene* GameOverScene::Change()
 
 		if (cursor_num == Retry)
 		{
-			return new GameMainScene(true);
+			return new GameMainScene(true,set_stage_num);
 		}
 		else {
 			// Bボタンでタイトルに遷移

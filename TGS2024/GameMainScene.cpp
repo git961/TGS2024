@@ -11,12 +11,15 @@ static cameraposition screen_origin_position =
 	camera_pos.y - SCREEN_HEIGHT / 2.0f
 };
 
-GameMainScene::GameMainScene(bool set_flg)
+GameMainScene::GameMainScene(bool set_flg,int get_stage_num)
 {
-
-	// 読み込みたいステージ
-	stage_num = StageNum::stage1;
-
+	if (get_stage_num == 0) {
+		// 読み込みたいステージ
+		stage_num = StageNum::stage1;
+	}
+	else {
+		stage_num = StageNum::stage2;
+	}
 	event_lift[0] = new EventLift(5280.0f, 1750.0f);//後で消す
 
 	retry_flg = set_flg;
@@ -51,8 +54,8 @@ GameMainScene::GameMainScene(bool set_flg)
 		}
 		else {
 			//プレイヤーのリスタート位置を入れる
-			//player = new Player(200.0f, 1700.0f);
-			player = new Player(5080.0f, 1700.0f);
+			player = new Player(200.0f, 1700.0f);
+			//player = new Player(5080.0f, 1700.0f);
 			current_location = CurrentLocation::middle;
 		}
 	}
@@ -69,7 +72,7 @@ GameMainScene::GameMainScene(bool set_flg)
 	////back.png
 	//back_img[0] = LoadGraph("images/Backimg/backimg0.png", TRUE);
 	//back_img[1] = LoadGraph("images/Backimg/backimg01.png", TRUE);
-	back_img[0] = LoadGraph("images/Backimg/backimg.png", TRUE);
+	back_img[0] = LoadGraph("images/Backimg/backimg0.png", TRUE);
 	back_img[1] = LoadGraph("images/Backimg/backimg.png", TRUE);
 	//back_img[9] = LoadGraph("images/Backimg/backimgGoal.png", TRUE);
 	back_img[9] = LoadGraph("images/Backimg/backimgGoal01.png", TRUE);
@@ -210,6 +213,8 @@ GameMainScene::GameMainScene(bool set_flg)
 	}
 	else
 	{
+		score = nullptr;
+		score = new Score;
 
 		//ResetMap();
 		ChengeNextMap();
@@ -551,7 +556,8 @@ void GameMainScene::ChengeNextMap()
 	mapio->LoadMapData(stage_num);
 
 	SetObjectNull();
-	score = nullptr;
+	
+	//score = nullptr;
 
 	//ステージブロックにNullを入れる
 	for (int i = 0; i < MAP_BLOCKMAX; i++)
@@ -728,7 +734,7 @@ void GameMainScene::ChengeNextMap()
 		}
 	}
 
-	score = new Score();
+	//score = new Score();
 }
 
 void GameMainScene::Update()
@@ -920,7 +926,6 @@ void GameMainScene::Update()
 				{
 					ui->SetLifeNum(p_life_num);
 				}
-				score = nullptr;
 
 				ResetMap();
 			}
@@ -1214,21 +1219,21 @@ void GameMainScene::Draw() const
 	//// 背景画像描画（仮）
 	if (stage_num == StageNum::stage1)
 	{
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < 9; i++)
 		{
-			DrawGraph((int)location_x + 1280 * i, (int)location_y, back_img[0], FALSE);
+			DrawGraph((int)location_x + 1280 * i, (int)location_y, back_img[1], FALSE);
 		}
 		//ゴールの画像
 		//DrawGraph((int)location_x + 1280 * 8, (int)location_y, back_img[9], FALSE);
 		// 矢印の表示
-		//DrawGraph((int)location_x + 1280, (int)location_y, back_img[0], FALSE);
+		DrawGraph((int)location_x + 1280, (int)location_y, back_img[0], FALSE);
 	}
 
 	if (stage_num == StageNum::stage2)
 	{
 		for (int i = 0; i < 8; i++)
 		{
-			DrawGraph((int)location_x + 1280 * i, (int)location_y + 1080, back_img[0], FALSE);
+			DrawGraph((int)location_x + 1280 * i, (int)location_y + 1080, back_img[1], FALSE);
 		}
 		DrawGraph((int)location_x + 5120, (int)location_y + 2006, back_lower_img, FALSE);
 		DrawGraph((int)location_x + 7454, (int)location_y, back_upper_img, FALSE);
@@ -3192,7 +3197,8 @@ void GameMainScene::PlayerHitLift()
 					}
 					else
 					{
-						player->SetY(lift[i]->GetWorldLocation().y-2.0f);
+						player->SetY(lift[i]->GetWorldLocation().y - 2.0f);
+						
 					}
 
 					//止まっていたら押し上げる
@@ -3212,9 +3218,9 @@ void GameMainScene::PlayerHitEventLift()
 {
 	if (event_lift[0] != nullptr && player != nullptr)
 	{
-		if (player->HitCheck(event_lift[0]->GetWorldLocation(), event_lift[0]->GetWidth(), event_lift[0]->GetHeight()) == true)
+		if (player->HitCheck(event_lift[0]->GetWorldLocation(), event_lift[0]->GetWidth(), event_lift[0]->GetHeight()+20.0f) == true)
 		{
-			player->SetY(event_lift[0]->GetWorldLocation().y);
+			player->EventSetY(event_lift[0]->GetWorldLocation().y);
 			player->SetFallFlg(false);
 			player->SetLiftHitFlg(true);
 
@@ -3806,6 +3812,8 @@ void GameMainScene::PlayerHitHardEnemy()
 			// プレイヤーがダイナマイトでしか倒せない敵に当たっていたら
 			if (player->HitCheck(hard_enemy[i]->GetWorldLocation(), hard_enemy[i]->GetWidth(), hard_enemy[i]->GetHeight()) == true)
 			{
+				player->SinkCheckX(hard_enemy[i]->GetWorldLocation().x, hard_enemy[i]->GetWidth() / 2.0f);
+				
 				//プレイヤーに一回だけダメージを与える
 				PlayerDamage();
 			}
@@ -4113,6 +4121,7 @@ void GameMainScene::PlayerHitRespawn()
 			{
 				respawn_x = stage_block[i]->GetWorldLocation().x;
 				respawn_y = stage_block[i]->GetWorldLocation().y;
+
 			}
 		}
 	}
@@ -4152,8 +4161,10 @@ AbstractScene* GameMainScene::Change()
 			StopSoundMem(main_bgm);
 		}
 
+
+
 		// プレイヤーの残機が0になったら
-		return new GameOverScene();
+		return new GameOverScene((int)stage_num);
 	}
 
 	if (clear_flg == true)

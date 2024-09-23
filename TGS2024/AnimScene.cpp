@@ -358,7 +358,7 @@ AbstractScene* AnimScene::Change() {
 	if(next_scene_flg==true)
 	{
 		StopSoundMem(anim_bgm);
-		return new GameMainScene(false);
+		return new GameMainScene(false,0);
 	}
 	return this;
 }

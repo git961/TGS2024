@@ -164,6 +164,7 @@ Player::Player(float set_x,float set_y)
 	lift_hit_flg = false;
 	geyser_hit_flg = false;
 	magma_hit_flg = false;
+	floorblock_hit_flg = false;
 	fallingfloor_hit_flg = false;
 	vel = 1.0f;
 	set_speed = 0.0f;
@@ -1635,6 +1636,12 @@ void Player::TutorialAnimUpdate()
 		{
 			move_x = 0;
 			start_flg = true;
+			attacking = false;
+			is_atk_putout = false;
+			p_atk_imgnum = 0;
+			attack_cnt = 0;
+			anim_cnt = 0;
+			atk_cnt_timer = 0;
 			player_state = NOMAL;
 		}
 		break;
@@ -2098,6 +2105,7 @@ void Player::HitMapChip(GameMainScene* gamemain)
 	//移動前のｘ座標を渡す
 	if (gamemain->CollisionCharaBottom(half_width, half_height, curent_x, world.y))
 	{
+		floorblock_hit_flg = true;
 		speed = 0.0f;
 		if (fall_flg == true)
 		{
@@ -2116,11 +2124,12 @@ void Player::HitMapChip(GameMainScene* gamemain)
 	}
 	else
 	{
+		floorblock_hit_flg = false;
+
 		if (lift_hit_flg != false)return;
 		if (geyser_hit_flg != false)return;
 		if (magma_hit_flg != false)return;
 		if (fallingfloor_hit_flg != false)return;
-
 		fall_flg = true;
 	}
 
