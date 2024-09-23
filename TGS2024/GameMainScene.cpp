@@ -77,6 +77,7 @@ GameMainScene::GameMainScene(bool set_flg,int get_stage_num)
 	//back_img[9] = LoadGraph("images/Backimg/backimgGoal.png", TRUE);
 	back_img[9] = LoadGraph("images/Backimg/backimgGoal01.png", TRUE);
 	goal_img = LoadGraph("images/Ending/ending8.png", TRUE);
+	stage1_goal_img = LoadGraph("images/Stage/Goal01.png", TRUE);
 	goal_door_img = LoadGraph("images/Stage/Goal.png", TRUE);
 	death_img = LoadGraph("images/Backimg/death.png", TRUE);
 	pose_img = LoadGraph("images/UI/pose.png", TRUE);
@@ -1252,18 +1253,20 @@ void GameMainScene::Draw() const
 		{
 			DrawGraph((int)location_x + 1280 * i, (int)location_y, back_img[1], FALSE);
 		}
+
 		//ゴールの画像
 		//DrawGraph((int)location_x + 1280 * 8, (int)location_y, back_img[9], FALSE);
 		// 矢印の表示
 		DrawGraph((int)location_x + 1280, (int)location_y, back_img[0], FALSE);
+		
 	}
 
 	if (stage_num == StageNum::stage2)
 	{
-		for (int i = 0; i < 9; i++)
-		{
-			DrawGraph((int)location_x + 1280 * i, (int)location_y + 1080, back_img[1], FALSE);
-		}
+		//for (int i = 0; i < 9; i++)
+		//{
+			DrawGraph((int)location_x + 1280 * 9, (int)location_y + 1080, back_img[1], FALSE);
+		//}
 		DrawGraph((int)location_x + 5120, (int)location_y +1750, back_lower_img, FALSE);
 		DrawGraph((int)location_x + 7454, (int)location_y, back_upper_img, FALSE);
 	}

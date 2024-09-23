@@ -175,6 +175,8 @@ private:
     float world_x;
     float world_y;
 
+    int stage1_goal_img;
+
     //camera_x - 1280 / 2;
     //camera_y - 720 / 2;
 
