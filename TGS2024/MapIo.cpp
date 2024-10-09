@@ -210,12 +210,6 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		map_data_num = 22;
 	}
 
-	////カギ宝石
-	//if (CheckHitKey(KEY_INPUT_L) == TRUE)
-	//{
-	//	map_data_num = 23;
-	//}
-
 	//グリーン宝石
 	if (CheckHitKey(KEY_INPUT_L) == TRUE)
 	{
@@ -238,15 +232,15 @@ void MapIo::InputTest(GameMainScene* gamemain)
 	}*/
 
 
-	if (mouse_x > local_posx)
-	{
-		world_mouse_x = world_posx + now_abs_x;
-	}
+	//if (mouse_x > local_posx)
+	//{
+	//	world_mouse_x = world_posx + now_abs_x;
+	//}
 
-	if (mouse_x < local_posx)
-	{
-		world_mouse_x = world_posx - now_abs_x;
-	}
+	//if (mouse_x < local_posx)
+	//{
+	//	world_mouse_x = world_posx - now_abs_x;
+	//}
 
 	if (mouse_y > local_posy)
 	{
@@ -258,24 +252,24 @@ void MapIo::InputTest(GameMainScene* gamemain)
 		world_mouse_y = world_posy - now_abs_y;
 	}
 
+	//mouse_x(マウスの座標)-local_posx(カメラ左端の座標)でマウスのworld座標を出す
+	world_mouse_x = fabs(mouse_x - local_posx);
+
 	//ブロック追加
+	//マウスが左クリックされたら
 	if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0) {
-		//押されてる
-		//i=ｙ座標
+
 		for (int i = 0; i < map_blockmax_y; i++)
 		{
 			//j=ｘ座標
 			for (int j = 0; j < map_blockmax_x; j++)
 			{
-				//もしこの範囲に居たら
-				//ワールド座標とマウスの座標を比べる
+				//j*BLOCKSIZE=ブロックのx座標 i*BLOCKSIZE=ブロックのy座標
+				//もしこのブロック座標範囲にマウスが居たら
 				if (j * BLOCKSIZE < world_mouse_x && j * BLOCKSIZE + BLOCKSIZE >world_mouse_x) {
 					if (i * BLOCKSIZE < world_mouse_y && i * BLOCKSIZE + BLOCKSIZE > world_mouse_y)
 					{
 						map_array[i][j] = map_data_num;
-
-						//j*BLOCKSIZE=左上の座標＋幅/２すれば真ん中のY
-						//i*BLOCKSIZE=左上の座標＋幅/２すれば真ん中のY
 					}
 				}
 			}
