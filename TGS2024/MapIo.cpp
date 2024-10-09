@@ -220,28 +220,6 @@ void MapIo::InputTest(GameMainScene* gamemain)
 	now_abs_y = fabsf(mouse_y - local_posy);
 
 
-	//マウスがプレイヤーの右に居たら
-	/*if (mouse_x > p_localx)
-	{
-		world_mouse_x = p_worldx+now_abs;
-	}
-
-	if (mouse_x < p_localx)
-	{
-		world_mouse_x = p_worldx - now_abs;
-	}*/
-
-
-	//if (mouse_x > local_posx)
-	//{
-	//	world_mouse_x = world_posx + now_abs_x;
-	//}
-
-	//if (mouse_x < local_posx)
-	//{
-	//	world_mouse_x = world_posx - now_abs_x;
-	//}
-
 	if (mouse_y > local_posy)
 	{
 		world_mouse_y = world_posy + now_abs_y;
