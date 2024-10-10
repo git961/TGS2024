@@ -16,7 +16,7 @@ ReboundEnemy::ReboundEnemy(float set_x, float set_y)
 	hp = 30.0f;
 	speed = 1.0f;
 	direction = false;
-	hit_enemy_x = 0.0f;
+	hit_obj_x = 0.0f;
 
 	enemy_state = EnemyState::WALK;
 
@@ -67,10 +67,6 @@ void ReboundEnemy::Update()
 		break;
 
 	case EnemyState::ROLL:
-		if (hit_pickaxe_flg == true)
-		{
-			CheckDirectionRolling();
-		}
 		ChangeAngle();
 		Move();
 		CheckDeathCondition();
@@ -133,7 +129,8 @@ void ReboundEnemy::Draw() const
 		DrawRotaGraph((int)star_x, (int)star_y, 1.0, star_radian, star_img, TRUE, star_direction);
 	}
 
-	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", hp);
+	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "roll: %d", roll_left_flg);
+	//DrawFormatString((int)location.x, (int)location.y-30, 0xffff00, "roll_f: %d", roll_flg);
 }
 
 void ReboundEnemy::Move()
@@ -204,26 +201,38 @@ void ReboundEnemy::ChangeAngle()
 		}
 	}
 
-	// 画像の角度
+	// 画像の角度の変換
 	angle = DEGREE_RADIAN(degree);
 }
 
 void ReboundEnemy::CheckDirectionRolling()
 {
+	// つるはしで攻撃されたときのみプレイヤーの向きと同じ方向に進行・回転する
+
 	if (player_direction == false)
 	{
-		// 右に転がる
+		/* プレイヤーが右を向いていたら右に転がる */
+
+		// 画像を反転させる
+		direction = true;
+		// 回転向きを右に
 		roll_left_flg = false;
+		// 右に移動
 		move_x = 1.0f;
 	}
 	else
 	{
+		// 画像の反転なし
+		direction = false;
+		// 回転向きを左に
+		roll_left_flg = true;
+		// 左に移動
 		move_x = -1.0f;
 	}
 
+	// 転がるスピード
 	speed = 4.0f;
 	roll_flg = true;
-	hit_pickaxe_flg = false;
 }
 
 void ReboundEnemy::CheckDeathCondition()
@@ -233,9 +242,10 @@ void ReboundEnemy::CheckDeathCondition()
 		enemy_state = EnemyState::DEATH;			// 死亡状態に遷移
 		anim_cnt = 0;
 
+		// 画像の角度を0度にする
 		degree = 0.0;
-		// 画像の角度
 		angle = DEGREE_RADIAN(degree);
+		// 宝石を落とす
 		gem_drop_flg = true;
 	}
 }
@@ -288,24 +298,21 @@ void ReboundEnemy::ChangeDirection()
 
 	if (direction == false)
 	{
-		// 左向きに変更
+		// 画像が反転していなかったら（左向きなら）
+		// 画像を反転する（右向きに変更）
 		direction = true;
-		if (roll_left_flg == false)
-		{
-			roll_left_flg = true;
-		}
+		// 回転向きを右に
+		roll_left_flg = false;
 	}
 	else
 	{
-		// 右向きに変更
+		// 画像を反転させない（左向きに変更）
 		direction = false;
-		if (roll_left_flg == true)
-		{
-			roll_left_flg = false;
-		}
+		// 回転向きを左に
+		roll_left_flg = true;
 	}
 
-	if (world.x > hit_enemy_x)
+	if (world.x > hit_obj_x)
 	{
 		world.x += 5;
 	}

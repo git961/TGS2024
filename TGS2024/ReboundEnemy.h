@@ -24,7 +24,7 @@ private:
 	bool hit_pickaxe_flg;				// つるはしに当たったか？
 	bool roll_left_flg;					// 左に転がるか？
 	bool roll_flg;						// 転がっているか？
-	float hit_enemy_x;
+	float hit_obj_x;					// 当たったオブジェクトのx座標（ワールド）
 
 public:
 	ReboundEnemy(float set_x, float set_y);
@@ -40,9 +40,6 @@ private:
 	// 転がるときの画像角度変更
 	void ChangeAngle();
 
-	// 転がる向きを調べる
-	void CheckDirectionRolling();
-
 	// 死亡状態に遷移するか調べる
 	void CheckDeathCondition();
 
@@ -56,8 +53,12 @@ public:
 
 	// つるはしで攻撃された
 	void SetHitPickaxeFlg();
+	// 転がる向きを調べる
+	void CheckDirectionRolling();
+	// 回転向きの変更
 	void ChangeDirection();
-	void SetHitEnemyX(float set_x) { hit_enemy_x = set_x; }
+
+	void SetHitObjX(float set_x) { hit_obj_x = set_x; }
 	bool GetGemDropFlg() const;
 	void SetGemDropFlg(bool set_flg) { gem_drop_flg = set_flg; }
 };

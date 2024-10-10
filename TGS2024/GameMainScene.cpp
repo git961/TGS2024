@@ -3067,8 +3067,6 @@ void GameMainScene::EnemyHitReturnBlock()
 							enemy[i]->SetHitEnemyX(stage_block[j]->GetWorldLocation().x);
 							enemy[i]->ChangeDirection();
 						}
-
-
 					}
 				}
 			}
@@ -3107,15 +3105,13 @@ void GameMainScene::EnemyHitReturnBlock()
 					if (rebound_enemy[i]->HitCheck(stage_block[j]->GetWorldLocation(), stage_block[j]->GetWidth(), stage_block[j]->GetHeight()) == true)
 					{
 						// 当たっていたら進行方向を反対に変更する
-						rebound_enemy[i]->SetHitEnemyX(stage_block[j]->GetWorldLocation().x);
+						rebound_enemy[i]->SetHitObjX(stage_block[j]->GetWorldLocation().x);
 						rebound_enemy[i]->ChangeDirection();
 					}
 				}
 			}
 		}
-
 	}
-
 }
 
 void GameMainScene::DynamiteHitRock()
@@ -3146,9 +3142,7 @@ void GameMainScene::DynamiteHitRock()
 					rock[j]->SetShakeFlg(true);
 				}
 			}
-
 		}
-		
 	}
 }
 
@@ -3231,7 +3225,6 @@ void GameMainScene::LiftUpDate()
 //プレイヤーとリフトの当たり判定
 void GameMainScene::PlayerHitLift()
 {
-
 	for (int i = 0; i < LIFT_MAXNUM; i++)
 	{
 		if (lift[i] != nullptr && player != nullptr)
@@ -3261,7 +3254,6 @@ void GameMainScene::PlayerHitLift()
 					}
 				}
 			}
-
 		}
 	}
 }
@@ -3292,8 +3284,6 @@ void GameMainScene::PlayerHitEventLift()
 			player->SetLiftHitFlg(false);
 		}
 	}
-
-
 }
 
 //リフトとリフトとめる奴の判定
@@ -3365,7 +3355,6 @@ void GameMainScene::PlayerHitCageDoor()
 				// プレイヤーの歩行を止める
 				player->HitCheckB(cage_door[i]->GetVertex());
 			}
-
 		}
 	}
 }
@@ -3545,7 +3534,6 @@ void GameMainScene::PlayerHitFallingFloor()
 				{
 					player->SetY(falling_floor[i]->GetWorldLocation().y - (falling_floor[i]->GetHeight()/2)-2.0f);
 				}
-
 
 				//player->HitCheckB(falling_floor[i]->GetVertex());
 			}
@@ -4010,15 +3998,13 @@ void GameMainScene::PickaxeHitReboundEnemy()
 						rebound_enemy[i]->SetStarFlg();
 						if (rebound_enemy[i]->GetRollFlg() == false)
 						{
-							rebound_enemy[i]->SetPlayerDirection(player->GetDirection());
 							rebound_enemy[i]->SetHitPickaxeFlg();
 						}
-						else
-						{
-							// 当たっていたら進行方向を反対に変更する
-							rebound_enemy[i]->SetHitEnemyX(player->GetWorldLocation().x);
-							rebound_enemy[i]->ChangeDirection();
-						}
+
+						rebound_enemy[i]->SetPlayerDirection(player->GetDirection());
+						// 転がる向きを調べる
+						rebound_enemy[i]->CheckDirectionRolling();
+
 						enemy_damage_once = true;
 					}
 				}
