@@ -35,8 +35,11 @@ Lift::~Lift()
 	DeleteGraph(lift_img);
 }
 
-void Lift::Update(AttackCheck* ac,Player* player)
+void Lift::Update(GameMainScene* gamemain)
 {
+
+	Player* player = gamemain->GetPlayer();
+	AttackCheck* ac = gamemain->GetAttackCheck();
 
 	if (world.x - (width - 50.0f) <= player->GetWorldLocation().x && world.x + (width + 50.0f) >= player->GetWorldLocation().x)
 	{
@@ -105,7 +108,7 @@ void Lift::Update(AttackCheck* ac,Player* player)
 		{ 
 			anim_start_flg = true;
 		}
-		switch_object->Update();
+		switch_object->Update(gamemain);
 	}
 
 

@@ -30,7 +30,7 @@ HardEnemy::~HardEnemy()
 	}
 }
 
-void HardEnemy::Update()
+void HardEnemy::Update(GameMainScene* gamemain)
 {
 	switch (enemy_state)
 	{

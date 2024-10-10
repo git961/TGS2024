@@ -32,7 +32,7 @@ private:
 public:
     Dynamite(World set_xy,int set_direction);
     ~Dynamite();
-    void Update();
+    void Update(GameMainScene* gamemain);
     void Draw() const;
     void DamageCalculation();       // ダメージの計算
 

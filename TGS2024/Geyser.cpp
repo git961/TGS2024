@@ -55,7 +55,7 @@ Geyser::~Geyser()
 }
 
 // 更新処理
-void Geyser::Update()
+void Geyser::Update(GameMainScene* gamemain)
 {
 	// 頂点の更新
 	SetVertex();

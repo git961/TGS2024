@@ -48,7 +48,7 @@ ReboundEnemy::~ReboundEnemy()
 	}
 }
 
-void ReboundEnemy::Update()
+void ReboundEnemy::Update(GameMainScene* gamemain)
 {
 	// 頂点の設定
 	SetVertex();

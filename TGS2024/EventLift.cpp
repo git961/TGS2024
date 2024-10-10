@@ -42,8 +42,10 @@ EventLift::~EventLift()
 	DeleteGraph(lift_img);
 }
 
-void EventLift::Update(AttackCheck* ac, Player* player)
+void EventLift::Update(GameMainScene* gamemain)
 {
+	Player* player = gamemain->GetPlayer();
+	AttackCheck* ac = gamemain->GetAttackCheck();
 
 	switch_object->SetLocalPosition(screen_position_x, screen_position_y);
 
@@ -67,7 +69,7 @@ void EventLift::Update(AttackCheck* ac, Player* player)
 				player_anim_num = 1;
 				anim_state = AnimState::BeTrapped;
 			}
-			switch_object->Update();
+			switch_object->Update(gamemain);
 		}
 		break;
 	case AnimState::BeTrapped:

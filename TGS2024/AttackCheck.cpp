@@ -18,10 +18,12 @@ AttackCheck::~AttackCheck()
 {
 }
 
-void AttackCheck::Update(GameMainScene* gamemain,Player* player)
+void AttackCheck::Update(GameMainScene* gamemain)
 {
 	input.InputUpdate();
-	
+	//ヘッダーに写す
+	Player* player = gamemain->GetPlayer();
+
 	//Bおしたら攻撃
 	if(player->GetAttacking() == true)
     {

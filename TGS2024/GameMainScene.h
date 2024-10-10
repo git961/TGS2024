@@ -31,7 +31,7 @@
 #include "GreenGem.h"
 #include <crtdbg.h>
 #include <stdlib.h>
-
+#include "ObjectBase.h"
 
 class RollingEnemy;
 class AttackCheck;
@@ -43,6 +43,7 @@ class Lift;
 class EventLift;
 class GreenGem;
 enum class StageNum;
+
 
 struct cameraposition
 {
@@ -89,6 +90,7 @@ struct ObjectNum {
 class GameMainScene : public AbstractScene
 {
 private:
+    ObjectBase* characters[100];
 
     GameState game_state;
     StageNum stage_num;
@@ -131,6 +133,7 @@ private:
     Key* key_gem[KEY_MAXNUM];
 
     ObjectNum object_num;
+    int object_cnt;//ワンチャン消す
 
     LongLeggedEnemy* long_legs_enemy[LONG_LEGS_ENEMY_MAXNUM]; // 脚が長い敵
     HardEnemy* hard_enemy[HARD_ENEMY_MAXNUM];             // ダイナマイトでしか倒せない敵
@@ -273,6 +276,7 @@ public:
 
     MapIo* GetMapIo() { return mapio; }
     Player* GetPlayer() { return player; }
+    AttackCheck* GetAttackCheck() { return ac; }
 
     //StageBlock* GetStageBlock(int num_y,int num_x){return stage_block[num_y][num_x] }
 

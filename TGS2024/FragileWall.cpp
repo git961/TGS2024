@@ -28,7 +28,7 @@ FragileWall::~FragileWall()
 }
 
 // 更新処理
-void FragileWall::Update()
+void FragileWall::Update(GameMainScene* gamemain)
 {
 	// 頂点の設定
 	SetVertex();

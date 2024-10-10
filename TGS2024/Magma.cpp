@@ -46,7 +46,7 @@ Magma::~Magma()
 }
 
 // 更新処理
-void Magma::Update()
+void Magma::Update(GameMainScene* gamemain)
 {
 	// 頂点の更新
 	SetVertex();

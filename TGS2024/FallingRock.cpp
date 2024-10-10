@@ -37,7 +37,11 @@ FallingRock::~FallingRock()
 
 }
 
-void FallingRock::Update()
+void FallingRock::Update(GameMainScene* gamemain)
+{
+}
+
+void FallingRock::AnimUpdate()
 {
 	//落下
 

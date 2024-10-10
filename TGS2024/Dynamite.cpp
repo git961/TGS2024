@@ -53,7 +53,7 @@ Dynamite::~Dynamite()
 	DeleteSoundMem(bomb_sound);
 }
 
-void Dynamite::Update()
+void Dynamite::Update(GameMainScene* gamemain)
 {
 	if (dynamite_flg == false)
 	{

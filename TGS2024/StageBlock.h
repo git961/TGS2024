@@ -62,7 +62,7 @@ public:
 	~StageBlock();
 	void Finalize();
 
-	void Update();
+	void Update(GameMainScene* gamemain);
 	void Draw() const;
 	void DrawKanban() const;
 

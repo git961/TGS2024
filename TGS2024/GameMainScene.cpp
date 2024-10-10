@@ -69,26 +69,17 @@ GameMainScene::GameMainScene(bool set_flg,int get_stage_num)
 	player_damage_once = false;
 	rebound_check_once = false;
 	rebound_damage_once = false;
-	////back.png
-	//back_img[0] = LoadGraph("images/Backimg/backimg0.png", TRUE);
-	//back_img[1] = LoadGraph("images/Backimg/backimg01.png", TRUE);
 	back_img[0] = LoadGraph("images/Backimg/backimg0.png", TRUE);
 	back_img[1] = LoadGraph("images/Backimg/backimg.png", TRUE);
-	//back_img[9] = LoadGraph("images/Backimg/backimgGoal.png", TRUE);
 	back_img[9] = LoadGraph("images/Backimg/backimgGoal01.png", TRUE);
 	goal_img = LoadGraph("images/Ending/ending8.png", TRUE);
 	stage1_goal_img = LoadGraph("images/Stage/Goal01.png", TRUE);
 	goal_door_img = LoadGraph("images/Stage/Goal.png", TRUE);
 	death_img = LoadGraph("images/Backimg/death.png", TRUE);
 	pose_img = LoadGraph("images/UI/pose.png", TRUE);
-	//back_img = LoadGraph("images/background_test.png", TRUE);
 	back_lower_img = LoadGraph("images/Backimg/lower.png", TRUE);
 	back_upper_img = LoadGraph("images/Backimg/upper.png", TRUE);
 
-
-	//game_state = RESPAWN;
-
-	//enemyhit = false;		// 当たっていない
 
 	// 背景画像ローカル座標
 	location_x = 0.0f;
@@ -442,6 +433,7 @@ void GameMainScene::ResetMap()
 	long_legs_enemy_cnt = 0;
 	hard_enemy_cnt = 0;
 	rebound_enemy_cnt = 0;
+	object_cnt = 0;
 
 	//マップチップに反映する
 	for (int i = 0; i < map_blockmax_y; i++)
@@ -451,8 +443,11 @@ void GameMainScene::ResetMap()
 			switch (mapio->GetMapData(i, j))
 			{
 			case 4:
-				rock[object_num.rock_cnt] = new Rock(0,(float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-				rock[object_num.rock_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				//岩生成
+				characters[object_cnt]= new Rock(0, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				characters[object_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+			//	rock[object_num.rock_cnt] = new Rock(0,(float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+			//	rock[object_num.rock_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				break;
 			case 12:
 				fragile_wall[object_num.fragile_wall_cnt] = new FragileWall((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
@@ -622,6 +617,7 @@ void GameMainScene::ChengeNextMap()
 	hard_enemy_cnt = 0;
 	rebound_enemy_cnt = 0;
 	goal_block_num = 0;
+	object_cnt = 0;
 
 	//マップチップに反映する
 	for (int i = 0; i < map_blockmax_y; i++)
@@ -638,8 +634,11 @@ void GameMainScene::ChengeNextMap()
 				stage_block[block_count++] = new StageBlock(3, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 4:
-				rock[object_num.rock_cnt] = new Rock(0,(float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-				rock[object_num.rock_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				//岩生成
+				characters[object_cnt] = new Rock(0, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				characters[object_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				//rock[object_num.rock_cnt] = new Rock(0,(float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				//rock[object_num.rock_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				//stage_block[block_count++] = new StageBlock(4, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 6:
@@ -1230,7 +1229,7 @@ void GameMainScene::Update()
 			event_lift[0]->SetScreenPos(screen_origin_position.x, screen_origin_position.y);
 			if (ac != nullptr && player != nullptr)
 			{
-				event_lift[0]->Update(ac, player);
+				event_lift[0]->Update(this);
 			}
 		}
 
@@ -1269,6 +1268,13 @@ void GameMainScene::Draw() const
 		//}
 		DrawGraph((int)location_x + 5120, (int)location_y +1750, back_lower_img, FALSE);
 		DrawGraph((int)location_x + 7454, (int)location_y, back_upper_img, FALSE);
+
+		for (int i = 0; i < object_cnt; i++)
+		{
+			if (characters[i] != nullptr) {
+				characters[i]->Draw();
+			}
+		}
 	}
 
 	for (int j = 0; j < block_count; j++)
@@ -2042,7 +2048,7 @@ void GameMainScene::Tutorial()
 
 			if (player != nullptr)
 			{
-				stage_block[j]->Update();
+				stage_block[j]->Update(this);
 
 				if (stage_block[j]->GetBlockNum() == 7)
 				{
@@ -2077,7 +2083,7 @@ void GameMainScene::Tutorial()
 
 	//プレイヤーの攻撃
 	if (ac != nullptr) {
-		ac->Update(this, player);
+		ac->Update(this);
 	}
 
 	//ダイナマイト
@@ -2086,7 +2092,7 @@ void GameMainScene::Tutorial()
 		if (dynamite[i] != nullptr)
 		{
 			dynamite[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-			dynamite[i]->Update();
+			dynamite[i]->Update(this);
 
 			if (dynamite[i]->Getdeath_flg() == true)
 			{
@@ -2438,7 +2444,7 @@ void GameMainScene::PlayerUpDate()
 	//プレイヤーの攻撃
 	if (player != nullptr && ac != nullptr)
 	{
-		ac->Update(this, player);
+		ac->Update(this);
 	}
 
 
@@ -2447,7 +2453,7 @@ void GameMainScene::PlayerUpDate()
 		if (dynamite[i] != nullptr)
 		{
 			dynamite[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-			dynamite[i]->Update();
+			dynamite[i]->Update(this);
 
 			if (dynamite[i]->Getdeath_flg() == true)
 			{
@@ -2918,7 +2924,7 @@ void GameMainScene::FragileWallUpdate()
 			fragile_wall[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
 			// 更新
-			fragile_wall[i]->Update();
+			fragile_wall[i]->Update(this);
 
 			if (fragile_wall[i]->GetDeleteFlg() == true)
 			{
@@ -3188,7 +3194,7 @@ void GameMainScene::RockUpdate()
 			if (rock[i]->GetWorldLocation().x > screen_origin_position.x - 100 && rock[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 			{
 				rock[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-				rock[i]->Update();
+				rock[i]->Update(this);
 			}
 		}
 
@@ -3213,7 +3219,7 @@ void GameMainScene::LiftUpDate()
 				lift[i]->SetScreenPos(screen_origin_position.x, screen_origin_position.y);
 				if (ac != nullptr && player != nullptr)
 				{
-					lift[i]->Update(ac, player);
+					lift[i]->Update(this);
 				}
 			}
 		}
@@ -3318,7 +3324,7 @@ void GameMainScene::CageUpdate()
 			// カメラから見た座標の設定
 			cage[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
-			cage[i]->Update();
+			cage[i]->Update(this);
 		}
 	}
 }
@@ -3335,7 +3341,7 @@ void GameMainScene::CageDoorUpdate()
 			// カメラから見た座標の設定
 			cage_door[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
-			cage_door[i]->Update();
+			cage_door[i]->Update(this);
 		}
 	}
 }
@@ -3453,7 +3459,7 @@ void GameMainScene::MagmaUpdete()
 			// カメラから見た座標の設定
 			magma[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
-			magma[i]->Update();
+			magma[i]->Update(this);
 		}
 	}
 }
@@ -3500,7 +3506,7 @@ void GameMainScene::FallingFloorUpdate()
 			// カメラから見た座標の設定
 			falling_floor[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
-			falling_floor[i]->Update();
+			falling_floor[i]->Update(this);
 		}
 	}
 }
@@ -3622,7 +3628,7 @@ void GameMainScene::GeyserUpdete()
 			// カメラから見た座標の設定
 			geyser[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
-			geyser[i]->Update();
+			geyser[i]->Update(this);
 		}
 	}
 }
@@ -3698,7 +3704,7 @@ void GameMainScene::LongLegsEnemyUpdate()
 			// カメラから見た座標の設定
 			long_legs_enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
-			long_legs_enemy[i]->Update();
+			long_legs_enemy[i]->Update(this);
 
 			long_legs_enemy[i]->SetPlayerWorldLocation(player->GetWorldLocation());
 
@@ -3829,7 +3835,7 @@ void GameMainScene::HardEnemyUpdate()
 			// カメラから見た座標の設定
 			hard_enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
-			hard_enemy[i]->Update();
+			hard_enemy[i]->Update(this);
 
 			if (hard_enemy[i]->GetDeleteFlg() == true)
 			{
@@ -3908,7 +3914,7 @@ void GameMainScene::ReboundEnemyUpdate()
 			// カメラから見た座標の設定
 			rebound_enemy[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
-			rebound_enemy[i]->Update();
+			rebound_enemy[i]->Update(this);
 
 			if (rebound_enemy[i]->GetDeleteFlg() == true)
 			{

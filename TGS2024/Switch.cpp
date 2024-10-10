@@ -26,7 +26,7 @@ Switch::~Switch()
 	}
 }
 
-void Switch::Update()
+void Switch::Update(GameMainScene* gamemain)
 {
 
 	////押されたら上か下かに動く

@@ -12,7 +12,7 @@ private:
 public:
     Switch(float set_x,float set_y);
     ~Switch();
-    void Update();
+    void Update(GameMainScene* gamemain);
     void Draw()const;
     void SetY(float set_y) { world.y = set_y; }
     void SetX(float set_x) { world.x = set_x; }

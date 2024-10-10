@@ -19,7 +19,7 @@ public:
     AttackCheck();
     ~AttackCheck();
 
-    void Update(GameMainScene* gamemain,Player* player);
+    void Update(GameMainScene* gamemain);//playerゲームメインからもらう
     void Draw() const;
 
     bool GetAttackFlg() { return attack_flg; };

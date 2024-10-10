@@ -36,8 +36,9 @@ public:
 	~EnemyBase();
 
 protected:
-	virtual void Update() = 0;
-	virtual void Draw() const = 0;
+
+	void Update(GameMainScene* gamemain)override = 0;
+	void Draw()const override = 0;
 
 	virtual void Move() = 0;
 	virtual void Death() = 0;

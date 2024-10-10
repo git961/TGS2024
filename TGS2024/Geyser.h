@@ -32,7 +32,7 @@ public:
 	Geyser(float set_x, float set_y);
 	~Geyser();
 
-	void Update();						// 更新処理
+	void Update(GameMainScene* gamemain);						// 更新処理
 	void Draw() const;					// 描画処理
 
 	bool GetPushUpFlg() { return push_up_flg; }//水が吹きあがるか？を返す

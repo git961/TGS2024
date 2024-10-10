@@ -40,7 +40,7 @@ public:
 	LongLeggedEnemy(float set_x, float set_y);
 	~LongLeggedEnemy();
 
-	void Update() override;
+	void Update(GameMainScene* gamemain) override;
 	void Draw() const override;
 
 private:

@@ -56,7 +56,7 @@ LongLeggedEnemy::~LongLeggedEnemy()
 	}
 }
 
-void LongLeggedEnemy::Update()
+void LongLeggedEnemy::Update(GameMainScene* gamemain)
 {
 	// 頂点の設定
 	SetVertex();

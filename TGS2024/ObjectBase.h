@@ -3,6 +3,9 @@
 #include "DxLib.h"
 #include "Define.h"
 
+class GameMainScene;
+
+
 struct Vec2
 {
 	float x;
@@ -14,7 +17,6 @@ struct World
 	float y;
 };
 
-//vertex 頂点
 struct Boxvertex
 {
 	float right_x = 0.0f;
@@ -29,6 +31,8 @@ protected:
 
 	Vec2 location;
 	World world;
+	//vertex 頂点
+
 	Boxvertex box_vertex;
 
 	float width;//幅
@@ -61,6 +65,9 @@ public:
 		box_vertex = { 0 };
 	};
 	~ObjectBase() {};
+
+	virtual void Update(GameMainScene* gamemain)=0;
+	virtual void Draw() const=0;
 
 	//当たり判定:何かに当たったかどうかだけ返す
 	bool HitCheck(World opponent, float opponent_width, float opponent_height)

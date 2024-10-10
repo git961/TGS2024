@@ -159,9 +159,6 @@
     <ClCompile Include="Score.cpp">
       <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
-    <ClCompile Include="TestStageScene.cpp">
-      <Filter>ソース ファイル\StageFile</Filter>
-    </ClCompile>
     <ClCompile Include="FragileWall.cpp">
       <Filter>ソース ファイル\StageObjectFile</Filter>
     </ClCompile>

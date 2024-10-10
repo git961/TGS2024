@@ -1,8 +1,7 @@
 ﻿#pragma once
-#include <math.h>
-#include "DxLib.h"
 #include "ObjectBase.h"
 
+class GameMainScene;
 
 class CharacterBase : public ObjectBase
 {
@@ -32,8 +31,10 @@ public:
 	bool GetDirection() { return direction; }//キャラの向きを返す　0:右 1:左
 	float GetAttack() { return attack; }
 
+	void Update(GameMainScene* gamemain) override{};
+	void Draw() const override{};
 
-	void HitCheckB(Boxvertex set_box_vertex)
+	void HitCheckB(struct Boxvertex set_box_vertex)
 	{
 		//キャラがブロックの上からぶつかった場合
 		if (box_vertex.lower_y <= set_box_vertex.upper_y)

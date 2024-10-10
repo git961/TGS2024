@@ -29,7 +29,8 @@ private:
 public:
     FallingRock();
     ~FallingRock();
-    void Update();
+    void Update(GameMainScene* gamemain);
+    void AnimUpdate();
     void Draw() const;
 
     bool GetLanding() { return landing_flg; }

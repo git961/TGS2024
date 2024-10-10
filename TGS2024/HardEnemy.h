@@ -21,7 +21,7 @@ public:
 	HardEnemy(float set_x, float set_y);
 	~HardEnemy();
 
-	void Update() override;
+	void Update(GameMainScene* gamemain) override;
 	void Draw() const override;
 
 private:

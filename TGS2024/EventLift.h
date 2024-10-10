@@ -52,7 +52,7 @@ public:
     EventLift(float set_x, float set_y);
     ~EventLift();
 
-    void Update(AttackCheck* ac, Player* player);
+    void Update(GameMainScene* gamemain);
     void Draw() const;
 
     void UpEventAnim();

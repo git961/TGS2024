@@ -37,7 +37,7 @@ public:
     Lift(float set_x, float set_y);
     ~Lift();
 
-    void Update(AttackCheck* ac,Player* player);
+    void Update(GameMainScene* gamemain);
     void Draw() const;
 
     void UpAnim();

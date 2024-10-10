@@ -84,7 +84,7 @@ Rock::~Rock()
 	}
 }
 
-void Rock::Update()
+void Rock::Update(GameMainScene* gamemain)
 {
 	// box_vertexの値を更新し続ける
 	SetVertex();

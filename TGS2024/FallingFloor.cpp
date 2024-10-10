@@ -31,7 +31,7 @@ FallingFloor::~FallingFloor()
 	DeleteGraph(falling_floor_img);
 }
 
-void FallingFloor::Update()
+void FallingFloor::Update(GameMainScene* gamemain)
 {
 	// 頂点の更新
 	SetVertex();

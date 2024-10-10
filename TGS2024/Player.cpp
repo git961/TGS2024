@@ -7,6 +7,9 @@ Player::Player()
 
 Player::Player(float set_x,float set_y)
 {
+
+	//test_get_gamemain = gamemains;
+
 	//画像読込
 	LoadDivGraph("images/Player/player_img.png",72, 4, 18, 170, 170, player_img);
 	LoadDivGraph("images/Player/pickaxe2.png", 8, 4, 2, 170, 170, pickaxe_img);

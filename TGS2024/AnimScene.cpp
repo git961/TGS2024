@@ -189,7 +189,7 @@ void AnimScene::Update()
 		if (fallingrock != nullptr)
 		{
 			fallingrock->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-			fallingrock->Update();
+			fallingrock->AnimUpdate();
 		}
 		//画面の揺れ
 		ShakeCamera(fallingrock->GetLanding(),2);

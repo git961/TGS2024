@@ -29,7 +29,7 @@ private:
 public:
 	ReboundEnemy(float set_x, float set_y);
 	~ReboundEnemy();
-	void Update() override;
+	void Update(GameMainScene* gamemain) override;
 	void Draw() const override;
 
 private:

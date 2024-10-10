@@ -24,7 +24,7 @@ Cage::~Cage()
 }
 
 // 更新処理
-void Cage::Update()
+void Cage::Update(GameMainScene* gamemain)
 {
 	// 頂点の設定
 	SetVertex();

@@ -195,7 +195,6 @@
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="StageBlock.cpp" />
     <ClCompile Include="Switch.cpp" />
-    <ClCompile Include="TestStageScene.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>

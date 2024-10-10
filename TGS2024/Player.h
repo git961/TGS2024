@@ -171,6 +171,7 @@ private:
     bool stop_up_flg;//プレイヤーの上昇を止めるか？
 
     int lift_anim_cnt;//リフトアニメカウント用
+    GameMainScene* test_get_gamemain;
 
 public:
     Player();

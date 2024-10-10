@@ -30,7 +30,7 @@ CageDoor::~CageDoor()
 	}
 }
 
-void CageDoor::Update()
+void CageDoor::Update(GameMainScene* gamemain)
 {
 	// 頂点の設定
 	SetVertex();
