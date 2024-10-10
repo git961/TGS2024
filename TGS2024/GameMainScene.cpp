@@ -1218,6 +1218,14 @@ void GameMainScene::Update()
 				p_life_num--;
 				volume = 50;
 				ChangeVolumeSoundMem(volume, main_bgm);
+
+				for (int i = 0; i < GEYSER_MAXNUM; i++)
+				{
+					if (geyser[i] == nullptr) continue;
+					// 間欠泉のSEを止める
+					geyser[i]->StopSE();
+				}
+
 				game_state = RESPAWN;
 			}
 		}
