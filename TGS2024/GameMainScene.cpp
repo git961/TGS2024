@@ -1055,10 +1055,10 @@ void GameMainScene::Update()
 		//宝石更新処理
 		GemUpDate();
 
-		//カギ宝石更新処理
-		KeyGemUpdate();
-		//カギ宝石とプレイヤーの当たり判定
-		PlayerHitKeyGem();
+		////カギ宝石更新処理
+		//KeyGemUpdate();
+		////カギ宝石とプレイヤーの当たり判定
+		//PlayerHitKeyGem();
 
 		//プレイヤーと宝石の当たり判定
 		PlayerHitGem();
@@ -1188,8 +1188,21 @@ void GameMainScene::Update()
 		PlayerHitGoal();
 		// プレイヤーと壊れる岩の当たり判定処理
 		PlayerHitRock();
+
 		//岩アップデート
-		RockUpdate();
+		//RockUpdate();
+
+		//characterアップデート
+		for (int i = 0; i < object_cnt; i++)
+		{
+			if (characters[i] != nullptr && characters[i]->InCameraRange(screen_origin_position.x)==true)
+			{
+				characters[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				characters[i]->Update(this);
+			}
+		}
+
+
 		EnemyHitRock();
 
 		EnemyHitReturnBlock();//テスト

@@ -112,6 +112,19 @@ public:
 		location.y = world.y - set_origin_posy;
 	};
 
+	bool InCameraRange(float screen_originpos_x)
+	{
+		//カメラの近くにいるか
+		if (world.x > screen_originpos_x - 100.0f && world.x < screen_originpos_x + SCREEN_WIDTH + 100)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	//各頂点の座標をセット
 	void SetVertex()
 	{
