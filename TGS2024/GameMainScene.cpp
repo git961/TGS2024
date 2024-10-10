@@ -686,8 +686,12 @@ void GameMainScene::ChengeNextMap()
 			{
 				if (mapio->GetMapData(i, j) == 2)
 				{
-					enemy[enemy_count] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, false);
-					enemy[enemy_count++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+					//岩生成
+					characters[object_cnt] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, false);
+					characters[object_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+					enemy_count++;
+					//enemy[enemy_count] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, false);
+					//enemy[enemy_count++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				}
 
 				if (mapio->GetMapData(i, j) == 8)
@@ -1043,8 +1047,8 @@ void GameMainScene::Update()
 			game_state = POSE;
 		}
 		
-		//エネミー更新
-		EnemyUpDate();
+		//
+		//EnemyUpDate();
 
 		//ダイナマイトと敵の当たり判定
 		DynamiteHitEnemy();
@@ -1192,6 +1196,9 @@ void GameMainScene::Update()
 		//岩アップデート
 		//RockUpdate();
 
+		//エネミー更新
+		//EnemyUpDate();
+
 		//characterアップデート
 		for (int i = 0; i < object_cnt; i++)
 		{
@@ -1202,8 +1209,29 @@ void GameMainScene::Update()
 			}
 		}
 
+		//当たり判定
+		for (int i = 0; i < object_cnt - 1; i++)
+		{
+			//nullptrでカメラの範囲内に居なかったら次に行く
+			if (characters[i] == nullptr)continue;
+			if (characters[i]->InCameraRange(screen_origin_position.x) == false)continue;
 
-		EnemyHitRock();
+			//i番目の後を調べる
+			for (int j = i + 1; j < object_cnt; j++)
+			{
+				if (characters[j] == nullptr)continue;
+				if (characters[j]->InCameraRange(screen_origin_position.x) == false)continue;
+
+				if (characters[i]->HitCheck(characters[j]->GetWorldLocation(), characters[j]->GetWidth(), characters[j]->GetHeight()) == true)
+				{
+					//当たっていたら、ヒットした時の処理をする
+
+				}
+			}
+
+		}
+
+		//EnemyHitRock();
 
 		EnemyHitReturnBlock();//テスト
 

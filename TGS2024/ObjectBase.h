@@ -68,6 +68,7 @@ public:
 
 	virtual void Update(GameMainScene* gamemain)=0;
 	virtual void Draw() const=0;
+	
 
 	//当たり判定:何かに当たったかどうかだけ返す
 	bool HitCheck(World opponent, float opponent_width, float opponent_height)
@@ -112,9 +113,9 @@ public:
 		location.y = world.y - set_origin_posy;
 	};
 
+	//カメラの近くにいるかチェック
 	bool InCameraRange(float screen_originpos_x)
 	{
-		//カメラの近くにいるか
 		if (world.x > screen_originpos_x - 100.0f && world.x < screen_originpos_x + SCREEN_WIDTH + 100)
 		{
 			return true;
