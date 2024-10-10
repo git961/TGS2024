@@ -507,9 +507,11 @@ void Enemy::KnockBackPreparation()
 
 	// 星画像用変数
 	star.degree = 0.0;
+	star.radian = 0.0;
 	star.x = location.x;
 	star.y = location.y - 40;
 	star.count = 0;
+	star.timer = 0;
 	tmp_direction = direction;
 }
 

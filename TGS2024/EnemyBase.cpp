@@ -70,8 +70,10 @@ void EnemyBase::StarEffectPreparation()
 
 	// 星画像用変数
 	star_degree = 0.0;
+	star_radian = 0.0;
 	star_x = location.x;
 	star_y = location.y - 40;
+	star_timer = 0;
 	star_count = 0;
 	star_is_draw = true;
 	star_flg = false;
