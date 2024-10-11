@@ -170,7 +170,7 @@ void Rock::Draw() const
 	}
 }
 
-void Rock::HitReaction(ObjectType set_type)
+void Rock::HitReaction(ObjectBase* character)
 {
 
 }

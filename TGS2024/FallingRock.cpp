@@ -156,6 +156,6 @@ void FallingRock::Draw() const
 
 }
 
-void FallingRock::HitReaction(ObjectType set_type)
+void FallingRock::HitReaction(ObjectBase* character)
 {
 }

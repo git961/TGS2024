@@ -79,6 +79,6 @@ void AttackCheck::Draw() const
 		//DrawCircleAA(location.x, location.y, 2, 0xff00ff, true);
 }
 
-void AttackCheck::HitReaction(ObjectType set_type)
+void AttackCheck::HitReaction(ObjectBase* character)
 {
 }

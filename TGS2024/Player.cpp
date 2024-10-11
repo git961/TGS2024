@@ -531,7 +531,7 @@ void Player::Draw() const
 #endif // DEBUG
 }
 
-void Player::HitReaction(ObjectType set_type)
+void Player::HitReaction(ObjectBase* character)
 {
 }
 

@@ -8,7 +8,7 @@ void StageBlock::Finalize()
 
 
 
-void StageBlock::HitReaction(ObjectType set_type)
+void StageBlock::HitReaction(ObjectBase* character)
 {
 }
 

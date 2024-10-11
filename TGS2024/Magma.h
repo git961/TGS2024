@@ -24,7 +24,7 @@ public:
 
 	void Update(GameMainScene* gamemain)override;				// 更新処理
 	void Draw() const override;			// 描画処理
-	void HitReaction(ObjectType set_type)override;
+	void HitReaction(ObjectBase* character)override;
 
 	bool GetAnyDamageFlg()const;
 

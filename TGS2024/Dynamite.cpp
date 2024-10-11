@@ -134,7 +134,7 @@ void Dynamite::Draw() const
 	}
 }
 
-void Dynamite::HitReaction(ObjectType set_type)
+void Dynamite::HitReaction(ObjectBase* character)
 {
 }
 

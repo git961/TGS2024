@@ -118,7 +118,7 @@ void EventLift::Draw() const
 	}
 }
 
-void EventLift::HitReaction(ObjectType set_type)
+void EventLift::HitReaction(ObjectBase* character)
 {
 }
 

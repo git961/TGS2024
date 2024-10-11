@@ -117,7 +117,7 @@ void Geyser::Draw() const
 	//DrawCircle((int)location.x, (int)geyser_y, 2, 0xff0000, TRUE);
 }
 
-void Geyser::HitReaction(ObjectType set_type)
+void Geyser::HitReaction(ObjectBase* character)
 {
 }
 

@@ -101,7 +101,7 @@ void GreenGem::Draw() const
 	}
 }
 
-void GreenGem::HitReaction(ObjectType set_type)
+void GreenGem::HitReaction(ObjectBase* character)
 {
 }
 

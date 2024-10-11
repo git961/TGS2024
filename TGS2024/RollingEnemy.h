@@ -37,7 +37,7 @@ public:
 
     void Update(GameMainScene* gamemain) override;
     void Draw() const override;
-    void HitReaction(ObjectType set_type) override;
+    void HitReaction(ObjectBase* character) override;
 
     void Damage(int damage);                // 被ダメージ処理
 

@@ -32,7 +32,7 @@ public:
     void Update(GameMainScene* gamemain) override;
     void AnimUpdate();
     void Draw() const override;
-    void HitReaction(ObjectType set_type) override;
+    void HitReaction(ObjectBase* character) override;
 
     bool GetLanding() { return landing_flg; }
     bool GetBlackOut() { return black_out_flg; }

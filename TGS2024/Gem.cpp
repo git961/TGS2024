@@ -148,7 +148,7 @@ void Gem::Draw() const
 	}
 }
 
-void Gem::HitReaction(ObjectType set_type)
+void Gem::HitReaction(ObjectBase* character)
 {
 }
 

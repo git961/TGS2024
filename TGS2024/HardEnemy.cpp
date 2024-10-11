@@ -87,7 +87,7 @@ void HardEnemy::Draw() const
 	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "anim_cnt: %d", anim_cnt);
 }
 
-void HardEnemy::HitReaction(ObjectType set_type)
+void HardEnemy::HitReaction(ObjectBase* character)
 {
 }
 

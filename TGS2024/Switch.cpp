@@ -56,6 +56,6 @@ void Switch::Draw() const
 	}
 }
 
-void Switch::HitReaction(ObjectType set_type)
+void Switch::HitReaction(ObjectBase* character)
 {
 }

@@ -188,7 +188,7 @@ void RollingEnemy::Draw() const
 	}
 }
 
-void RollingEnemy::HitReaction(ObjectType set_type)
+void RollingEnemy::HitReaction(ObjectBase* character)
 {
 }
 

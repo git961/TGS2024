@@ -21,7 +21,7 @@ public:
 
     void Update(GameMainScene* gamemain)override;
     void Draw() const override;
-    void HitReaction(ObjectType set_type) override;
+    void HitReaction(ObjectBase* character) override;
 
     bool GetAttackFlg() { return attack_flg; };
 

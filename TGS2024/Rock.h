@@ -61,7 +61,7 @@ public:
 
 	void Update(GameMainScene* gamemain) override;
 	void Draw() const override;
-	void HitReaction(ObjectType set_type)override;
+	void HitReaction(ObjectBase* character)override;
 
 	void FragmentEffect();                      // 石の破片エフェクトの処理
 	void FragmentSet();

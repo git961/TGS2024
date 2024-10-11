@@ -76,7 +76,7 @@ public:
 
 	virtual void Update(GameMainScene* gamemain)=0;
 	virtual void Draw() const=0;
-	virtual void HitReaction(ObjectType set_type)=0; //hitCheckがtrueだったらhitした後の処理をする
+	virtual void HitReaction(ObjectBase* character)=0; //hitCheckがtrueだったらhitした後の処理をする
 
 	//当たり判定:何かに当たったかどうかだけ返す
 	bool HitCheck(World opponent, float opponent_width, float opponent_height)

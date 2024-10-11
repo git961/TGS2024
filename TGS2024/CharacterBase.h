@@ -33,7 +33,7 @@ public:
 
 	void Update(GameMainScene* gamemain) override{};
 	void Draw() const override{};
-	void HitReaction(ObjectType set_type) override {};
+	void HitReaction(ObjectBase* character) override {};
 
 	void HitCheckB(struct Boxvertex set_box_vertex)
 	{

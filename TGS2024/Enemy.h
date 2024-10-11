@@ -84,7 +84,7 @@ public:
 
     void Update(GameMainScene* gamemain)override;
     void Draw() const override;
-    void HitReaction(ObjectType set_type) override;
+    void HitReaction(ObjectBase* character) override;
 
     void Move();                                // 移動処理
     void ChangeDirection();                     // 進行方向の変更

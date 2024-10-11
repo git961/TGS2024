@@ -14,7 +14,7 @@ public:
     ~Switch();
     void Update(GameMainScene* gamemain)override;
     void Draw()const override;
-    void HitReaction(ObjectType set_type) override;
+    void HitReaction(ObjectBase* character) override;
     void SetY(float set_y) { world.y = set_y; }
     void SetX(float set_x) { world.x = set_x; }
     void SetImgNum(int set_num) { img_num = set_num; }

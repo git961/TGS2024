@@ -27,6 +27,7 @@ GameMainScene::GameMainScene(bool set_flg,int get_stage_num)
 	block_cnt = 0;
 	check_cnt = 0;
 	//check_abs = 0;
+	object_cnt = 0;
 
 	respawn_x = 100.0f;
 	respawn_y = 0.0f;
@@ -42,26 +43,34 @@ GameMainScene::GameMainScene(bool set_flg,int get_stage_num)
 	//プレイヤー生成
 	if (retry_flg == false)
 	{
-		player = new Player(0.0f,600.0f);
+		//player = new Player(0.0f,600.0f);
+		characters[0] = new Player(0.0f, 600.0f);
+		
 		current_location = CurrentLocation::upper;
 	}
 	else
 	{
 		retry_fadein_once = true;
 		if (stage_num == StageNum::stage1) {
-			player = new Player(2200.0f,600.0f);
+			//player = new Player(2200.0f,600.0f);
+			characters[0] = new Player(2200.0f, 600.0f);
 			current_location = CurrentLocation::upper;
 		}
 		else {
 			//プレイヤーのリスタート位置を入れる
-			player = new Player(0.0f, 1751.0f);
-			//player = new Player(5080.0f, 1700.0f);
+			//player = new Player(0.0f, 1751.0f);
+			characters[0] = new Player(0.0f, 1751.0f);
+
 			current_location = CurrentLocation::middle;
 		}
 	}
-
+	//参照元変える
 	ui = new UI((int)player->GetHp(), player->GetDynaNum());
-	ac = new AttackCheck;
+	//ac = new AttackCheck;
+	characters[1] = new AttackCheck;
+	object_cnt=2;
+	object_init_cnt = object_cnt;//acとplayerを上書きしないように
+
 
 	enemy_damage_once = false;
 	enemy_check_damage_once = false;
@@ -375,6 +384,10 @@ GameMainScene::~GameMainScene()
 	
 	delete ui;
 
+	for (int i = 0; i < TOTAL_NUM; i++)
+	{
+		delete characters[i];
+	}
 
 	// 画像削除
 	DeleteGraph(back_img[0]);
@@ -433,7 +446,7 @@ void GameMainScene::ResetMap()
 	long_legs_enemy_cnt = 0;
 	hard_enemy_cnt = 0;
 	rebound_enemy_cnt = 0;
-	object_cnt = 0;
+	object_cnt = object_init_cnt;
 
 	//マップチップに反映する
 	for (int i = 0; i < map_blockmax_y; i++)
@@ -617,7 +630,7 @@ void GameMainScene::ChengeNextMap()
 	hard_enemy_cnt = 0;
 	rebound_enemy_cnt = 0;
 	goal_block_num = 0;
-	object_cnt = 0;
+	object_cnt = object_init_cnt;
 
 	//マップチップに反映する
 	for (int i = 0; i < map_blockmax_y; i++)
@@ -1225,8 +1238,8 @@ void GameMainScene::Update()
 				if (characters[i]->HitCheck(characters[j]->GetWorldLocation(), characters[j]->GetWidth(), characters[j]->GetHeight()) == true)
 				{
 					//当たっていたら、ヒットした時の処理をする
-					characters[i]->HitReaction(characters[j]->GetObjectType());
-					characters[j]->HitReaction(characters[i]->GetObjectType());
+					characters[i]->HitReaction(characters[j]);
+					characters[j]->HitReaction(characters[i]);
 				}
 			}
 
@@ -2019,6 +2032,14 @@ void GameMainScene::ShakeCamera(bool set_true, int set_num)
 			shake_cnt = 0;
 		}
 	}
+}
+
+Player* GameMainScene::GetPlayer()
+{
+
+   Player* player=dynamic_cast<Player*>(characters[0]);
+   return player;
+
 }
 
 void GameMainScene::Tutorial()

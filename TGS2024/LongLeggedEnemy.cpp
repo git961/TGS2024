@@ -188,7 +188,7 @@ void LongLeggedEnemy::Draw() const
 	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", attack_anim_count);
 }
 
-void LongLeggedEnemy::HitReaction(ObjectType set_type)
+void LongLeggedEnemy::HitReaction(ObjectBase* character)
 {
 }
 

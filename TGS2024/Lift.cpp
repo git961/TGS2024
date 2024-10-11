@@ -132,7 +132,7 @@ void Lift::Draw() const
 
 }
 
-void Lift::HitReaction(ObjectType set_type)
+void Lift::HitReaction(ObjectBase* character)
 {
 }
 

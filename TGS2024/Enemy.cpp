@@ -308,10 +308,11 @@ void Enemy::Draw() const
 #endif // DEBUG
 }
 
-void Enemy::HitReaction(ObjectType set_type)
+void Enemy::HitReaction(ObjectBase* character)
 {
-	if (set_type == ObjectType::rock)
-	{
+	if (character->GetObjectType() == ObjectType::rock) {
+		if (is_knock_back == true)Damage(10);
+		SetHitEnemyX(character->GetWorldLocation().x);
 		ChangeDirection();
 	}
 

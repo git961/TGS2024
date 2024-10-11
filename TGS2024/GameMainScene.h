@@ -134,6 +134,7 @@ private:
 
     ObjectNum object_num;
     int object_cnt;//ワンチャン消す
+    int object_init_cnt;//更新後
 
     LongLeggedEnemy* long_legs_enemy[LONG_LEGS_ENEMY_MAXNUM]; // 脚が長い敵
     HardEnemy* hard_enemy[HARD_ENEMY_MAXNUM];             // ダイナマイトでしか倒せない敵
@@ -275,7 +276,13 @@ public:
     int GetPlayerLife() { return p_life_num; }
 
     MapIo* GetMapIo() { return mapio; }
-    Player* GetPlayer() { return player; }
+ /*   Player* GetPlayer()
+    {
+        Player* player=dynamic_cast<Player*>(characters[0]);
+        return player;
+    }*/
+    Player* GetPlayer();
+    //  Derived* derivedPtr = dynamic_cast<Derived*>(baseArray[0]);
     AttackCheck* GetAttackCheck() { return ac; }
 
     //StageBlock* GetStageBlock(int num_y,int num_x){return stage_block[num_y][num_x] }
