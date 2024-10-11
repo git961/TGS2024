@@ -4,6 +4,7 @@
 #include "Define.h"
 
 class MapIo;
+enum class ObjectType;
 
 struct blockworld
 {
@@ -28,11 +29,13 @@ struct Blockvertex
 };
 
 
+
 class StageBlock
 	:public CharacterBase
 {
 private:
 	Blockvertex block_vertex;
+
 	int stage_blockdata[map_blockmax_y][map_blockmax_x];
 	int block_num;//1:ステージブロック　3:Goal
 	int block_img;
@@ -55,6 +58,9 @@ private:
 
 	bool delete_flg;
 
+protected:
+	ObjectType object_type;
+
 public:
 	int direction;
 
@@ -62,8 +68,9 @@ public:
 	~StageBlock();
 	void Finalize();
 
-	void Update(GameMainScene* gamemain);
-	void Draw() const;
+	void Update(GameMainScene* gamemain) override;
+	void Draw() const override;
+	void HitReaction(ObjectType set_type) override;
 	void DrawKanban() const;
 
 

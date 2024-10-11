@@ -24,8 +24,9 @@ public:
 	FragileWall(float set_x, float set_y);
 	~FragileWall();
 
-	void Update(GameMainScene* gamemain);						// 更新処理
-	void Draw() const;					// 描画処理
+	void Update(GameMainScene* gamemain)override;	// 更新処理
+	void Draw() const override;					// 描画処理
+	void HitReaction(ObjectType set_type) override;
 
 private:
 	void BrokenAnimation();				// 壊れるアニメーション

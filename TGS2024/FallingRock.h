@@ -29,9 +29,10 @@ private:
 public:
     FallingRock();
     ~FallingRock();
-    void Update(GameMainScene* gamemain);
+    void Update(GameMainScene* gamemain) override;
     void AnimUpdate();
-    void Draw() const;
+    void Draw() const override;
+    void HitReaction(ObjectType set_type) override;
 
     bool GetLanding() { return landing_flg; }
     bool GetBlackOut() { return black_out_flg; }

@@ -39,6 +39,7 @@ protected:
 
 	void Update(GameMainScene* gamemain)override = 0;
 	void Draw()const override = 0;
+	void HitReaction(ObjectType set_type) override {};
 
 	virtual void Move() = 0;
 	virtual void Death() = 0;

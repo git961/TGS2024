@@ -148,6 +148,10 @@ void Gem::Draw() const
 	}
 }
 
+void Gem::HitReaction(ObjectType set_type)
+{
+}
+
 // 宝石のアニメーション
 void Gem::GemAnim()
 {

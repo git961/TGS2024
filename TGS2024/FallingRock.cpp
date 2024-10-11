@@ -155,3 +155,7 @@ void FallingRock::Draw() const
 	//DrawFormatString(300, 200, 0xffffff, "cameray: %f", location.y);
 
 }
+
+void FallingRock::HitReaction(ObjectType set_type)
+{
+}

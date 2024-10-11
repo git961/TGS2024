@@ -52,8 +52,9 @@ public:
     EventLift(float set_x, float set_y);
     ~EventLift();
 
-    void Update(GameMainScene* gamemain);
-    void Draw() const;
+    void Update(GameMainScene* gamemain)override;
+    void Draw() const override;
+    void HitReaction(ObjectType set_type) override;
 
     void UpEventAnim();
     void DownEventAnim();

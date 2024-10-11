@@ -240,7 +240,6 @@
     <ClInclude Include="Score.h" />
     <ClInclude Include="StageBlock.h" />
     <ClInclude Include="Switch.h" />
-    <ClInclude Include="TestStageScene.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Vec2I.h" />

@@ -179,8 +179,9 @@ public:
     ~Player();
 
 
-    void Update(GameMainScene* gamemain);
-    void Draw() const;
+    void Update(GameMainScene* gamemain)override;
+    void Draw() const override;
+    void HitReaction(ObjectType set_type)override;
 
     //プレイヤー移動用
     void PlayerMove();

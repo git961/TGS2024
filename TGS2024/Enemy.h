@@ -82,8 +82,9 @@ public:
     Enemy(float set_x, float set_y,bool set_direction);
     ~Enemy();
 
-    void Update(GameMainScene* gamemain);
-    void Draw() const;
+    void Update(GameMainScene* gamemain)override;
+    void Draw() const override;
+    void HitReaction(ObjectType set_type) override;
 
     void Move();                                // 移動処理
     void ChangeDirection();                     // 進行方向の変更

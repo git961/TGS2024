@@ -22,8 +22,9 @@ public:
 	Magma(float set_x, float set_y);
 	~Magma();
 
-	void Update(GameMainScene* gamemain);				// 更新処理
-	void Draw() const;			// 描画処理
+	void Update(GameMainScene* gamemain)override;				// 更新処理
+	void Draw() const override;			// 描画処理
+	void HitReaction(ObjectType set_type)override;
 
 	bool GetAnyDamageFlg()const;
 

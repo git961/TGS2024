@@ -25,6 +25,13 @@ struct Boxvertex
 	float lower_y = 0.0f;
 };
 
+enum class ObjectType
+{
+	player,
+	enemy,
+	rock
+};
+
 class ObjectBase
 {
 protected:
@@ -34,6 +41,7 @@ protected:
 	//vertex 頂点
 
 	Boxvertex box_vertex;
+	ObjectType my_object_type;
 
 	float width;//幅
 	float height;//高さ
@@ -68,7 +76,7 @@ public:
 
 	virtual void Update(GameMainScene* gamemain)=0;
 	virtual void Draw() const=0;
-	
+	virtual void HitReaction(ObjectType set_type)=0; //hitCheckがtrueだったらhitした後の処理をする
 
 	//当たり判定:何かに当たったかどうかだけ返す
 	bool HitCheck(World opponent, float opponent_width, float opponent_height)
@@ -142,6 +150,6 @@ public:
 		box_vertex.lower_y = location.y + height / 2;
 	};
 
-
+	ObjectType GetObjectType() { return my_object_type; }
 
 };

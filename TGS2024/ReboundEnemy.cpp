@@ -136,6 +136,10 @@ void ReboundEnemy::Draw() const
 	//DrawFormatString((int)location.x, (int)location.y, 0xffff00, "hp: %.1f", hp);
 }
 
+void ReboundEnemy::HitReaction(ObjectType set_type)
+{
+}
+
 void ReboundEnemy::Move()
 {
 	// ステージの端に来たら死亡

@@ -78,3 +78,7 @@ void AttackCheck::Draw() const
 		//DrawBox(location.x - width / 2,location.y - height / 2,location.x + width / 2, location.y + height / 2, 0x00ffff, false);
 		//DrawCircleAA(location.x, location.y, 2, 0xff00ff, true);
 }
+
+void AttackCheck::HitReaction(ObjectType set_type)
+{
+}

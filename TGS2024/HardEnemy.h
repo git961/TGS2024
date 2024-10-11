@@ -23,6 +23,7 @@ public:
 
 	void Update(GameMainScene* gamemain) override;
 	void Draw() const override;
+	void HitReaction(ObjectType set_type) override;
 
 private:
 	void Move() override;

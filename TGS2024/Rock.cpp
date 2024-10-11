@@ -66,6 +66,7 @@ Rock::Rock(int type_num,float set_x, float set_y)
 	gem_drop = false;
 	effect_flg = false;
 
+	my_object_type = ObjectType::rock;
 }
 
 Rock::~Rock()
@@ -167,6 +168,11 @@ void Rock::Draw() const
 			DrawRotaGraph((int)fragment[i].x, (int)fragment[i].y, 1.0, 0.0, fragment_img[i], TRUE, 0);
 		}
 	}
+}
+
+void Rock::HitReaction(ObjectType set_type)
+{
+
 }
 
 

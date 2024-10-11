@@ -38,8 +38,9 @@ public:
 	Gem(World set_world,int gem_type,int set_score);
 	~Gem();
 
-	void Update(GameMainScene* gamemain);
-	void Draw() const;
+	void Update(GameMainScene* gamemain)override;
+	void Draw() const override;
+	void HitReaction(ObjectType set_type) override;
 
 private:
 	void GemAnim();					// 宝石のアニメーション

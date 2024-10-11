@@ -1225,7 +1225,8 @@ void GameMainScene::Update()
 				if (characters[i]->HitCheck(characters[j]->GetWorldLocation(), characters[j]->GetWidth(), characters[j]->GetHeight()) == true)
 				{
 					//当たっていたら、ヒットした時の処理をする
-
+					characters[i]->HitReaction(characters[j]->GetObjectType());
+					characters[j]->HitReaction(characters[i]->GetObjectType());
 				}
 			}
 
@@ -1809,7 +1810,6 @@ void GameMainScene::UpdateCamera(World world)
 	//追従する相手のワールド座標をもらう
 	camera_pos.x = world.x;
 	//camera_pos.y = world.y;
-
 
 	//X軸のステージの内外判定
 

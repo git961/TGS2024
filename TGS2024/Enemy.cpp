@@ -123,6 +123,9 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 	fall_flg = false;
 
 	fragment_draw_flg = true;
+
+	my_object_type = ObjectType::enemy;
+
 }
 
 Enemy::~Enemy()
@@ -303,6 +306,15 @@ void Enemy::Draw() const
 #ifdef DEBUG
 	//DrawCircleAA(location.x, location.y, 1, 0xff00ff, true);			// 中心座標
 #endif // DEBUG
+}
+
+void Enemy::HitReaction(ObjectType set_type)
+{
+	if (set_type == ObjectType::rock)
+	{
+		ChangeDirection();
+	}
+
 }
 
 // 移動処理

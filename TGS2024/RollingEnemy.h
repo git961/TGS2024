@@ -35,8 +35,9 @@ public:
     RollingEnemy(float set_x);
     ~RollingEnemy();
 
-    void Update(GameMainScene* gamemain);
-    void Draw() const;
+    void Update(GameMainScene* gamemain) override;
+    void Draw() const override;
+    void HitReaction(ObjectType set_type) override;
 
     void Damage(int damage);                // 被ダメージ処理
 

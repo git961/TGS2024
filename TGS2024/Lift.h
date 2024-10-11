@@ -37,8 +37,9 @@ public:
     Lift(float set_x, float set_y);
     ~Lift();
 
-    void Update(GameMainScene* gamemain);
-    void Draw() const;
+    void Update(GameMainScene* gamemain)override;
+    void Draw() const override;
+    void HitReaction(ObjectType set_type) override;
 
     void UpAnim();
     void DownAnim();

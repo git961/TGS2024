@@ -188,6 +188,10 @@ void RollingEnemy::Draw() const
 	}
 }
 
+void RollingEnemy::HitReaction(ObjectType set_type)
+{
+}
+
 // 被ダメージ処理
 void RollingEnemy::Damage(int damage)
 {

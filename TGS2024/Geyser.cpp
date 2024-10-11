@@ -117,6 +117,10 @@ void Geyser::Draw() const
 	//DrawCircle((int)location.x, (int)geyser_y, 2, 0xff0000, TRUE);
 }
 
+void Geyser::HitReaction(ObjectType set_type)
+{
+}
+
 // 水を打ち上げる
 void Geyser::LaunchWater()
 {

@@ -32,8 +32,9 @@ private:
 public:
     Dynamite(World set_xy,int set_direction);
     ~Dynamite();
-    void Update(GameMainScene* gamemain);
-    void Draw() const;
+    void Update(GameMainScene* gamemain)override;
+    void Draw() const override;
+    void HitReaction(ObjectType set_type)override;
     void DamageCalculation();       // ダメージの計算
 
     void SetDynamite(bool set_flg) { dynamite_flg = set_flg; }

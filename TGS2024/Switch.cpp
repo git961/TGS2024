@@ -55,3 +55,7 @@ void Switch::Draw() const
 		DrawRotaGraph((int)location.x, (int)location.y, 2, 0, event_switch_img[img_num], TRUE);
 	}
 }
+
+void Switch::HitReaction(ObjectType set_type)
+{
+}

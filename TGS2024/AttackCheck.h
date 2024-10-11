@@ -19,8 +19,9 @@ public:
     AttackCheck();
     ~AttackCheck();
 
-    void Update(GameMainScene* gamemain);//playerゲームメインからもらう
-    void Draw() const;
+    void Update(GameMainScene* gamemain)override;
+    void Draw() const override;
+    void HitReaction(ObjectType set_type) override;
 
     bool GetAttackFlg() { return attack_flg; };
 

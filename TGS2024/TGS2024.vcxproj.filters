@@ -296,9 +296,6 @@
     <ClInclude Include="Score.h">
       <Filter>ヘッダー ファイル\UI</Filter>
     </ClInclude>
-    <ClInclude Include="TestStageScene.h">
-      <Filter>ヘッダー ファイル\StageFile</Filter>
-    </ClInclude>
     <ClInclude Include="FragileWall.h">
       <Filter>ヘッダー ファイル\StageObjectFile</Filter>
     </ClInclude>

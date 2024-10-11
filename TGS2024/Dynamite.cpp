@@ -134,6 +134,10 @@ void Dynamite::Draw() const
 	}
 }
 
+void Dynamite::HitReaction(ObjectType set_type)
+{
+}
+
 // ダメージの計算
 void Dynamite::DamageCalculation()
 {

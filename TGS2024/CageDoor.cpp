@@ -55,6 +55,10 @@ void CageDoor::Draw() const
 	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
 }
 
+void CageDoor::HitReaction(ObjectType set_type)
+{
+}
+
 // ドアが開くアニメーション
 void CageDoor::DoorOpenAnimation()
 {

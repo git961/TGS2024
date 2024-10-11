@@ -35,8 +35,9 @@ public:
 	GreenGem(float set_x,float set_y, int set_score);
 	~GreenGem();
 
-	void Update(GameMainScene* gamemain);
-	void Draw() const;
+	void Update(GameMainScene* gamemain)override;
+	void Draw() const override;
+	void HitReaction(ObjectType set_type) override;
 
 private:
 	void GemAnim();					// 宝石のアニメーション

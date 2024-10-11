@@ -59,8 +59,9 @@ public:
     Rock(int type_num,float set_x, float set_y);
     ~Rock();
 
-	void Update(GameMainScene* gamemain);
+	void Update(GameMainScene* gamemain) override;
 	void Draw() const override;
+	void HitReaction(ObjectType set_type)override;
 
 	void FragmentEffect();                      // 石の破片エフェクトの処理
 	void FragmentSet();

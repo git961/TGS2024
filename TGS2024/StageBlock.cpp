@@ -8,6 +8,10 @@ void StageBlock::Finalize()
 
 
 
+void StageBlock::HitReaction(ObjectType set_type)
+{
+}
+
 StageBlock::StageBlock(int set_block_num,float set_x, float set_y)
 {
 	height = BLOCKSIZE;
