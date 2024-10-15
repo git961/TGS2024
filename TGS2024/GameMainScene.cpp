@@ -65,7 +65,8 @@ GameMainScene::GameMainScene(bool set_flg,int get_stage_num)
 		}
 	}
 	//参照元変える
-	ui = new UI((int)player->GetHp(), player->GetDynaNum());
+	//ui = new UI((int)player->GetHp(), player->GetDynaNum());
+	ui = new UI((int)GetPlayer()->GetHp(), GetPlayer()->GetDynaNum());
 	//ac = new AttackCheck;
 	characters[1] = new AttackCheck;
 	object_cnt=2;
@@ -956,16 +957,16 @@ void GameMainScene::Update()
 			{
 				fadein_flg = false;
 				CircleSize = 700;
-				delete player;
+				delete characters[0];
 				player_damage_once = false;
-				player = nullptr;
+				characters[0] = nullptr;
 
 				//gameover_flg = true;
 				black_flg = true;
-				player = new Player(respawn_x,respawn_y);
+				characters[0] = new Player(respawn_x,respawn_y);
 
-				UpdateCamera(player->GetWorldLocation());
-				player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				UpdateCamera(GetPlayer()->GetWorldLocation());
+				GetPlayer()->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
 				//残機数を渡す
 				if (ui != nullptr)
@@ -1030,16 +1031,16 @@ void GameMainScene::Update()
 		location_y = world_y - screen_origin_position.y;
 
 		//カメラとUIのアップデート
-		if (player != nullptr)
+		if (characters[0] != nullptr)
 		{
-			UpdateCamera(player->GetWorldLocation());
+			UpdateCamera(GetPlayer()->GetWorldLocation());
 
 			//UIアップデート
 			if (ui != nullptr)
 			{
 				ui->SetLifeNum(p_life_num);
-				ui->Update((int)player->GetHp(), player->GetDynaNum());
-				if (player->GetHp() <= 0)
+				ui->Update((int)GetPlayer()->GetHp(), GetPlayer()->GetDynaNum());
+				if (GetPlayer()->GetHp() <= 0)
 				{
 					ui->Update(0, 0);
 				}
@@ -1093,7 +1094,7 @@ void GameMainScene::Update()
 		PlayerHitEnemy();
 
 		//プレイヤー更新処理
-		PlayerUpDate();
+		//PlayerUpDate();
 
 		//リスポーン位置更新
 		PlayerHitRespawn();
@@ -1254,8 +1255,8 @@ void GameMainScene::Update()
 
 		if (player != nullptr && mapio != nullptr)
 		{
-			mapio->SetPlayerLocal(player->GetLocation().x);
-			mapio->SetPlayerWorld(player->GetWorldLocation().x);
+			mapio->SetPlayerLocal(GetPlayer()->GetLocation().x);
+			mapio->SetPlayerWorld(GetPlayer()->GetWorldLocation().x);
 		}
 
 		if (score != nullptr)
@@ -1266,7 +1267,7 @@ void GameMainScene::Update()
 		if (player != nullptr)
 		{
 			//プレイヤーの死亡処理
-			if (player->GetDeathFlg() == true)
+			if (GetPlayer()->GetDeathFlg() == true)
 			{
 				fadein_flg = true;
 				p_life_num--;
@@ -2062,7 +2063,7 @@ void GameMainScene::Tutorial()
 
 		if (ui != nullptr)
 		{
-			ui->UpdateTutorial(player);
+			ui->UpdateTutorial(GetPlayer());
 		}
 	}
 
