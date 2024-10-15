@@ -641,11 +641,14 @@ void GameMainScene::ChengeNextMap()
 			switch (mapio->GetMapData(i, j))
 			{
 			case 1:
-				stage_block[block_count++] = new StageBlock(1, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count] = new StageBlock(1, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				break;
 			case 3:
-				goal_block_num = block_count;
-				stage_block[block_count++] = new StageBlock(3, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count] = new StageBlock(3, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				//goal_block_num = block_count;
+				//stage_block[block_count++] = new StageBlock(3, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 4:
 				//岩生成
@@ -656,43 +659,49 @@ void GameMainScene::ChengeNextMap()
 				//stage_block[block_count++] = new StageBlock(4, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 6:
-				stage_block[block_count++] = new StageBlock(6, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count] = new StageBlock(6, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				break;
 			case 10:
-				stage_block[block_count++] = new StageBlock(10, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count] = new StageBlock(10, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				break;
 			case 11:
-				stage_block[block_count++] = new StageBlock(11, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count] = new StageBlock(11, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				break;
 			case 12:
-				fragile_wall[object_num.fragile_wall_cnt] = new FragileWall((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-				fragile_wall[object_num.fragile_wall_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				characters[object_cnt] = new FragileWall((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				characters[object_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				break;
 			case 13:
-				magma[object_num.magma_cnt++] = new Magma((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				characters[object_cnt++] = new Magma((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 14:
-				falling_floor[object_num.falling_floor_cnt++] = new FallingFloor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				characters[object_cnt++] = new FallingFloor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 15:
-				geyser[object_num.geyser_cnt++] = new Geyser((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				characters[object_cnt++] = new Geyser((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 16:
-				cage_door[object_num.cage_door_cnt++] = new CageDoor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-				cage[object_num.cage_cnt++] = new Cage(cage_door[0]->GetWorldLocation());
+				characters[object_cnt++] = new CageDoor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				characters[object_cnt++] = new Cage(cage_door[0]->GetWorldLocation());
 				break;
 			case 17:
-				lift[object_num.lift_cnt++] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				characters[object_cnt++] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				break;
 			case 18:
-				stage_block[block_count++] = new StageBlock(18, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count] = new StageBlock(18, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+
 				break;
 			case 19:
-				stage_block[block_count++] = new StageBlock(19, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count] = new StageBlock(19, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				stage_block[block_count++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				break;
 			case 23:
-				green_gem[object_num.green_gem_cnt] = new GreenGem((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, 700);
-				green_gem[object_num.green_gem_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				characters[object_cnt] = new GreenGem((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, 700);
+				characters[object_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				break;
 			}
 
@@ -710,8 +719,8 @@ void GameMainScene::ChengeNextMap()
 
 				if (mapio->GetMapData(i, j) == 8)
 				{
-					enemy[enemy_count] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, true);
-					enemy[enemy_count++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+					characters[object_cnt] = new Enemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2, true);
+					characters[object_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				}
 			}
 
@@ -719,8 +728,8 @@ void GameMainScene::ChengeNextMap()
 			{
 				if (mapio->GetMapData(i, j) == 9)
 				{
-					rolling_enemy[rolling_enemy_cnt] = new RollingEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2);
-					rolling_enemy[rolling_enemy_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+					characters[object_cnt] = new RollingEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2);
+					characters[object_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				}
 			}
 
@@ -729,8 +738,8 @@ void GameMainScene::ChengeNextMap()
 			{
 				if (mapio->GetMapData(i, j) == 20)
 				{
-					long_legs_enemy[long_legs_enemy_cnt] = new LongLeggedEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-					long_legs_enemy[long_legs_enemy_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+					characters[object_cnt] = new LongLeggedEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+					characters[object_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				}
 			}
 
@@ -738,8 +747,8 @@ void GameMainScene::ChengeNextMap()
 			{
 				if (mapio->GetMapData(i, j) == 21)
 				{
-					hard_enemy[hard_enemy_cnt] = new HardEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-					hard_enemy[hard_enemy_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+					characters[object_cnt] = new HardEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+					characters[object_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				}
 			}
 
@@ -747,20 +756,20 @@ void GameMainScene::ChengeNextMap()
 			{
 				if (mapio->GetMapData(i, j) == 22)
 				{
-					rebound_enemy[rebound_enemy_cnt] = new ReboundEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-					rebound_enemy[rebound_enemy_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+					characters[object_cnt] = new ReboundEnemy((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+					characters[object_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				}
 			}
 		}
 	}
 
-	for (int j = 0; j < block_count; j++)
-	{
-		if (stage_block[j] != nullptr)
-		{
-			stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-		}
-	}
+	//for (int j = 0; j < block_count; j++)
+	//{
+	//	if (stage_block[j] != nullptr)
+	//	{
+	//		stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+	//	}
+	//}
 
 	//score = new Score();
 }
@@ -2219,6 +2228,12 @@ void GameMainScene::Tutorial()
 	camera_pos.x - SCREEN_WIDTH / 2.0f,
 	camera_pos.y - SCREEN_HEIGHT / 2.0f
 	};
+}
+
+AttackCheck* GameMainScene::GetAttackCheck()
+{
+	AttackCheck* ac = dynamic_cast<AttackCheck*>(characters[1]);
+	return ac;
 }
 
 void GameMainScene::EnemyDamage(int enemynum, float damage)

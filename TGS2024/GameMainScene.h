@@ -90,7 +90,7 @@ struct ObjectNum {
 class GameMainScene : public AbstractScene
 {
 private:
-    ObjectBase* characters[100];
+    ObjectBase* characters[TOTAL_NUM];
 
     GameState game_state;
     StageNum stage_num;
@@ -283,7 +283,7 @@ public:
     }*/
     Player* GetPlayer();
     //  Derived* derivedPtr = dynamic_cast<Derived*>(baseArray[0]);
-    AttackCheck* GetAttackCheck() { return ac; }
+    AttackCheck* GetAttackCheck();
 
     //StageBlock* GetStageBlock(int num_y,int num_x){return stage_block[num_y][num_x] }
 

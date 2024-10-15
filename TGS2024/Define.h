@@ -24,7 +24,7 @@
 //デグリーからラジアンに変換
 #define DEGREE_RADIAN(_deg) (M_PI*(_deg)/180.0)
 
-#define TOTAL_NUM 100
+#define TOTAL_NUM 500
 
 // 敵の最大数
 #define ENEMYMAXNUM				40
