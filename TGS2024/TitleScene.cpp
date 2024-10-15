@@ -390,6 +390,7 @@ void TitleScene::PickaxeRotation()
 		swing_se_cnt--;
 	}
 
+	// タイトルロゴを隠している岩と現在のつるはしとの距離
 	distance_x = crack_x - pickaxe_x;
 	distance_y = crack_y - pickaxe_y;
 

@@ -590,11 +590,10 @@ void Enemy::FragmentEffect()
 	{
 		if (fragment[i].is_draw == false)
 		{
-			srand((unsigned int)time(NULL));			// 現在時刻の情報で初期化
+			srand((unsigned int)time(NULL));
 			for (int i = 0; i < 4; i++)
 			{
 				// 初速度の設定
-				//v0[i] = 300.0f;
 				v0[i] = rand() % 200 + (float)300;
 
 				// 発射角度の設定
@@ -602,12 +601,14 @@ void Enemy::FragmentEffect()
 
 				if (i < 2)
 				{
+					// 左右に破片が散らばるように角度を変える
 					fragment[i].degree += 45;
 				}
 
 				fragment[i].radian = (double)DEGREE_RADIAN(fragment[i].degree);
 			}
 
+			// 破片画像の座標の設定
 			fragment[i].x = location.x;
 			fragment[i].y = location.y - height /  2;				// 画像の中心
 
@@ -615,23 +616,17 @@ void Enemy::FragmentEffect()
 			gem_drop = true;
 		}
 
+		// 破片の発生座標を保持（エネミーの死亡座標）
 		start_x = location.x;
 		start_y = location.y - height / 2;				// 画像の中心
 
-		if (fragment[i].y  < world.y + 32.0f)
-		{
-			// 地面についていない間は値の計算を行う
-			mvx[i] = v0[i] * cosf((float)fragment[i].radian) * sum_t;
-			mvy[i] = -v0[i] * sinf((float)fragment[i].radian) * sum_t + (gravity * sum_t * sum_t) / 2;
+		// 斜方投射の計算
+		mvx[i] = v0[i] * cosf((float)fragment[i].radian) * sum_t;
+		mvy[i] = -v0[i] * sinf((float)fragment[i].radian) * sum_t + (gravity * sum_t * sum_t) / 2;
 
-			fragment[i].y = start_y + mvy[i];
-		}
-		else
-		{
-			fragment_draw_flg = false;
-		}
-
+		// 破片の発生座標からどれだけ移動したか
 		fragment[i].x = start_x + mvx[i];
+		fragment[i].y = start_y + mvy[i];
 
 		sum_t += t;
 
