@@ -94,7 +94,8 @@ Player::Player(float set_x,float set_y)
 	is_hit_enemy = false;
 
 	//被弾点滅
-	hit_damage = false;
+	is_hit_damage = false;
+	is_hitdamage_start = false;
 	flash_start = false;
 	flash_flg = false;
 	flash_cnt = 0;
@@ -176,6 +177,8 @@ Player::Player(float set_x,float set_y)
 	stop_up_flg = false;
 
 	lift_anim_cnt = 0;
+
+	my_object_type = ObjectType::player;
 }
 
 Player::~Player()
@@ -248,6 +251,9 @@ void Player::Update(GameMainScene* gamemain)
 
 		break;
 	case HITDAMAGE:
+
+		gamemain->GetUi()->SetBreakHpFlg(true);
+
 		if (direction == false)
 		{
 			p_imgnum = 30;
@@ -255,8 +261,6 @@ void Player::Update(GameMainScene* gamemain)
 		else {
 			p_imgnum = 31;
 		}
-
-
 
 		if (CheckSoundMem(damage_sound) == FALSE)
 		{
@@ -279,7 +283,7 @@ void Player::Update(GameMainScene* gamemain)
 		else
 		{
 			player_state = NOMAL;
-			hit_damage = false;
+			is_hitdamage_start = false;
 			flash_start = true;
 		}
 
@@ -287,11 +291,6 @@ void Player::Update(GameMainScene* gamemain)
 	case ATTACK:
 	case WALK:
 	case NOMAL:
-
-		//if (world.y > 600.0f)
-		//{
-		//	world.y = 600.0f;
-		//}
 
 		if (player_state == NOMAL && fall_flg == false)
 		{
@@ -335,7 +334,7 @@ void Player::Update(GameMainScene* gamemain)
 		}
 
 		//敵からダメージを食らったら
-		if (hit_damage == true)
+		if (is_hitdamage_start == true)
 		{
 			if (CheckSoundMem(atk_sound) == TRUE)
 			{
@@ -355,7 +354,7 @@ void Player::Update(GameMainScene* gamemain)
 			}
 		}
 
-		//点滅処理
+		//無敵時間：点滅
 		if (flash_start == true)
 		{
 			if ((flash_cnt % 20) == 0)
@@ -370,7 +369,8 @@ void Player::Update(GameMainScene* gamemain)
 			{
 				flash_flg = false;
 				flash_start = false;
-				gamemain->SetPlayerDamageOnce(false);
+				is_hit_damage = false;
+				//gamemain->SetPlayerDamageOnce(false);
 			}
 
 
@@ -536,8 +536,18 @@ void Player::HitReaction(ObjectBase* character)
 	switch (character->GetObjectType())
 	{
 	case ObjectType::rock:
-		//岩に当たったら進めなくする
-
+		//岩に当たったら元の位置に戻す
+		move_x = 0;
+		world.x = curent_x;
+		break;
+	case ObjectType::enemy:
+		//敵からダメージを食らったら
+		if (player_state!=HITDAMAGE && is_hit_damage == false)
+		{
+			is_hit_damage = true;
+			is_hitdamage_start = true;
+			SetDamage(10);
+		}
 		break;
 	default:
 		break;

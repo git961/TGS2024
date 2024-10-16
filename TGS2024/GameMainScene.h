@@ -276,10 +276,10 @@ public:
     int GetPlayerLife() { return p_life_num; }
 
     cameraposition GetScreenOriginPos() { return screen_origin_position; }
-        //cameraposition
 
     MapIo* GetMapIo() { return mapio; }
     Player* GetPlayer();
+    UI* GetUi() { return ui; }
     AttackCheck* GetAttackCheck();
 
     void Tutorial();

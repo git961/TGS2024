@@ -60,7 +60,6 @@ private:
     int p_atk_imgnum;//つるはし画像切り替え用
     float pickaxe_add_x;//つるはしの画像ずらす用
 
-    //int walk_num;//プレイヤ歩行画像切り替え用
     int walk_abs;//プレイヤ歩行画像切りかえ計算用
     float old_worldx;
     int fall_abs;//プレイヤ落下画像切りかえ計算用
@@ -104,8 +103,10 @@ private:
     int dyna_stock_cnt;//残弾補充のカウント
 
 
+    bool is_hitdamage_start;//ヒットダメージ処理をスタートさせるか？
+
     //ダメージ受けた時に点滅させるよう
-    bool hit_damage;//ダメージを受けた
+    bool is_hit_damage;//ダメージを受けたか？
     bool flash_start;
     bool flash_flg;//点滅させるフラグ
     int flash_cnt;
@@ -136,7 +137,6 @@ private:
     float helmet_down;
     int helmet_img;//
 
-    // bool stop_walk_snd;             // 足音を止めるか？
 
     // エンド画面用
     int player_end_img[3];          // エンド画面でのプレイヤー画像
@@ -171,7 +171,6 @@ private:
     bool stop_up_flg;//プレイヤーの上昇を止めるか？
 
     int lift_anim_cnt;//リフトアニメカウント用
-    GameMainScene* test_get_gamemain;
 
 public:
     Player();
@@ -230,7 +229,7 @@ public:
 
     void SetDamage(float damage) { hp = hp - damage; }
 
-    void SetDamageFlg(bool set_damageflg) { hit_damage = set_damageflg; }
+    void SetDamageFlg(bool set_damageflg) { is_hit_damage = set_damageflg; }
 
     void SetX(float set_x)
     {
