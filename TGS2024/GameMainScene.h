@@ -275,17 +275,12 @@ public:
 
     int GetPlayerLife() { return p_life_num; }
 
-    MapIo* GetMapIo() { return mapio; }
- /*   Player* GetPlayer()
-    {
-        Player* player=dynamic_cast<Player*>(characters[0]);
-        return player;
-    }*/
-    Player* GetPlayer();
-    //  Derived* derivedPtr = dynamic_cast<Derived*>(baseArray[0]);
-    AttackCheck* GetAttackCheck();
+    cameraposition GetScreenOriginPos() { return screen_origin_position; }
+        //cameraposition
 
-    //StageBlock* GetStageBlock(int num_y,int num_x){return stage_block[num_y][num_x] }
+    MapIo* GetMapIo() { return mapio; }
+    Player* GetPlayer();
+    AttackCheck* GetAttackCheck();
 
     void Tutorial();
 

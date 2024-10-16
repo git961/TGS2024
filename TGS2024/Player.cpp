@@ -533,6 +533,15 @@ void Player::Draw() const
 
 void Player::HitReaction(ObjectBase* character)
 {
+	switch (character->GetObjectType())
+	{
+	case ObjectType::rock:
+		//岩に当たったら進めなくする
+
+		break;
+	default:
+		break;
+	}
 }
 
 void Player::PlayerMove()

@@ -102,7 +102,7 @@ void Lift::Update(GameMainScene* gamemain)
 
 	if (switch_object != nullptr)
 	{
-		switch_object->SetLocalPosition(screen_position_x, screen_position_y);
+		switch_object->SetLocalPosition(gamemain->GetScreenOriginPos().x, gamemain->GetScreenOriginPos().y);
 		//つるはしとボタンが当たってるかのチェック
 		if (ac->GetAttackFlg()==true && switch_object->HitCheck(ac->GetWorldLocation(), ac->GetWidth(), ac->GetHeight()) == true)
 		{ 
