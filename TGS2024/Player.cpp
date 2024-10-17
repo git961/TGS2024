@@ -179,6 +179,7 @@ Player::Player(float set_x,float set_y)
 	lift_anim_cnt = 0;
 
 	my_object_type = ObjectType::player;
+	is_hitcheck = true;
 }
 
 Player::~Player()
@@ -251,6 +252,7 @@ void Player::Update(GameMainScene* gamemain)
 
 		break;
 	case HITDAMAGE:
+		is_hitcheck = false;
 
 		gamemain->GetUi()->SetBreakHpFlg(true);
 
@@ -282,6 +284,7 @@ void Player::Update(GameMainScene* gamemain)
 		}
 		else
 		{
+			is_hitcheck = true;
 			player_state = NOMAL;
 			is_hitdamage_start = false;
 			flash_start = true;

@@ -28,8 +28,9 @@ struct Boxvertex
 enum class ObjectType
 {
 	player,
+	playerattack,
 	enemy,
-	rock
+	rock,
 };
 
 class ObjectBase
@@ -54,7 +55,7 @@ protected:
 	float two_widths;//2つの幅を合わせる用
 	float two_heights;//2つの高さを合わせる用
 
-	//opponent:意味→相手
+	bool is_hitcheck;//当たり判定を行ってもいいか
 
 
 public:
@@ -71,6 +72,7 @@ public:
 		world.y = 0.0f;
 		location = { 0 };
 		box_vertex = { 0 };
+		is_hitcheck = true;
 	};
 	~ObjectBase() {};
 
@@ -112,6 +114,8 @@ public:
 
 	float GetWidth() { return width; }
 	float GetHeight() { return height; }
+
+	bool GetIsHitCheck() { return is_hitcheck; }
 
 	//キャラのlocationとスクリーンの原点を引いてスクリーン座標上の位置に変換
 	void SetLocalPosition(float set_origin_posx, float set_origin_posy)

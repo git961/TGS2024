@@ -1,5 +1,6 @@
 #include "Rock.h"
 #include <time.h>
+#include "GameMainScene.h"
 
 Rock::Rock(int type_num,float set_x, float set_y)
 {
@@ -67,6 +68,7 @@ Rock::Rock(int type_num,float set_x, float set_y)
 	effect_flg = false;
 
 	my_object_type = ObjectType::rock;
+	rock_damage_once = false;
 }
 
 Rock::~Rock()
@@ -89,6 +91,11 @@ void Rock::Update(GameMainScene* gamemain)
 {
 	// box_vertexの値を更新し続ける
 	SetVertex();
+
+	if (gamemain->GetPlayer()->GetAttacking() != true)
+	{
+		rock_damage_once = false;
+	}
 
 	if (shake_flg == true)
 	{
@@ -125,7 +132,8 @@ void Rock::Update(GameMainScene* gamemain)
 	}
 
 	if (hp <= 0) {
-
+		//当たり判定を止める
+		is_hitcheck = false;
 		switch (delete_cnt)
 		{
 		case 0:
@@ -172,6 +180,19 @@ void Rock::Draw() const
 
 void Rock::HitReaction(ObjectBase* character)
 {
+	switch (character->GetObjectType())
+	{
+	case ObjectType::playerattack:
+		if (rock_damage_once == false)
+		{
+			SetDamage(10);
+			SetShakeFlg(true);
+			rock_damage_once = true;
+		}
+		break;
+	default:
+		break;
+	}
 
 }
 

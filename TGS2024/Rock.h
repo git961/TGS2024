@@ -3,6 +3,7 @@
 #include "Define.h"
 #include <math.h>
 
+
 struct block_effect2
 {
 	float x;
@@ -39,7 +40,7 @@ private:
 	float angle;
 	bool is_up;
 	int delete_cnt;//消すまでのカウント
-
+	bool rock_damage_once;//ダメージを一回ずつ受ける用
 
 	bool effect_flg;
 	block_effect2 fragment[4] = { 0 };

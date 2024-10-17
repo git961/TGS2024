@@ -9,9 +9,10 @@ AttackCheck::AttackCheck()
 	world.x = 0.0f;
 	world.y = 0.0f;
 	attack_flg = false;
+	is_hitcheck = false;
 	shift_x = 60.0f;
 	shift_y = 20.0f;
-
+	my_object_type = ObjectType::playerattack;
 }
 
 AttackCheck::~AttackCheck()
@@ -23,6 +24,8 @@ void AttackCheck::Update(GameMainScene* gamemain)
 	input.InputUpdate();
 	//ヘッダーに写す
 	Player* player = gamemain->GetPlayer();
+
+	is_hitcheck = player->GetAttacking();
 
 	//Bおしたら攻撃
 	if(player->GetAttacking() == true)

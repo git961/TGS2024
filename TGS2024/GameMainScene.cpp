@@ -1240,11 +1240,13 @@ void GameMainScene::Update()
 			//nullptrでカメラの範囲内に居なかったら次に行く
 			if (characters[i] == nullptr)continue;
 			if (characters[i]->InCameraRange(screen_origin_position.x) == false)continue;
+			if (characters[i]->GetIsHitCheck() == false)continue;
 
 			//i番目の後を調べる
 			for (int j = i + 1; j < object_cnt; j++)
 			{
 				if (characters[j] == nullptr)continue;
+				if (characters[j]->GetIsHitCheck() == false)continue;
 				if (characters[j]->InCameraRange(screen_origin_position.x) == false)continue;
 
 				if (characters[i]->HitCheck(characters[j]->GetWorldLocation(), characters[j]->GetWidth(), characters[j]->GetHeight()) == true)
@@ -1262,7 +1264,7 @@ void GameMainScene::Update()
 		EnemyHitReturnBlock();//テスト
 
 		DynamiteHitRock();
-		PickaxeHitRock();
+		//PickaxeHitRock();
 
 		if (player != nullptr && mapio != nullptr)
 		{

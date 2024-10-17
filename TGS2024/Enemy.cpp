@@ -125,7 +125,7 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 	fragment_draw_flg = true;
 
 	my_object_type = ObjectType::enemy;
-
+	is_hitcheck = true;
 }
 
 Enemy::~Enemy()
@@ -310,10 +310,29 @@ void Enemy::Draw() const
 
 void Enemy::HitReaction(ObjectBase* character)
 {
-	if (character->GetObjectType() == ObjectType::rock) {
+
+	switch (character->GetObjectType())
+	{
+	case ObjectType::rock:
 		if (is_knock_back == true)Damage(10);
 		SetHitEnemyX(character->GetWorldLocation().x);
 		ChangeDirection();
+		break;
+	case ObjectType::enemy:
+		break;
+	case ObjectType::playerattack:
+
+		if (is_knock_back == false)
+		{
+
+			Damage(10);
+			SetPlayerWorldLocation(character->GetWorldLocation());
+			SetKnockBackStartFlg(true);
+			SetStarDrawFlg(true);
+		}
+		break;
+	default:
+		break;
 	}
 
 }
@@ -685,6 +704,7 @@ void Enemy::CheckDeathCondition()
 {
 	if (hp <= 0.0f)
 	{
+		is_hitcheck = false;						//当たり判定を止める
 		anim_cnt = 0;								// 死亡アニメーション用にカウントを0にする
 		image_num = 6;								// 死亡画像の最初の画像番号を設定
 		enemy_state = EnemyState::DEATH;			// 死亡状態に遷移
