@@ -278,9 +278,9 @@ public:
     cameraposition GetScreenOriginPos() { return screen_origin_position; }
 
     MapIo* GetMapIo() { return mapio; }
-    Player* GetPlayer();
+    Player* GetPlayer() { return player; }
     UI* GetUi() { return ui; }
-    AttackCheck* GetAttackCheck();
+    AttackCheck* GetAttackCheck() { return ac; }
 
     void Tutorial();
 

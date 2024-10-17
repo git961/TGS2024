@@ -40,35 +40,33 @@ GameMainScene::GameMainScene(bool set_flg,int get_stage_num)
 	//オブジェクトにNullを代入
 	SetObjectNull();
 
+
 	//プレイヤー生成
 	if (retry_flg == false)
 	{
-		//player = new Player(0.0f,600.0f);
-		characters[0] = new Player(0.0f, 600.0f);
-		
+		player = new Player(0.0f,600.0f);		
 		current_location = CurrentLocation::upper;
 	}
 	else
 	{
 		retry_fadein_once = true;
 		if (stage_num == StageNum::stage1) {
-			//player = new Player(2200.0f,600.0f);
-			characters[0] = new Player(2200.0f, 600.0f);
+			player = new Player(2200.0f,600.0f);
 			current_location = CurrentLocation::upper;
 		}
 		else {
 			//プレイヤーのリスタート位置を入れる
-			//player = new Player(0.0f, 1751.0f);
-			characters[0] = new Player(0.0f, 1751.0f);
-
+			player = new Player(0.0f, 1751.0f);
+			//characters[0] = new Player(0.0f, 1751.0f);
 			current_location = CurrentLocation::middle;
 		}
 	}
 	//参照元変える
 	//ui = new UI((int)player->GetHp(), player->GetDynaNum());
 	ui = new UI((int)GetPlayer()->GetHp(), GetPlayer()->GetDynaNum());
-	//ac = new AttackCheck;
-	characters[1] = new AttackCheck;
+	ac = new AttackCheck;
+	characters[0] = player;
+	characters[1] = ac;
 	object_cnt=2;
 	object_init_cnt = object_cnt;//acとplayerを上書きしないように
 
@@ -300,13 +298,14 @@ GameMainScene::GameMainScene(bool set_flg,int get_stage_num)
 GameMainScene::~GameMainScene()
 {
 	//プレイヤーと攻撃、ダイナマイトdelete
-	delete ac;
+	//delete ac;
+	//delete player;
 	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
 	{
 		delete dynamite[i];
 	}
 
-	delete player;
+
 
 	delete mapio;
 	for (int i = 0; i < MAP_BLOCKMAX; i++)
@@ -389,6 +388,7 @@ GameMainScene::~GameMainScene()
 	{
 		delete characters[i];
 	}
+
 
 	// 画像削除
 	DeleteGraph(back_img[0]);
@@ -968,11 +968,13 @@ void GameMainScene::Update()
 				CircleSize = 700;
 				delete characters[0];
 				player_damage_once = false;
+				player = nullptr;
 				characters[0] = nullptr;
 
 				//gameover_flg = true;
 				black_flg = true;
-				characters[0] = new Player(respawn_x,respawn_y);
+				player = new Player(respawn_x, respawn_y);
+				characters[0] = player;
 
 				UpdateCamera(GetPlayer()->GetWorldLocation());
 				GetPlayer()->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
@@ -2044,14 +2046,6 @@ void GameMainScene::ShakeCamera(bool set_true, int set_num)
 	}
 }
 
-Player* GameMainScene::GetPlayer()
-{
-
-   Player* player=dynamic_cast<Player*>(characters[0]);
-   return player;
-
-}
-
 void GameMainScene::Tutorial()
 {
 	//ワールド座標ースクリーン座標の原点してオブジェクトのスクリーン座標を出す計算
@@ -2228,12 +2222,6 @@ void GameMainScene::Tutorial()
 	camera_pos.x - SCREEN_WIDTH / 2.0f,
 	camera_pos.y - SCREEN_HEIGHT / 2.0f
 	};
-}
-
-AttackCheck* GameMainScene::GetAttackCheck()
-{
-	AttackCheck* ac = dynamic_cast<AttackCheck*>(characters[1]);
-	return ac;
 }
 
 void GameMainScene::EnemyDamage(int enemynum, float damage)
