@@ -122,6 +122,7 @@ public:
 	float GetHeight() { return height; }
 
 	bool GetIsHitCheck() { return is_hitcheck; }
+	bool GetIsRelease() { return is_release; }
 
 	//キャラのlocationとスクリーンの原点を引いてスクリーン座標上の位置に変換
 	void SetLocalPosition(float set_origin_posx, float set_origin_posy)

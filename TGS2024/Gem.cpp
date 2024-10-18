@@ -78,6 +78,7 @@ void Gem::Update(GameMainScene* gamemain)
 {
 	if (play_drop_sound == true)
 	{
+		SetPlayerWorldLocation(gamemain->GetPlayer()->GetWorldLocation());
 		if (CheckSoundMem(drop_sound) == FALSE)
 		{
 			// ドロップse
@@ -104,6 +105,8 @@ void Gem::Update(GameMainScene* gamemain)
 		if (draw_effect == false)
 		{
 			draw_effect = true;
+			//スコアを入れる
+			gamemain->GetScore()->SetScore(gem_score);
 		}
 
 		if (effect_anim_cnt < 40)
@@ -122,12 +125,14 @@ void Gem::Update(GameMainScene* gamemain)
 			{
 				// エフェクトのアニメーションが終わったら削除
 				is_delete = true;
+				is_release = true;
 			}
 		}
 	}
 
 	// 宝石のアニメーション
 	GemAnim();
+
 
 }
 
@@ -150,6 +155,16 @@ void Gem::Draw() const
 
 void Gem::HitReaction(ObjectBase* character)
 {
+	switch (character->GetObjectType())
+	{
+	case ObjectType::player:
+		PlayGetSound();
+		break;
+	default:
+		break;
+	}
+
+
 }
 
 // 宝石のアニメーション

@@ -153,6 +153,7 @@ void Rock::Update(GameMainScene* gamemain)
 			break;
 		case 18:
 			delete_flg = true;
+			is_release = true;
 			break;
 		}
 		delete_cnt++;

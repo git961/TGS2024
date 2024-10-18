@@ -1231,6 +1231,44 @@ void GameMainScene::Update()
 			{
 				characters[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				characters[i]->Update(this);
+
+				
+			}
+
+			if (characters[i] != nullptr && characters[i]->GetObjectType() == ObjectType::enemy)
+			{
+				Enemy* enemy = dynamic_cast<Enemy*>(characters[i]);
+				if (enemy == nullptr)
+				{
+					break;
+				}
+				else
+				{
+					if (enemy->GetGemDropFlg() == true)
+					{
+						if (walk_gem[i] == nullptr)
+						{
+							walk_gem[i] = new Gem(enemy->GetWorldLocation(), 0, walk_gem_score);
+							walk_gem[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+							enemy->SetGemDropFlg(false);
+						}
+					}
+				}
+			}
+			
+			if (characters[i] != nullptr && characters[i]->GetIsRelease() == true)
+			{
+				if(characters[i]->GetObjectType() == ObjectType::enemy)
+				{
+				
+					//walk_gem[i] = new Gem(enemy[i]->GetWorldLocation(), 0, walk_gem_score);
+					//walk_gem[i]->SetPlayerWorldLocation(player->GetWorldLocation());
+					//enemy[i]->SetGemDropFlg(false);
+				}
+				else
+				{
+					characters[i] = nullptr;
+				}
 			}
 		}
 

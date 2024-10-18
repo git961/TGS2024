@@ -489,6 +489,7 @@ void Enemy::DeathAnimation()
 	{
 		// 120カウント以上なら削除フラグをtrueに変更
 		is_delete = true;
+		is_release = true;
 	}
 
 	if (draw_death_img == true)

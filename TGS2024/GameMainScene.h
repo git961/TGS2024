@@ -280,6 +280,7 @@ public:
     MapIo* GetMapIo() { return mapio; }
     Player* GetPlayer() { return player; }
     UI* GetUi() { return ui; }
+    Score* GetScore() { return score; }
     AttackCheck* GetAttackCheck() { return ac; }
 
     void Tutorial();
