@@ -1234,7 +1234,7 @@ void GameMainScene::Update()
 			}
 		}
 
-		//当たり判定
+		//キャラクター同士の当たり判定
 		for (int i = 0; i < object_cnt - 1; i++)
 		{
 			//nullptrでカメラの範囲内に居なかったら次に行く

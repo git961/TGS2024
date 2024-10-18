@@ -56,7 +56,7 @@ protected:
 	float two_heights;//2つの高さを合わせる用
 
 	bool is_hitcheck;//当たり判定を行ってもいいか
-
+	bool is_release;//nullを入れて解放するか
 
 public:
 	//コンストラクタとデストラクタ
@@ -73,6 +73,7 @@ public:
 		location = { 0 };
 		box_vertex = { 0 };
 		is_hitcheck = true;
+		is_release = false;
 	};
 	~ObjectBase() {};
 
