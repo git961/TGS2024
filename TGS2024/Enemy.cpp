@@ -126,6 +126,7 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 
 	my_object_type = ObjectType::enemy;
 	is_hitcheck = true;
+	c_enemy = nullptr;
 }
 
 Enemy::~Enemy()
@@ -310,7 +311,6 @@ void Enemy::Draw() const
 
 void Enemy::HitReaction(ObjectBase* character)
 {
-
 	switch (character->GetObjectType())
 	{
 	case ObjectType::rock:
@@ -319,12 +319,37 @@ void Enemy::HitReaction(ObjectBase* character)
 		ChangeDirection();
 		break;
 	case ObjectType::enemy:
+		// Enemyクラスのメンバ関数を使いたいため
+		// characterをEnemyにキャスト
+		c_enemy = dynamic_cast<Enemy*>(character);
+
+		if (c_enemy == nullptr)
+		{
+			// キャストに失敗したら処理を抜ける
+			delete c_enemy;
+			break;
+		}
+
+		// 自分がノックバックしていたら
+		if (is_knock_back == true)
+		{
+			if (c_enemy->GetIsKnockBack() == false)
+			{
+				// 相手がノックバックしていなかったらノックバックさせる
+				c_enemy->SetKnockBackStartFlg(true);
+			}
+		}
+		else
+		{
+			// ノックバックしていなかったら進行方向を変更する
+			SetHitEnemyX(character->GetWorldLocation().x);
+			ChangeDirection();
+		}
 		break;
 	case ObjectType::playerattack:
 
 		if (is_knock_back == false)
 		{
-
 			Damage(10);
 			SetPlayerWorldLocation(character->GetWorldLocation());
 			SetKnockBackStartFlg(true);
