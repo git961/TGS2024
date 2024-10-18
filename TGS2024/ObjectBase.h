@@ -31,6 +31,11 @@ enum class ObjectType
 	playerattack,
 	enemy,
 	rock,
+	fallingfloor,
+	fragilewall,
+	geyser,
+	magma,
+	gem,
 };
 
 class ObjectBase

@@ -552,6 +552,8 @@ void Player::HitReaction(ObjectBase* character)
 			SetDamage(10);
 		}
 		break;
+	case ObjectType::gem:
+		break;
 	default:
 		break;
 	}
