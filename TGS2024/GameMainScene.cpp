@@ -3529,11 +3529,11 @@ void GameMainScene::PlayerHitFallingFloor()
 				{
 					player->SinkCheckObject(falling_floor[i]->GetWorldLocation().y - falling_floor[i]->GetHeight() / 2.0f);
 				}
-				//
-				//if (falling_floor[i]->GetFallingFlg() == true)
-				//{
-					player->SetY(falling_floor[i]->GetWorldLocation().y - (falling_floor[i]->GetHeight()/2));
-				//}
+				
+				if (falling_floor[i]->GetFallingFlg() == true)
+				{
+					player->SetY(falling_floor[i]->GetWorldLocation().y - (falling_floor[i]->GetHeight()/2) - 2.0f);
+				}
 
 				//player->HitCheckB(falling_floor[i]->GetVertex());
 			}
