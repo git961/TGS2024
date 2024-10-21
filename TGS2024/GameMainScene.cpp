@@ -3514,7 +3514,7 @@ void GameMainScene::PlayerHitFallingFloor()
 		if (falling_floor[i]->GetWorldLocation().x > screen_origin_position.x - 100 && falling_floor[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 		{
 			// プレイヤーが落ちる床に当たったら
-			if (player->HitCheck(falling_floor[i]->GetWorldLocation(), falling_floor[i]->GetWidth()+1.0f, falling_floor[i]->GetHeight() + 20.0f) == true)
+			if (player->HitCheck(falling_floor[i]->GetWorldLocation(), falling_floor[i]->GetWidth(), falling_floor[i]->GetHeight() + 20.0f) == true)
 			{
 				// プレイヤーの落下を止める
 				player->SetFallFlg(false);
@@ -3532,7 +3532,7 @@ void GameMainScene::PlayerHitFallingFloor()
 				
 				if (falling_floor[i]->GetFallingFlg() == true)
 				{
-					player->SetY(falling_floor[i]->GetWorldLocation().y - (falling_floor[i]->GetHeight()/2) - 2.0f);
+					player->SetY(falling_floor[i]->GetWorldLocation().y - (falling_floor[i]->GetHeight()/2)-2.0f);
 				}
 
 				//player->HitCheckB(falling_floor[i]->GetVertex());
@@ -3602,8 +3602,6 @@ void GameMainScene::FallingFloorHitMagma()
 			{
 				// 落ちる床の落下を止める
 				falling_floor[i]->StopFalling();
-				//SetWorldする
-				falling_floor[i]->SetY(magma[j]->GetWorldLocation().y);
 			}
 		}
 	}

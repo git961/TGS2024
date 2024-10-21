@@ -74,7 +74,6 @@ void FallingFloor::StopFalling()
 {
 	// 地面に触れた
 	touched_magma = true;
-	falling_flg = false;//落下しない
 }
 
 bool FallingFloor::GetFallingFlg() const
