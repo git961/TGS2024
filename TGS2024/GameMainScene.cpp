@@ -3555,6 +3555,7 @@ void GameMainScene::PickaxeHitFallingFloor()
 	for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
 	{
 		if (falling_floor[i] == nullptr)				continue;
+		if (falling_floor[i]->GetTouchedMagma() == true)   continue;
 
 		if (falling_floor[i]->GetWorldLocation().x > screen_origin_position.x - 100 && falling_floor[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 		{
@@ -3597,7 +3598,7 @@ void GameMainScene::FallingFloorHitMagma()
 			}
 
 			// 落ちる床の中心座標がマグマの中心座標以上になったら
-			if (falling_floor[i]->GetWorldLocation().y + 5.0f >= magma[j]->GetWorldLocation().y)
+			if (falling_floor[i]->GetWorldLocation().y > magma[j]->GetWorldLocation().y)
 			{
 				// 落ちる床の落下を止める
 				falling_floor[i]->StopFalling();
