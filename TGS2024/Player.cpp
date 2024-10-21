@@ -2099,7 +2099,7 @@ void Player::HitMapChip(GameMainScene* gamemain)
 	}
 	else
 	{
-		stop_up_flg = false;
+		//stop_up_flg = false;
 	}
 
 	//移動前のｘ座標を渡す
@@ -2177,7 +2177,7 @@ void Player::SinkCheckTop(GameMainScene* gamemain, float set_x, float set_y)
 		//もしめりこんでいたら
 		if (sink_y > 0)
 		{
-			//めり込んでいる分上にあげる
+			//めり込んでいる分下に
 			world.y = world.y + sink_y;
 		}
 	}
