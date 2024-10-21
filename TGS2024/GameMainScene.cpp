@@ -3602,6 +3602,8 @@ void GameMainScene::FallingFloorHitMagma()
 			{
 				// 落ちる床の落下を止める
 				falling_floor[i]->StopFalling();
+				//SetWorldする
+				falling_floor[i]->SetY(magma[j]->GetWorldLocation().y);
 			}
 		}
 	}

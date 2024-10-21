@@ -27,7 +27,7 @@ public:
 
 	bool GetFallingFlg() const;
 	void StartFalling();				// 落下を開始する
-
+	void SetY(float set_y) { world.y = set_y; }
 private:
 	void CheckPlaySound();				// サウンドを再生するか調べる
 };
