@@ -34,6 +34,8 @@ private:
 	int effect_anim_cnt;		// 取得時エフェクトの表示時間
 	bool draw_effect;			// エフェクトを表示するか？
 
+	int get_gem_type;//gemのtypeを入れる
+
 public:
 	Gem(World set_world,int gem_type,int set_score);
 	~Gem();

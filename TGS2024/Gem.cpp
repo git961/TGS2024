@@ -10,6 +10,7 @@ Gem::Gem(World set_world, int gem_type,int set_score)
 
 	width = 32.0f;
 	height = 32.0f;
+	get_gem_type = gem_type;
 
 	if (gem_type == 0) {
 		// 青の宝石画像の読み込み
@@ -23,6 +24,7 @@ Gem::Gem(World set_world, int gem_type,int set_score)
 		// 黄の宝石画像の読み込み
 		LoadDivGraph("images/Gem/YellowGem.png", 5, 5, 1, 32, 32, gem_img);
 		world.y += 32.0f;
+
 	}
 
 	LoadDivGraph("images/Gem/effect.png", 4, 4, 1, 32, 32, effect_img);
@@ -175,14 +177,29 @@ void Gem::ChangeSize()
 	}
 	else
 	{
-		// だんだんサイズが大きくなる
-		if (size < 1.0)
+		if (get_gem_type != 2)
 		{
-			size += 0.1;
+			// だんだんサイズが大きくなる
+			if (size < 1.0)
+			{
+				size += 0.1;
+			}
+			else
+			{
+				size = 1.0;
+			}
 		}
 		else
 		{
-			size = 1.0;
+			// だんだんサイズが大きくなる
+			if (size < 1.3)
+			{
+				size += 0.1;
+			}
+			else
+			{
+				size = 1.3;
+			}
 		}
 	}
 }

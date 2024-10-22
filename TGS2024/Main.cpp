@@ -28,7 +28,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	
 	_CrtMemState s1;
 
-	//タイトルをverminに変更
 	SetMainWindowText("GanGanCrush");
 	ChangeWindowMode(TRUE);
 
