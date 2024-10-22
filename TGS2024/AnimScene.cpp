@@ -227,7 +227,7 @@ void AnimScene::Update()
 void AnimScene::Draw() const
 {
 
-	DrawGraph((int)screen_origin_position.x, 0, back_img, FALSE);
+	DrawGraph((int)screen_origin_position.x - 64, 0, back_img, FALSE);
 
 	if (fallingrock != nullptr)
 	{
@@ -278,8 +278,8 @@ void AnimScene::ShakeCamera(bool set_true, int set_num)
 {
 	if (set_num == 1)
 	{
-		shake_x1 = 5;
-		shake_x2 = 10;
+		shake_x1 = 10;
+		shake_x2 = 15;
 		if (set_true == true)
 		{
 			//画面の揺れ

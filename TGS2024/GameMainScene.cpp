@@ -990,10 +990,10 @@ void GameMainScene::Update()
 	case PLAY:
 
 
-		if (CheckHitKey(KEY_INPUT_SPACE) == 1)
-		{
-			game_state = EDITOR;
-		}
+		//if (CheckHitKey(KEY_INPUT_SPACE) == 1)
+		//{
+		//	game_state = EDITOR;
+		//}
 
 
 		if (retry_flg == true&&retry_fadein_once==true)
