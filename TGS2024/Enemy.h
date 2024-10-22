@@ -77,6 +77,7 @@ private:
     bool fall_end_flg;//敵が地面に付いたらtrue
 
     bool fragment_draw_flg;             // 石の破片を描画するか？
+    bool is_draw_crack_image;           // ひび割れ画像を描画するか？
 
 public:
     Enemy(float set_x, float set_y,bool set_direction);

@@ -76,11 +76,9 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 		fragment[i].is_draw = false;
 
 		// 初速度の設定
-		//v0[i] = rand() % 5 + 1;
 		v0[i] = 0.0f;
 
 		// 発射角度の設定
-		//fragment[i].degree = rand() % 90;
 		fragment[i].degree = 0.0;
 
 		if (i < 2)
@@ -123,6 +121,7 @@ Enemy::Enemy(float set_x, float set_y,bool set_direction)
 	fall_flg = false;
 
 	fragment_draw_flg = true;
+	is_draw_crack_image = false;
 }
 
 Enemy::~Enemy()
@@ -237,7 +236,7 @@ void Enemy::Draw() const
 {
 #ifdef DEBUG
 	//DrawFormatString(location.x - 100, 50, 0xffffff, "hp: %.2f", hp);
-	//DrawFormatString(location.x - 100, 30, 0xffffff, "crack: %d", crack_image_num);
+	//DrawFormatString(location.x - 100, location.y - 130, 0xffffff, "image_num: %d", image_num);
 	//DrawFormatString(location.x - 100, 140, 0xffffff, "3: %.1f", fragment[3].x);
 	//DrawFormatString(location.x - 100, 170, 0xffffff, "L: %.1f", location.x);
 	//DrawFormatString(location.x - 100, 80, 0xffffff, "k: %d", is_knock_back);
@@ -253,7 +252,7 @@ void Enemy::Draw() const
 	case EnemyState::WALK:
 		// 歩行画像
 		DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img[image_num], TRUE, direction);
-		if (hp != 30)
+		if (is_draw_crack_image == true)
 		{
 			// ひび割れ画像
 			if (image_num == 1)
@@ -270,6 +269,10 @@ void Enemy::Draw() const
 	case EnemyState::KNOCKBACK:
 		// ノックバック画像
 		DrawRotaGraph((int)location.x, (int)location.y, 1.0, 0.0, enemy_img[5], TRUE, direction);
+		if (is_draw_crack_image == true)
+		{
+			DrawRotaGraph((int)location.x, (int)location.y + 10, 1.0, 0.0, crack_img[crack_image_num], TRUE, direction);
+		}
 		break;
 
 	case EnemyState::FALL:
@@ -415,14 +418,6 @@ void Enemy::KnockBack()
 	if (is_knock_back_start == true)
 	{
 		is_knock_back_start = false;
-
-		if (star.is_draw == true)
-		{
-			if (crack_image_num < 1)
-			{
-				crack_image_num++;
-			}
-		}
 	}
 }
 
@@ -641,6 +636,15 @@ void Enemy::FragmentEffect()
 void Enemy::Damage(int damage)
 {
 	hp -= (float)damage;
+	if (is_draw_crack_image == false)
+	{
+		is_draw_crack_image = true;
+	}
+
+	if (crack_image_num < 1)
+	{
+		crack_image_num++;
+	}
 }
 
 void Enemy::Fall()
