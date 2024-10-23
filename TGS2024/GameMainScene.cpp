@@ -476,8 +476,8 @@ void GameMainScene::ResetMap()
 				break;
 			case 17:
 				lift[object_num.lift_cnt] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-				lift[object_num.lift_cnt]->SetScreenPos(screen_origin_position.x, screen_origin_position.y);
-				lift[object_num.lift_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				lift[object_num.lift_cnt]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
+				lift[object_num.lift_cnt++]->SetScreenPos(screen_origin_position.x, screen_origin_position.y);
 				break;
 			case 23:
 				green_gem[object_num.green_gem_cnt] = new GreenGem((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2,700);
@@ -669,7 +669,8 @@ void GameMainScene::ChengeNextMap()
 				cage[object_num.cage_cnt++] = new Cage(cage_door[0]->GetWorldLocation());
 				break;
 			case 17:
-				lift[object_num.lift_cnt++] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				lift[object_num.lift_cnt] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
+				lift[object_num.lift_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 				break;
 			case 18:
 				stage_block[block_count++] = new StageBlock(18, (float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
