@@ -19,9 +19,9 @@ GameMainScene::GameMainScene(bool set_flg,int get_stage_num)
 	}
 	else {
 		stage_num = StageNum::stage2;
-		event_lift[0] = new EventLift(5280.0f, 1750.0f);
 	}
 
+	event_lift[0] = new EventLift(5280.0f, 1750.0f);
 	retry_flg = set_flg;
 	checkhit = false;
 	block_cnt = 0;
@@ -3258,6 +3258,10 @@ void GameMainScene::PlayerHitLift()
 					{
 						player->SinkCheckObject(lift[i]->GetWorldLocation().y - (lift[i]->GetHeight() / 2.0f));
 					}
+				}
+				else
+				{
+					player->SetLiftHitFlg(false);
 				}
 			}
 		}
