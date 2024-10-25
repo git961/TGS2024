@@ -48,7 +48,7 @@ struct cameraposition
 
 };
 
-enum GameState {
+enum class GameState {
     EDITOR,
     TUTORIAL,
     POSE,
@@ -75,12 +75,12 @@ struct ObjectNum {
     int fragile_wall_cnt=0;
     int cage_cnt=0;
     int cage_door_cnt=0;
-    int magma_cnt;
-    int falling_floor_cnt;
-    int geyser_cnt;
-    int lift_cnt;
-    int rock_cnt;
-    int green_gem_cnt;
+    int magma_cnt=0;
+    int falling_floor_cnt=0;
+    int geyser_cnt=0;
+    int lift_cnt=0;
+    int rock_cnt=0;
+    int green_gem_cnt=0;
 };
 
 class GameMainScene : public AbstractScene
@@ -284,7 +284,6 @@ public:
     void PlayerHitLift();
     void PlayerHitEventLift();
     void LiftHitStop();
-    void PlayerHitBlock();
 
     void SetObjectNull();//オブジェクトにNullを入れる
     

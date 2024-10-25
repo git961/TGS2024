@@ -10,7 +10,7 @@ class StageBlock;
 class AnimScene;
 class Enemy;
 
-enum PlayerState {
+enum class PlayerState {
     NOMAL,//地面に居る：歩くのが可能
     ATTACK,
     WALK,
@@ -134,7 +134,6 @@ private:
 
     bool helmet_flg;//ヘルメットを落とすフラグ
     float helmet_down;
-    int helmet_img;//
 
     // bool stop_walk_snd;             // 足音を止めるか？
 
@@ -257,10 +256,10 @@ public:
     {
         if (is_stop == true)
         {
-            player_state = STOP;
+            player_state = PlayerState::STOP;
         }
         else {
-            player_state = NOMAL;
+            player_state = PlayerState::NOMAL;
         }
     };
 

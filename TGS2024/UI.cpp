@@ -210,7 +210,7 @@ void UI::DrawTutorial(Player* player) const
 	case 0:
 		break;
 	case 1:
-		DrawRotaGraph(player->GetLocation().x, player->GetLocation().y-100, 1, 0, btnB_img[btn_num], TRUE, 0);
+		DrawRotaGraph((int)player->GetLocation().x, (int)player->GetLocation().y - 100, 1, 0, btnB_img[btn_num], TRUE, 0);
 		break;
 	case 2:
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha);
@@ -218,14 +218,14 @@ void UI::DrawTutorial(Player* player) const
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		break;
 	case 3:
-		DrawRotaGraph(player->GetLocation().x, player->GetLocation().y - 100, 1, 0, btnY_img[btn_num], TRUE, 0);
+		DrawRotaGraph((int)player->GetLocation().x, (int)player->GetLocation().y - 100, 1, 0, btnY_img[btn_num], TRUE, 0);
 		break;
 	case 4:
 		if (btn_flg == true)
 		{
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha);
 		}
-		DrawRotaGraph(500, player->GetLocation().y - 100, 1, 0, btnmove_img[btn_num], TRUE, 0);
+		DrawRotaGraph(500, (int)player->GetLocation().y - 100, 1, 0, btnmove_img[btn_num], TRUE, 0);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 		

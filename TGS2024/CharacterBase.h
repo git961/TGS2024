@@ -14,9 +14,6 @@ protected:
 	bool direction;				//向き　0:右 1:左
 	float attack;				//攻撃力
 
-	float old_world_x;
-
-
 public:
 	//コンストラクタとデストラクタ
 	CharacterBase()

@@ -90,7 +90,7 @@ void EventLift::Update(AttackCheck* ac, Player* player)
 	case AnimState::Clash:
 		player_anim_num = 3;
 		player->LiftEvent(player_anim_num);
-		if (player->GetState() != 8) {
+		if (player->GetState() != PlayerState::STOP) {
 			anim_state = AnimState::End;
 		}
 		break;
@@ -106,9 +106,9 @@ void EventLift::Update(AttackCheck* ac, Player* player)
 
 void EventLift::Draw() const
 {
-	DrawRotaGraph((int)location.x-90, (int)location.y -35.0f, 1, 0, spear_img[spear_num], TRUE);
-	DrawRotaGraph((int)location.x+90, (int)location.y - 35.0f, 1, 0, spear_img[spear_num], TRUE);
-	DrawRotaGraph((int)location.x, (int)location.y - shift_img_y, 1, 0, lift_img, TRUE);
+	DrawRotaGraph((int)location.x-90, (int)location.y -35, 1, 0, spear_img[spear_num], TRUE);
+	DrawRotaGraph((int)location.x+90, (int)location.y - 35, 1, 0, spear_img[spear_num], TRUE);
+	DrawRotaGraph((int)location.x, (int)location.y - (int)shift_img_y, 1, 0, lift_img, TRUE);
 
 	if (switch_object != nullptr)
 	{

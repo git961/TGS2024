@@ -53,6 +53,8 @@ public:
 		height = 0.0f;
 		distance_x = 0.0f;
 		distance_y = 0.0f;
+		half_width = 0.0f;
+		half_height = 0.0f;
 		two_widths = 0.0f;
 		two_heights = 0.0f;
 		world.x = 0.0f;

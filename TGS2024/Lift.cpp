@@ -117,7 +117,7 @@ void Lift::Update(AttackCheck* ac,Player* player)
 void Lift::Draw() const
 {
 
-	DrawRotaGraph((int)location.x, (int)location.y-shift_img_y, 1,0, lift_img, TRUE);
+	DrawRotaGraph((int)location.x, (int)location.y - (int)shift_img_y, 1,0, lift_img, TRUE);
 //	DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + width / 2, (int)location.y + height / 2,0x00ffff,FALSE);
 	//DrawFormatString((int)location.x, (int)location.y-60, 0xFFFFFF, "y:%f", world.y);
 	//DrawFormatString((int)location.x, (int)location.y-60, 0xFFFFFF, "count:%d",anim_cnt);

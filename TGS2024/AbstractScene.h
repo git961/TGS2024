@@ -5,7 +5,6 @@ class AbstractScene
 public:
 	virtual ~AbstractScene(){};
 	Input input;
-	int change;
 	virtual void Finalize(){}
 
 	virtual void Update() = 0;

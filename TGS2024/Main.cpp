@@ -17,17 +17,8 @@
 #endif
 
 // プログラムは WinMain から始まります
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int
-	nCmdShow)
+int WINAPI WinMain(_In_ HINSTANCE,_In_opt_ HINSTANCE,_In_ LPSTR,_In_ int)
 {
-
-
-	//デバッグメモリ管理を有効化
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	//_CrtSetBreakAlloc(68);
-	
-	_CrtMemState s1;
-
 	SetMainWindowText("GanGanCrush");
 	ChangeWindowMode(TRUE);
 
@@ -36,8 +27,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if (DxLib_Init() == -1) return -1;	// DXライブラリの初期化処理
 
 	SetDrawScreen(DX_SCREEN_BACK);	// 描画先画面を裏にする
-	//new GameMainScene(true,1)
-	SceneManager SceneManager(dynamic_cast<AbstractScene*>(new GameMainScene(true, 1)));
+	SetMouseDispFlag(FALSE);		// マウスカーソル非表示
+	SceneManager SceneManager(dynamic_cast<AbstractScene*>(new GameMainScene(true,1)));
 	Input input;
 	fps fp;
 	//ループ前にFPS計測を初期化
