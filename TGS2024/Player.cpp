@@ -2099,7 +2099,10 @@ void Player::HitMapChip(GameMainScene* gamemain)
 	}
 	else
 	{
-		//stop_up_flg = false;
+		if (geyser_hit_flg == true)
+		{
+			stop_up_flg = false;
+		}
 	}
 
 	//移動前のｘ座標を渡す
