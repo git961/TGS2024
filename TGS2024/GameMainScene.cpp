@@ -19,8 +19,8 @@ GameMainScene::GameMainScene(bool set_flg,int get_stage_num)
 	}
 	else {
 		stage_num = StageNum::stage2;
+		event_lift[0] = new EventLift(5280.0f, 1750.0f);
 	}
-	event_lift[0] = new EventLift(5280.0f, 1750.0f);//後で消す
 
 	retry_flg = set_flg;
 	checkhit = false;
@@ -557,6 +557,11 @@ void GameMainScene::ResetMap()
 		{
 			stage_block[j]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 		}
+	}
+
+	if (event_lift[0] != nullptr)
+	{
+		event_lift[0]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 	}
 
 	score = new Score();
