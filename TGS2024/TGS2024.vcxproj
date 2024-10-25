@@ -160,8 +160,6 @@
     <ClCompile Include="AbstractScene.cpp" />
     <ClCompile Include="AnimScene.cpp" />
     <ClCompile Include="AttackCheck.cpp" />
-    <ClCompile Include="Cage.cpp" />
-    <ClCompile Include="CageDoor.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Dynamite.cpp" />
     <ClCompile Include="EndScene.cpp" />
@@ -180,7 +178,6 @@
     <ClCompile Include="Geyser.cpp" />
     <ClCompile Include="GreenGem.cpp" />
     <ClCompile Include="HardEnemy.cpp" />
-    <ClCompile Include="Key.cpp" />
     <ClCompile Include="Lift.cpp" />
     <ClCompile Include="LongLeggedEnemy.cpp" />
     <ClCompile Include="Magma.cpp" />
@@ -188,14 +185,12 @@
     <ClCompile Include="MapIo.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ReboundEnemy.cpp" />
-    <ClCompile Include="RiverLog.cpp" />
     <ClCompile Include="Rock.cpp" />
     <ClCompile Include="RollingEnemy.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="StageBlock.cpp" />
     <ClCompile Include="Switch.cpp" />
-    <ClCompile Include="TestStageScene.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
@@ -203,8 +198,6 @@
     <ClInclude Include="AbstractScene.h" />
     <ClInclude Include="AnimScene.h" />
     <ClInclude Include="AttackCheck.h" />
-    <ClInclude Include="Cage.h" />
-    <ClInclude Include="CageDoor.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="EndScene.h" />
     <ClInclude Include="EnemyBase.h" />
@@ -220,7 +213,6 @@
     <ClInclude Include="Geyser.h" />
     <ClInclude Include="GreenGem.h" />
     <ClInclude Include="HardEnemy.h" />
-    <ClInclude Include="Key.h" />
     <ClInclude Include="Lift.h" />
     <ClInclude Include="LongLeggedEnemy.h" />
     <ClInclude Include="Magma.h" />
@@ -234,17 +226,14 @@
     <ClInclude Include="padinput.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ReboundEnemy.h" />
-    <ClInclude Include="RiverLog.h" />
     <ClInclude Include="Rock.h" />
     <ClInclude Include="RollingEnemy.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Score.h" />
     <ClInclude Include="StageBlock.h" />
     <ClInclude Include="Switch.h" />
-    <ClInclude Include="TestStageScene.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="UI.h" />
-    <ClInclude Include="Vec2I.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

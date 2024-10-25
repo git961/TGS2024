@@ -159,17 +159,8 @@
     <ClCompile Include="Score.cpp">
       <Filter>ソース ファイル\UI</Filter>
     </ClCompile>
-    <ClCompile Include="TestStageScene.cpp">
-      <Filter>ソース ファイル\StageFile</Filter>
-    </ClCompile>
     <ClCompile Include="FragileWall.cpp">
       <Filter>ソース ファイル\StageObjectFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Cage.cpp">
-      <Filter>ソース ファイル\StageObjectFile\Cage</Filter>
-    </ClCompile>
-    <ClCompile Include="CageDoor.cpp">
-      <Filter>ソース ファイル\StageObjectFile\Cage</Filter>
     </ClCompile>
     <ClCompile Include="Magma.cpp">
       <Filter>ソース ファイル\StageObjectFile</Filter>
@@ -203,12 +194,6 @@
     </ClCompile>
     <ClCompile Include="AbstractScene.cpp">
       <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="RiverLog.cpp">
-      <Filter>ソース ファイル\StageObjectFile</Filter>
-    </ClCompile>
-    <ClCompile Include="Key.cpp">
-      <Filter>ソース ファイル\GemFile\KeyFile</Filter>
     </ClCompile>
     <ClCompile Include="GreenGem.cpp">
       <Filter>ソース ファイル\GemFile</Filter>
@@ -263,9 +248,6 @@
     <ClInclude Include="RollingEnemy.h">
       <Filter>ヘッダー ファイル\EnemyFile</Filter>
     </ClInclude>
-    <ClInclude Include="Vec2I.h">
-      <Filter>ヘッダー ファイル\SystemFile</Filter>
-    </ClInclude>
     <ClInclude Include="Gem.h">
       <Filter>ヘッダー ファイル\GemFile</Filter>
     </ClInclude>
@@ -299,17 +281,8 @@
     <ClInclude Include="Score.h">
       <Filter>ヘッダー ファイル\UI</Filter>
     </ClInclude>
-    <ClInclude Include="TestStageScene.h">
-      <Filter>ヘッダー ファイル\StageFile</Filter>
-    </ClInclude>
     <ClInclude Include="FragileWall.h">
       <Filter>ヘッダー ファイル\StageObjectFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Cage.h">
-      <Filter>ヘッダー ファイル\StageObjectFile\Cage</Filter>
-    </ClInclude>
-    <ClInclude Include="CageDoor.h">
-      <Filter>ヘッダー ファイル\StageObjectFile\Cage</Filter>
     </ClInclude>
     <ClInclude Include="Magma.h">
       <Filter>ヘッダー ファイル\StageObjectFile</Filter>
@@ -343,12 +316,6 @@
     </ClInclude>
     <ClInclude Include="ReboundEnemy.h">
       <Filter>ヘッダー ファイル\EnemyFile</Filter>
-    </ClInclude>
-    <ClInclude Include="RiverLog.h">
-      <Filter>ヘッダー ファイル\StageObjectFile</Filter>
-    </ClInclude>
-    <ClInclude Include="Key.h">
-      <Filter>ヘッダー ファイル\GemFile\KeyFile</Filter>
     </ClInclude>
     <ClInclude Include="GreenGem.h">
       <Filter>ヘッダー ファイル\GemFile</Filter>

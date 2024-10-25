@@ -1,7 +1,5 @@
 ﻿#include "GameMainScene.h"
 
-static bool get_key_array[KEY_MAXNUM]={false,false};
-
 //画面の中央を座標に入れる
 static cameraposition camera_pos{ SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f };
 
@@ -194,10 +192,6 @@ GameMainScene::GameMainScene(bool set_flg,int get_stage_num)
 					case 15:
 						geyser[object_num.geyser_cnt++] = new Geyser((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
-					case 16:
-						cage_door[object_num.cage_door_cnt] = new CageDoor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-						cage[object_num.cage_cnt++] = new Cage(cage_door[object_num.cage_door_cnt++]->GetWorldLocation());
-						break;
 					case 17:
 						lift[object_num.lift_cnt++] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 						break;
@@ -331,11 +325,6 @@ GameMainScene::~GameMainScene()
 	{
 		delete fragile_wall[i];
 	}
-	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
-	{
-		delete cage[i];
-		delete cage_door[i];
-	}
 	for (int i = 0; i < MAGMA_MAXMUN; i++)
 	{
 		delete magma[i];
@@ -357,11 +346,6 @@ GameMainScene::~GameMainScene()
 		delete rock[i];
 	}
 	
-	for (int i = 0; i < KEY_MAXNUM; i++)
-	{
-		delete key_gem[i];
-	}
-
 	//スコアとui消去
 
 	score->Finalize();
@@ -469,10 +453,6 @@ void GameMainScene::ResetMap()
 			case 15:
 				geyser[object_num.geyser_cnt] = new Geyser((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
 				geyser[object_num.geyser_cnt++]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-				break;
-			case 16:
-				cage_door[object_num.cage_door_cnt++] = new CageDoor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-				cage[object_num.cage_cnt++] = new Cage(cage_door[object_num.cage_door_cnt - 1]->GetWorldLocation());
 				break;
 			case 17:
 				lift[object_num.lift_cnt] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
@@ -610,11 +590,6 @@ void GameMainScene::ChengeNextMap()
 		rebound_gem[i] = nullptr;
 	}
 
-	for (int i = 0; i < KEY_MAXNUM; i++)
-	{
-		key_gem[i] = nullptr;
-	}
-
 	for (int i = 0; i < DYNAMITE_MAXNUM; i++)
 	{
 		dynamite[i] = nullptr;
@@ -668,10 +643,6 @@ void GameMainScene::ChengeNextMap()
 				break;
 			case 15:
 				geyser[object_num.geyser_cnt++] = new Geyser((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-				break;
-			case 16:
-				cage_door[object_num.cage_door_cnt++] = new CageDoor((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
-				cage[object_num.cage_cnt++] = new Cage(cage_door[0]->GetWorldLocation());
 				break;
 			case 17:
 				lift[object_num.lift_cnt] = new Lift((float)j * BLOCKSIZE + BLOCKSIZE / 2, (float)i * BLOCKSIZE + BLOCKSIZE / 2);
@@ -1062,11 +1033,6 @@ void GameMainScene::Update()
 		//宝石更新処理
 		GemUpDate();
 
-		//カギ宝石更新処理
-		KeyGemUpdate();
-		//カギ宝石とプレイヤーの当たり判定
-		PlayerHitKeyGem();
-
 		//プレイヤーと宝石の当たり判定
 		PlayerHitGem();
 
@@ -1104,12 +1070,6 @@ void GameMainScene::Update()
 			//// 脆い壁更新処理
 			//FragileWallUpdate();
 
-			// 檻の更新処理
-			CageUpdate();
-
-			// 檻のドアの更新処理
-			CageDoorUpdate();
-
 			// マグマの更新処理
 			MagmaUpdete();
 
@@ -1118,15 +1078,6 @@ void GameMainScene::Update()
 
 			// 間欠泉の更新処理
 			GeyserUpdete();
-
-			// プレイヤーと檻のドアの当たり判定処理
-			PlayerHitCageDoor();
-
-			// プレイヤーが檻の中にいるのか調べる
-			CheckPlayerInCage();
-
-			// 檻のドアへの攻撃判定
-			AttackCageDoor();
 
 			// プレイヤーとマグマの当たり判定処理
 			PlayerHitMagma();
@@ -1521,24 +1472,6 @@ void GameMainScene::Draw() const
 			//		DrawGraph((int)stage_block[j]->GetLocation().x - 448, (int)stage_block[j]->GetLocation().y - 480, goal_door_img, TRUE);
 			//	}
 			//}
-
-			for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
-			{
-				// 檻の描画
-				if (cage[i] != nullptr)
-				{
-					if (cage[i]->GetWorldLocation().x > screen_origin_position.x - 300 && cage[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 300)
-					{
-						cage[i]->Draw();
-
-						// 檻のドアの描画
-						if (cage_door[i] != nullptr)
-						{
-							cage_door[i]->Draw();
-						}
-					}
-				}
-			}
 
 			// 落ちる床の描画
 			for (int i = 0; i < FALLING_FLOOR_MAXNUM; i++)
@@ -2888,11 +2821,6 @@ void GameMainScene::SetObjectNull()
 	{
 		fragile_wall[i] = nullptr;
 	}
-	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
-	{
-		cage_door[i] = nullptr;
-		cage[i] = nullptr;
-	}
 	for (int i = 0; i < MAGMA_MAXMUN; i++)
 	{
 		magma[i] = nullptr;
@@ -3309,140 +3237,6 @@ void GameMainScene::LiftHitStop()
 				{
 					lift[i]->SetUpMaxY(stage_block[j]->GetWorldLocation().y-BLOCK_HALFSIZE);
 				}
-			}
-		}
-	}
-}
-
-// 檻の更新処理
-void GameMainScene::CageUpdate()
-{
-	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
-	{
-		if (cage[i] == nullptr) continue;
-
-		if (cage[i]->GetWorldLocation().x > screen_origin_position.x - 100 && cage[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
-		{
-			// カメラから見た座標の設定
-			cage[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-
-			cage[i]->Update();
-		}
-	}
-}
-
-// 檻のドアの更新処理
-void GameMainScene::CageDoorUpdate()
-{
-	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
-	{
-		if (cage_door[i] == nullptr) continue;
-		
-		if (cage_door[i]->GetWorldLocation().x > screen_origin_position.x - 100 && cage_door[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
-		{
-			// カメラから見た座標の設定
-			cage_door[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-
-			cage_door[i]->Update();
-		}
-	}
-}
-
-// プレイヤーと檻のドアの当たり判定
-void GameMainScene::PlayerHitCageDoor()
-{
-	if (player == nullptr) return;
-
-	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
-	{
-		if (cage_door[i] == nullptr) continue;
-
-		if (cage_door[i]->GetWorldLocation().x > screen_origin_position.x - 100 && cage_door[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
-		{
-			// プレイヤーが閉まっている檻のドアに当たっていたら
-			if (cage_door[i]->GetOpenFlg() == false && player->HitCheck(cage_door[i]->GetWorldLocation(), cage_door[i]->GetWidth(), cage_door[i]->GetHeight()) == true)
-			{
-				// プレイヤーの歩行を止める
-				player->HitCheckB(cage_door[i]->GetVertex());
-			}
-		}
-	}
-}
-
-// プレイヤーが檻の中にいるのか調べる
-void GameMainScene::CheckPlayerInCage()
-{
-	if (player == nullptr) return;
-
-	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
-	{
-		if (cage[i] == nullptr) continue;
-
-		if (cage[i]->GetWorldLocation().x > screen_origin_position.x - 100 && cage[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
-		{
-			// プレイヤーが檻の中にいたら
-			if (player->HitCheck(cage[i]->GetWorldLocation(), cage[i]->GetWidth(), cage[i]->GetHeight()) == true)
-			{
-				// 檻が透ける
-				cage[i]->SetInsideFlg(true);
-
-				// プレイヤーが檻の端についたら歩行を止める
-				player->CheckEdgeCage(cage[i]->GetVertex().left_x);
-			}
-			else
-			{
-				// 檻が透けない
-				cage[i]->SetInsideFlg(false);
-			}
-		}
-	}
-}
-
-// 檻のドアへの攻撃判定
-void GameMainScene::AttackCageDoor()
-{
-	if (player == nullptr)						return;
-
-	for (int i = 0; i < CAGE_DOOR_MAXNUM; i++)
-	{
-		if (cage_door[i] == nullptr)			continue;
-		if (cage_door[i]->GetHp() <= 0.0f)		continue;
-
-		if (cage_door[i]->GetWorldLocation().x > screen_origin_position.x - 100 && cage_door[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
-		{
-			for (int j = 0; j < DYNAMITE_MAXNUM; j++)
-			{
-				if (dynamite[j] == nullptr)			continue;
-
-				// ダイナマイト本体との当たり判定
-				if (dynamite[j]->GetDynamite() == false)
-				{
-					if (dynamite[j]->HitCheck(cage_door[i]->GetWorldLocation(), cage_door[i]->GetWidth(), cage_door[i]->GetHeight()) == true)
-					{
-						dynamite[j]->SetDynamite(true);
-						cage_door[i]->Damage(dynamite[j]->GetAttack());
-					}
-				}
-			}
-
-			//つるはしを振るってる時だけ
-			if (player->GetAttacking() == true)
-			{
-				//ダメージを一回だけ与える
-				if (enemy_damage_once == false)
-				{
-					//つるはしとエネミーと当たってるかのチェック
-					if (ac->HitCheck(cage_door[i]->GetWorldLocation(), cage_door[i]->GetWidth(), cage_door[i]->GetHeight()) == true)
-					{
-						cage_door[i]->Damage(player->GetAttack());
-						enemy_damage_once = true;
-					}
-				}
-			}
-			else
-			{
-				//プレイヤーがつるはし振ってなかったら
-				enemy_damage_once = false;
 			}
 		}
 	}
@@ -4130,36 +3924,6 @@ bool GameMainScene::CollisionCharaBottom(float set_half_width, float set_half_he
 	bool bottom_right = CollisionCheck(set_x + set_half_width - 1.0f, set_y +set_half_height);
 	return bottom_left||bottom_center||bottom_right;
 
-}
-
-void GameMainScene::KeyGemUpdate()
-{
-	for (int i = 0; i < KEY_MAXNUM; i++)
-	{
-		if (key_gem[i] != nullptr)
-		{
-			key_gem[i]->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
-			key_gem[i]->Update();
-		}
-	}
-}
-
-//プレイヤーとカギ宝石の当たり判定
-void GameMainScene::PlayerHitKeyGem()
-{
-	for (int i = 0; i < KEY_MAXNUM; i++)
-	{
-		if (player!=nullptr&&key_gem[i] != nullptr)
-		{
-			if (player->HitCheck(key_gem[i]->GetWorldLocation(), key_gem[i]->GetWidth(), key_gem[i]->GetHeight()))
-			{
-				//カギget
-				get_key_array[i] = true;
-				//カギ消去
-				key_gem[i] = nullptr;
-			}
-		}
-	}
 }
 
 //プレイヤーとリスポーンブロックの当たり判定

@@ -34,12 +34,9 @@
 // ギミックの最大数
 #define LIFT_MAXNUM				30
 #define FRAGILE_WALL_MAXNUM		30
-#define CAGE_DOOR_MAXNUM		20
 #define MAGMA_MAXMUN			20
 #define FALLING_FLOOR_MAXNUM	20
 #define GEYSER_MAXNUM			20
-
-#define KEY_MAXNUM 2
 
 #define ROCK_MAXNUM 200
 

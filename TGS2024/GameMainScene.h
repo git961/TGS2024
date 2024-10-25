@@ -16,8 +16,6 @@
 #include "GameClearScene.h"
 #include "GameOverScene.h"
 #include "FragileWall.h"
-#include "Cage.h"
-#include "CageDoor.h"
 #include "Lift.h"
 #include "EventLift.h"
 #include "Magma.h"
@@ -27,7 +25,6 @@
 #include "LongLeggedEnemy.h"
 #include "HardEnemy.h"
 #include "ReboundEnemy.h"
-#include "Key.h"
 #include "GreenGem.h"
 #include <crtdbg.h>
 #include <stdlib.h>
@@ -94,8 +91,6 @@ private:
     StageNum stage_num;
     CurrentLocation current_location;
 
-    bool get_key_array[KEY_MAXNUM];//手に入れたカギ入る番号 青：0 赤：1
-
     int check_point_score;//チェックポイント時点のスコアを保存する
 
     Player* player;
@@ -121,14 +116,10 @@ private:
     UI* ui;
 
     FragileWall* fragile_wall[FRAGILE_WALL_MAXNUM];          // 脆い壁
-    Cage* cage[CAGE_DOOR_MAXNUM];                         // 檻
-    CageDoor* cage_door[CAGE_DOOR_MAXNUM];                // 檻のドア
     Magma* magma[MAGMA_MAXMUN];                       // マグマ
     FallingFloor* falling_floor[FALLING_FLOOR_MAXNUM];        // 落ちる床
     Geyser* geyser[GEYSER_MAXNUM];                     // 間欠泉
     Rock* rock[ROCK_MAXNUM];                        //岩
-
-    Key* key_gem[KEY_MAXNUM];
 
     ObjectNum object_num;
 
@@ -303,12 +294,6 @@ public:
     void PlayerHitFragileWall();            // プレイヤーと脆い壁の当たり判定処理
     void PlayerHitRock();                   // プレイヤーと壊れる岩の当たり判定処理
 
-    void CageUpdate();                      // 檻の更新処理
-    void CageDoorUpdate();                  // 檻のドアの更新処理
-    void PlayerHitCageDoor();               // プレイヤーと檻のドアの当たり判定
-    void CheckPlayerInCage();               // プレイヤーが檻の中にいるのか調べる
-    void AttackCageDoor();                  // 檻のドアへの攻撃判定
-
     void MagmaUpdete();                     // マグマの更新処理
     void PlayerHitMagma();                  // プレイヤーとマグマの当たり判定処理
 
@@ -344,9 +329,6 @@ public:
     void PlayerHitReboundEnemy();          // プレイヤーとつるはしで転がる敵の当たり判定
     void PickaxeHitReboundEnemy();         // つるはしとつるはしで転がる敵の当たり判定
     void DynamiteHitReboundEnemy();        // ダイナマイトとつるはしで転がる敵の当たり判定
-
-    void KeyGemUpdate();//カギ宝石のアップデート
-    void PlayerHitKeyGem();//プレイヤーとカギ宝石の当たり判定
 
     bool CollisionCheck(float set_x,float set_y);
     bool CollisionCharaRight(float set_half_width,float set_half_height,World set_xy);
