@@ -23,6 +23,7 @@ Player::Player(float set_x,float set_y)
 
 	reset_timer = 0;
 	p_imgnum = 0;
+	old_p_imgnum = p_imgnum;
 	//p_atk_imgnum = 0;
 	effect_num = 0;
 	//walk_num = 0;
@@ -282,10 +283,6 @@ void Player::Update(GameMainScene* gamemain)
 	case PlayerState::WALK:
 	case PlayerState::NOMAL:
 
-		//if (world.y > 600.0f)
-		//{
-		//	world.y = 600.0f;
-		//}
 
 		if (player_state == PlayerState::NOMAL && fall_flg == false)
 		{
@@ -325,7 +322,6 @@ void Player::Update(GameMainScene* gamemain)
 		else if (world.x - width / 2 < 0) {
 			world.x = width / 2;
 			StopSoundMem(op_run_sound);
-
 		}
 
 		//敵からダメージを食らったら
@@ -396,7 +392,6 @@ void Player::Update(GameMainScene* gamemain)
 
 		if (player_state != PlayerState::WALK)
 		{
-			// 上のif文から処理を持ってきました。
 			StopSoundMem(op_run_sound);
 		}
 
@@ -429,15 +424,6 @@ void Player::Update(GameMainScene* gamemain)
 void Player::Draw() const
 {
 
-
-	//DrawBoxAA(location.x - width/2, location.y - height/2, location.x + width / 2, location.y + height / 2, 0xffffff,true);
-	//DrawFormatString(location.x, location.y - 80, 0xffffff, "draw%d",p_imgnum);
-	//DrawFormatString(location.x, location.y - 80, 0xffffff, "draw%d",direction);
-
-
-	//プレイヤー画像表示
-	//DrawRotaGraph(location.x, location.y-25, 1, 0, player_img[p_imgnum], TRUE, direction);
-
 	if (flash_flg == true)
 	{
 
@@ -468,30 +454,6 @@ void Player::Draw() const
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 #ifdef DEBUG
-
-
-	//////// 画面に XINPUT_STATE の中身を描画
-	//color = GetColor(255, 255, 255);
-	//for (int i = 0; i < 16; i++)
-	//{
-	//	DrawFormatString(64 + i % 8 * 64, 64 + i / 8 * 16, color,
-	//		"%2d:%d", i, input.getkey.Buttons[i]);
-	//}
-	////DrawFormatString(100, 100, 0xffffff, "Right:%d", a);
-	//DrawFormatString(100, 120, 0xffffff, "btnnum: % d", input.Btnnum);
-	//DrawBox((int)location.x - width / 2, (int)location.y - height / 2, (int)location.x + (int)width / 2, (int)location.y + (int)height / 2, 0x00ffff, FALSE);
-	//DrawBox((int)location.x - 128 / 2, (int)location.y - 128 / 2, (int)location.x + 128 / 2, (int)location.y + 128 / 2, 0x00ffff, FALSE);
-
-	//DrawFormatString(location.x, location.y-60, 0xffffff, "world.y: %f",world.y);
-	//DrawCircleAA(curent_x - half_width, location.y, 1, 0xff00ff, true);
-
-	//DrawBox((int)box_vertex.right_x, (int)box_vertex.upper_y, (int)box_vertex.left_x, (int)box_vertex.lower_y, 0x00ffff, FALSE);
-	//DrawFormatString(location.x, location.y - 80, 0xff0000, "move_x : %f", move_x);
-	//DrawFormatString(location.x, location.y - 80, 0xff0000, "fall_flg : %d",fall_flg);
-//	DrawFormatString(location.x, location.y - 80, 0xff0000, "attacking : %d",attacking);
-	//DrawFormatString(location.x, location.y -100, 0xff0000, "speed : %f",speed);
-	//DrawCircle(location.x + half_width, location.y + half_height, 3, 0xffffff, TRUE);
-		//(set_xy.y + set_half_height) - 3.0f
 
 #endif // DEBUG
 }
@@ -595,13 +557,18 @@ void Player::WalkAnim()
 			{
 				if (world.x + width / 2 < FIELD_WIDTH)
 				{
-					//走る音
-					if (CheckSoundMem(op_run_sound) == FALSE)
+					if (old_p_imgnum != p_imgnum)
 					{
-						PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+						//走る音
+						if (CheckSoundMem(op_run_sound) == FALSE)
+						{
+							PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+						}
 					}
 				}
 			}
+
+			old_p_imgnum = p_imgnum;
 		}
 	}
 
@@ -1010,10 +977,7 @@ void Player::TutoWalkAnim()
 {
 	if (player_state == PlayerState::WALK)
 	{
-		//if (abs((int)world.x - (int)old_worldx) > 59)
-		//{
-		//	old_worldx = world.x;
-		//}
+
 		if (abs((int)world.x - (int)old_worldx) > 119)
 		{
 			old_worldx = world.x;
@@ -1039,14 +1003,64 @@ void Player::TutoWalkAnim()
 		{
 			if (world.x + width / 2 < FIELD_WIDTH)
 			{
-				//走る音
-				if (CheckSoundMem(op_run_sound) == FALSE)
+				if (old_p_imgnum != p_imgnum)
 				{
-					PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+					//走る音
+					if (CheckSoundMem(op_run_sound) == FALSE)
+					{
+						PlaySoundMem(op_run_sound, DX_PLAYTYPE_BACK);
+					}
 				}
 			}
 		}
+
+		old_p_imgnum = p_imgnum;
 	}
+	
+	//move_xが0になってない場合
+	if (player_state != PlayerState::WALK) {
+
+		if (direction == 0 && move_x > 0.0f)
+		{
+			if (move_x < 0.3f)
+			{
+				move_x = 0.0f;
+			}
+
+			//プレイヤーを歩かせる
+			rest_move_count++;
+			if (rest_move_count < 15) {
+				p_imgnum = 4;
+			}
+			else if (rest_move_count < 25)
+			{
+				p_imgnum = 5;
+			}
+		}
+
+		if (direction == 1 && move_x < 0.0f)
+		{
+			if (move_x > -0.3f)
+			{
+				move_x = 0.0f;
+			}
+
+			//プレイヤーを歩かせる
+			rest_move_count++;
+			if (rest_move_count < 15) {
+				p_imgnum = 7;
+			}
+			else if (rest_move_count < 25)
+			{
+				p_imgnum = 8;
+			}
+		}
+
+	}
+	else {
+		rest_move_count = 0;
+	}
+
 
 }
 
@@ -1261,6 +1275,17 @@ void Player::TutorialAnimUpdate()
 	input.InputUpdate();
 	SetVertex();
 
+	if (player_state == PlayerState::NOMAL && p_imgnum != 27)
+	{
+		if (direction == false)
+		{
+			p_imgnum = 0;
+		}
+		else {
+			p_imgnum = 1;
+		}
+	}
+
 	switch (tuto_num)
 	{
 	case 0:
@@ -1277,7 +1302,7 @@ void Player::TutorialAnimUpdate()
 				location.x += 3;
 				world.x += 3;
 
-				if (abs((int)world.x - (int)old_worldx) > 59)
+				if (abs((int)world.x - (int)old_worldx) > 39)
 				{
 					old_worldx = world.x;
 				}
@@ -1521,9 +1546,6 @@ void Player::TutorialAnimUpdate()
 
 		break;
 	case 4:
-
-		//そのまま歩いて行って、看板を見る　この先出口ですが危険！！
-
 		SetVertex();
 
 		//つるはし攻撃
@@ -1615,16 +1637,7 @@ void Player::TutorialAnimUpdate()
 		break;
 	}
 
-	if (player_state== PlayerState::NOMAL&&p_imgnum!=27)
-	{
-		if (direction == false)
-		{
-			p_imgnum = 0;
-		}
-		else {
-			p_imgnum = 1;
-		}
-	}
+
 	// 端に来たら跳ね返る
 	if (world.x + width / 2 > FIELD_WIDTH)
 	{

@@ -27,8 +27,8 @@ int WINAPI WinMain(_In_ HINSTANCE,_In_opt_ HINSTANCE,_In_ LPSTR,_In_ int)
 	if (DxLib_Init() == -1) return -1;	// DXライブラリの初期化処理
 
 	SetDrawScreen(DX_SCREEN_BACK);	// 描画先画面を裏にする
-	SetMouseDispFlag(FALSE);		// マウスカーソル非表示
-	SceneManager SceneManager(dynamic_cast<AbstractScene*>(new GameMainScene(true,1)));
+	SetMouseDispFlag(FALSE);		// マウスカーソル非表示GameMainScene(true,1)
+	SceneManager SceneManager(dynamic_cast<AbstractScene*>(new GameMainScene(false,0)));
 	Input input;
 	fps fp;
 	//ループ前にFPS計測を初期化

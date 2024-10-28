@@ -55,6 +55,7 @@ private:
 
     float img_down;//画像の表示位置を下げる用
     int p_imgnum;//プレイヤーの画像番号切り替え用
+    int old_p_imgnum;//プレイヤーの前の画像番号
     //int p_nomal_num;
 
     int p_atk_imgnum;//つるはし画像切り替え用
