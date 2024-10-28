@@ -54,13 +54,7 @@ int WINAPI WinMain(_In_ HINSTANCE,_In_opt_ HINSTANCE,_In_ LPSTR,_In_ int)
 
 	}
 
-
-
 	SceneManager.Finalize();
-	_CrtMemCheckpoint(&s1);
-	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
-	_CrtDumpMemoryLeaks();
-
 	DxLib_End(); // DXライブラリ使用の終了処理
 
 	return 0; // ソフトの終了
