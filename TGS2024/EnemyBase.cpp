@@ -84,7 +84,7 @@ void EnemyBase::StarEffect()
 {
 	// 星の座標を敵のスクリーン座標にする
 	star_x = location.x;
-	star_y = location.y - fabs(sinf((float)M_PI * 2.0f / 60.0f * (float)star_count) * 60.0f);
+	star_y = location.y - fabsf(sinf((float)M_PI * 2.0f / 60.0f * (float)star_count) * 60.0f);
 	star_timer++;
 
 	if (star_direction == false)
