@@ -167,5 +167,14 @@ void Magma::CheckPlaySound()
 			}
 		}
 	}
+}
 
+// マグマのseを止める
+void Magma::StopSE()
+{
+	// 音を止める
+	if (CheckSoundMem(magma_se) == TRUE)
+	{
+		StopSoundMem(magma_se);
+	}
 }

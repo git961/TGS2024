@@ -29,6 +29,7 @@ public:
 
 	// is_any_damageフラグをfalseにする
 	void NullificationDamage();
+	void StopSE();						// マグマのseを止める
 
 private:
 	void Animation();			// マグマのアニメーション

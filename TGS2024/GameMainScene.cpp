@@ -1183,6 +1183,13 @@ void GameMainScene::Update()
 					geyser[i]->StopSE();
 				}
 
+				for (int i = 0; i < MAGMA_MAXMUN; i++)
+				{
+					if (magma[i] == nullptr) continue;
+					// マグマのSEを止める
+					magma[i]->StopSE();
+				}
+
 				game_state = GameState::RESPAWN;
 			}
 		}
