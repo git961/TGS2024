@@ -10,7 +10,6 @@ UI::UI(int set_hp, int set_dyna_num)
 	LoadDivGraph("images/UI/UIY.png", 2, 2, 1, 128, 128, btnY_img);
 	LoadDivGraph("images/UI/walk_UI.png", 4, 4, 1, 128, 128, btnmove_img);
 	tuto_backimg[0] = LoadGraph("images/Animscene/dynapic.png");
-	tuto_backimg[1] = LoadGraph("images/Animscene/kanbananim.png");
 	LoadDivGraph("images/UI/num.png", 10, 10, 1, 64, 64, num_img);
 	//tuto_backimg[2] = LoadGraph("images/Animscene/kanbananim2.png");
 	//tuto_backimg[3] = LoadGraph("images/Animscene/kanbananim3.png");
