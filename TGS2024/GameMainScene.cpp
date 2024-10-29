@@ -923,8 +923,8 @@ void GameMainScene::Update()
 
 				//gameover_flg = true;
 				black_flg = true;
+				
 				player = new Player(respawn_x,respawn_y);
-
 				UpdateCamera(player->GetWorldLocation());
 				player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
@@ -2850,6 +2850,7 @@ void GameMainScene::PlayerHitRock()
 				{
 					// プレイヤーの歩行を止める
 					player->HitCheckB(rock[i]->GetVertex());
+					player->SetMoveNone();
 				}
 			}
 		}

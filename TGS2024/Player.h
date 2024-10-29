@@ -297,8 +297,7 @@ public:
 
     void CheckEdgeCage(float cage_x);       // 檻の端にプレイヤーがいるのか調べる
 
-    void MoveBack();//床ブロックと当たっていたらプレイヤーの移動を戻す
-
+    void SetMoveNone() { move_x = 0; }//moveをとめる
     void HitMapChip(GameMainScene* gamemain);
 
     //下がめり込んでいるか

@@ -997,6 +997,17 @@ void Player::TutoWalkAnim()
 			}
 		}
 
+		if (walk_abs == 0)
+		{
+			if (direction == false)
+			{
+				p_imgnum = 4;
+			}
+			else {
+				p_imgnum = 7;
+
+			}
+		}
 
 		//走るSE再生
 		if (p_imgnum == 5 || p_imgnum == 8)
@@ -2049,15 +2060,7 @@ void Player::CheckEdgeCage(float cage_x)
 	}
 }
 
-//床ブロックと当たっていたらプレイヤーの移動を戻す
-void Player::MoveBack()
-{
-	//プレイヤーが右を向いていたら
-	if (direction == 0)
-	{
-		//プレイヤーの左上の点を渡す
-	}
-}
+
 
 void Player::HitMapChip(GameMainScene* gamemain)
 {
