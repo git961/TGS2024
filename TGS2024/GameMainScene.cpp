@@ -925,6 +925,10 @@ void GameMainScene::Update()
 				black_flg = true;
 				
 				player = new Player(respawn_x,respawn_y);
+				if (respawn_y < 720)
+				{
+					current_location = CurrentLocation::upper;
+				}
 				UpdateCamera(player->GetWorldLocation());
 				player->SetLocalPosition(screen_origin_position.x, screen_origin_position.y);
 
