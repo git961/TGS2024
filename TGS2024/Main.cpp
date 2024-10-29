@@ -7,14 +7,6 @@
 #include "AnimScene.h"
 #include "TitleScene.h"
 #include "GameOverScene.h"
-#define _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
-#include <stdlib.h>
-#include <crtdbg.h>
-
-#ifdef _DEBUG
-#define DBG_NEW new(_NORMAL_BLOCK,_FILE_,_LINE_)
-#endif
 
 // プログラムは WinMain から始まります
 int WINAPI WinMain(_In_ HINSTANCE,_In_opt_ HINSTANCE,_In_ LPSTR,_In_ int)

@@ -1312,7 +1312,7 @@ void Player::TutorialAnimUpdate()
 				// 5カウントごとに変わる
 				if (walk_abs != 0)
 				{
-					p_imgnum = 10+walk_abs / 20;
+					p_imgnum = 10+walk_abs / 15;
 				}
 				//走る音
 				if (CheckSoundMem(op_run_sound) == FALSE)
