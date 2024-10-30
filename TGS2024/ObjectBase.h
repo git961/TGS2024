@@ -71,12 +71,12 @@ public:
 		float my_center_y = height / 2;
 
 		//x座標の相手と自分の距離を絶対値で測る
-		distance_x = (float)fabs(world.x - opponent.x);
+		distance_x = fabsf(world.x - opponent.x);
 		//2つの幅/2を足す
 		two_widths = my_center_x + opponent_width / 2.0f;
 
 		//y座標の相手と自分の距離を絶対値で測る
-		distance_y = (float)fabs(world.y - opponent.y);
+		distance_y = fabsf(world.y - opponent.y);
 		//2つの高さ/2を足す
 		two_heights = my_center_y + opponent_height / 2.0f;
 
@@ -89,7 +89,6 @@ public:
 		{
 			return false;
 		}
-
 	}
 
 	Vec2 GetLocation() { return location; }
@@ -122,7 +121,4 @@ public:
 		//下の座標をセット
 		box_vertex.lower_y = location.y + height / 2;
 	};
-
-
-
 };
