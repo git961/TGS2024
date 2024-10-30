@@ -2996,34 +2996,38 @@ void GameMainScene::DynamiteHitRock()
 //つるはしと岩の当たり判定
 void GameMainScene::PickaxeHitRock()
 {
-	for (int i = 0; i < object_num.rock_cnt; i++)
+	if (player != nullptr && ac != nullptr)
 	{
-		if (rock[i] != nullptr && player != nullptr)
+		//つるはしを振るってる時だけ
+		if (player->GetAttacking() == true)
 		{
-			if (rock[i]->GetWorldLocation().x > screen_origin_position.x - 100 && rock[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
+			//ダメージを一回だけ与える
+			if (rock_damage_once == false)
 			{
-				//つるはしを振るってる時だけ
-				if (player->GetAttacking() == true)
+				for (int i = 0; i < object_num.rock_cnt; i++)
 				{
-					//ダメージを一回だけ与える
-					if (rock_damage_once == false)
+					//岩が画面内近くに居たら
+					if (rock[i] != nullptr && rock[i]->GetWorldLocation().x > screen_origin_position.x - 100 && rock[i]->GetWorldLocation().x < screen_origin_position.x + SCREEN_WIDTH + 100)
 					{
 						//つるはしと岩と当たってるかのチェック
-						if (ac->HitCheck(rock[i]->GetWorldLocation(), rock[i]->GetWidth(), rock[i]->GetHeight()) == true) {
+						if (rock[i]->HitCheck(ac->GetWorldLocation(), ac->GetWidth(), ac->GetHeight()) == true)
+						{
 							rock[i]->SetDamage(10);
 							rock[i]->SetShakeFlg(true);
 							rock_damage_once = true;
 						}
 					}
 				}
-				else
-				{
-					//プレイヤーがつるはし振ってなかったら
-					rock_damage_once = false;
-				}
 			}
 		}
+		else
+		{
+			//プレイヤーがつるはし振ってなかったら
+			rock_damage_once = false;
+		}
+
 	}
+
 }
 
 //岩アップデート

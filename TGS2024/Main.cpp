@@ -20,7 +20,7 @@ int WINAPI WinMain(_In_ HINSTANCE,_In_opt_ HINSTANCE,_In_ LPSTR,_In_ int)
 
 	SetDrawScreen(DX_SCREEN_BACK);	// 描画先画面を裏にする
 	SetMouseDispFlag(FALSE);		// マウスカーソル非表示GameMainScene(true,1)
-	SceneManager SceneManager(dynamic_cast<AbstractScene*>(new GameMainScene(true, 1)));
+	SceneManager SceneManager(dynamic_cast<AbstractScene*>(new TitleScene));
 	Input input;
 	fps fp;
 	//ループ前にFPS計測を初期化
